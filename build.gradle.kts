@@ -13,7 +13,7 @@ repositories {
 }
 
 dependencies {
-    implementation("org.junit.jupiter:junit-jupiter:5.9.0")
+    testImplementation("org.junit.jupiter:junit-jupiter:5.9.0")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:1.7.22")
     implementation("org.jetbrains.kotlin:kotlin-script-runtime:1.7.22")
     implementation("io.ktor:ktor-client-core:2.1.3")
