@@ -2,7 +2,6 @@ package aoc2022
 
 import DailyProblem
 import java.io.File
-import kotlin.time.ExperimentalTime
 
 
 class Day3Problem(override val inputFilePath: String) : DailyProblem {
@@ -10,7 +9,7 @@ class Day3Problem(override val inputFilePath: String) : DailyProblem {
     override val number = 3
     override val name = "Rucksack Reorganization"
 
-    fun parseFile(): List<Pair<String, String>> {
+    private fun parseFile(): List<Pair<String, String>> {
         return File(inputFilePath)
             .readLines()
             .filter { it.isNotEmpty() }
@@ -20,7 +19,7 @@ class Day3Problem(override val inputFilePath: String) : DailyProblem {
             }
     }
 
-    fun parseFile2(): List<List<String>> {
+    private fun parseFile2(): List<List<String>> {
         return File(inputFilePath).readLines().chunked(3)
     }
 
@@ -36,21 +35,12 @@ class Day3Problem(override val inputFilePath: String) : DailyProblem {
     }
 
     override fun part2(): Long {
-        return parseFile2()
-            .map { group ->
-                group.map { it.toSet() }// Turn each line to a set
-                    .reduce({ a, b -> a.intersect(b) }) // Find the intersection
-                    .sumOf { score(it) } // "Sum" the scores, but it really should be only one element here
-            }
-            .sum().toLong()
+        return parseFile2().sumOf { group ->
+            group.map { it.toSet() }// Turn each line to a set
+                .reduce { a, b -> a.intersect(b) } // Find the intersection
+                .sumOf { score(it) } // "Sum" the scores, but it really should be only one element here
+        }.toLong()
     }
 }
 
 val day3Problem = Day3Problem("input/aoc2022/day3.txt")
-
-@OptIn(ExperimentalTime::class)
-fun main() {
-    println(day3Problem.runBoth(10000))
-}
-
-

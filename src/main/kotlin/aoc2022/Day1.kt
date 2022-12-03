@@ -2,7 +2,6 @@ package aoc2022
 
 import DailyProblem
 import java.io.File
-import kotlin.time.ExperimentalTime
 
 fun parseIntsFile(path: String): List<List<Int>> = File(path)
     .readText()
@@ -35,10 +34,5 @@ class Day1Problem(override val inputFilePath: String) : DailyProblem {
 }
 
 val day1Problem = Day1Problem("input/aoc2022/day1.txt")
-
-@OptIn(ExperimentalTime::class)
-fun main() {
-    println(day1Problem.runBoth(1))
-}
 
 

@@ -9,10 +9,10 @@ val problems = listOf(
 
 @OptIn(ExperimentalTime::class)
 fun main() {
-    val durations = problems.map { problem ->
+    val durations = problems.associate { problem ->
         val dur = problem.runBoth(timesToRun = 1000)
         Pair(problem.number, dur)
-    }.toMap()
+    }
     println("=== Timing summary ===")
     durations.forEach {
         println("Day ${it.key}\t${it.value}")

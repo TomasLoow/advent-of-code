@@ -16,7 +16,7 @@ interface DailyProblem {
         var result1 = 0L
         var result2 = 0L
         val runDuration = measureTime{
-            (1..timesToRun).forEach {
+            repeat(timesToRun) {
                 this.commonParts()
                 result1 = this.part1()
                 result2 = this.part2()
