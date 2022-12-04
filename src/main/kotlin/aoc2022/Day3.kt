@@ -1,6 +1,7 @@
 package aoc2022
 
 import DailyProblem
+import utils.nonEmptyLines
 import java.io.File
 
 
@@ -11,8 +12,8 @@ class Day3Problem(override val inputFilePath: String) : DailyProblem {
 
     private fun parseFile(): List<Pair<String, String>> {
         return File(inputFilePath)
-            .readLines()
-            .filter { it.isNotEmpty() }
+            .readText()
+            .nonEmptyLines()
             .map { line ->
                 val half = line.length / 2
                 Pair(line.take(half), line.drop(half))
@@ -23,15 +24,15 @@ class Day3Problem(override val inputFilePath: String) : DailyProblem {
         return File(inputFilePath).readLines().chunked(3)
     }
 
+    private fun score(it: Char): Int {
+        return "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ".indexOf(it) + 1
+        // Don't laugh. It works.
+    }
+
     override fun part1(): Long {
         return parseFile().sumOf { (first, second) ->
             score(first.find { c -> c in second }!!)
         }.toLong()
-    }
-
-    private fun score(it: Char): Int {
-        return "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ".indexOf(it) + 1
-        // Don't laugh. It works.
     }
 
     override fun part2(): Long {

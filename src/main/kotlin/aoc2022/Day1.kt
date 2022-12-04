@@ -1,6 +1,7 @@
 package aoc2022
 
 import DailyProblem
+import utils.nonEmptyLines
 import java.io.File
 
 class Day1Problem(override val inputFilePath: String) : DailyProblem {
@@ -14,7 +15,7 @@ class Day1Problem(override val inputFilePath: String) : DailyProblem {
         .readText()
         .split("\n\n")
         .map { group ->
-            group.lines().filter { it.isNotEmpty() }.map { line -> line.toInt() }
+            group.nonEmptyLines().map { line -> line.toInt() }
         }
 
     override fun commonParts() {
@@ -31,6 +32,7 @@ class Day1Problem(override val inputFilePath: String) : DailyProblem {
         return topThree.map { it.sum() }.sumOf { it }.toLong()
     }
 }
+
 
 val day1Problem = Day1Problem("input/aoc2022/day1.txt")
 
