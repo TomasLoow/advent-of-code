@@ -3,23 +3,22 @@ package aoc2022
 import DailyProblem
 import java.io.File
 
-fun parseIntsFile(path: String): List<List<Int>> = File(path)
-    .readText()
-    .split("\n\n")
-    .map { group ->
-        group.lines().filter { it.isNotEmpty() }.map { line -> line.toInt() }
-    }
-
-
 class Day1Problem(override val inputFilePath: String) : DailyProblem {
-
     private lateinit var caloriesList: List<List<Int>>
 
     override val number = 1
+
     override val name = "Calorie Counting"
 
+    fun parseIntsGroupsFile(path: String): List<List<Int>> = File(path)
+        .readText()
+        .split("\n\n")
+        .map { group ->
+            group.lines().filter { it.isNotEmpty() }.map { line -> line.toInt() }
+        }
+
     override fun commonParts() {
-        caloriesList = parseIntsFile(inputFilePath)
+        caloriesList = parseIntsGroupsFile(inputFilePath)
     }
 
     override fun part1(): Long {
