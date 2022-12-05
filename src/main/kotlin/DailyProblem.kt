@@ -2,19 +2,19 @@ import kotlin.time.Duration
 import kotlin.time.ExperimentalTime
 import kotlin.time.measureTime
 
-interface DailyProblem {
+interface DailyProblem<Res> {
     val number: Int
     val name: String
     val inputFilePath: String
     fun commonParts() {}
-    fun part1(): Long
-    fun part2(): Long
+    fun part1(): Res
+    fun part2(): Res
 
     @ExperimentalTime
     fun runBoth(timesToRun:Int = 1) : Duration {
         println("=== Day $number : $name ===")
-        var result1 = 0L
-        var result2 = 0L
+        var result1:Res? = null
+        var result2:Res? = null
         val runDuration = measureTime{
             repeat(timesToRun) {
                 this.commonParts()
@@ -23,8 +23,8 @@ interface DailyProblem {
             }
         }
         val averageDuration = runDuration/timesToRun
-        println("part 1: $result1")
-        println("part 2: $result2")
+        println("part 1: ${result1.toString()}")
+        println("part 2: ${result2.toString()}")
         println("Average runtime for day ${number}: $averageDuration based on $timesToRun runs")
         println("===========")
         println()

@@ -5,7 +5,7 @@ import utils.nonEmptyLines
 import java.io.File
 
 
-class Day3Problem(override val inputFilePath: String) : DailyProblem {
+class Day3Problem(override val inputFilePath: String) : DailyProblem<Int> {
 
     override val number = 3
     override val name = "Rucksack Reorganization"
@@ -29,18 +29,18 @@ class Day3Problem(override val inputFilePath: String) : DailyProblem {
         // Don't laugh. It works.
     }
 
-    override fun part1(): Long {
+    override fun part1(): Int {
         return parseFile().sumOf { (first, second) ->
             score(first.find { c -> c in second }!!)
-        }.toLong()
+        }
     }
 
-    override fun part2(): Long {
+    override fun part2(): Int {
         return parseFile2().sumOf { group ->
             group.map { it.toSet() }// Turn each line to a set
                 .reduce { a, b -> a.intersect(b) } // Find the intersection
                 .sumOf { score(it) } // "Sum" the scores, but it really should be only one element here
-        }.toLong()
+        }
     }
 }
 

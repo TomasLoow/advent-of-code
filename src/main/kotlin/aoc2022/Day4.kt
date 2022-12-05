@@ -5,7 +5,7 @@ import java.io.File
 import kotlin.time.ExperimentalTime
 import utils.*
 
-class Day4Problem(override val inputFilePath: String) : DailyProblem {
+class Day4Problem(override val inputFilePath: String) : DailyProblem<Int> {
 
     override val number = 4
     override val name = "Camp Cleanup"
@@ -27,17 +27,17 @@ class Day4Problem(override val inputFilePath: String) : DailyProblem {
             }
     }
 
-    override fun part1(): Long {
+    override fun part1(): Int {
         return parseFile().count { (elf1, elf2) ->
             elf1.containsRange(elf2) ||elf2.containsRange(elf1)
-        }.toLong()
+        }
     }
 
 
-    override fun part2(): Long {
+    override fun part2(): Int {
         return parseFile().count { (elf1, elf2) ->
             elf1.intersectRange(elf2)
-        }.toLong()
+        }
     }
 }
 

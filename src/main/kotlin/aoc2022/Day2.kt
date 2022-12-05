@@ -18,7 +18,7 @@ const val LOSE = 1
 /* computer - my ≅ result (mod 3) */
 /* computer - result ≅ my (mod 3) */
 
-class Day2Problem(override val inputFilePath: String) : DailyProblem {
+class Day2Problem(override val inputFilePath: String) : DailyProblem<Int> {
 
     override val number = 2
     override val name = "Rock Paper Scissors "
@@ -63,11 +63,11 @@ class Day2Problem(override val inputFilePath: String) : DailyProblem {
         }
     }
 
-    override fun part1(): Long {
+    override fun part1(): Int {
         return parseFilePart1().map { (comp, me) ->
             val res = (comp - me + 3) % 3
             scoreRes(res) + scoreMove(me)
-        }.sum().toLong()
+        }.sum()
     }
 
     private fun scoreRes(res: Int): Int {
@@ -89,11 +89,11 @@ class Day2Problem(override val inputFilePath: String) : DailyProblem {
     }
 
 
-    override fun part2(): Long {
+    override fun part2(): Int {
         return parseFilePart2().map { (comp, res) ->
             val me = (comp - res + 3) % 3
             scoreRes(res) + scoreMove(me)
-        }.sum().toLong()
+        }.sum()
     }
 }
 

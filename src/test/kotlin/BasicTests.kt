@@ -34,4 +34,11 @@ class MultiTest {
         assertEquals(2, problem.part1())
         assertEquals(4, problem.part2())
     }
+    @Test
+    fun testDay5() {
+        val problem = aoc2022.Day5Problem("input/aoc2022/testinput/day5.txt")
+        problem.commonParts()
+        assertEquals("CMZ", problem.part1())
+        assertEquals("MCD", problem.part2())
+    }
 }

@@ -4,7 +4,7 @@ import DailyProblem
 import utils.nonEmptyLines
 import java.io.File
 
-class Day1Problem(override val inputFilePath: String) : DailyProblem {
+class Day1Problem(override val inputFilePath: String) : DailyProblem<Int> {
     private lateinit var caloriesList: List<List<Int>>
 
     override val number = 1
@@ -22,14 +22,14 @@ class Day1Problem(override val inputFilePath: String) : DailyProblem {
         caloriesList = parseIntsGroupsFile(inputFilePath)
     }
 
-    override fun part1(): Long {
+    override fun part1(): Int {
         val max = caloriesList.maxOf { it.sum() }
-        return max.toLong()
+        return max
     }
 
-    override fun part2(): Long {
+    override fun part2(): Int {
         val topThree = caloriesList.sortedByDescending { it.sum() }.take(3)
-        return topThree.map { it.sum() }.sumOf { it }.toLong()
+        return topThree.map { it.sum() }.sumOf { it }
     }
 }
 

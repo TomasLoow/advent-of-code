@@ -5,7 +5,7 @@ import utils.nonEmptyLines
 import java.io.File
 import kotlin.time.ExperimentalTime
 
-class Day5Problem(override val inputFilePath: String) : DailyProblem {
+class Day5Problem(override val inputFilePath: String) : DailyProblem<String> {
 
     override val number = 5
     override val name = "Supply Stacks"
@@ -37,19 +37,18 @@ class Day5Problem(override val inputFilePath: String) : DailyProblem {
 
 
 
-    override fun part1(): Long {
+    override fun part1(): String {
         val (stacks, moves) = parseFile()
         moves.forEach { (count, from, to) ->
             repeat(count) {
                 stacks[to-1].addFirst(stacks[from-1].removeFirst())
             }
         }
-        stacks.forEach { print(it.first()) }.also { println() }
-        return 1L
+        return stacks.map { it.first() }.joinToString("")
     }
 
 
-    override fun part2(): Long {
+    override fun part2(): String {
         val (stacks, moves) = parseFile()
         moves.forEach { (count, from, to) ->
             val toStack = stacks[to - 1]
@@ -61,8 +60,7 @@ class Day5Problem(override val inputFilePath: String) : DailyProblem {
             }.reversed()
             moved.forEach {toStack.addFirst(it)}
         }
-        stacks.forEach { print(it.first()) }.also { println() }
-        return 1L
+        return stacks.map { it.first() }.joinToString("")
     }
 }
 
