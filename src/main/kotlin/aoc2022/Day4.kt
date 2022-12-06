@@ -10,6 +10,8 @@ class Day4Problem(override val inputFilePath: String) : DailyProblem<Int> {
     override val number = 4
     override val name = "Camp Cleanup"
 
+    private lateinit var data: List<Pair<IntRange, IntRange>>
+
     private fun parseFile(): List<Pair<IntRange, IntRange>> {
         val cleanupLineRegEx = """(\d+)-(\d+),(\d+)-(\d+)""".toRegex()
         return File(inputFilePath)
@@ -27,15 +29,17 @@ class Day4Problem(override val inputFilePath: String) : DailyProblem<Int> {
             }
     }
 
+    override fun commonParts() {
+        this.data = parseFile()
+    }
     override fun part1(): Int {
-        return parseFile().count { (elf1, elf2) ->
+        return data.count { (elf1, elf2) ->
             elf1.containsRange(elf2) ||elf2.containsRange(elf1)
         }
     }
 
-
     override fun part2(): Int {
-        return parseFile().count { (elf1, elf2) ->
+        return data.count { (elf1, elf2) ->
             elf1.intersectRange(elf2)
         }
     }
