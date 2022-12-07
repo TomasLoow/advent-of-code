@@ -21,27 +21,28 @@ class Day7Problem(override val inputFilePath: String) : DailyProblem<Int> {
 
     private fun parseCommands(): List<Cmd> {
         val inputLines = File(inputFilePath).readNonEmptyLines().toMutableList()
-        val cmds = mutableListOf<Cmd>()
+        val commands = mutableListOf<Cmd>()
         while (inputLines.isNotEmpty()) {
-            val cmd = inputLines.removeFirst()
-            if (cmd.startsWith("$ cd")) {
-                cmds.add(CmdCd(cmd.substring(5)))
+            val command = inputLines.removeFirst()
+            if (command.startsWith("$ cd ")) {
+                commands.add(CmdCd(command.substringAfter("$ cd ")))
             } else {
-                assert(cmd.startsWith("$ ls"))
-                val content = mutableListOf<LsLine>()
-                while (inputLines.isNotEmpty() && !inputLines.first().startsWith("$")) {
-                    val lsLine = inputLines.removeFirst()
-                    val (desc, name) = lsLine.split(" ")
-                    if (desc == "dir") {
-                        content.add(LsDir(name))
-                    } else {
-                        content.add(LsFile(name, desc.toInt()))
+                assert(command == "$ ls")
+                val content = buildList {
+                    while (inputLines.isNotEmpty() && !inputLines.first().startsWith("$")) {
+                        val lsLine = inputLines.removeFirst()
+                        val (desc, name) = lsLine.split(" ")
+                        if (desc == "dir") {
+                            add(LsDir(name))
+                        } else {
+                            add(LsFile(name, desc.toInt()))
+                        }
                     }
                 }
-                cmds.add(CmdLs(content))
+                commands.add(CmdLs(content))
             }
         }
-        return cmds
+        return commands
     }
 
 
@@ -52,7 +53,7 @@ class Day7Problem(override val inputFilePath: String) : DailyProblem<Int> {
         val parent: Directory? = null
     ) {
 
-        var cachedSize: Int? = null
+        private var cachedSize: Int? = null
         val totalSize: Int
             get() {
                 if (cachedSize != null) return cachedSize!!
@@ -66,9 +67,15 @@ class Day7Problem(override val inputFilePath: String) : DailyProblem<Int> {
                 return this.parent.root
             }
 
-        fun forThisAndEachSubDir(function: (Directory) -> Unit) {
-            function(this)
-            this.subDirectories.values.forEach { subDir -> subDir.forThisAndEachSubDir(function) }
+        fun findAllDirsWhere(predicate: (Directory) -> Boolean): List<Directory> {
+            return buildList {
+                if (predicate(this@Directory)) {
+                    add(this@Directory)
+                }
+                subDirectories.values.forEach {
+                    addAll(it.findAllDirsWhere(predicate))
+                }
+            }
         }
     }
 
@@ -95,18 +102,12 @@ class Day7Problem(override val inputFilePath: String) : DailyProblem<Int> {
         var current = root
         commands.forEach { cmd ->
             when (cmd) {
-                is CmdCd -> {
-                    current = handleCd(cmd, current)
-                }
-
-                is CmdLs -> {
-                    handleLs(cmd, current)
-                }
+                is CmdCd -> current = handleCd(cmd, current)
+                is CmdLs -> handleLs(cmd, current)
             }
         }
         return root
     }
-
 
     override fun commonParts() {
         val commands = parseCommands()
@@ -114,32 +115,22 @@ class Day7Problem(override val inputFilePath: String) : DailyProblem<Int> {
 
     }
 
-
     override fun part1(): Int {
-        var s = 0
-        fileSystem.forThisAndEachSubDir { dir: Directory ->
-            if (dir.totalSize < 100000) {
-                s += dir.totalSize
-            }
-        }
-        return s
+        return fileSystem
+            .findAllDirsWhere { dir -> dir.totalSize < 100000 }
+            .sumOf { dir -> dir.totalSize }
     }
 
-
     override fun part2(): Int {
-        val DISK_CAPACITY = 70000000
-        val FREE_SPACE_NEEDED = 30000000
-        val MAX_TO_DISK_USAGE = DISK_CAPACITY - FREE_SPACE_NEEDED
+        val discCapacity = 70000000
+        val neededFreeSpace = 30000000
+        val maxDiskSpaceToUse = discCapacity - neededFreeSpace
 
         val currentlyUsed = fileSystem.totalSize
-        val toBeDeleted = currentlyUsed - MAX_TO_DISK_USAGE
-        var bestCandidate = fileSystem
-        fileSystem.forThisAndEachSubDir { dir ->
-            if (dir.totalSize > toBeDeleted && dir.totalSize < bestCandidate.totalSize) {
-                bestCandidate = dir
-            }
-        }
-        return bestCandidate.totalSize
+        val toBeDeleted = currentlyUsed - maxDiskSpaceToUse
+        return fileSystem
+            .findAllDirsWhere { dir -> dir.totalSize > toBeDeleted }
+            .minOf { it.totalSize }
     }
 }
 
@@ -147,5 +138,5 @@ val day7Problem = Day7Problem("input/aoc2022/day7.txt")
 
 @OptIn(ExperimentalTime::class)
 fun main() {
-    day7Problem.runBoth(100)
+    day7Problem.runBoth(1000)
 }
