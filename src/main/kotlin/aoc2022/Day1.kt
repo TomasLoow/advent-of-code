@@ -1,6 +1,7 @@
 package aoc2022
 
 import DailyProblem
+import utils.ensureNl
 import utils.nonEmptyLines
 import java.io.File
 
@@ -12,7 +13,7 @@ class Day1Problem(override val inputFilePath: String) : DailyProblem<Int> {
     override val name = "Calorie Counting"
 
     fun parseIntsGroupsFile(path: String): List<List<Int>> = File(path)
-        .readText()
+        .readText().ensureNl()
         .split("\n\n")
         .map { group ->
             group.nonEmptyLines().map { line -> line.toInt() }

@@ -11,6 +11,10 @@ fun File.readNonEmptyLines(): List<String> {
     return readText().nonEmptyLines()
 }
 
+fun String.ensureNl(): String {
+    return replace("\r\n", "\n")
+}
+
 
 fun IntRange.containsRange(range2: IntRange): Boolean {
     return range2.start in this && range2.endInclusive in this

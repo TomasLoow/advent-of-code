@@ -1,6 +1,7 @@
 package aoc2022
 
 import DailyProblem
+import utils.ensureNl
 import utils.nonEmptyLines
 import java.io.File
 import kotlin.time.ExperimentalTime
@@ -11,7 +12,7 @@ class Day5Problem(override val inputFilePath: String) : DailyProblem<String> {
     override val name = "Supply Stacks"
 
     private fun parseFile(): Pair<Array<ArrayDeque<Char>>, List<Triple<Int, Int, Int>>> {
-        val (stackpart, movepart) = File(inputFilePath).readText().split("\n\n")
+        val (stackpart, movepart) = File(inputFilePath).readText().ensureNl().split("\n\n")
 
         val moveRegex = """move (\d+) from (\d+) to (\d+)""".toRegex()
         val moves = movepart.nonEmptyLines().map { line ->
@@ -63,6 +64,7 @@ class Day5Problem(override val inputFilePath: String) : DailyProblem<String> {
         return stacks.map { it.first() }.joinToString("")
     }
 }
+
 
 val day5Problem = Day5Problem("input/aoc2022/day5.txt")
 
