@@ -11,18 +11,18 @@ interface DailyProblem<Res> {
     fun part2(): Res
 
     @ExperimentalTime
-    fun runBoth(timesToRun:Int = 1) : Duration {
+    fun runBoth(timesToRun: Int = 1): Duration {
         println("=== Day $number : $name ===")
-        var result1:Res? = null
-        var result2:Res? = null
-        val runDuration = measureTime{
+        var result1: Res? = null
+        var result2: Res? = null
+        val runDuration = measureTime {
             repeat(timesToRun) {
                 this.commonParts()
                 result1 = this.part1()
                 result2 = this.part2()
             }
         }
-        val averageDuration = runDuration/timesToRun
+        val averageDuration = runDuration / timesToRun
         println("part 1: ${result1.toString()}")
         println("part 2: ${result2.toString()}")
         println("Average runtime for day ${number}: $averageDuration based on $timesToRun runs")

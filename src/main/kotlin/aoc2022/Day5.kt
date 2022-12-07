@@ -37,12 +37,11 @@ class Day5Problem(override val inputFilePath: String) : DailyProblem<String> {
     }
 
 
-
     override fun part1(): String {
         val (stacks, moves) = parseFile()
         moves.forEach { (count, from, to) ->
             repeat(count) {
-                stacks[to-1].addFirst(stacks[from-1].removeFirst())
+                stacks[to - 1].addFirst(stacks[from - 1].removeFirst())
             }
         }
         return stacks.map { it.first() }.joinToString("")
@@ -59,7 +58,7 @@ class Day5Problem(override val inputFilePath: String) : DailyProblem<String> {
                     add(fromStack.removeFirst())
                 }
             }.reversed()
-            moved.forEach {toStack.addFirst(it)}
+            moved.forEach { toStack.addFirst(it) }
         }
         return stacks.map { it.first() }.joinToString("")
     }

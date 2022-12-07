@@ -8,8 +8,8 @@ import java.io.File
 suspend fun main() {
 
     val (sessionId, endDate) = File("input/aoc2022/downloadinfo.txt").readLines().let {
-            Pair(it[0], it[1].toInt())
-        }
+        Pair(it[0], it[1].toInt())
+    }
 
     HttpClient {
         defaultRequest {

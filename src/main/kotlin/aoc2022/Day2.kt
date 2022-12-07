@@ -56,7 +56,7 @@ class Day2Problem(override val inputFilePath: String) : DailyProblem<Int> {
     }
 
 
-    private fun parseFilePart2(): List<Pair<RPSMove,RPSResult>> {
+    private fun parseFilePart2(): List<Pair<RPSMove, RPSResult>> {
         return File(inputFilePath).readLines().map { line ->
             val (comp, res) = line.split(" ")
             Pair(charToMove(comp), charToRes(res))
@@ -71,20 +71,24 @@ class Day2Problem(override val inputFilePath: String) : DailyProblem<Int> {
     }
 
     private fun scoreRes(res: Int): Int {
-        return when(res) {
+        return when (res) {
             WIN -> 6
             DRAW -> 3
             LOSE -> 0
-            else -> { throw Exception("Bad result")}
+            else -> {
+                throw Exception("Bad result")
+            }
         }
     }
 
     private fun scoreMove(move: Int): Int {
-        return when(move) {
+        return when (move) {
             ROCK -> 1
             PAPER -> 2
             SCISSOR -> 3
-            else -> { throw Exception("Bad move")}
+            else -> {
+                throw Exception("Bad move")
+            }
         }
     }
 

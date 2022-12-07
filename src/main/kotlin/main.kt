@@ -20,5 +20,5 @@ fun main() {
     durations.forEach {
         println("Day ${it.key}\t${it.value}")
     }
-    println("Total time: ${durations.values.reduce{acc, duration -> acc + duration }}")
+    println("Total time: ${durations.values.reduce { acc, duration -> acc + duration }}")
 }

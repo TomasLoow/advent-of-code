@@ -1,8 +1,7 @@
 package aoc2022
 
+import utils.*
 import DailyProblem
-import utils.nonEmptyLines
-import java.io.File
 import kotlin.time.ExperimentalTime
 
 class Day999999Problem(override val inputFilePath: String) : DailyProblem<Long> {
@@ -12,10 +11,9 @@ class Day999999Problem(override val inputFilePath: String) : DailyProblem<Long> 
 
     private fun parseFile(): Any {
         val input = """""".lines()
-        // val input = File(inputFileName).readLines()
+        // val input = File(inputFilePath).readNonEmptyLines()
         TODO()
     }
-
 
 
     override fun part1(): Long {

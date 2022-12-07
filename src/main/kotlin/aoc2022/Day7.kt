@@ -90,6 +90,7 @@ class Day7Problem(override val inputFilePath: String) : DailyProblem<Int> {
                 }
             }
         }
+
         val root = Directory("/")
         var current = root
         commands.forEach { cmd ->
@@ -105,8 +106,6 @@ class Day7Problem(override val inputFilePath: String) : DailyProblem<Int> {
         }
         return root
     }
-
-
 
 
     override fun commonParts() {
