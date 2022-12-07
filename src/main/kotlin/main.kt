@@ -7,12 +7,13 @@ val problems = listOf(
     aoc2022.day4Problem,
     aoc2022.day5Problem,
     aoc2022.day6Problem,
+    aoc2022.day7Problem,
 )
 
 @OptIn(ExperimentalTime::class)
 fun main() {
     val durations = problems.associate { problem ->
-        val dur = problem.runBoth(timesToRun = 10000)
+        val dur = problem.runBoth(timesToRun = 1000)
         Pair(problem.number, dur)
     }
     println("=== Timing summary ===")
