@@ -1,3 +1,5 @@
+import utils.ensureNl
+import java.io.File
 import kotlin.time.Duration
 import kotlin.time.ExperimentalTime
 import kotlin.time.measureTime
@@ -9,6 +11,13 @@ interface DailyProblem<Res> {
     fun commonParts() {}
     fun part1(): Res
     fun part2(): Res
+
+    fun getInputFile() = File(inputFilePath)
+
+    fun getInputText(): String {
+        return File(inputFilePath).readText().ensureNl()
+    }
+
 
     @ExperimentalTime
     fun runBoth(timesToRun: Int = 1): Duration {

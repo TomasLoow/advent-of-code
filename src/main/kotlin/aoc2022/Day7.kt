@@ -2,7 +2,6 @@ package aoc2022
 
 import DailyProblem
 import utils.*
-import java.io.File
 import kotlin.time.ExperimentalTime
 
 class Day7Problem(override val inputFilePath: String) : DailyProblem<Int> {
@@ -20,7 +19,7 @@ class Day7Problem(override val inputFilePath: String) : DailyProblem<Int> {
     class LsDir(val name: String) : LsLine()
 
     private fun parseCommands(): List<Cmd> {
-        val inputLines = File(inputFilePath).readNonEmptyLines().toMutableList()
+        val inputLines = getInputFile().readNonEmptyLines().toMutableList()
         val commands = mutableListOf<Cmd>()
         while (inputLines.isNotEmpty()) {
             val command = inputLines.removeFirst()
@@ -44,7 +43,6 @@ class Day7Problem(override val inputFilePath: String) : DailyProblem<Int> {
         }
         return commands
     }
-
 
     class Directory(
         val name: String,

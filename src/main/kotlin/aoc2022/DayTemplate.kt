@@ -1,7 +1,7 @@
 package aoc2022
 
-import utils.*
 import DailyProblem
+import utils.*
 import kotlin.time.ExperimentalTime
 
 class Day999999Problem(override val inputFilePath: String) : DailyProblem<Long> {
@@ -9,10 +9,16 @@ class Day999999Problem(override val inputFilePath: String) : DailyProblem<Long> 
     override val number = 999999
     override val name = "Problem name"
 
+    private lateinit var data: Any
+
     private fun parseFile(): Any {
         val input = """""".lines()
-        // val input = File(inputFilePath).readNonEmptyLines()
+        // val input = getInputFile().readNonEmptyLines()
         TODO()
+    }
+
+    override fun commonParts() {
+        data = parseFile()
     }
 
 

@@ -1,9 +1,8 @@
 package aoc2022
 
 import DailyProblem
-import utils.ensureNl
-import utils.nonEmptyLines
-import java.io.File
+import utils.parseBlockList
+import utils.parseIntLines
 
 class Day1Problem(override val inputFilePath: String) : DailyProblem<Int> {
     private lateinit var caloriesList: List<List<Int>>
@@ -12,15 +11,8 @@ class Day1Problem(override val inputFilePath: String) : DailyProblem<Int> {
 
     override val name = "Calorie Counting"
 
-    fun parseIntsGroupsFile(path: String): List<List<Int>> = File(path)
-        .readText().ensureNl()
-        .split("\n\n")
-        .map { group ->
-            group.nonEmptyLines().map { line -> line.toInt() }
-        }
-
     override fun commonParts() {
-        caloriesList = parseIntsGroupsFile(inputFilePath)
+        caloriesList = parseBlockList(getInputText(), ::parseIntLines)
     }
 
     override fun part1(): Int {

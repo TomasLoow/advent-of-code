@@ -2,7 +2,6 @@ package aoc2022
 
 import DailyProblem
 import utils.*
-import java.io.File
 import kotlin.time.ExperimentalTime
 
 class Day8Problem(override val inputFilePath: String) : DailyProblem<Int> {
@@ -14,7 +13,7 @@ class Day8Problem(override val inputFilePath: String) : DailyProblem<Int> {
     private lateinit var forrestMap: Array2D<Int>
 
     private fun parseFile(): Array2D<Int> {
-        return Array2D.parseFromLines(File(inputFilePath).readText()) { c -> c.digitToInt() }
+        return parseIntArray(getInputText())
     }
 
     private fun canBeSeenFromOutside(map: Array2D<Int>, pos: Coord, h: Int): Boolean {

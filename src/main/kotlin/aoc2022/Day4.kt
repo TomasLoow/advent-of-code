@@ -2,7 +2,6 @@ package aoc2022
 
 import DailyProblem
 import utils.*
-import java.io.File
 import kotlin.time.ExperimentalTime
 
 class Day4Problem(override val inputFilePath: String) : DailyProblem<Int> {
@@ -14,17 +13,13 @@ class Day4Problem(override val inputFilePath: String) : DailyProblem<Int> {
 
     private fun parseFile(): List<Pair<IntRange, IntRange>> {
         val cleanupLineRegEx = """(\d+)-(\d+),(\d+)-(\d+)""".toRegex()
-        return File(inputFilePath)
-            .readLines()
-            .filter { line -> line.isNotEmpty() }
+        return getInputFile()
+            .readNonEmptyLines()
             .map { line ->
-                val (elf1Start, elf1End, elf2Start, elf2End) = cleanupLineRegEx
-                    .matchEntire(line)
-                    ?.destructured
-                    ?: throw IllegalArgumentException("Failed to parse input line $line")
+                val (elf1Start, elf1End, elf2Start, elf2End) = cleanupLineRegEx.matchEntire(line)!!.destructured.toList().map { s -> s.toInt()}
                 Pair(
-                    IntRange(elf1Start.toInt(), elf1End.toInt()),
-                    IntRange(elf2Start.toInt(), elf2End.toInt())
+                    IntRange(elf1Start, elf1End),
+                    IntRange(elf2Start, elf2End)
                 )
             }
     }

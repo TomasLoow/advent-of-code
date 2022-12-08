@@ -2,7 +2,6 @@ package aoc2022
 
 import DailyProblem
 import utils.nonEmptyLines
-import java.io.File
 
 
 class Day3Problem(override val inputFilePath: String) : DailyProblem<Int> {
@@ -11,7 +10,7 @@ class Day3Problem(override val inputFilePath: String) : DailyProblem<Int> {
     override val name = "Rucksack Reorganization"
 
     private fun parseFile(): List<Pair<String, String>> {
-        return File(inputFilePath)
+        return getInputFile()
             .readText()
             .nonEmptyLines()
             .map { line ->
@@ -21,7 +20,7 @@ class Day3Problem(override val inputFilePath: String) : DailyProblem<Int> {
     }
 
     private fun parseFile2(): List<List<String>> {
-        return File(inputFilePath).readLines().chunked(3)
+        return getInputFile().readLines().chunked(3)
     }
 
     private fun score(it: Char): Int {

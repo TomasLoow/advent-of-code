@@ -1,7 +1,6 @@
 package aoc2022
 
 import DailyProblem
-import java.io.File
 import kotlin.time.ExperimentalTime
 
 class Day6Problem(override val inputFilePath: String) : DailyProblem<Int> {
@@ -12,7 +11,7 @@ class Day6Problem(override val inputFilePath: String) : DailyProblem<Int> {
     private lateinit var data: String
 
     private fun parseFile(): String {
-        return File(inputFilePath).readText()
+        return getInputText()
     }
 
     override fun commonParts() {

@@ -1,9 +1,8 @@
 package aoc2022
 
 import DailyProblem
-import utils.ensureNl
 import utils.nonEmptyLines
-import java.io.File
+import utils.parseTwoBlocks
 import kotlin.time.ExperimentalTime
 
 class Day5Problem(override val inputFilePath: String) : DailyProblem<String> {
@@ -11,15 +10,7 @@ class Day5Problem(override val inputFilePath: String) : DailyProblem<String> {
     override val number = 5
     override val name = "Supply Stacks"
 
-    private fun parseFile(): Pair<Array<ArrayDeque<Char>>, List<Triple<Int, Int, Int>>> {
-        val (stackpart, movepart) = File(inputFilePath).readText().ensureNl().split("\n\n")
-
-        val moveRegex = """move (\d+) from (\d+) to (\d+)""".toRegex()
-        val moves = movepart.nonEmptyLines().map { line ->
-            val (count, from, to) = moveRegex.matchEntire(line)!!.destructured
-            Triple(count.toInt(), from.toInt(), to.toInt())
-        }
-
+    private fun parseStacks(stackpart: String): Array<ArrayDeque<Char>> {
         val numStacks = (stackpart.nonEmptyLines().maxOf { it.length } + 1) / 4
         val stacks = Array<ArrayDeque<Char>>(numStacks) { ArrayDeque() }
         stackpart.nonEmptyLines().reversed().drop(1).forEach { line ->
@@ -33,7 +24,20 @@ class Day5Problem(override val inputFilePath: String) : DailyProblem<String> {
                 }
             }
         }
-        return Pair(stacks, moves)
+        return stacks
+    }
+
+    private fun parseMoves(movepart: String): List<Triple<Int, Int, Int>> {
+        val moveRegex = """move (\d+) from (\d+) to (\d+)""".toRegex()
+        val moves = movepart.nonEmptyLines().map { line ->
+            val (count, from, to) = moveRegex.matchEntire(line)!!.destructured
+            Triple(count.toInt(), from.toInt(), to.toInt())
+        }
+        return moves
+    }
+
+    private fun parseFile(): Pair<Array<ArrayDeque<Char>>, List<Triple<Int, Int, Int>>> {
+        return parseTwoBlocks(getInputText(), ::parseStacks, ::parseMoves)
     }
 
 

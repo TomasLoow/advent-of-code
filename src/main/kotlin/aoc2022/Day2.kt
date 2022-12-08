@@ -1,7 +1,6 @@
 package aoc2022
 
 import DailyProblem
-import java.io.File
 
 typealias RPSMove = Int
 
@@ -49,7 +48,7 @@ class Day2Problem(override val inputFilePath: String) : DailyProblem<Int> {
     }
 
     private fun parseFilePart1(): List<Pair<RPSMove, RPSMove>> {
-        return File(inputFilePath).readLines().map { line ->
+        return getInputFile().readLines().map { line ->
             val (comp, me) = line.split(" ")
             Pair(charToMove(comp), charToMove(me))
         }
@@ -57,7 +56,7 @@ class Day2Problem(override val inputFilePath: String) : DailyProblem<Int> {
 
 
     private fun parseFilePart2(): List<Pair<RPSMove, RPSResult>> {
-        return File(inputFilePath).readLines().map { line ->
+        return getInputFile().readLines().map { line ->
             val (comp, res) = line.split(" ")
             Pair(charToMove(comp), charToRes(res))
         }
