@@ -24,8 +24,7 @@ class Day1Problem(override val inputFilePath: String) : DailyProblem<Int> {
     }
 
     override fun part1(): Int {
-        val max = caloriesList.maxOf { it.sum() }
-        return max
+        return caloriesList.maxOf { it.sum() }
     }
 
     override fun part2(): Int {

@@ -3,7 +3,7 @@ package utils
 import java.io.File
 
 fun String.nonEmptyLines(): List<String> {
-    // For some reason this is faster than using isNotEmpty()
+    // For some reason this is *much* faster than using isNotEmpty()
     return lines().filter { it.length > 0 }
 }
 
@@ -17,9 +17,9 @@ fun String.ensureNl(): String {
 
 
 fun IntRange.containsRange(range2: IntRange): Boolean {
-    return range2.start in this && range2.endInclusive in this
+    return range2.first in this && range2.last in this
 }
 
 fun IntRange.intersectRange(range2: IntRange): Boolean {
-    return !(range2.endInclusive < start || range2.start > endInclusive)
+    return !(range2.last < start || range2.first > endInclusive)
 }

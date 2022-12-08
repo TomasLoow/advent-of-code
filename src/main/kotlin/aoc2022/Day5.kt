@@ -37,28 +37,41 @@ class Day5Problem(override val inputFilePath: String) : DailyProblem<String> {
     }
 
 
+    private fun moveOneAtTheTime(
+        count: Int,
+        fromStack: ArrayDeque<Char>,
+        toStack: ArrayDeque<Char>,
+    ) {
+        repeat(count) {
+            toStack.addFirst(fromStack.removeFirst())
+        }
+    }
+
+    private fun moveMany(
+        count: Int,
+        fromStack: ArrayDeque<Char>,
+        toStack: ArrayDeque<Char>
+    ) {
+        fromStack.take(count).reversed().forEach{toStack.addFirst(it)}
+        repeat(count) { fromStack.removeFirst() }
+    }
+
     override fun part1(): String {
         val (stacks, moves) = parseFile()
         moves.forEach { (count, from, to) ->
-            repeat(count) {
-                stacks[to - 1].addFirst(stacks[from - 1].removeFirst())
-            }
+            val toStack = stacks[to - 1]
+            val fromStack = stacks[from - 1]
+            moveOneAtTheTime(count, fromStack, toStack)
         }
         return stacks.map { it.first() }.joinToString("")
     }
-
 
     override fun part2(): String {
         val (stacks, moves) = parseFile()
         moves.forEach { (count, from, to) ->
             val toStack = stacks[to - 1]
             val fromStack = stacks[from - 1]
-            val moved = buildList<Char> {
-                repeat(count) {
-                    add(fromStack.removeFirst())
-                }
-            }.reversed()
-            moved.forEach { toStack.addFirst(it) }
+            moveMany(count, fromStack, toStack)
         }
         return stacks.map { it.first() }.joinToString("")
     }
@@ -69,5 +82,5 @@ val day5Problem = Day5Problem("input/aoc2022/day5.txt")
 
 @OptIn(ExperimentalTime::class)
 fun main() {
-    day5Problem.runBoth(100)
+    day5Problem.runBoth(1000)
 }

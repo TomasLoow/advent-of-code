@@ -64,10 +64,10 @@ class Day2Problem(override val inputFilePath: String) : DailyProblem<Int> {
     }
 
     override fun part1(): Int {
-        return parseFilePart1().map { (comp, me) ->
+        return parseFilePart1().sumOf { (comp, me) ->
             val res = (comp - me + 3) % 3
             scoreRes(res) + scoreMove(me)
-        }.sum()
+        }
     }
 
     private fun scoreRes(res: Int): Int {
@@ -94,10 +94,10 @@ class Day2Problem(override val inputFilePath: String) : DailyProblem<Int> {
 
 
     override fun part2(): Int {
-        return parseFilePart2().map { (comp, res) ->
+        return parseFilePart2().sumOf { (comp, res) ->
             val me = (comp - res + 3) % 3
             scoreRes(res) + scoreMove(me)
-        }.sum()
+        }
     }
 }
 
