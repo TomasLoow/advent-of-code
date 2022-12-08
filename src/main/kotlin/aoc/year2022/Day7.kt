@@ -1,12 +1,13 @@
-package aoc2022
+package aoc.year2022
 
 import DailyProblem
-import utils.*
+import aoc.utils.readNonEmptyLines
 import kotlin.time.ExperimentalTime
 
-class Day7Problem(override val inputFilePath: String) : DailyProblem<Int> {
+class Day7Problem() : DailyProblem<Int>() {
     private lateinit var fileSystem: Directory
     override val number = 7
+    override val year = 2022
     override val name = "No Space Left On Device"
 
     /* Commands and ls output */
@@ -132,7 +133,7 @@ class Day7Problem(override val inputFilePath: String) : DailyProblem<Int> {
     }
 }
 
-val day7Problem = Day7Problem("input/aoc2022/day7.txt")
+val day7Problem = Day7Problem()
 
 @OptIn(ExperimentalTime::class)
 fun main() {

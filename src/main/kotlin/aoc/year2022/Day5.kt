@@ -1,13 +1,14 @@
-package aoc2022
+package aoc.year2022
 
 import DailyProblem
-import utils.nonEmptyLines
-import utils.parseTwoBlocks
+import aoc.utils.nonEmptyLines
+import aoc.utils.parseTwoBlocks
 import kotlin.time.ExperimentalTime
 
-class Day5Problem(override val inputFilePath: String) : DailyProblem<String> {
+class Day5Problem() : DailyProblem<String>() {
 
     override val number = 5
+    override val year = 2022
     override val name = "Supply Stacks"
 
     private fun parseStacks(stackpart: String): Array<ArrayDeque<Char>> {
@@ -82,7 +83,7 @@ class Day5Problem(override val inputFilePath: String) : DailyProblem<String> {
 }
 
 
-val day5Problem = Day5Problem("input/aoc2022/day5.txt")
+val day5Problem = Day5Problem()
 
 @OptIn(ExperimentalTime::class)
 fun main() {

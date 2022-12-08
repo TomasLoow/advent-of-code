@@ -1,4 +1,4 @@
-package utils
+package aoc.utils
 
 typealias Coord = Pair<Int, Int>
 

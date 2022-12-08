@@ -7,8 +7,12 @@ import java.io.File
 
 suspend fun main() {
 
-    val (sessionId, endDate) = File("input/aoc2022/downloadinfo.txt").readLines().let {
-        Pair(it[0], it[1].toInt())
+    val lines = File("input/downloadinfo.txt").readLines()
+
+    val sessionId = lines.first()
+    val dls = lines.drop(1).map { line ->
+        val (year, date) = line.split(" ").map { it.toInt() }
+        Pair(year, date)
     }
 
     HttpClient {
@@ -17,17 +21,24 @@ suspend fun main() {
             header(HttpHeaders.UserAgent, "Personal downloader script, Tomas Lööw")
         }
     }.use { client ->
-        for (day in 1..endDate) {
-            val fileName = "input/aoc2022/day$day.txt"
-            val file = File(fileName)
-            if (file.exists()) {
-                println("$fileName already exists, skipping.")
-                continue
+        dls.forEach {(year, date) ->
+            val dir = File("input/aoc$year")
+            if (!dir.exists()) {
+                dir.mkdir()
             }
-            val response: HttpResponse = client.get("https://adventofcode.com/2022/day/$day/input")
-            val body = response.readBytes()
-            file.writeBytes(body)
-            println("$fileName downloaded.")
+
+            for (day in 1..date) {
+                val fileName = "input/aoc$year/day$day.txt"
+                val file = File(fileName)
+                if (file.exists()) {
+                    println("$fileName already exists, skipping.")
+                    continue
+                }
+                val response: HttpResponse = client.get("https://adventofcode.com/$year/day/$day/input")
+                val body = response.readBytes()
+                file.writeBytes(body)
+                println("$fileName downloaded.")
+            }
         }
     }
 }

@@ -1,4 +1,4 @@
-package utils
+package aoc.utils
 
 class Array2D<T> {
 

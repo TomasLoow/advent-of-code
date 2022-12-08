@@ -1,12 +1,15 @@
-package aoc2022
+package aoc.year2022
 
 import DailyProblem
-import utils.*
+import aoc.utils.containsRange
+import aoc.utils.intersectRange
+import aoc.utils.readNonEmptyLines
 import kotlin.time.ExperimentalTime
 
-class Day4Problem(override val inputFilePath: String) : DailyProblem<Int> {
+class Day4Problem() : DailyProblem<Int>() {
 
     override val number = 4
+    override val year = 2022
     override val name = "Camp Cleanup"
 
     private lateinit var data: List<Pair<IntRange, IntRange>>
@@ -42,7 +45,7 @@ class Day4Problem(override val inputFilePath: String) : DailyProblem<Int> {
 }
 
 
-val day4Problem = Day4Problem("input/aoc2022/day4.txt")
+val day4Problem = Day4Problem()
 
 @OptIn(ExperimentalTime::class)
 fun main() {

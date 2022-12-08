@@ -1,12 +1,13 @@
-package aoc2022
+package aoc
 
 import DailyProblem
-import utils.*
+import aoc.utils.*
 import kotlin.time.ExperimentalTime
 
-class Day999999Problem(override val inputFilePath: String) : DailyProblem<Long> {
+class Day999999Problem() : DailyProblem<Long>() {
 
     override val number = 999999
+    override val year = 2022
     override val name = "Problem name"
 
     private lateinit var data: Any
@@ -34,7 +35,7 @@ class Day999999Problem(override val inputFilePath: String) : DailyProblem<Long> 
     }
 }
 
-val day999999Problem = Day999999Problem("input/aoc2022/day999999.txt")
+val day999999Problem = Day999999Problem()
 
 @OptIn(ExperimentalTime::class)
 fun main() {

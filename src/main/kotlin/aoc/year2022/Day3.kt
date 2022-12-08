@@ -1,12 +1,13 @@
-package aoc2022
+package aoc.year2022
 
 import DailyProblem
-import utils.nonEmptyLines
+import aoc.utils.nonEmptyLines
 
 
-class Day3Problem(override val inputFilePath: String) : DailyProblem<Int> {
+class Day3Problem() : DailyProblem<Int>() {
 
     override val number = 3
+    override val year = 2022
     override val name = "Rucksack Reorganization"
 
     private fun parseFile(): List<Pair<String, String>> {
@@ -43,4 +44,4 @@ class Day3Problem(override val inputFilePath: String) : DailyProblem<Int> {
     }
 }
 
-val day3Problem = Day3Problem("input/aoc2022/day3.txt")
+val day3Problem = Day3Problem()

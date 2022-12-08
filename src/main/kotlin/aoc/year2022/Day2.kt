@@ -1,4 +1,4 @@
-package aoc2022
+package aoc.year2022
 
 import DailyProblem
 
@@ -17,9 +17,10 @@ const val LOSE = 1
 /* computer - my ≅ result (mod 3) */
 /* computer - result ≅ my (mod 3) */
 
-class Day2Problem(override val inputFilePath: String) : DailyProblem<Int> {
+class Day2Problem() : DailyProblem<Int>() {
 
     override val number = 2
+    override val year = 2022
     override val name = "Rock Paper Scissors "
 
     private fun charToMove(c: String): RPSMove {
@@ -100,6 +101,6 @@ class Day2Problem(override val inputFilePath: String) : DailyProblem<Int> {
     }
 }
 
-val day2Problem = Day2Problem("input/aoc2022/day2.txt")
+val day2Problem = Day2Problem()
 
 

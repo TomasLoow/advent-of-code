@@ -1,4 +1,4 @@
-package utils
+package aoc.utils
 
 
 fun <A,B> parseTwoBlocks(data: String, parserA : (String) -> A, parserB: (String) -> B) : Pair<A,B> {
@@ -20,6 +20,6 @@ fun parseIntLines(data: String) :List<Int> {
     return data.nonEmptyLines().map { line -> line.toInt() }
 }
 
-fun parseIntArray(data: String) :Array2D<Int> {
-    return Array2D.parseFromLines(data) { c -> c.digitToInt()}
+fun parseIntArray(data: String) : Array2D<Int> {
+    return Array2D.parseFromLines(data) { c -> c.digitToInt() }
 }

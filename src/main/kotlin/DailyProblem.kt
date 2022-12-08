@@ -1,21 +1,28 @@
-import utils.ensureNl
+import aoc.utils.ensureNl
 import java.io.File
 import kotlin.time.Duration
 import kotlin.time.ExperimentalTime
 import kotlin.time.measureTime
 
-interface DailyProblem<Res> {
-    val number: Int
-    val name: String
-    val inputFilePath: String
-    fun commonParts() {}
-    fun part1(): Res
-    fun part2(): Res
+abstract class DailyProblem<Res> {
+    abstract val number: Int
+    abstract val year: Int
+    abstract val name: String
 
-    fun getInputFile() = File(inputFilePath)
+    var testData = false
+
+    open fun commonParts() {}
+    abstract fun part1(): Res
+    abstract fun part2(): Res
+
+    fun getInputFile(): File {
+
+        if (testData) return File("input/aoc$year/testinput/day$number.txt")
+        return File("input/aoc$year/day$number.txt")
+    }
 
     fun getInputText(): String {
-        return File(inputFilePath).readText().ensureNl()
+        return getInputFile().readText().ensureNl()
     }
 
 
@@ -34,7 +41,7 @@ interface DailyProblem<Res> {
         val averageDuration = runDuration / timesToRun
         println("part 1: ${result1.toString()}")
         println("part 2: ${result2.toString()}")
-        println("Average runtime for day ${number}: $averageDuration based on $timesToRun runs")
+        println("Average runtime for year $year day ${number}: $averageDuration based on $timesToRun runs")
         println("===========")
         println()
         return averageDuration
