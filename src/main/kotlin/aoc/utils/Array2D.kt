@@ -19,29 +19,35 @@ class Array2D<T> {
         this.width = width
         this.height = height
     }
+
+    val rect: Rect
+        get() {
+            return Rect(Coord(0,0), Coord(width-1,height-1))
+        }
+
     private fun c2Idx(x: Int, y: Int): Int {
         return y * width + x
     }
 
     private fun c2Idx(c: Coord): Int {
-        return c2Idx(c.first, c.second)
+        return c.y * width + c.x
     }
 
     operator fun get(x: Int, y: Int): T {
         return data[c2Idx(x, y)]
     }
 
-    operator fun get(p: Coord): T {
-        return data[c2Idx(p.first, p.second)]
+    operator fun get(c: Coord): T {
+        return data[c2Idx(c.x, c.y)]
     }
 
     /** Extract a sub array */
-    operator fun get(topLeft: Coord, bottomRight: Coord): Array2D<T> {
-        val newHeight = bottomRight.second - topLeft.second + 1
-        val newWidth = bottomRight.first - topLeft.first + 1
+    operator fun get(r:Rect): Array2D<T> {
+        val newHeight = r.height
+        val newWidth = r.width
         val raw = buildList<T> {
-            (topLeft.second..bottomRight.second).map { y ->
-                (topLeft.second..bottomRight.second).map { x ->
+            r.yRange.map { y ->
+                r.xRange.map { x ->
                     add(this@Array2D[x, y])
                 }
             }
@@ -53,38 +59,38 @@ class Array2D<T> {
         data[c2Idx(x, y)] = value
     }
 
-    operator fun set(p: Coord, value: T) {
-        data[c2Idx(p.first, p.second)] = value
+    operator fun set(c: Coord, value: T) {
+        data[c2Idx(c.x, c.y)] = value
     }
 
     /** Sets all elements in a rectangular grid to the same value */
-    operator fun set(topLeft: Coord, bottomRight: Coord, value: T) {
-        (topLeft.second..bottomRight.second).forEach { y ->
-            (topLeft.first .. bottomRight.first).forEach { x ->
+    operator fun set(r:Rect, value: T) {
+        r.yRange.forEach { y ->
+            r.xRange.forEach { x ->
                 data[c2Idx(x, y)] = value
             }
         }
     }
 
-    fun modifyArea(topLeft: Coord, bottomRight: Coord, mod: (T)->T) {
-        (topLeft.second .. bottomRight.second).forEach { y ->
-            (topLeft.first .. bottomRight.first).forEach { x ->
+    fun modifyArea(r: Rect, mod: (T)->T) {
+        r.yRange.forEach { y ->
+            r.xRange.forEach { x ->
                 data[c2Idx(x, y)] = mod(data[c2Idx(x, y)])
             }
         }
     }
 
     operator fun contains(c: Coord): Boolean {
-        return c.first >= 0 && c.second >= 0 && c.first < width && c.second < height
+        return c.x >= 0 && c.y >= 0 && c.x < width && c.y < height
     }
 
     fun onEdge(c: Coord): Boolean {
-        return (c.first == 0 || c.second == 0 || c.first == this.width - 1 || c.second == this.height - 1)
+        return (c.x == 0 || c.y == 0 || c.x == this.width - 1 || c.y == this.height - 1)
     }
 
     fun neighbourCoords(x: Int, y: Int): List<Coord> {
         return STEPS_WITH_DIAG
-            .map { (dx, dy) -> Pair(dx + x, dy + y) }
+            .map { (dx, dy) -> Coord(dx + x, dy + y) }
             .filter {
                 this.contains(it)
             }
@@ -102,7 +108,7 @@ class Array2D<T> {
         return buildList {
             repeat(height) { y ->
                 repeat(width) { x ->
-                    add(function(Pair(x, y), this@Array2D[x, y]))
+                    add(function(Coord(x, y), this@Array2D[x, y]))
                 }
             }
         }
@@ -112,7 +118,7 @@ class Array2D<T> {
         var counter = 0
         repeat(height) { y ->
             repeat(width) { x ->
-                if (function(Pair(x, y), this[x, y])) counter++
+                if (function(Coord(x, y), this[x, y])) counter++
             }
         }
         return counter
@@ -129,7 +135,7 @@ class Array2D<T> {
 
     companion object {
         val STEPS_WITH_DIAG: List<Coord> =
-            listOf(Pair(1, 1), Pair(1, 0), Pair(1, -1), Pair(0, 1), Pair(0, -1), Pair(-1, 1), Pair(-1, 0), Pair(-1, -1))
+            listOf(Coord(1, 1), Coord(1, 0), Coord(1, -1), Coord(0, 1), Coord(0, -1), Coord(-1, 1), Coord(-1, 0), Coord(-1, -1))
 
         fun <T> parseFromLines(string: String, charParser: (Char) -> T): Array2D<T> {
             return Array2D(

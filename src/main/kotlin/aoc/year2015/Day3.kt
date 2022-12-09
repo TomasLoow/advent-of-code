@@ -33,14 +33,14 @@ class Day3Problem() : DailyProblem<Int>() {
 
     override fun part1(): Int {
         return data
-            .runningFold(Coord(0, 0)) { pos, dir -> pos.stepInDir(dir) }
+            .runningFold(Coord.origin) { pos, dir -> pos.stepInDir(dir) }
             .toSet()
             .size
     }
 
     override fun part2(): Int {
-        var pos1 = Coord(0,0)
-        var pos2 = Coord(0,0)
+        var pos1 = Coord.origin
+        var pos2 = Coord.origin
         val seen = mutableSetOf<Coord>(pos1)
         data.forEach { dir ->
             val temp = pos1.stepInDir(dir)

@@ -15,7 +15,7 @@ class Day6Problem() : DailyProblem<Int>() {
         On, Off, Toggle
     }
 
-    private lateinit var data: List<Triple<Action, Coord, Coord>>
+    private lateinit var data: List<Pair<Action, Rect>>
     private lateinit var arrayPart1: Array2D<Boolean>
     private lateinit var arrayPart2: Array2D<Int>
     override fun commonParts() {
@@ -39,7 +39,7 @@ class Day6Problem() : DailyProblem<Int>() {
                 corner1y=corner2y
                 corner2y=temp
             }
-            Triple(op, Coord(corner1x, corner1y), Coord(corner2x, corner2y))
+            Pair(op, Rect(Coord(corner1x, corner1y), Coord(corner2x, corner2y)))
         }
         arrayPart1 = Array2D(List(1000*1000) { false }, 1000,1000)
         arrayPart2 = Array2D(List(1000*1000) { 0 }, 1000,1000)
@@ -47,11 +47,11 @@ class Day6Problem() : DailyProblem<Int>() {
 
 
     override fun part1(): Int {
-        data.forEach { (op, tl, br) ->
+        data.forEach { (op, rect) ->
             when(op) {
-                Action.On -> arrayPart1[tl,br] = true
-                Action.Off -> arrayPart1[tl,br] = false
-                Action.Toggle -> arrayPart1.modifyArea(tl,br, { !it })
+                Action.On -> arrayPart1[rect] = true
+                Action.Off -> arrayPart1[rect] = false
+                Action.Toggle -> arrayPart1.modifyArea(rect, { !it })
             }
         }
         return arrayPart1.countIndexedByCoordinate { coord, b -> b }
@@ -59,11 +59,11 @@ class Day6Problem() : DailyProblem<Int>() {
 
 
     override fun part2(): Int {
-        data.forEach { (op, tl, br) ->
+        data.forEach { (op, rect) ->
             when(op) {
-                Action.On -> arrayPart2.modifyArea(tl,br, { it + 1 })
-                Action.Off -> arrayPart2.modifyArea(tl,br, { max(0, it - 1) })
-                Action.Toggle -> arrayPart2.modifyArea(tl,br, { it + 2 })
+                Action.On -> arrayPart2.modifyArea(rect, { it + 1 })
+                Action.Off -> arrayPart2.modifyArea(rect, { max(0, it - 1) })
+                Action.Toggle -> arrayPart2.modifyArea(rect, { it + 2 })
             }
         }
         return arrayPart2.mapListIndexedByCoordinate { c, value -> value }.sumOf { it }

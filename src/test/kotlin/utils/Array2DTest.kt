@@ -2,6 +2,7 @@ package utils
 
 import aoc.utils.Array2D
 import aoc.utils.Coord
+import aoc.utils.Rect
 import org.junit.Test
 import org.junit.jupiter.api.Assertions.assertEquals
 
@@ -22,7 +23,7 @@ class Array2DTest {
     fun `test set and modify rectangle`() {
         val arr = Array2D(listOf(listOf(0,0,0),listOf(0,0,0),listOf(0,0,0)))
 
-        arr[Coord(0,0),Coord(1,1)]=1
+        arr[Rect(Coord.origin,Coord(1,1))]=1
         /*
         110
         110
@@ -33,7 +34,7 @@ class Array2DTest {
         assertEquals(1, arr[1,0])
         assertEquals(1, arr[0,1])
         assertEquals(1, arr[1,1])
-        arr.modifyArea(Coord(0,1),Coord(2,2)) { it + 1 }
+        arr.modifyArea(Rect(Coord(0,1),Coord(2,2))) { it + 1 }
         /*
         110
         221
@@ -58,25 +59,25 @@ class Array2DTest {
         )
 
         assertEquals(
-            setOf<Pair<Int, Int>>(
-                Pair(1, 1),
-                Pair(2, 1),
-                Pair(3, 1),
-                Pair(1, 2),
-                Pair(3, 2),
-                Pair(1, 3),
-                Pair(2, 3),
-                Pair(3, 3),
+            setOf<Coord>(
+                Coord(1, 1),
+                Coord(2, 1),
+                Coord(3, 1),
+                Coord(1, 2),
+                Coord(3, 2),
+                Coord(1, 3),
+                Coord(2, 3),
+                Coord(3, 3),
             ), a2.neighbourCoords(2, 2).toSet(), "Correct coords for internal points"
         )
         assertEquals(
-            setOf<Pair<Int, Int>>(
-                Pair(2, 2), Pair(2, 3), Pair(1, 2), Pair(0, 3), Pair(0, 2)
+            setOf<Coord>(
+                Coord(2, 2), Coord(2, 3), Coord(1, 2), Coord(0, 3), Coord(0, 2)
             ), a2.neighbourCoords(1, 3).toSet(), "Correct coords for edge points"
         )
         assertEquals(
-            setOf<Pair<Int, Int>>(
-                Pair(0, 1), Pair(1, 1), Pair(1, 0)
+            setOf<Coord>(
+                Coord(0, 1), Coord(1, 1), Coord(1, 0)
             ), a2.neighbourCoords(0, 0).toSet(), "Correct coords for corner point"
         )
     }
@@ -92,14 +93,14 @@ class Array2DTest {
             )
         )
         val n = a2.neighbours(1, 1)
-        assertEquals(1, n[Pair(0, 0)])
-        assertEquals(2, n[Pair(1, 0)])
-        assertEquals(3, n[Pair(2, 0)])
-        assertEquals(2, n[Pair(0, 1)])
-        assertEquals(4, n[Pair(2, 1)])
-        assertEquals(3, n[Pair(0, 2)])
-        assertEquals(4, n[Pair(1, 2)])
-        assertEquals(5, n[Pair(2, 2)])
+        assertEquals(1, n[Coord(0, 0)])
+        assertEquals(2, n[Coord(1, 0)])
+        assertEquals(3, n[Coord(2, 0)])
+        assertEquals(2, n[Coord(0, 1)])
+        assertEquals(4, n[Coord(2, 1)])
+        assertEquals(3, n[Coord(0, 2)])
+        assertEquals(4, n[Coord(1, 2)])
+        assertEquals(5, n[Coord(2, 2)])
     }
 
     @Test
@@ -131,10 +132,10 @@ class Array2DTest {
                 listOf(2, 3, 4, 5),
             )
         )
-        assertEquals(true, Pair(3, 0) in a2)
-        assertEquals(true, Pair(1, 0) in a2)
-        assertEquals(false, Pair(-2, 1) in a2)
-        assertEquals(false, Pair(4, 1) in a2)
+        assertEquals(true, Coord(3, 0) in a2)
+        assertEquals(true, Coord(1, 0) in a2)
+        assertEquals(false, Coord(-2, 1) in a2)
+        assertEquals(false, Coord(4, 1) in a2)
     }
 
     @Test

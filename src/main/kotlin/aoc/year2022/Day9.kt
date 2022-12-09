@@ -32,7 +32,7 @@ class Day9Problem() : DailyProblem<Long>() {
 
     private fun findHeadPath(): MutableList<Coord> {
         val headPositions = mutableListOf<Coord>()
-        var headPos = Coord(0, 0)
+        var headPos = Coord.origin
         moves.forEach { move ->
             val (dir, len) = move
             repeat(len) {
@@ -44,13 +44,10 @@ class Day9Problem() : DailyProblem<Long>() {
     }
 
     private fun followCoord(follower: Coord, leader: Coord) : Coord{
-        val dx = leader.first-follower.first
-        val dy = leader.second-follower.second
-        if (dx < 2 && dx > -2 && dy < 2 && dy > -2) {
-            return follower
-        }
+        val (dx, dy) = leader-follower
+        if (leader.chebyshevDistanceTo(follower) < 2) return follower
 
-        return Coord(follower.first + dx.sign, follower.second + dy.sign)
+        return follower + Pair(dx.sign, dy.sign)
     }
 
     private fun followRopeBehindPath(
@@ -65,7 +62,7 @@ class Day9Problem() : DailyProblem<Long>() {
 
     override fun part1(): Long {
         val headPositions = findHeadPath()
-        val tailPositions = followRopeBehindPath(headPositions, Coord(0,0))
+        val tailPositions = followRopeBehindPath(headPositions, Coord.origin)
         return tailPositions.toSet().size.toLong()
     }
 
