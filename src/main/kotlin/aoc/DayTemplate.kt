@@ -4,7 +4,7 @@ import DailyProblem
 import aoc.utils.*
 import kotlin.time.ExperimentalTime
 
-class Day999999Problem() : DailyProblem<Long>() {
+class Day999999Problem() : DailyProblem<Int>() {
 
     override val number = 999999
     override val year = 2022
@@ -12,26 +12,18 @@ class Day999999Problem() : DailyProblem<Long>() {
 
     private lateinit var data: Any
 
-    private fun parseFile(): Any {
-        val input = """""".lines()
-        // val input = getInputFile().readNonEmptyLines()
-        TODO()
-    }
-
     override fun commonParts() {
-        data = parseFile()
+        data = getInputText()
     }
 
 
-    override fun part1(): Long {
-        val data = parseFile()
-        return 1L
+    override fun part1(): Int {
+        return 1
     }
 
 
-    override fun part2(): Long {
-        val data = parseFile()
-        return 1L
+    override fun part2(): Int {
+        return 1
     }
 }
 
