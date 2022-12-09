@@ -11,6 +11,7 @@ val events = mapOf(
         aoc.year2022.day6Problem,
         aoc.year2022.day7Problem,
         aoc.year2022.day8Problem,
+        aoc.year2022.day9Problem,
     ),
     2015 to listOf(
         aoc.year2015.day1Problem,
