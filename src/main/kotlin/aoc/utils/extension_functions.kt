@@ -30,3 +30,5 @@ fun IntRange.containsRange(range2: IntRange): Boolean {
 fun IntRange.intersectRange(range2: IntRange): Boolean {
     return !(range2.last < start || range2.first > endInclusive)
 }
+
+fun <A, B> Pair<A, B>.flip(): Pair<B, A> = Pair(this.second, this.first)
