@@ -17,15 +17,21 @@ val events = mapOf(
         aoc.year2015.day1Problem,
         aoc.year2015.day2Problem,
         aoc.year2015.day3Problem,
-        //aoc.year2015.day4Problem,
+        aoc.year2015.day4Problem, //Slow as heck (> 1s)
         aoc.year2015.day5Problem,
         )
 )
+val RUN_FOR_YEAR: Int? = null
 
 @OptIn(ExperimentalTime::class)
 fun main() {
     val yearSummary = mutableMapOf<Int, Duration>()
-    events.forEach { (year, problems) ->
+    val eventsToRun = if (RUN_FOR_YEAR == null) {
+        events
+    } else {
+        events.filter { (k, v) -> k == RUN_FOR_YEAR }
+    }
+    eventsToRun.forEach { (year, problems) ->
         val durations = problems.associate { problem ->
             val dur = problem.runBoth(timesToRun = 1000)
             Pair(problem.number, dur)
