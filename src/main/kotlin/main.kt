@@ -16,7 +16,10 @@ val events = mapOf(
     2015 to listOf(
         aoc.year2015.day1Problem,
         aoc.year2015.day2Problem,
-    )
+        aoc.year2015.day3Problem,
+        //aoc.year2015.day4Problem,
+        aoc.year2015.day5Problem,
+        )
 )
 
 @OptIn(ExperimentalTime::class)
