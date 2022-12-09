@@ -1,6 +1,7 @@
 package aoc.year2022
 
 import DailyProblem
+import aoc.utils.parseListOfPairs
 
 typealias RPSMove = Int
 
@@ -49,18 +50,12 @@ class Day2Problem() : DailyProblem<Int>() {
     }
 
     private fun parseFilePart1(): List<Pair<RPSMove, RPSMove>> {
-        return getInputFile().readLines().map { line ->
-            val (comp, me) = line.split(" ")
-            Pair(charToMove(comp), charToMove(me))
-        }
+        return parseListOfPairs(getInputText(), ::charToMove, ::charToMove)
     }
 
 
     private fun parseFilePart2(): List<Pair<RPSMove, RPSResult>> {
-        return getInputFile().readLines().map { line ->
-            val (comp, res) = line.split(" ")
-            Pair(charToMove(comp), charToRes(res))
-        }
+        return parseListOfPairs(getInputText(), ::charToMove, ::charToRes)
     }
 
     override fun part1(): Int {

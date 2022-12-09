@@ -23,3 +23,16 @@ fun parseIntLines(data: String) :List<Int> {
 fun parseIntArray(data: String) : Array2D<Int> {
     return Array2D.parseFromLines(data) { c -> c.digitToInt() }
 }
+
+fun <A, B> parseListOfPairs(
+    inputText: String,
+    component1parser: (String) -> A,
+    component2parser: (String) -> B,
+    separator: String = " "
+): List<Pair<A, B>> {
+    return inputText.nonEmptyLines().map { line ->
+        val (a, b) = line.split(separator)
+        Pair(component1parser(a), component2parser(b))
+    }
+
+}

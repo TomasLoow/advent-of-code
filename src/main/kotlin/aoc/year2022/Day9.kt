@@ -2,7 +2,6 @@ package aoc.year2022
 
 import DailyProblem
 import aoc.utils.*
-import java.lang.Math.abs
 import kotlin.math.sign
 import kotlin.time.ExperimentalTime
 
@@ -12,29 +11,27 @@ class Day9Problem() : DailyProblem<Long>() {
     override val year = 2022
     override val name = "Rope Bridge"
 
-    private lateinit var moves: List<Pair<Direction,Int>>
+    private lateinit var moves: List<Pair<Direction, Int>>
 
-    private fun parseFile(): List<Pair<Direction,Int>> {
-        return getInputText().nonEmptyLines().map { line ->
-            val (d, l) = line.split(" ")
-            val dir = when (d) {
-                "D" -> Direction.DOWN
-                "U" -> Direction.UP
-                "L" -> Direction.LEFT
-                "R" -> Direction.RIGHT
-                else -> { throw Exception("Bad input")}
-            }
-            Pair(dir, l.toInt())
-        }
-    }
 
     override fun commonParts() {
-        moves = parseFile()
+        fun parseDir(d: String) = when (d) {
+            "D" -> Direction.DOWN
+            "U" -> Direction.UP
+            "L" -> Direction.LEFT
+            "R" -> Direction.RIGHT
+            else -> {
+                throw Exception("Bad input")
+            }
+        }
+        moves = parseListOfPairs(getInputText(), ::parseDir, { it.toInt() })
     }
+
+
 
 
     private fun findHeadPath(): MutableList<Coord> {
-        val headPositions= mutableListOf<Coord>()
+        val headPositions = mutableListOf<Coord>()
         var headPos = Coord(0, 0)
         moves.forEach { move ->
             val (dir, len) = move
@@ -49,7 +46,7 @@ class Day9Problem() : DailyProblem<Long>() {
     private fun followCoord(follower: Coord, leader: Coord) : Coord{
         val dx = leader.first-follower.first
         val dy = leader.second-follower.second
-        if (abs(dx) < 2 && abs(dy) < 2) {
+        if (dx < 2 && dx > -2 && dy < 2 && dy > -2) {
             return follower
         }
 
