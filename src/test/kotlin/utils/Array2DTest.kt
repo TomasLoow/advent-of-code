@@ -1,11 +1,51 @@
 package utils
 
 import aoc.utils.Array2D
+import aoc.utils.Coord
 import org.junit.Test
 import org.junit.jupiter.api.Assertions.assertEquals
 
 class Array2DTest {
 
+    @Test
+    fun `test get and set`() {
+        val arr = Array2D<Boolean>(listOf(listOf(false,false), listOf(false,false)))
+        assertEquals(false, arr[0,0])
+        arr[0,0]=true
+        assertEquals(true, arr[0,0])
+        assertEquals(false, arr[1,1])
+        arr[1,1]=!arr[1,1]
+        assertEquals(true, arr[1,1])
+    }
+
+    @Test
+    fun `test set and modify rectangle`() {
+        val arr = Array2D(listOf(listOf(0,0,0),listOf(0,0,0),listOf(0,0,0)))
+
+        arr[Coord(0,0),Coord(1,1)]=1
+        /*
+        110
+        110
+        000
+         */
+        assertEquals(4, arr.mapListIndexedByCoordinate { c, i -> i }.sum())
+        assertEquals(1, arr[0,0])
+        assertEquals(1, arr[1,0])
+        assertEquals(1, arr[0,1])
+        assertEquals(1, arr[1,1])
+        arr.modifyArea(Coord(0,1),Coord(2,2)) { it + 1 }
+        /*
+        110
+        221
+        111
+         */
+        assertEquals(10, arr.mapListIndexedByCoordinate { c, i -> i }.sum())
+        assertEquals(1, arr[0,0])
+        assertEquals(2, arr[1,1])
+        assertEquals(1, arr[2,2])
+
+
+    }
     @Test
     fun `test neighbourCoords`() {
         val a2 = Array2D(

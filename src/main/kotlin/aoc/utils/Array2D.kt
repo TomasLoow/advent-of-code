@@ -31,16 +31,55 @@ class Array2D<T> {
         return data[c2Idx(x, y)]
     }
 
+    operator fun get(p: Coord): T {
+        return data[c2Idx(p.first, p.second)]
+    }
+
+    /** Extract a sub array */
+    operator fun get(topLeft: Coord, bottomRight: Coord): Array2D<T> {
+        val newHeight = bottomRight.second - topLeft.second + 1
+        val newWidth = bottomRight.first - topLeft.first + 1
+        val raw = buildList<T> {
+            (topLeft.second..bottomRight.second).map { y ->
+                (topLeft.second..bottomRight.second).map { x ->
+                    add(this@Array2D[x, y])
+                }
+            }
+        }
+        return Array2D(raw, newWidth, newHeight)
+    }
+
+    operator fun set(x: Int, y: Int, value: T) {
+        data[c2Idx(x, y)] = value
+    }
+
+    operator fun set(p: Coord, value: T) {
+        data[c2Idx(p.first, p.second)] = value
+    }
+
+    /** Sets all elements in a rectangular grid to the same value */
+    operator fun set(topLeft: Coord, bottomRight: Coord, value: T) {
+        (topLeft.second..bottomRight.second).forEach { y ->
+            (topLeft.first .. bottomRight.first).forEach { x ->
+                data[c2Idx(x, y)] = value
+            }
+        }
+    }
+
+    fun modifyArea(topLeft: Coord, bottomRight: Coord, mod: (T)->T) {
+        (topLeft.second .. bottomRight.second).forEach { y ->
+            (topLeft.first .. bottomRight.first).forEach { x ->
+                data[c2Idx(x, y)] = mod(data[c2Idx(x, y)])
+            }
+        }
+    }
+
     operator fun contains(c: Coord): Boolean {
         return c.first >= 0 && c.second >= 0 && c.first < width && c.second < height
     }
 
     fun onEdge(c: Coord): Boolean {
         return (c.first == 0 || c.second == 0 || c.first == this.width - 1 || c.second == this.height - 1)
-    }
-
-    operator fun get(c: Coord): T {
-        return data[c2Idx(c.first, c.second)]
     }
 
     fun neighbourCoords(x: Int, y: Int): List<Coord> {

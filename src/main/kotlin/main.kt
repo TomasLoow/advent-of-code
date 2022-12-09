@@ -19,6 +19,7 @@ val events = mapOf(
         aoc.year2015.day3Problem,
         aoc.year2015.day4Problem, //Slow as heck (> 1s)
         aoc.year2015.day5Problem,
+        aoc.year2015.day6Problem,
         )
 )
 val RUN_FOR_YEAR: Int? = null
@@ -29,11 +30,11 @@ fun main() {
     val eventsToRun = if (RUN_FOR_YEAR == null) {
         events
     } else {
-        events.filter { (k, v) -> k == RUN_FOR_YEAR }
+        events.filter { (k, _) -> k == RUN_FOR_YEAR }
     }
     eventsToRun.forEach { (year, problems) ->
         val durations = problems.associate { problem ->
-            val dur = problem.runBoth(timesToRun = 1000)
+            val dur = problem.runBoth(timesToRun = 10)
             Pair(problem.number, dur)
         }
         println("=== Timing summary ===")
