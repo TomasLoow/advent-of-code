@@ -66,7 +66,7 @@ class Array2D<T> {
     }
 
     operator fun get(c: Coord): T {
-        return data[c2Idx(c.x, c.y)]
+        return data[c2Idx(c)]
     }
 
     /** Extract a sub array */
@@ -88,22 +88,26 @@ class Array2D<T> {
     }
 
     operator fun set(c: Coord, value: T) {
-        data[c2Idx(c.x, c.y)] = value
+        data[c2Idx(c)] = value
     }
 
     /** Sets all elements in a rectangular grid to the same value */
     operator fun set(r: Rect, value: T) {
         r.yRange.forEach { y ->
-            r.xRange.forEach { x ->
-                data[c2Idx(x, y)] = value
+            val startIdx = c2Idx(r.xRange.first, y)
+            val lastIdx = c2Idx(r.xRange.last, y)
+            (startIdx..lastIdx).forEach { idx:Int ->
+                data[idx] = value
             }
         }
     }
 
     fun modifyArea(r: Rect, mod: (T) -> T) {
         r.yRange.forEach { y ->
-            r.xRange.forEach { x ->
-                data[c2Idx(x, y)] = mod(data[c2Idx(x, y)])
+            val startIdx = c2Idx(r.xRange.first, y)
+            val lastIdx = c2Idx(r.xRange.last, y)
+            (startIdx..lastIdx).forEach { idx:Int ->
+                data[idx] = mod(data[idx])
             }
         }
     }
