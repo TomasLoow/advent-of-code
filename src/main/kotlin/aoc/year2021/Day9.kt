@@ -1,22 +1,45 @@
 package aoc.year2021
 
 import DailyProblem
-import java.io.File
+import aoc.utils.Array2D
+import aoc.utils.Coord
+import aoc.utils.parseIntArray
+import aoc.utils.product
+import kotlin.time.ExperimentalTime
 
 
-typealias Coordinate = Pair<Int, Int>
+class SeaFloor(private val map: Array2D<Int>) {
+    operator fun get(c: Coord): Int = map[c]
+    private fun isLowestPoint(p: Coord): Boolean {
+        val here = map[p]
+        val neighbourValues = neighbourValuesOf(p)
+        return neighbourValues.all { it > here }
+    }
 
-private fun parseMap(path: String): SeaFloor {
-    return SeaFloor(File(path)
-        .readLines()
-        .map { line ->
-            line.toCharArray().map { it.digitToIntOrNull()!! }.toTypedArray()
+    private fun neighbourValuesOf(p: Coord): Collection<Int> {
+        return map.neighbours(p, diagonal = false).values
+    }
+
+    fun findLowestPoints(): List<Coord> {
+        return map.allCoords.filter { isLowestPoint(it) }
+    }
+
+    private fun floodFill(p: Coord, basinPoints: MutableSet<Coord>) {
+        if (basinPoints.contains(p)) return
+        if (p !in map) return
+        if (map[p] == 9) return
+
+        basinPoints.add(p)
+        map.neighbourCoords(p, diagonal = false).forEach { n ->
+            floodFill(n, basinPoints)
         }
-        .toTypedArray())
-}
+    }
 
-private fun Collection<Int>.product(): Int {
-    return reduce { acc, i -> acc * i }
+    fun sizeOfBasinAt(p: Coord): Int {
+        val basin = mutableSetOf<Coord>()
+        floodFill(p, basin)
+        return basin.size
+    }
 }
 
 
@@ -27,17 +50,17 @@ class Day9Problem() : DailyProblem<Long>() {
 
     override val name = "Smoke Basin"
 
-    private lateinit var lowestPoints: List<Pair<Int, Int>>
+    private lateinit var lowestPoints: List<Coord>
     private lateinit var seaFloor: SeaFloor
 
     override fun commonParts() {
-        seaFloor = parseMap(getInputFile().absolutePath)
+        seaFloor = SeaFloor(parseIntArray(getInputText()))
         lowestPoints = seaFloor
             .findLowestPoints()
     }
     override fun part1(): Long {
         return lowestPoints
-            .sumOf { seaFloor.valueAt(it) + 1 }
+            .sumOf { seaFloor[it] + 1 }
             .toLong()
     }
 
@@ -54,65 +77,13 @@ class Day9Problem() : DailyProblem<Long>() {
     }
 }
 
+
 val day9Problem = Day9Problem()
 
-class SeaFloor(private val map: Array<Array<Int>>) {
-    val height = this.map.size
-    val width = this.map[0].size
 
-    private fun isLowestPoint(p: Coordinate): Boolean {
-        val here = valueAt(p)
-        val neighbourValues = neighbourValuesOf(p)
-        return neighbourValues.all { it > here }
-    }
-
-    private fun neighbourValuesOf(p: Coordinate): List<Int> {
-        val (x, y) = p
-        return listOf(
-            Coordinate(x + 1, y), Coordinate(x - 1, y), Coordinate(x, y + 1), Coordinate(x, y - 1),
-        )
-            .filter {
-                val (nx, ny) = it
-                (nx >= 0) && (ny >= 0) && (nx < width) && (ny < height)
-            }
-            .map { valueAt(it) }
-    }
-
-    fun findLowestPoints(): List<Coordinate> {
-        val allPoints = (0 until height).flatMap { y ->
-            (0 until width).map { x ->
-                Coordinate(x, y)
-            }
-        }
-        return allPoints.filter { isLowestPoint(it) }
-    }
-
-    fun valueAt(p: Coordinate) = map[p.second][p.first]
-
-    private fun floodFill(p: Coordinate, basinPoints: MutableSet<Coordinate>) {
-        if (basinPoints.contains(p)) {
-            return
-        }
-        val (x, y) = p
-        if (x < 0 || y < 0 || x >= width || y >= height) {
-            return
-        }
-        if (valueAt(p) == 9) {
-            return
-        }
-
-        basinPoints.add(p)
-        floodFill(Coordinate(x + 1, y), basinPoints)
-        floodFill(Coordinate(x - 1, y), basinPoints)
-        floodFill(Coordinate(x, y + 1), basinPoints)
-        floodFill(Coordinate(x, y - 1), basinPoints)
-    }
-
-    fun sizeOfBasinAt(p: Coordinate): Int {
-        val basin = mutableSetOf<Coordinate>()
-        floodFill(p, basin)
-        return basin.size
-    }
-
-
+@OptIn(ExperimentalTime::class)
+fun main() {
+    day9Problem.commonParts()
+    day9Problem.runBoth(10)
 }
+

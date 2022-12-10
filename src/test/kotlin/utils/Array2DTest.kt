@@ -68,17 +68,17 @@ class Array2DTest {
                 Coord(1, 3),
                 Coord(2, 3),
                 Coord(3, 3),
-            ), a2.neighbourCoords(2, 2).toSet(), "Correct coords for internal points"
+            ), a2.neighbourCoords(Coord(2, 2), true).toSet(), "Correct coords for internal points"
         )
         assertEquals(
             setOf<Coord>(
                 Coord(2, 2), Coord(2, 3), Coord(1, 2), Coord(0, 3), Coord(0, 2)
-            ), a2.neighbourCoords(1, 3).toSet(), "Correct coords for edge points"
+            ), a2.neighbourCoords(Coord(1,3), true).toSet(), "Correct coords for edge points"
         )
         assertEquals(
             setOf<Coord>(
                 Coord(0, 1), Coord(1, 1), Coord(1, 0)
-            ), a2.neighbourCoords(0, 0).toSet(), "Correct coords for corner point"
+            ), a2.neighbourCoords(Coord.origin, true).toSet(), "Correct coords for corner point"
         )
     }
 
@@ -92,7 +92,7 @@ class Array2DTest {
                 listOf(4, 5, 6, 7)
             )
         )
-        val n = a2.neighbours(1, 1)
+        val n = a2.neighbours(Coord(1, 1))
         assertEquals(1, n[Coord(0, 0)])
         assertEquals(2, n[Coord(1, 0)])
         assertEquals(3, n[Coord(2, 0)])

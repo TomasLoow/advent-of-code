@@ -19,7 +19,6 @@ class Array2D<T> {
         this.width = width
         this.height = height
     }
-
     constructor(width: Int, height:Int, initital:T) {
         this.data = ArrayList(width*height)
         repeat(width*height) { this.data.add(initital)}
@@ -31,6 +30,27 @@ class Array2D<T> {
     val rect: Rect
         get() {
             return Rect(Coord(0,0), Coord(width-1,height-1))
+        }
+
+    val xRange: IntRange
+        get() {
+            return rect.xRange
+        }
+
+    val yRange: IntRange
+        get() {
+            return rect.yRange
+        }
+
+    val allCoords: List<Coord>
+        get() {
+            return buildList {
+                yRange.forEach { y ->
+                    xRange.forEach { x ->
+                        add(Coord(x, y))
+                    }
+                }
+            }
         }
 
     private fun c2Idx(x: Int, y: Int): Int {
@@ -50,7 +70,7 @@ class Array2D<T> {
     }
 
     /** Extract a sub array */
-    operator fun get(r:Rect): Array2D<T> {
+    operator fun get(r: Rect): Array2D<T> {
         val newHeight = r.height
         val newWidth = r.width
         val raw = buildList<T> {
@@ -72,7 +92,7 @@ class Array2D<T> {
     }
 
     /** Sets all elements in a rectangular grid to the same value */
-    operator fun set(r:Rect, value: T) {
+    operator fun set(r: Rect, value: T) {
         r.yRange.forEach { y ->
             r.xRange.forEach { x ->
                 data[c2Idx(x, y)] = value
@@ -80,7 +100,7 @@ class Array2D<T> {
         }
     }
 
-    fun modifyArea(r: Rect, mod: (T)->T) {
+    fun modifyArea(r: Rect, mod: (T) -> T) {
         r.yRange.forEach { y ->
             r.xRange.forEach { x ->
                 data[c2Idx(x, y)] = mod(data[c2Idx(x, y)])
@@ -96,16 +116,17 @@ class Array2D<T> {
         return (c.x == 0 || c.y == 0 || c.x == this.width - 1 || c.y == this.height - 1)
     }
 
-    fun neighbourCoords(x: Int, y: Int): List<Coord> {
-        return STEPS_WITH_DIAG
-            .map { (dx, dy) -> Coord(dx + x, dy + y) }
+    fun neighbourCoords(c: Coord, diagonal: Boolean): List<Coord> {
+        val pattern = if (diagonal) STEPS_WITH_DIAG else STEPS_WITHOUT_DIAG
+        return pattern
+            .map { (dx, dy) -> Coord(dx + c.x, dy + c.y) }
             .filter {
                 this.contains(it)
             }
     }
 
-    fun neighbours(x: Int, y: Int): Map<Coord, T> {
-        return neighbourCoords(x, y).associateWith { coordinate -> get(coordinate) }
+    fun neighbours(c: Coord, diagonal: Boolean = true): Map<Coord, T> {
+        return neighbourCoords(c, diagonal).associateWith { coordinate -> get(coordinate) }
     }
 
     fun <R> map(function: (T) -> R): Array2D<R> {
@@ -157,7 +178,7 @@ class Array2D<T> {
         }
     }
 
-    fun show(renderer: (T) -> String) : String {
+    fun show(renderer: (T) -> String): String {
         return buildList {
             rect.yRange.forEach { y ->
                 rect.xRange.forEach { x ->
@@ -175,7 +196,19 @@ class Array2D<T> {
 
     companion object {
         val STEPS_WITH_DIAG: List<Coord> =
-            listOf(Coord(1, 1), Coord(1, 0), Coord(1, -1), Coord(0, 1), Coord(0, -1), Coord(-1, 1), Coord(-1, 0), Coord(-1, -1))
+            listOf(
+                Coord(1, 1),
+                Coord(1, 0),
+                Coord(1, -1),
+                Coord(0, 1),
+                Coord(0, -1),
+                Coord(-1, 1),
+                Coord(-1, 0),
+                Coord(-1, -1)
+            )
+
+        val STEPS_WITHOUT_DIAG: List<Coord> =
+            listOf(Coord(1, 0), Coord(0, 1), Coord(0, -1), Coord(-1, 0))
 
         fun <T> parseFromLines(string: String, charParser: (Char) -> T): Array2D<T> {
             return Array2D(
