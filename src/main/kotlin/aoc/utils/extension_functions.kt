@@ -45,6 +45,20 @@ fun Collection<Int>.product(): Int {
 
 fun <A, B> Pair<A, B>.flip(): Pair<B, A> = Pair(this.second, this.first)
 
+
+/** Shifts array so element at idx+1 moves to idx,
+ * sets last element to provided emptyValue.
+ * Returns the head element that is pushed out of the array */
+fun <T> Array<T>.shiftLeft(emptyValue:T): T {
+
+    val head = this[0]
+    repeat(this.size-1) { idx ->
+        this[idx]=this[idx+1]
+    }
+    this[size-1] = emptyValue
+    return head
+}
+
 fun <T> List<T>.permutationsSequence(): Sequence<List<T>> {
     if (this.isEmpty()) return sequenceOf(emptyList())
     val head = this.first()
