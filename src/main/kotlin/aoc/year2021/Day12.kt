@@ -1,7 +1,7 @@
 package aoc.year2021
 
 import DailyProblem
-import java.io.File
+import aoc.utils.parseListOfPairs
 import java.util.*
 
 
@@ -13,129 +13,113 @@ typealias Cave = Int
 const val startCave:Cave = 0
 const val endCave:Cave = 1
 
-fun allowsRevisits(cave: Cave): Boolean {
-    return cave < 0
-}
 
 typealias CaveSystem = Map<Cave, List<Cave>>
 
-fun cavesReachableFrom(map: CaveSystem, cave: Cave): Collection<Cave> {
-    return map[cave]!!
-}
-
-fun parseConnections(path: String): CaveSystem {
-    val connections = mutableListOf<Pair<Cave,Cave>>()
-    val caveNameMap: MutableMap<String, Int> = mutableMapOf("start" to startCave, "end" to endCave)
-    var nextNumber = 2
-
-    val allCaves = mutableSetOf<Cave>(startCave, endCave)
-    File(path).readLines().map { line ->
-        val (caveNameA, caveNameB) = line.split("-")
-        val caveA: Cave
-        val caveB: Cave
-        if (caveNameMap.contains(caveNameA)) {
-            caveA = caveNameMap[caveNameA]!!
-        } else {
-            caveA = if (caveNameA != caveNameA.uppercase()) {
-                nextNumber
-            } else {
-                -nextNumber
-            }
-            caveNameMap[caveNameA] = caveA
-            allCaves.add(caveA)
-            nextNumber++
-        }
-        if (caveNameMap.contains(caveNameB)) {
-            caveB = caveNameMap[caveNameB]!!
-        } else {
-            caveB = if (caveNameB != caveNameB.uppercase()) {
-                nextNumber
-            } else {
-                -nextNumber
-            }
-            caveNameMap[caveNameB] = caveB
-            allCaves.add(caveB)
-            nextNumber++
-        }
-
-        connections.add(Pair(caveA,caveB))
-    }
-    val foo: CaveSystem = buildList<Pair<Cave,List<Cave>>> {
-        allCaves.forEach { cave ->
-            val connected = buildList<Cave> {
-                connections.forEach { connection ->
-                    if (connection.first == cave) {
-                        add(connection.second)
-                    } else if (connection.second == cave) {
-                        add(connection.first)
-                    }
-                }
-            }.toList()
-            add(Pair(cave, connected))
-        }
-    }.toMap()
-    return foo
-}
-
-fun search(map: CaveSystem,
-           allowRevisits: Boolean,
-           start:Cave,
-           end:Cave) : Int {
-    if (start == end) {
-        return 1
-    }
-
-    val initialState: Triple<Boolean, List<Cave>, Cave> = Triple(allowRevisits, listOf(), startCave)
-    val searchStack = Stack<Triple<Boolean, List<Cave>, Cave>>()
-    var foundPaths = 0
-
-    searchStack.push(initialState)
-    while (searchStack.isNotEmpty()) {
-        val (allowRevisit, visited, currentNode) = searchStack.pop()
-        if (currentNode == endCave) {
-            foundPaths++
-            continue
-        }
-        val allConnectedCaves = cavesReachableFrom(map, currentNode)
-        val possibleNormalNextSteps =  allConnectedCaves.filter { !visited.contains(it) || allowsRevisits(it)  }
-        val possibleBonusRevisitSteps =
-            if (allowRevisit) {
-                allConnectedCaves
-                    .filter { visited.contains(it) && it != startCave }
-                    .filter { !possibleNormalNextSteps.contains(it)}
-            } else {
-                emptyList()
-            }
-
-        val newVisitedSet = if (allowsRevisits(currentNode)) {
-            visited
-        } else {
-            visited.plus(currentNode)
-        }
-
-        possibleNormalNextSteps.forEach {
-            searchStack.push(Triple(allowRevisit, newVisitedSet, it))
-        }
-        possibleBonusRevisitSteps.forEach {
-            searchStack.push(Triple(false, newVisitedSet, it))
-        }
-    }
-    return foundPaths
-}
-
-class Day12Problem() : DailyProblem<Long>() {
+class Day12Problem : DailyProblem<Long>() {
     override val number = 12
     override val year = 2021
     override val name = "Passage Pathing"
 
+    private lateinit var map: CaveSystem
+
+    override fun commonParts() {
+        map = parseConnections()
+    }
+
+    private fun allowsRevisits(cave: Cave): Boolean {
+        return cave < 0
+    }
+
+    private fun cavesReachableFrom(map: CaveSystem, cave: Cave): Collection<Cave> {
+        return map[cave]!!
+    }
+
+    private fun parseConnections(): CaveSystem {
+        val caveNameRegistry: MutableMap<String, Int> = mutableMapOf("start" to startCave, "end" to endCave)
+        var caveNumberCounter = 2
+        val allCaves = mutableSetOf(startCave, endCave)
+
+        fun handleCave(caveName: String): Cave {
+            val cave: Cave
+            if (caveNameRegistry.contains(caveName)) {
+                cave = caveNameRegistry[caveName]!!
+            } else {
+                cave = if (caveName != caveName.uppercase()) {
+                    caveNumberCounter
+                } else {
+                    -caveNumberCounter
+                }
+                caveNameRegistry[caveName] = cave
+                allCaves.add(cave)
+                caveNumberCounter++
+            }
+            return cave
+        }
+        val connections = parseListOfPairs(getInputText(), ::handleCave, ::handleCave, separator = "-")
+        return buildList {
+            allCaves.forEach { cave ->
+                val connected = buildList {
+                    connections.forEach { connection ->
+                        if (connection.first == cave) {
+                            add(connection.second)
+                        } else if (connection.second == cave) {
+                            add(connection.first)
+                        }
+                    }
+                }.toList()
+                add(Pair(cave, connected))
+            }
+        }.toMap()
+    }
+
+    private data class SearchState(val allowRevisit: Boolean, val visited: List<Cave>, val currentNode: Cave)
+
+    private fun search(allowRevisits: Boolean) : Int {
+        val initialState = SearchState(allowRevisits, listOf(), startCave)
+        val searchStack = Stack<SearchState>()
+        var foundPaths = 0
+
+        searchStack.push(initialState)
+        while (searchStack.isNotEmpty()) {
+            val (allowRevisit, visited, currentNode) = searchStack.pop()
+            if (currentNode == endCave) {
+                foundPaths++
+                continue
+            }
+            val allConnectedCaves = cavesReachableFrom(map, currentNode)
+            val possibleNormalNextSteps =  allConnectedCaves.filter { !visited.contains(it) || allowsRevisits(it)  }
+            val possibleBonusRevisitSteps =
+                if (allowRevisit) {
+                    allConnectedCaves
+                        .filter { visited.contains(it) && it != startCave }
+                        .filter { !possibleNormalNextSteps.contains(it)}
+                } else {
+                    emptyList()
+                }
+
+            val newVisitedSet = if (allowsRevisits(currentNode)) {
+                visited
+            } else {
+                visited.plus(currentNode)
+            }
+
+            possibleNormalNextSteps.forEach {
+                searchStack.push(SearchState(allowRevisit, newVisitedSet, it))
+            }
+            possibleBonusRevisitSteps.forEach {
+                searchStack.push(SearchState(false, newVisitedSet, it))
+            }
+        }
+        return foundPaths
+    }
+
     override fun part1(): Long {
-        val connections: CaveSystem = parseConnections(getInputFile().absolutePath)
-        return search(connections, allowRevisits = false, start = startCave, end = endCave).toLong()
+        return search(allowRevisits = false).toLong()
     }
 
     override fun part2(): Long {
-        val connections: CaveSystem = parseConnections(getInputFile().absolutePath)
-        return search(connections, allowRevisits = true, start = startCave, end = endCave).toLong()
+        return search(allowRevisits = true).toLong()
     }
 }
 
