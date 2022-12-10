@@ -47,8 +47,9 @@ val events = mapOf(
         aoc.year2015.day6Problem,
         aoc.year2015.day7Problem,
         aoc.year2015.day8Problem,
-        aoc.year2015.day9Problem,
+        aoc.year2015.day9Problem, //Improvement potential, brute force
         aoc.year2015.day10Problem,
+        aoc.year2015.day11Problem, //Improvement potential, brute force
         )
 )
 val RUN_FOR_YEAR: Int? = null
