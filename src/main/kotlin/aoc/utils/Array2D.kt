@@ -124,14 +124,21 @@ class Array2D<T> {
         return counter
     }
 
-    fun print(renderer: (T) -> String) {
-        repeat(height) { y ->
-            repeat(width) { x ->
-                print(renderer(this[x,y]))
+    fun show(renderer: (T) -> String) : String {
+        return buildList {
+            rect.yRange.forEach { y ->
+                rect.xRange.forEach { x ->
+                    add(renderer(this@Array2D[x, y]))
+                }
+                add("\n")
             }
-            println()
-        }
+        }.joinToString("")
     }
+
+    fun print(renderer: (T) -> String) {
+        print(show(renderer))
+    }
+
 
     companion object {
         val STEPS_WITH_DIAG: List<Coord> =
@@ -144,5 +151,9 @@ class Array2D<T> {
                 }
             )
         }
+
+        fun a2renderBool(b: Boolean): String = if (b) "█" else " "
+        fun a2renderInt(b: Int): String = b.toString()
+
     }
 }
