@@ -48,10 +48,11 @@ val events = mapOf(
         aoc.year2015.day7Problem,
         aoc.year2015.day8Problem,
         aoc.year2015.day9Problem,
+        aoc.year2015.day10Problem,
         )
 )
 val RUN_FOR_YEAR: Int? = null
-val TIMES_TO_RUN = 20
+val TIMES_TO_RUN = 50
 
 @OptIn(ExperimentalTime::class)
 fun main() {
