@@ -1,30 +1,30 @@
 package aoc.year2021
 
 import DailyProblem
-import java.io.File
-
-enum class Axis {
-    X,Y
-}
-
-data class Point(var first: Int, var second: Int)  // Use dataclass instead of Pair so it's mutable
+import aoc.utils.Axis2D
+import aoc.utils.nonEmptyLines
+import aoc.utils.parseTwoBlocks
+import kotlin.time.ExperimentalTime
 
 
-data class Fold(val direction: Axis, val foldLinePos:Int) {
+private data class Point(var x: Int, var y: Int)  // Use dataclass instead of Pair so it's mutable
+
+
+private data class Fold(val direction: Axis2D, val foldLinePos:Int) {
     fun applyToGrid(grid: Array<Point>) {
         when (direction) {
-            Axis.Y -> grid
+            Axis2D.Y -> grid
                 .forEach { p ->
-                            val y = p.second
+                            val y = p.y
                             if (y > foldLinePos) {
-                                p.second = 2 * foldLinePos - y
+                                p.y = 2 * foldLinePos - y
                             }
                         }
-            Axis.X -> grid
+            Axis2D.X -> grid
                 .forEach { p ->
-                            val x= p.first
+                            val x= p.x
                             if (x > foldLinePos) {
-                                p.first = 2 * foldLinePos - x
+                                p.x = 2 * foldLinePos - x
                             }
                         }
 
@@ -32,68 +32,74 @@ data class Fold(val direction: Axis, val foldLinePos:Int) {
     }
 }
 
-private fun parseFoldingFile(path: String): Pair<Array<Point>, List<Fold>> {
-    val lines = File(path).readLines()
 
-    val grid = lines
-        .takeWhile { line -> line.isNotEmpty() }
-        .map { line ->
-            val (x, y) = line.split(",").map { it.toInt() }
-            Point(x, y)
-        }.toTypedArray()
-
-    val folds = lines
-        .dropWhile { line -> line.isNotEmpty() }.drop(1)
-        .map { line ->
-            val (axis, index) = line.removePrefix("fold along ").split("=")
-            Fold(if (axis == "x") Axis.X else Axis.Y, index.toInt())
-        }
-    return Pair(grid, folds)
-}
-
-private fun gridToStrings(pairCollection: Array<Point>): List<String> {
-    val maxX = pairCollection.maxOf { it.first }
-    val maxY = pairCollection.maxOf { it.second }
-
-    return (0 .. maxY).map { y ->
-        (0 .. maxX).map { x ->
-            if (Point(x,y) in pairCollection) '#' else '.'
-        }.joinToString("")
-    }
-}
-
-
-class Day13Problem() : DailyProblem<Long>() {
+class Day13Problem() : DailyProblem<Int?>() {
 
     override val number = 13
     override val year = 2021
     override val name = "Transparent Origami"
 
-    lateinit var display : List<String>  // We will put the answer to part 2 here
+    lateinit var output : String  // We will put the answer to part 2 here
 
     private lateinit var parseResult: Pair<Array<Point>, List<Fold>>
 
-    override fun commonParts() {
-        parseResult = parseFoldingFile(getInputFile().absolutePath)
+
+    private fun parseFoldingFile(): Pair<Array<Point>, List<Fold>> {
+        fun parseDots(s: String): Array<Point> {
+            return s.lines()
+                .map { line ->
+                    val (x, y) = line.split(",").map { it.toInt() }
+                    Point(x, y)
+                }.toTypedArray()
+        }
+
+        fun parseFolds(s: String): List<Fold> {
+            return s.nonEmptyLines().map { line ->
+                val (axis, index) = line.removePrefix("fold along ").split("=")
+                Fold(if (axis == "x") Axis2D.X else Axis2D.Y, index.toInt())
+            }
+        }
+        return parseTwoBlocks(getInputText(), ::parseDots, ::parseFolds)
     }
-    override fun part1(): Long {
+
+    private fun showGrid(pairCollection: Array<Point>): String {
+        val maxX = pairCollection.maxOf { it.x }
+        val maxY = pairCollection.maxOf { it.y }
+
+        return (0 .. maxY).map { y ->
+            (0 .. maxX).map { x ->
+                if (Point(x,y) in pairCollection) '█' else ' '
+            }.joinToString("")
+        }.joinToString("\n")
+    }
+
+
+    override fun commonParts() {
+        parseResult = parseFoldingFile()
+    }
+    override fun part1(): Int {
         val (grid, folds) = parseResult
         val firstFold = folds.first()
 
         firstFold.applyToGrid(grid)
-        return grid.toSet().size.toLong()
+        return grid.toSet().size
     }
 
-    override fun part2(): Long {
+    override fun part2(): Int? {
         val (grid, folds) = parseResult
 
         folds.forEach { fold ->
                 fold.applyToGrid(grid)
         }
-        display = gridToStrings(grid)
-        //display.forEach(::println)
-        return -999  // Not an integer solution. Answers stored in display attribute instead
+        output = showGrid(grid)
+        return null  // Not an integer solution. Answers stored in display attribute instead
     }
 }
 
 val day13Problem = Day13Problem()
+
+@OptIn(ExperimentalTime::class)
+fun main() {
+    day13Problem.commonParts()
+    day13Problem.runBoth(1)
+}

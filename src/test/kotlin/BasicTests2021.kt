@@ -117,14 +117,14 @@ class BasicTests2021 {
         problem.commonParts()
         assertEquals(17, problem.part1())
         problem.part2()
-        val expected = listOf<String>(
-            "#####",
-            "#...#",
-            "#...#",
-            "#...#",
-            "#####",
-        )
-        assertEquals(problem.display, expected)
+        val expected = """
+            █████
+            █   █
+            █   █
+            █   █
+            █████
+        """.trimIndent()
+        assertEquals(problem.output, expected)
     }
 
     @Test

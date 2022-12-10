@@ -3,6 +3,12 @@ package aoc.utils
 import java.lang.Math.abs
 import java.lang.Math.max
 
+enum class Axis2D {
+    X,Y
+}
+enum class Axis3D {
+    X,Y,Z
+}
 
 enum class Direction {
     UP,
