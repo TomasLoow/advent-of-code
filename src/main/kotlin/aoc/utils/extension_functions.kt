@@ -44,3 +44,16 @@ fun Collection<Int>.product(): Int {
 }
 
 fun <A, B> Pair<A, B>.flip(): Pair<B, A> = Pair(this.second, this.first)
+
+fun <T> List<T>.permutationsSequence(): Sequence<List<T>> {
+    if (this.isEmpty()) return sequenceOf(emptyList())
+    val head = this.first()
+    val tail = this.drop(1)
+    return sequence {
+        tail.permutationsSequence().forEach { perm ->
+            repeat(perm.size + 1) { pos ->
+                yield( perm.take(pos)+ listOf(head)+perm.drop(pos))
+            }
+        }
+    }
+}

@@ -37,14 +37,30 @@ fun <A, B> parseListOfPairs(
 
 }
 
-fun <A> parseOneLineOfSeparated(data: String, parser: (String) -> A, s: String) : List<A>{
+fun <A, B, C> parseListOfTriples(
+    inputText: String,
+    component1parser: (String) -> A,
+    component2parser: (String) -> B,
+    component3parser: (String) -> C,
+    separator1: String = " ",
+    separator2: String = " "
+): List<Triple<A, B, C>> {
+    return inputText.nonEmptyLines().map { line ->
+        val (a, rest) = line.split(separator1)
+        val (b,c) = rest.split(separator2)
+        Triple(component1parser(a), component2parser(b), component3parser(c))
+    }
+
+}
+
+
+fun <A> parseOneLineOfSeparated(data: String, parser: (String) -> A, s: String): List<A> {
     return data.nonEmptyLines().single().split(s).map { parser(it) }
 }
 
 
-
 fun parseCoord(data: String): Coord {
-    val (x,y) = data.split(",")
+    val (x, y) = data.split(",")
     return Coord(x.toInt(), y.toInt())
 }
 
