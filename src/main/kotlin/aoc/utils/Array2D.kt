@@ -20,6 +20,14 @@ class Array2D<T> {
         this.height = height
     }
 
+    constructor(width: Int, height:Int, initital:T) {
+        this.data = ArrayList(width*height)
+        repeat(width*height) { this.data.add(initital)}
+
+        this.width = width
+        this.height = height
+    }
+
     val rect: Rect
         get() {
             return Rect(Coord(0,0), Coord(width-1,height-1))
@@ -122,6 +130,31 @@ class Array2D<T> {
             }
         }
         return counter
+    }
+
+    fun findIndexedByCoordinate(function: (Coord, T) -> Boolean): Pair<Coord, T>? {
+        repeat(height) { y ->
+            repeat(width) { x ->
+                val coord = Coord(x, y)
+                val value = this[x, y]
+                if (function(coord, value)) return Pair(coord, value)
+            }
+        }
+        return null
+    }
+
+    fun filterIndexedByCoordinate(function: (Coord, T) -> Boolean): List<Pair<Coord, T>> {
+        return buildList {
+            repeat(height) { y ->
+                repeat(width) { x ->
+                    val coord = Coord(x, y)
+                    val value = this@Array2D[x, y]
+                    if (function(coord, value)) {
+                        add(Pair(coord, value))
+                    }
+                }
+            }
+        }
     }
 
     fun show(renderer: (T) -> String) : String {

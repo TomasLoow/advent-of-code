@@ -36,3 +36,8 @@ fun <A, B> parseListOfPairs(
     }
 
 }
+
+fun parseCoord(data: String): Coord {
+    val (x,y) = data.split(",")
+    return Coord(x.toInt(), y.toInt())
+}

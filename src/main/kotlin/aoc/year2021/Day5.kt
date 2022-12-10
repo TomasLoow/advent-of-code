@@ -1,61 +1,46 @@
 package aoc.year2021
 
 import DailyProblem
-import java.io.File
-import kotlin.math.absoluteValue
-import kotlin.math.max
+import aoc.utils.Array2D
+import aoc.utils.Coord
+import aoc.utils.parseCoord
+import aoc.utils.parseListOfPairs
 
-fun parseLinesFile(path: String): List<VentLine> {
-    val lines: List<String> = File(path).readLines()
-    return lines.map { line ->
-        val (from, to) = line.split(" -> ")
-        val (startX, startY) = from.split(",")
-        val (endX, endY) = to.split(",")
-        VentLine(startX.toInt(), startY.toInt(), endX.toInt(), endY.toInt())
-    }
-}
 
-class VentLine(private val startX: Int, private val startY: Int, private val endX: Int, private val endY: Int) {
+private class VentLine(private val start: Coord, private val end: Coord) {
 
     companion object {
         var gridSize: Int = 0
     }
 
     init {
-        val biggest = listOf(startX,startY,endX,endY).maxOf { it }
-        if ( biggest > gridSize) {
+        val biggest = listOf(start.x, start.y, end.x, end.y).maxOf { it }
+        if (biggest > gridSize) {
             gridSize = biggest
         }
     }
 
     fun isStraight(): Boolean {
-        return this.startX == this.endX || this.startY == this.endY
+        return start.x == end.x || start.y == end.y
     }
 
-    private fun coordinatesToIdx(x: Int, y: Int): Int {
-        return x + y* gridSize
-    }
+    fun markCoveredPoints(arr: Array2D<Int>) {
+        val delta = Pair(end.x.compareTo(start.x), end.y.compareTo(start.y))
+        val distance: Int = start.chebyshevDistanceTo(end)
 
-    fun markCoveredPoints(arr : Array<Int>) {
-
-        val dx: Int = endX.compareTo(startX)
-        val dy: Int = endY.compareTo(startY)
-        val distance: Int = max((startX - endX).absoluteValue, (startY - endY).absoluteValue)
-
-
-        val d = dx+dy* gridSize
-        var idx = coordinatesToIdx(startX,startY)
+        var pos = start
         (0..distance).forEach {
-            arr[idx]++
-            idx += d
+            arr[pos]++
+            pos += delta
         }
     }
 }
 
 private fun List<VentLine>.countIntersections(): Long {
-    val array : Array<Int> = Array((VentLine.gridSize + 1) * (VentLine.gridSize + 1)) { 0 }
+    val size = VentLine.gridSize + 1
+    val array: Array2D<Int> = Array2D(size, size, 0)
     forEach { it.markCoveredPoints(array) }
-    return array.count { it > 1 }.toLong()
+    return array.countIndexedByCoordinate { coord, i -> i > 1 }.toLong()
 }
 
 class Day5Problem() : DailyProblem<Long>() {
@@ -65,14 +50,22 @@ class Day5Problem() : DailyProblem<Long>() {
 
     private lateinit var lines: List<VentLine>
 
-    override fun commonParts() {
-        lines = parseLinesFile(getInputFile().absolutePath)
+    private fun parseLinesFile(): List<VentLine> {
+        return parseListOfPairs(getInputText(), ::parseCoord, ::parseCoord, separator = " -> ").map { (start, end) ->
+            VentLine(start, end)
+        }
     }
+
+    override fun commonParts() {
+        lines = parseLinesFile()
+    }
+
     override fun part1(): Long {
         return lines
             .filter { it.isStraight() }
             .countIntersections()
     }
+
     override fun part2(): Long {
         return lines
             .countIntersections()

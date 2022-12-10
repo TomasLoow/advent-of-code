@@ -2,87 +2,79 @@ package aoc.year2021
 
 
 import DailyProblem
+import aoc.utils.Array2D
+import aoc.utils.Coord
+import aoc.utils.parseBlockList
 import java.io.File
+import kotlin.time.ExperimentalTime
 
-fun parseBingoFile(path: String): Pair<List<Int>, List<BingoBoard>> {
+private fun parseBingoFile(path: String): Pair<List<Int>, List<BingoBoard>> {
     var lines: List<String> = File(path).readLines()
     val balls = lines[0]
         .split(",")
         .map { it.toInt() }
     lines = lines.drop(2)
 
-    val boards = ArrayList<BingoBoard>(0)
-    while (lines.size >= 5) {
-        val board = BingoBoard(lines.subList(0, 5))
-        boards.add(board)
-        lines = lines.drop(6)  // Five for board, one separator
-    }
+    val boards: List<BingoBoard> = parseBlockList(lines.joinToString("\n"), { BingoBoard(it) })
     return Pair(balls, boards)
 }
 
-class BingoBoard() {
-    constructor(rows: List<String>) : this() {
-        numbers = rows.flatMap { row -> row
+private class BingoBoard() {
+    constructor(s: String) : this() {
+        val rows = s.lines()
+        numbers = Array2D(rows.flatMap { row -> row
             .trim()
             .split(" +".toRegex())
             .map { number -> number.toInt() }
-        }.toTypedArray()
+        }, 5, 5)
     }
-    private lateinit var numbers: Array<Int>
+    private lateinit var numbers: Array2D<Int>
 
-    private var marked = Array(25) { false }
+    private var marked = Array2D(5,5, false)
 
     var hasWon: Boolean = false
 
-    private fun toIdx(i: Int, j: Int): Int {
-        return 5 * i + j
-    }
-
     fun markNumber(ball: Int) {
-        val idx = this.findIdxOfNumber(ball)
-        if (idx != null) this.marked[idx] = true
+        val coord = this.findPosOfNumber(ball)
+        if (coord != null) this.marked[coord] = true
     }
 
-    private fun findIdxOfNumber(ball: Int): Int? {
-        return numbers
-            .withIndex()
-            .find { it.value == ball }
-            ?.index
+    private fun findPosOfNumber(ball: Int): Coord? {
+        val res = numbers.findIndexedByCoordinate { c, v -> v==ball}
+        if (res == null) return null
+        return res.first
     }
 
     fun checkBingo(): Boolean {
         return allRowIndices.any { this.checkRow(it) }
     }
 
-    private fun checkRow(indexes: Array<Pair<Int, Int>>): Boolean {
-        return indexes.all { this.marked[this.toIdx(it.first, it.second)] }
+    private fun checkRow(indices: Array<Coord>): Boolean {
+        return indices.all { this.marked[it] }
     }
 
     fun getScore(): Int {
-        val indicesOfUnmarked = marked
-            .withIndex()
-            .filter { !it.value }
-            .map { it.index }
-        val unmarked = indicesOfUnmarked.map { this.numbers[it] }
-        return unmarked.sum()
+        val coordsOfUnmarked = marked.filterIndexedByCoordinate { c, v -> !v }.map{it.first}
+        return coordsOfUnmarked.sumOf { this.numbers[it] }
     }
 
     companion object {
-        private val allRowIndices: List<Array<Pair<Int, Int>>> = listOf(
-            arrayOf(Pair(0, 0), Pair(0, 1), Pair(0, 2), Pair(0, 3), Pair(0, 4)),
-            arrayOf(Pair(1, 0), Pair(1, 1), Pair(1, 2), Pair(1, 3), Pair(1, 4)),
-            arrayOf(Pair(2, 0), Pair(2, 1), Pair(2, 2), Pair(2, 3), Pair(2, 4)),
-            arrayOf(Pair(3, 0), Pair(3, 1), Pair(3, 2), Pair(3, 3), Pair(3, 4)),
-            arrayOf(Pair(4, 0), Pair(4, 1), Pair(4, 2), Pair(4, 3), Pair(4, 4)),
+        /* Daft hard coding. */
+        private val allRowIndices: List<Array<Coord>> = listOf(
+            arrayOf(Coord(0, 0), Coord(0, 1), Coord(0, 2), Coord(0, 3), Coord(0, 4)),
+            arrayOf(Coord(1, 0), Coord(1, 1), Coord(1, 2), Coord(1, 3), Coord(1, 4)),
+            arrayOf(Coord(2, 0), Coord(2, 1), Coord(2, 2), Coord(2, 3), Coord(2, 4)),
+            arrayOf(Coord(3, 0), Coord(3, 1), Coord(3, 2), Coord(3, 3), Coord(3, 4)),
+            arrayOf(Coord(4, 0), Coord(4, 1), Coord(4, 2), Coord(4, 3), Coord(4, 4)),
 
-            arrayOf(Pair(0, 0), Pair(1, 0), Pair(2, 0), Pair(3, 0), Pair(4, 0)),
-            arrayOf(Pair(0, 1), Pair(1, 1), Pair(2, 1), Pair(3, 1), Pair(4, 1)),
-            arrayOf(Pair(0, 2), Pair(1, 2), Pair(2, 2), Pair(3, 2), Pair(4, 2)),
-            arrayOf(Pair(0, 3), Pair(1, 3), Pair(2, 3), Pair(3, 3), Pair(4, 3)),
-            arrayOf(Pair(0, 4), Pair(1, 4), Pair(2, 4), Pair(3, 4), Pair(4, 4)),
+            arrayOf(Coord(0, 0), Coord(1, 0), Coord(2, 0), Coord(3, 0), Coord(4, 0)),
+            arrayOf(Coord(0, 1), Coord(1, 1), Coord(2, 1), Coord(3, 1), Coord(4, 1)),
+            arrayOf(Coord(0, 2), Coord(1, 2), Coord(2, 2), Coord(3, 2), Coord(4, 2)),
+            arrayOf(Coord(0, 3), Coord(1, 3), Coord(2, 3), Coord(3, 3), Coord(4, 3)),
+            arrayOf(Coord(0, 4), Coord(1, 4), Coord(2, 4), Coord(3, 4), Coord(4, 4)),
             // No diagonals
-            //arrayOf( Pair(0,0), Pair(1,1), Pair(2,2), Pair(3,3) , Pair(4,4)),
-            //arrayOf( Pair(0,4), Pair(1,3), Pair(2,2), Pair(3,1) , Pair(4,0)),
+            //arrayOf( Coord(0,0), Coord(1,1), Coord(2,2), Coord(3,3) , Coord(4,4)),
+            //arrayOf( Coord(0,4), Coord(1,3), Coord(2,2), Coord(3,1) , Coord(4,0)),
         )
     }
 }
@@ -136,3 +128,9 @@ class Day4Problem() : DailyProblem<Long>() {
 }
 
 val day4Problem = Day4Problem()
+
+@OptIn(ExperimentalTime::class)
+fun main() {
+    day4Problem.commonParts()
+    day4Problem.runBoth(10)
+}

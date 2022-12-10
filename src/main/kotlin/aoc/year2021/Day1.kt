@@ -1,24 +1,9 @@
 package aoc.year2021
 
 import DailyProblem
-import java.io.File
+import aoc.utils.parseIntLines
 import kotlin.time.ExperimentalTime
 
-fun parseIntsFile(path: String): List<Int> {
-    val lines: List<String> = File(path).readLines()
-    return lines.map { it.toInt() }
-}
-
-
-private fun Collection<Int>.countIncreases(): Long {
-    return windowed(2).count { it[0] < it[1] }.toLong()
-}
-
-
-private fun Collection<Int>.threeElementWindowSums(): Collection<Int> {
-    return windowed(3)
-        .map { it.sum() }
-}
 
 class Day1Problem() : DailyProblem<Long>() {
 
@@ -26,12 +11,29 @@ class Day1Problem() : DailyProblem<Long>() {
     override val year = 2021
     override val name = "Sonar Sweep"
 
-    override fun part1(): Long {
-        return parseIntsFile(this.getInputFile().absolutePath)
-            .countIncreases()
+    private lateinit var data: List<Int>
+
+    private fun Collection<Int>.countIncreases(): Long {
+        return windowed(2).count { it[0] < it[1] }.toLong()
     }
+
+
+    private fun Collection<Int>.threeElementWindowSums(): Collection<Int> {
+        return windowed(3)
+            .map { it.sum() }
+    }
+
+    override fun commonParts() {
+        data = parseIntLines(getInputText())
+
+    }
+
+    override fun part1(): Long {
+        return data.countIncreases()
+    }
+
     override fun part2(): Long {
-        return parseIntsFile(this.getInputFile().absolutePath)
+        return data
             .threeElementWindowSums()
             .countIncreases()
     }
