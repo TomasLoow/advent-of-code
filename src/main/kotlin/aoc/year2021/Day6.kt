@@ -1,16 +1,16 @@
 package aoc.year2021
 
 import DailyProblem
+import aoc.utils.parseInt
+import aoc.utils.parseOneLineOfSeparated
 import java.io.File
 
 fun parseFishesInput(path: String): MutableList<Long> {
-    val fishesCounts = Array<Long>(9) { 0 }
 
-    File(path).readLines()
-        .single()
-        .split(",")
-        .map { it.toInt() }
-        .forEach { fishValue ->
+    val input = parseOneLineOfSeparated(File(path).readText(), ::parseInt, ",")
+
+    val fishesCounts = Array<Long>(9) { 0 }
+    input.forEach { fishValue ->
             fishesCounts[fishValue]++
         }
 

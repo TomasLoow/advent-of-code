@@ -1,21 +1,16 @@
 package aoc.year2021
 
 import DailyProblem
-import java.io.File
+import aoc.utils.parseInt
+import aoc.utils.parseOneLineOfSeparated
 import kotlin.math.absoluteValue
 import kotlin.math.min
+import kotlin.time.ExperimentalTime
 
-typealias CrabPositions = List<Long>
+private typealias CrabPositions = List<Int>
 
-fun parseIntsOnOneLineFile(path: String): CrabPositions {
-    return File(path)
-        .readLines()
-        .single()
-        .split(",")
-        .map { it.toLong() }
-}
 
-private fun CrabPositions.findBestPosition(): Long {
+private fun CrabPositions.findBestPosition(): Int {
     /*
     We know that the value as a function of a position is a convex function. So we can solve with a
     kind of binary search where we divide the range in half and looks at *two* values near the middle. We
@@ -24,7 +19,7 @@ private fun CrabPositions.findBestPosition(): Long {
      */
     var lowerBound = this.minOrNull()!!
     var upperBound = this.maxOrNull()!!
-    var middlePointScore: Long
+    var middlePointScore: Int
 
     while (upperBound > lowerBound + 1) {
         val middlePoint = (lowerBound + upperBound) / 2
@@ -42,7 +37,7 @@ private fun CrabPositions.findBestPosition(): Long {
     )
 }
 
-private fun CrabPositions.findPositionScore(pos: Long): Long {
+private fun CrabPositions.findPositionScore(pos: Int): Int {
     return sumOf { crabPosition ->
         // Use the formula for arithmetic sum. 1+2+...+n = n*(n+1)/2
         val distance = (crabPosition - pos).absoluteValue
@@ -50,24 +45,38 @@ private fun CrabPositions.findPositionScore(pos: Long): Long {
     }
 }
 
-class Day7Problem() : DailyProblem<Long>() {
+class Day7Problem() : DailyProblem<Int>() {
     override val number = 7
     override val year = 2021
     override val name = "The Treachery of Whales"
 
-    override fun part1(): Long {
-        val crabPositions = parseIntsOnOneLineFile(getInputFile().absolutePath)
+    private lateinit var crabPositions: List<Int>
+
+    fun parseCrabPositions(): CrabPositions {
+        return parseOneLineOfSeparated(getInputText(), ::parseInt, ",")
+    }
+
+    override fun commonParts() {
+        crabPositions = parseCrabPositions()
+    }
+
+    override fun part1(): Int {
         // Solution for part 1 is just the mean of the positions
         val pos = crabPositions.sorted()[crabPositions.size / 2]
         return crabPositions.sumOf { (it - pos).absoluteValue }
     }
 
-    override fun part2(): Long {
-        val crabPositions = parseIntsOnOneLineFile(getInputFile().absolutePath)
+    override fun part2(): Int {
         val bestPos = crabPositions.findBestPosition()
         return bestPos
     }
 }
 
 val day7Problem = Day7Problem()
+
+@OptIn(ExperimentalTime::class)
+fun main() {
+    day7Problem.commonParts()
+    day7Problem.runBoth(10)
+}
 

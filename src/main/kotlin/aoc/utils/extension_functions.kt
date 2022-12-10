@@ -31,4 +31,12 @@ fun IntRange.intersectRange(range2: IntRange): Boolean {
     return !(range2.last < start || range2.first > endInclusive)
 }
 
+/**
+ * Parses a sequence of digits as an integer
+ * listOf(1,3,7).parseDecimal() == 137
+ */
+fun Iterable<Int>.parseDecimal() : Int{
+    return fold(0) {parsed, digit -> parsed*10 + digit }
+}
+
 fun <A, B> Pair<A, B>.flip(): Pair<B, A> = Pair(this.second, this.first)
