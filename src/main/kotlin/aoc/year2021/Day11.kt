@@ -1,82 +1,62 @@
 package aoc.year2021
 
 import DailyProblem
-import java.io.File
+import aoc.utils.Array2D
+import aoc.utils.Coord
+import aoc.utils.parseIntArray
+import kotlin.time.ExperimentalTime
 
-internal fun parseGrid(path: String) =
-    OctopusGrid(File(path).readText().filter { it.isDigit() }.map { it.digitToIntOrNull()!! }
-        .toTypedArray())
-
-typealias Idx = Int
-
-class OctopusGrid(val grid: Array<Int>) {
+private class OctopusGrid(val grid: Array2D<Int>) {
 
     /**
      * Runs a step of the simulation and returns the number of flashes that occurred
      */
-    fun step() : Int {
-        grid.indices.forEach{ idx -> grid[idx]++}
-        return doFlashes()
+    fun step(): Int {
+        grid.modifyArea(grid.rect) { it + 1 }
+        val flashCount = doFlashes()
+
+        return flashCount
     }
 
     /**
      * Return true if all octopuses are 0
      */
     fun allZero(): Boolean {
-        return grid.all { it == 0 }
+        return grid.countIndexedByCoordinate { _, v -> v != 0 } == 0
     }
 
     private fun doFlashes(): Int {
-        val indicesThatHaveFlashed = mutableSetOf<Int>()
-        do {
-            var flashed = false
-            val flashPoint: IndexedValue<Idx> =
-                grid.asSequence().withIndex().filter { it.value > 9 }
-                    .filter { !indicesThatHaveFlashed.contains(it.index)}
-                    .firstOrNull() ?: continue
-            val idx = flashPoint.index
-            doFlash(idx)
-            flashed = true
-            indicesThatHaveFlashed.add(idx)
-        } while (flashed)
+        fun findCoordsThatNeedToFlash(coordsThatHaveFlashed: MutableSet<Coord>) = grid
+            .filterIndexedByCoordinate { coord, value -> value > 9 && coord !in coordsThatHaveFlashed }
+            .map { it.first }.toMutableList()
 
-        indicesThatHaveFlashed.forEach { grid[it] = 0 }
-        return indicesThatHaveFlashed.size
+        val coordsThatHaveFlashedThisStep = mutableSetOf<Coord>()
+        var coordsToFlashQueue = findCoordsThatNeedToFlash(coordsThatHaveFlashedThisStep)
+        do {
+            var hasFlashedSomewhere = false
+            if (coordsToFlashQueue.isEmpty()) {  // Find any new points that need to flash
+                coordsToFlashQueue = findCoordsThatNeedToFlash(coordsThatHaveFlashedThisStep)
+                if (coordsToFlashQueue.isEmpty()) continue  // No new points to flash found
+            }
+            val flashPoint = coordsToFlashQueue.first()
+            coordsToFlashQueue.remove(flashPoint)
+            doFlash(flashPoint)
+            hasFlashedSomewhere = true
+            coordsThatHaveFlashedThisStep.add(flashPoint)
+        } while (hasFlashedSomewhere)
+
+        coordsThatHaveFlashedThisStep.forEach { grid[it] = 0 }
+        return coordsThatHaveFlashedThisStep.size
     }
+
 
     /**
      * Increases the value of all neighbours of a point
      */
-    private fun doFlash(idx: Idx) {
-        val neighbours = getNeighboursOf(idx)
-        neighbours.forEach {
+    private fun doFlash(c: Coord) {
+        grid.neighbourCoords(c, diagonal = true).forEach {
             grid[it]++
         }
-    }
-
-    private fun getNeighboursOf(idx: Idx): List<Idx> {
-        val neighbours = buildList {
-            val xRange = when (idx.mod(10)) {
-                0 -> (0..1)
-                9 -> (-1..0)
-                else -> (-1..1)
-            }
-            val yRange = when (idx/10) {
-                0 -> (0..10 step 10)
-                9 -> (-10..0 step 10)
-                else -> (-10..10 step 10)
-            }
-            for (dx in xRange) {
-                for (dy in yRange) {
-                    val d = dx+dy
-                    if (d == 0) {
-                        continue
-                    }
-                    add(idx + d)
-                }
-            }
-        }
-        return neighbours
     }
 }
 
@@ -86,24 +66,30 @@ class Day11Problem() : DailyProblem<Long>() {
     override val year = 2021
     override val name = "Dumbo Octopus"
 
+    private fun parseGrid(): OctopusGrid {
+        return OctopusGrid(parseIntArray(getInputText()))
+    }
+
     override fun part1(): Long {
-        val og = parseGrid(getInputFile().absolutePath)
-
-        val flashCount = (1..100).sumOf { og.step() }
-
+        val octopusGrid = parseGrid()
+        val flashCount = (1..100).sumOf { octopusGrid.step() }
         return flashCount.toLong()
     }
 
     override fun part2(): Long {
-        val og = parseGrid(getInputFile().absolutePath)
-
+        val octopusGrid = parseGrid()
         var step = 0L
         do {
-            og.step()
+            octopusGrid.step()
             step++
-        } while (!og.allZero())
+        } while (!octopusGrid.allZero())
         return step
     }
 }
 
 val day11Problem = Day11Problem()
+
+@OptIn(ExperimentalTime::class)
+fun main() {
+    day11Problem.runBoth(100)
+}
