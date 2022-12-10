@@ -14,6 +14,30 @@ val events = mapOf(
         aoc.year2022.day9Problem,
         aoc.year2022.day10Problem,
     ),
+    2021 to listOf(
+        aoc.year2021.day1Problem,
+        aoc.year2021.day2Problem,
+        aoc.year2021.day3Problem,
+        aoc.year2021.day4Problem,
+        aoc.year2021.day5Problem,
+        aoc.year2021.day6Problem,
+        aoc.year2021.day7Problem,
+        aoc.year2021.day8Problem,
+        aoc.year2021.day9Problem,
+        aoc.year2021.day10Problem,
+        aoc.year2021.day11Problem,
+        aoc.year2021.day12Problem,
+        aoc.year2021.day13Problem,
+        aoc.year2021.day14Problem,
+        aoc.year2021.day15Problem,
+        aoc.year2021.day16Problem,
+        aoc.year2021.day17Problem,
+        aoc.year2021.day18Problem,
+        aoc.year2021.day21Problem,
+        aoc.year2021.day22Problem,
+        aoc.year2021.day25Problem,
+
+        ),
     2015 to listOf(
         aoc.year2015.day1Problem,
         aoc.year2015.day2Problem,
@@ -23,8 +47,8 @@ val events = mapOf(
         aoc.year2015.day6Problem,
         )
 )
-val RUN_FOR_YEAR: Int? = 2022
-val TIMES_TO_RUN = 1000
+val RUN_FOR_YEAR: Int? = null
+val TIMES_TO_RUN = 20
 
 @OptIn(ExperimentalTime::class)
 fun main() {
