@@ -1,78 +1,62 @@
 package aoc.year2021
 
 import DailyProblem
+import aoc.utils.Array2D
+import aoc.utils.Coord
+
+import aoc.utils.parseIntArray
 import java.io.File
 import java.util.*
 import kotlin.time.ExperimentalTime
 
-typealias RiskMap2D = Array<Array<Int>>
-typealias RiskMap = Array<Int>
+fun parseArray2D(path: String): Array2D<Int> {
+    return parseIntArray(File(path).readText())
+}
 
-fun parseRiskMap(path:String): RiskMap2D {
-    return File(path).readLines().map { line ->
-        line.map { char -> char.digitToInt() }.toTypedArray()
-    }.toTypedArray()
- }
-
-private fun embiggen(map: RiskMap2D): RiskMap2D {
+private fun embiggen(originalMap: Array2D<Int>): Array2D<Int> {
     val factor = 5
-    val originalWidth = map.size
-    val originalHeight = map[0].size
-    val newHeight = originalWidth * factor
-    val newWidth = originalHeight * factor
-    val biggerArray: Array<Array<Int>> = Array(newHeight) { Array(newWidth) {0} }
-
-    (0 until newHeight).forEach { y ->
-        (0 until newHeight).forEach { x ->
-            val baseValue = map[y.mod(originalHeight)][x.mod(originalWidth)] + x/ originalWidth + y/ originalHeight
-            biggerArray[y][x] = if (baseValue > 9) {
-                baseValue - 9
-            } else {
-                baseValue
-            }
+    val newHeight = originalMap.height * factor
+    val newWidth = originalMap.width * factor
+    val biggerArray: Array2D<Int> = Array2D(newWidth, newHeight) { c ->
+        val orgX = c.x.mod(originalMap.width)
+        val orgY = c.y.mod(originalMap.height)
+        val increase = c.x / originalMap.width + c.y / originalMap.height
+        val baseValue = originalMap[orgX, orgY] + increase
+        if (baseValue > 9) {
+            baseValue - 9
+        } else {
+            baseValue
         }
     }
     return biggerArray
 }
 
-fun heuristic(map: RiskMap, pos: Int): Int {
+fun heuristic(map: Array2D<Int>, pos: Coord): Int {
     return 0  // 0 means it's actually djikstra's algorithm. The manhattan heuristics did not really help
     // return (map.size - pos.second) + (map[0].size - pos.first)
 }
 
-fun getRisk(map: RiskMap, from:Int, to:Int): Int {
+fun getRisk(map: Array2D<Int>, from: Coord, to: Coord): Int {
     return map[to]
 }
 
-fun neighboursOfForSize(size: Int): (RiskMap, Int) -> Sequence<Int> {
-    return { intsmap, idx ->
-        val x = idx.mod(size)
-        val y = idx/size
-
-        val maxX = size-1
-        val maxY = size-1
-
-        sequence {
-            if (x>0) yield(idx-1)
-            if (x<maxX) yield(idx+1)
-            if (y>0) yield(idx-size)
-            if (y<maxY) yield(idx+size)
-        }
-    }
+fun neighboursOf(map: Array2D<Int>, c: Coord): List<Coord> {
+    return map.neighbourCoords(c, diagonal = false)
 }
 
-fun <M, N> aStar(map: M,
-                 start: N,
-                 goal: N,
-                 heur: (M, N)-> Int,
-                 neigh: (M, N) -> Sequence<N>,
-                 getEdgeValue: (M, N, N) -> Int): Int {
-    val openSet = PriorityQueue<Pair<Int,N>>(compareBy { it.first })
+
+fun <Env, State> aStar(map: Env,
+                 start: State,
+                 goal: State,
+                 heur: (Env, State)-> Int,
+                 neigh: (Env, State) -> Collection<State>,
+                 getEdgeValue: (Env, State, State) -> Int): Int {
+    val openSet = PriorityQueue<Pair<Int,State>>(compareBy { it.first })
     openSet.add(heur(map,start) to start)
 
-    val cameFrom: MutableMap<N, N> = mutableMapOf()
-    val cheapestPathScoreMap : MutableMap<N, Int> = mutableMapOf(start to 0)
-    val heuristicScoreMap: MutableMap<N, Int> = mutableMapOf(start to heur(map, start))
+    val cameFrom: MutableMap<State, State> = mutableMapOf()
+    val cheapestPathScoreMap : MutableMap<State, Int> = mutableMapOf(start to 0)
+    val heuristicScoreMap: MutableMap<State, Int> = mutableMapOf(start to heur(map, start))
 
     while (openSet.isNotEmpty()) {
         val currentPair = openSet.first()!!
@@ -82,7 +66,7 @@ fun <M, N> aStar(map: M,
         }
         openSet.remove(currentPair)
 
-        for (neighbour: N in neigh(map, current)) {
+        for (neighbour: State in neigh(map, current)) {
             var neighbourValue: Int
             try {
                 neighbourValue = getEdgeValue(map, current, neighbour)
@@ -106,31 +90,33 @@ class Day15Problem() : DailyProblem<Long>() {
     override val year = 2021
     override val name = "Chiton"
 
-    private lateinit var risks: Array<Array<Int>>
+    private lateinit var risks: Array2D<Int>
 
     override fun commonParts() {
-        this.risks = parseRiskMap(getInputFile().absolutePath)
+        this.risks = parseArray2D(getInputFile().absolutePath)
     }
 
     override fun part1(): Long {
-        val flattened = risks.flatten().toTypedArray()
-        return aStar<RiskMap, Int>(flattened,
-            0,
-            flattened.size - 1,
+        return aStar<Array2D<Int>, Coord>(
+            risks,
+            Coord.origin,
+            risks.rect.bottomRight,
             ::heuristic,
-            neighboursOfForSize(risks[0].size),
-            ::getRisk).toLong()
+            ::neighboursOf,
+            ::getRisk
+        ).toLong()
     }
 
     override fun part2(): Long {
         val moreRisks = embiggen(risks)
-        val flattened = moreRisks.flatten().toTypedArray()
-        return aStar<RiskMap, Int>(flattened,
-            0,
-            flattened.size - 1,
+        return aStar<Array2D<Int>, Coord>(
+            moreRisks,
+            Coord.origin,
+            moreRisks.rect.bottomRight,
             ::heuristic,
-            neighboursOfForSize(moreRisks[0].size),
-            ::getRisk).toLong()
+            ::neighboursOf,
+            ::getRisk
+        ).toLong()
     }
 }
 
