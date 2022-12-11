@@ -3,6 +3,7 @@ package aoc.utils
 import java.io.File
 import java.security.MessageDigest
 import java.util.*
+import kotlin.math.max
 
 fun String.nonEmptyLines(): List<String> {
     // For some reason this is *much* faster than using isNotEmpty()
@@ -92,4 +93,8 @@ fun <K> MutableMap<K, Long>.increase(key: K, value: Long) {
 
 fun <K> MutableMap<K, Int>.increase(key: K, value: Int) {
     this[key] = getOrDefault(key, 0) + value
+}
+
+fun Int.truncPositive(): Int {
+    return max(0, this)
 }
