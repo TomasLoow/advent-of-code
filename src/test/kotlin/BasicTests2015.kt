@@ -94,4 +94,11 @@ class BasicTests2015 {
         assertEquals(330, problem.part1(), "Correct Answer day ${problem.number } part 1")
         assertEquals(286, problem.part2(), "Correct Answer day ${problem.number } part 2")
     }
+    @Test
+    fun testDay14() {
+        val problem = Day14Problem().apply { testData = true }.apply { testData = true }
+        problem.commonParts()
+        assertEquals(2660, problem.part1(), "Correct Answer day ${problem.number } part 1")
+        assertEquals(1564, problem.part2(), "Correct Answer day ${problem.number } part 2")
+    }
 }
