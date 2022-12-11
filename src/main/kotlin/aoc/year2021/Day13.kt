@@ -3,6 +3,7 @@ package aoc.year2021
 import DailyProblem
 import aoc.utils.Axis2D
 import aoc.utils.nonEmptyLines
+import aoc.utils.parseDisplay
 import aoc.utils.parseTwoBlocks
 import kotlin.time.ExperimentalTime
 
@@ -33,7 +34,7 @@ private data class Fold(val direction: Axis2D, val foldLinePos:Int) {
 }
 
 
-class Day13Problem() : DailyProblem<Int?>() {
+class Day13Problem() : DailyProblem<Any>() {
 
     override val number = 13
     override val year = 2021
@@ -63,7 +64,7 @@ class Day13Problem() : DailyProblem<Int?>() {
     }
 
     private fun showGrid(pairCollection: Array<Point>): String {
-        val maxX = pairCollection.maxOf { it.x }
+        val maxX = pairCollection.maxOf { it.x }+1
         val maxY = pairCollection.maxOf { it.y }
 
         return (0 .. maxY).map { y ->
@@ -85,14 +86,15 @@ class Day13Problem() : DailyProblem<Int?>() {
         return grid.toSet().size
     }
 
-    override fun part2(): Int? {
+    override fun part2(): String {
         val (grid, folds) = parseResult
 
         folds.forEach { fold ->
                 fold.applyToGrid(grid)
         }
         output = showGrid(grid)
-        return null  // Not an integer solution. Answers stored in display attribute instead
+        println(output)
+        return parseDisplay(output)  // Not an integer solution. Answers stored in display attribute instead
     }
 }
 

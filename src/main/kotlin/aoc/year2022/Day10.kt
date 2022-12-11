@@ -1,11 +1,10 @@
 package aoc.year2022
 
 import DailyProblem
-import aoc.utils.Array2D
-import aoc.utils.nonEmptyLines
+import aoc.utils.*
 import kotlin.time.ExperimentalTime
 
-class Day10Problem() : DailyProblem<Int?>() {
+class Day10Problem() : DailyProblem<Any>() {
 
     override val number = 10
     override val year = 2022
@@ -63,7 +62,7 @@ class Day10Problem() : DailyProblem<Int?>() {
         }
     }
 
-    override fun part2(): Int? {
+    override fun part2(): String {
         val screenData = ArrayList<Boolean>(40 * 6)
         repeat(40 * 6) { screenData.add(false) }
 
@@ -77,14 +76,18 @@ class Day10Problem() : DailyProblem<Int?>() {
         }
         val screen: Array2D<Boolean> = Array2D(screenData, 40, 6)
         this.output = screen.show { Array2D.a2renderBool(it) }
-        return null
+        return parseDisplay(output)
     }
 }
 
 val day10Problem = Day10Problem()
 
+
+
 @OptIn(ExperimentalTime::class)
 fun main() {
     day10Problem.runBoth(1)
     print(day10Problem.output)
+    println(parseDisplay(day10Problem.output))
 }
+
