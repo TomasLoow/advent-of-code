@@ -9,6 +9,35 @@ import org.junit.jupiter.api.Assertions.assertEquals
 class Array2DTest {
 
     @Test
+    fun `test construct with lambda`() {
+        val arr = Array2D(10,10) { (x,y) ->
+            (x+y) % 10
+        }
+        val expected = """
+            0123456789
+            1234567890
+            2345678901
+            3456789012
+            4567890123
+            5678901234
+            6789012345
+            7890123456
+            8901234567
+            9012345678
+
+        """.trimIndent()
+        assertEquals(expected, arr.show { Array2D.a2renderInt(it) })
+        val arrB = Array2D(2,2) { (x,y) ->
+            2*x+3*y+1
+        }
+        val expectedB = """
+            13
+            46
+
+        """.trimIndent()
+        assertEquals(expectedB, arrB.show { Array2D.a2renderInt(it) })
+    }
+        @Test
     fun `test get and set`() {
         val arr = Array2D<Boolean>(listOf(listOf(false,false), listOf(false,false)))
         assertEquals(false, arr[0,0])

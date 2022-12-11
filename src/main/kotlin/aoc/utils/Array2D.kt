@@ -27,6 +27,18 @@ class Array2D<T> {
         this.height = height
     }
 
+    constructor(width: Int, height:Int, f: (Coord) -> T) {
+        this.width = width
+        this.height = height
+        this.data = ArrayList((0 until height).flatMap { y ->
+            (0 until width). map { x ->
+                f(Coord(x,y))
+            }
+        })
+    }
+
+
+
     val rect: Rect
         get() {
             return Rect(Coord(0,0), Coord(width-1,height-1))
