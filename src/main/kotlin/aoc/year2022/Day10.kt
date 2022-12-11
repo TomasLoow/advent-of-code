@@ -8,7 +8,7 @@ class Day10Problem() : DailyProblem<Any>() {
 
     override val number = 10
     override val year = 2022
-    override val name = "Problem name"
+    override val name = "Cathode-Ray Tube"
 
     private lateinit var signal: Map<Int, Int>
     lateinit var output: String
