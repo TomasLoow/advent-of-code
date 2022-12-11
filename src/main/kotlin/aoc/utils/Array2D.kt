@@ -148,6 +148,10 @@ class Array2D<T> {
     fun <R> map(function: (T) -> R): Array2D<R> {
         return Array2D(data.map(function), width, height)
     }
+    fun <R> mapIndexed(function: (Coord, T) -> R): Array2D<R> {
+        return Array2D(allCoords.zip(data).map { (c,v) -> function(c,v) }, width, height)
+    }
+
 
     fun <R> mapListIndexedByCoordinate(function: (Coord, T) -> R): List<R> {
         return buildList {

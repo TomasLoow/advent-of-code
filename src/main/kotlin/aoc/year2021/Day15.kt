@@ -1,17 +1,12 @@
 package aoc.year2021
 
 import DailyProblem
+import aoc.utils.AStar
 import aoc.utils.Array2D
 import aoc.utils.Coord
-
 import aoc.utils.parseIntArray
-import java.io.File
 import java.util.*
 import kotlin.time.ExperimentalTime
-
-fun parseArray2D(path: String): Array2D<Int> {
-    return parseIntArray(File(path).readText())
-}
 
 private fun embiggen(originalMap: Array2D<Int>): Array2D<Int> {
     val factor = 5
@@ -31,58 +26,21 @@ private fun embiggen(originalMap: Array2D<Int>): Array2D<Int> {
     return biggerArray
 }
 
-fun heuristic(map: Array2D<Int>, pos: Coord): Int {
-    return 0  // 0 means it's actually djikstra's algorithm. The manhattan heuristics did not really help
-    // return (map.size - pos.second) + (map[0].size - pos.first)
-}
 
-fun getRisk(map: Array2D<Int>, from: Coord, to: Coord): Int {
-    return map[to]
-}
-
-fun neighboursOf(map: Array2D<Int>, c: Coord): List<Coord> {
-    return map.neighbourCoords(c, diagonal = false)
-}
-
-
-fun <Env, State> aStar(map: Env,
-                 start: State,
-                 goal: State,
-                 heur: (Env, State)-> Int,
-                 neigh: (Env, State) -> Collection<State>,
-                 getEdgeValue: (Env, State, State) -> Int): Int {
-    val openSet = PriorityQueue<Pair<Int,State>>(compareBy { it.first })
-    openSet.add(heur(map,start) to start)
-
-    val cameFrom: MutableMap<State, State> = mutableMapOf()
-    val cheapestPathScoreMap : MutableMap<State, Int> = mutableMapOf(start to 0)
-    val heuristicScoreMap: MutableMap<State, Int> = mutableMapOf(start to heur(map, start))
-
-    while (openSet.isNotEmpty()) {
-        val currentPair = openSet.first()!!
-        val current= currentPair.second
-        if (current == goal) {
-            return cheapestPathScoreMap[current]!!
-        }
-        openSet.remove(currentPair)
-
-        for (neighbour: State in neigh(map, current)) {
-            var neighbourValue: Int
-            try {
-                neighbourValue = getEdgeValue(map, current, neighbour)
-            } catch (e: ArrayIndexOutOfBoundsException) {
-                continue
-            }
-            val tentative_gScore = cheapestPathScoreMap.getOrDefault(current, Int.MAX_VALUE) + neighbourValue
-            if (tentative_gScore < cheapestPathScoreMap.getOrDefault(neighbour, Int.MAX_VALUE)) {
-                cameFrom[neighbour] = current
-                cheapestPathScoreMap[neighbour] = tentative_gScore
-                heuristicScoreMap[neighbour] = tentative_gScore + heur(map, neighbour)
-                openSet.add(heuristicScoreMap[neighbour]!! to neighbour)
-            }
-        }
+private class ChitinAStar(val map: Array2D<Int>, goal:Coord) : AStar<Coord>(goal) {
+    override fun heuristic(state: Coord): Int {
+        return 0  // 0 means it's actually djikstra's algorithm. The manhattan heuristics did not really help
+        // return (map.size - pos.second) + (map[0].size - pos.first)
     }
-    throw Exception("No path")
+
+    override fun reachable(state: Coord): Collection<Coord> {
+        return map.neighbourCoords(state, diagonal = false)
+    }
+
+    override fun getMoveCost(from: Coord, to: Coord): Int {
+        return map[to]
+    }
+
 }
 
 class Day15Problem() : DailyProblem<Long>() {
@@ -93,30 +51,18 @@ class Day15Problem() : DailyProblem<Long>() {
     private lateinit var risks: Array2D<Int>
 
     override fun commonParts() {
-        this.risks = parseArray2D(getInputFile().absolutePath)
+        this.risks = parseIntArray(getInputText())
     }
 
     override fun part1(): Long {
-        return aStar<Array2D<Int>, Coord>(
-            risks,
-            Coord.origin,
-            risks.rect.bottomRight,
-            ::heuristic,
-            ::neighboursOf,
-            ::getRisk
-        ).toLong()
+        val prob = ChitinAStar(risks, risks.rect.bottomRight)
+        return prob.solve(Coord.origin).first.toLong()
     }
 
     override fun part2(): Long {
         val moreRisks = embiggen(risks)
-        return aStar<Array2D<Int>, Coord>(
-            moreRisks,
-            Coord.origin,
-            moreRisks.rect.bottomRight,
-            ::heuristic,
-            ::neighboursOf,
-            ::getRisk
-        ).toLong()
+        val prob = ChitinAStar(moreRisks, moreRisks.rect.bottomRight)
+        return prob.solve(Coord.origin).first.toLong()
     }
 }
 
