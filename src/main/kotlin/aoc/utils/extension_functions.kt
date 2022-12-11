@@ -42,6 +42,9 @@ fun Iterable<Int>.parseDecimal() : Int{
 fun Collection<Int>.product(): Int {
     return reduce { acc, i -> acc * i }
 }
+fun Collection<Long>.product(): Long {
+    return reduce { acc, i -> acc * i }
+}
 
 fun <A, B> Pair<A, B>.flip(): Pair<B, A> = Pair(this.second, this.first)
 
