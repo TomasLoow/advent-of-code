@@ -222,7 +222,6 @@ val charToDispTable = dispToCharTable.map { (k,v) -> Pair(v,k) }.toMap()
 
 
 fun parseDisplay(display: String): String {
-    println(charToDispTable.keys.sorted())
     val width = display.filter{ c -> c != '\n'}.length / 6
     val array = Array2D<Boolean>(display.filter{ c -> c != '\n'}.map { it == '█' }, width = width, height = 6)
     val numChars = width/5
