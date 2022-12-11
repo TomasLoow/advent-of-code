@@ -24,11 +24,13 @@ class Day9Problem() : DailyProblem<Int>() {
                 this[b]!![a] = d
             }
         }
-        solution = places.permutationsSequence().fold(Pair(Int.MAX_VALUE, Int.MIN_VALUE)) { state, perm ->
-            val (prevMin, prevMax) = state
-            val score = scoreRoute(perm)
-            Pair(min(prevMin, score), max(prevMax, score))
-        }
+        solution = places.permutationsSequence()
+            .filter { perm -> perm.first() < perm.last() } // by dropping half we avoid checking same route in both direction!
+            .fold(Pair(Int.MAX_VALUE, Int.MIN_VALUE)) { state, perm ->
+                val (prevMin, prevMax) = state
+                val score = scoreRoute(perm)
+                Pair(min(prevMin, score), max(prevMax, score))
+            }
     }
 
     private fun scoreRoute(route: List<String>): Int {
