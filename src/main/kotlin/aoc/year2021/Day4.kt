@@ -5,6 +5,7 @@ import DailyProblem
 import aoc.utils.Array2D
 import aoc.utils.Coord
 import aoc.utils.parseBlockList
+import aoc.utils.parseInt
 import java.io.File
 import kotlin.time.ExperimentalTime
 
@@ -12,7 +13,7 @@ private fun parseBingoFile(path: String): Pair<List<Int>, List<BingoBoard>> {
     var lines: List<String> = File(path).readLines()
     val balls = lines[0]
         .split(",")
-        .map { it.toInt() }
+        .map(::parseInt)
     lines = lines.drop(2)
 
     val boards: List<BingoBoard> = parseBlockList(lines.joinToString("\n"), { BingoBoard(it) })

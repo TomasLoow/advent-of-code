@@ -14,7 +14,7 @@ class Day2Problem() : DailyProblem<Int>() {
 
     override fun commonParts() {
         data = getInputText().nonEmptyLines().map { line ->
-            val (x,y,z) =line.split("x").map { it.toInt() }.sorted()
+            val (x,y,z) =line.split("x").map(::parseInt).sorted()
             Triple(x,y,z)
         }
     }

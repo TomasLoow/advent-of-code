@@ -1,10 +1,7 @@
 package aoc.year2021
 
 import DailyProblem
-import aoc.utils.Axis2D
-import aoc.utils.nonEmptyLines
-import aoc.utils.parseDisplay
-import aoc.utils.parseTwoBlocks
+import aoc.utils.*
 import kotlin.time.ExperimentalTime
 
 
@@ -49,7 +46,7 @@ class Day13Problem() : DailyProblem<Any>() {
         fun parseDots(s: String): Array<Point> {
             return s.lines()
                 .map { line ->
-                    val (x, y) = line.split(",").map { it.toInt() }
+                    val (x, y) = line.split(",").map(::parseInt)
                     Point(x, y)
                 }.toTypedArray()
         }

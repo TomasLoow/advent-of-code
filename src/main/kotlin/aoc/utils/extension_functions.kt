@@ -74,3 +74,22 @@ fun <T> List<T>.permutationsSequence(): Sequence<List<T>> {
         }
     }
 }
+
+/** Apply a function to its own output a given number of times
+ *
+ * f.iterate(a,0) == a
+ * f.iterate(a,1) == f(a)
+ * f.iterate(a,n) == f(f.iterate(a, n-1))
+ */
+fun <A> ((A)->A).iterate(init: A, steps:Int):A {
+    return (1 .. steps).fold(init) { state, _ -> this(state) }
+}
+
+
+fun <K> MutableMap<K, Long>.increase(key: K, value: Long) {
+    this[key] = getOrDefault(key, 0L) + value
+}
+
+fun <K> MutableMap<K, Int>.increase(key: K, value: Int) {
+    this[key] = getOrDefault(key, 0) + value
+}

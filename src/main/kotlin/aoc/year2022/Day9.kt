@@ -24,7 +24,7 @@ class Day9Problem() : DailyProblem<Long>() {
                 throw Exception("Bad input")
             }
         }
-        moves = parseListOfPairs(getInputText(), ::parseDir, { it.toInt() })
+        moves = parseListOfPairs(getInputText(), ::parseDir, ::parseInt)
     }
 
 
@@ -51,10 +51,9 @@ class Day9Problem() : DailyProblem<Long>() {
     }
 
     private fun followRopeBehindPath(
-        leaderPath: List<Coord>,
-        startPos: Coord
+        leaderPath: List<Coord>
     ): List<Coord> {
-        val tailPositions = leaderPath.runningFold(startPos) { currentPos, head ->
+        val tailPositions = leaderPath.runningFold(Coord.origin) { currentPos, head ->
             followCoord(currentPos, head)
         }
         return tailPositions
@@ -62,16 +61,13 @@ class Day9Problem() : DailyProblem<Long>() {
 
     override fun part1(): Long {
         val headPositions = findHeadPath()
-        val tailPositions = followRopeBehindPath(headPositions, Coord.origin)
+        val tailPositions = followRopeBehindPath(headPositions)
         return tailPositions.toSet().size.toLong()
     }
 
     override fun part2(): Long {
         val headPositions = findHeadPath()
-        var tailTrail = headPositions.toList()
-        repeat(9) {
-            tailTrail = followRopeBehindPath(tailTrail, Coord(0, 0))
-        }
+        val tailTrail = ::followRopeBehindPath.iterate(headPositions, 9)
         return tailTrail.toSet().size.toLong()
     }}
 

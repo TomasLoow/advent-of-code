@@ -15,10 +15,10 @@ class Day9Problem() : DailyProblem<Int>() {
     private lateinit var solution: Pair<Int, Int>
 
     override fun commonParts() {
-        val distances = parseListOfTriples(getInputText(), { it }, { it }, ::parseInt, " to ", " = ")
+        val distances = parseListOfTriples(getInputText(), ::id, ::id, ::parseInt, " to ", " = ")
         val places = distances.flatMap { listOf(it.first, it.second) }.toSet().toList()
         distancesMap = buildMap {
-            places.forEach { place -> this[place]= mutableMapOf<String, Int>() }
+            places.forEach { place -> this[place] = mutableMapOf<String, Int>() }
             distances.forEach { (a, b, d) ->
                 this[a]!![b] = d
                 this[b]!![a] = d

@@ -1,6 +1,7 @@
 package aoc.year2021
 
 import DailyProblem
+import aoc.utils.parseInt
 import aoc.utils.parseListOfPairs
 
 
@@ -37,7 +38,7 @@ class Day2Problem() : DailyProblem<Long>() {
                 else -> throw Exception("Bad Command")
             }
         }
-        return parseListOfPairs(getInputText(), ::parseCommand, { it.toInt() })
+        return parseListOfPairs(getInputText(), ::parseCommand, ::parseInt)
     }
 
     /* Move one step with the rules from part 1 of the problem */

@@ -1,6 +1,7 @@
 package aoc.year2021
 
 import DailyProblem
+import aoc.utils.parseInt
 import aoc.utils.shiftLeft
 import kotlin.time.ExperimentalTime
 
@@ -19,7 +20,7 @@ class Day6Problem() : DailyProblem<Long>() {
         getInputFile().readLines()
             .first()
             .split(",")
-            .map { it.toInt() }
+            .map(::parseInt)
             .forEach { fishValue ->
                 fishesCounts[fishValue]++
             }

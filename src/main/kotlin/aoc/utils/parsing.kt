@@ -67,3 +67,5 @@ fun parseCoord(data: String): Coord {
 fun parseInt(data: String): Int {
     return data.toInt()
 }
+
+fun <T> id(t:T) = t
