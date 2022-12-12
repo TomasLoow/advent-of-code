@@ -90,7 +90,6 @@ class Day13Problem() : DailyProblem<Any>() {
                 fold.applyToGrid(grid)
         }
         output = showGrid(grid)
-        println(output)
         return parseDisplay(output)  // Not an integer solution. Answers stored in display attribute instead
     }
 }
