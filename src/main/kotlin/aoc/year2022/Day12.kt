@@ -3,10 +3,21 @@ package aoc.year2022
 import DailyProblem
 import aoc.utils.AStar
 import aoc.utils.Array2D
+import aoc.utils.BFS
 import aoc.utils.Coord
 import kotlin.time.ExperimentalTime
 
-class HillClimb(protected val map: Array2D<Int>, goal: Coord) : AStar<Coord>(goal) {
+class HillClimbBFS(protected val map: Array2D<Int>, goal: Coord) : BFS<Coord>(goal) {
+    override fun reachable(state: Coord): Collection<Coord> {
+        val currentHeight = map[state]
+        return map.neighbours(state, diagonal = false)
+            .filter { (_, h) ->
+                (h - 1) <= currentHeight
+            }.keys
+    }
+}
+
+class HillClimbAStar(protected val map: Array2D<Int>, goal: Coord) : AStar<Coord>(goal) {
     override fun heuristic(state: Coord): Int {
         return state.manhattanDistanceTo(goal)
     }
@@ -19,9 +30,7 @@ class HillClimb(protected val map: Array2D<Int>, goal: Coord) : AStar<Coord>(goa
             }.keys
     }
 
-    override fun getMoveCost(from: Coord, to: Coord): Int {
-        return 1
-    }
+    override fun getMoveCost(from: Coord, to: Coord): Int = 1
 }
 
 
@@ -30,11 +39,12 @@ class Day12Problem : DailyProblem<Int>() {
     override val number = 12
     override val year = 2022
     override val name = "Hill Climbing Algorithm"
-
     private lateinit var map: Array2D<Int>
+
     private var startPos = Coord.origin
     private var endPos = Coord.origin
-    private lateinit var hillClimbProblem: HillClimb
+    private lateinit var hillClimbProblemBFS: HillClimbBFS
+    private lateinit var hillClimbProblemAStar: HillClimbAStar
 
     override fun commonParts() {
         map = Array2D.parseFromLines(getInputText()) { c ->
@@ -49,13 +59,14 @@ class Day12Problem : DailyProblem<Int>() {
         map[startPos] = 1
         map[endPos] = 26
 
-        hillClimbProblem = HillClimb(map, endPos)
+        hillClimbProblemBFS = HillClimbBFS(map, endPos)
+        hillClimbProblemAStar = HillClimbAStar(map, endPos)
     }
 
 
     override fun part1(): Int {
-        val res = hillClimbProblem.solve(startPos)
-        return res.first
+        val res = hillClimbProblemBFS.solve(startPos)
+        return res.size - 1
     }
 
 
@@ -66,7 +77,7 @@ class Day12Problem : DailyProblem<Int>() {
                     .neighbours(coordinate)
                     .any { it.value == 2 }
             }.map { it.first }
-        return hillClimbProblem.solve(allLowPoints).first
+        return hillClimbProblemAStar.solve(allLowPoints).first
 
     }
 }

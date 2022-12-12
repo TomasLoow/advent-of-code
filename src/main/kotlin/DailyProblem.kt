@@ -8,13 +8,12 @@ abstract class DailyProblem<Res> {
     abstract val number: Int
     abstract val year: Int
     abstract val name: String
-
     var testData = false
 
     open fun commonParts() {}
+
     abstract fun part1(): Res
     abstract fun part2(): Res
-
     fun getInputFile(): File {
 
         if (testData) return File("input/aoc$year/testinput/day$number.txt")
