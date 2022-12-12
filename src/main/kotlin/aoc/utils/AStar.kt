@@ -24,14 +24,22 @@ abstract class AStar<State>(val goal:State) {
             }
         }.reversed()
     }
+
     fun solve(start: State): Pair<Int, List<State>> {
+        return solve(listOf(start))
+    }
+
+    fun solve(startStates: List<State>): Pair<Int, List<State>> {
         steps = 0
         val openSet = PriorityQueue<Pair<Int, State>>(compareBy { it.first })
-        openSet.add(heuristic(start) to start)
-
         val cameFrom: MutableMap<State, State> = mutableMapOf()
-        val cheapestPathScoreMap : MutableMap<State, Int> = mutableMapOf(start to 0)
-        val heuristicScoreMap: MutableMap<State, Int> = mutableMapOf(start to heuristic(start))
+        val cheapestPathScoreMap : MutableMap<State, Int> = mutableMapOf()
+        val heuristicScoreMap: MutableMap<State, Int> = mutableMapOf()
+        startStates.forEach { start ->
+            openSet.add(heuristic(start) to start)
+            cheapestPathScoreMap[start] = 0
+            heuristicScoreMap[start] = heuristic(start)
+        }
 
         while (openSet.isNotEmpty()) {
             steps++

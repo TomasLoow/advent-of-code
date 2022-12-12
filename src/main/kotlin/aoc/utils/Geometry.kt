@@ -1,13 +1,19 @@
 package aoc.utils
 
-import java.lang.Math.abs
 import java.lang.Math.max
+import kotlin.math.absoluteValue
+
+/*
+In this module (0,0) is always the TOP LEFT corner
+with x,y increasing towards down and right. I blame QBasic.
+*/
 
 enum class Axis2D {
-    X,Y
+    X, Y
 }
+
 enum class Axis3D {
-    X,Y,Z
+    X, Y, Z
 }
 
 enum class Direction {
@@ -43,12 +49,12 @@ data class Coord(val x: Int, val y: Int) {
     operator fun minus(other: Coord): Pair<Int, Int> = Pair(x - other.x, y - other.y)
 
     fun manhattanDistanceTo(other: Coord): Int {
-        return abs(x - other.x) + abs(y - other.y)
+        return (x - other.x).absoluteValue + (y - other.y).absoluteValue
     }
 
     /** Also known as L_inf norm or Max-distance */
     fun chebyshevDistanceTo(other: Coord): Int {
-        return max(abs(x - other.x), abs(y - other.y))
+        return max((x - other.x).absoluteValue, (y - other.y).absoluteValue)
     }
 
     fun stepInDir(d: Direction): Coord {
@@ -110,13 +116,3 @@ data class Rect(val topLeft: Coord, val bottomRight: Coord) {
         return point.x in xRange && point.y in yRange
     }
 }
-
-fun main() {
-    val c = Coord(2, 3)
-    val c2 = Coord(6, 11)
-    val r = Rect(c, c2)
-    println(r.width)
-    println(r.height)
-}
-
-

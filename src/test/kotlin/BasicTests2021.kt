@@ -1,4 +1,5 @@
 import org.junit.Test
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Assertions.assertEquals
 
 class BasicTests2021 {
@@ -116,9 +117,8 @@ class BasicTests2021 {
         problem.testData = true
         problem.commonParts()
         assertEquals(17, problem.part1())
-        try {
-            problem.part2()
-        } catch (e: Exception) { }
+
+        Assertions.assertThrows(Exception::class.java) { problem.part2() }
         val expected = """
             █████ 
             █   █ 

@@ -1,6 +1,7 @@
 import aoc.year2022.*
 import org.junit.Test
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertThrows
 
 class BasicTests2022 {
     @Test
@@ -90,11 +91,7 @@ class BasicTests2022 {
         problem.commonParts()
         assertEquals(13140, problem.part1(), "Correct Answer day ${problem.number} part 1")
 
-        try {
-            problem.part2()
-        } catch (e: Exception) {
-
-        }
+        assertThrows(Exception::class.java) { problem.part2() }
         assertEquals(expectedPart2, problem.output, "Correct Answer day ${problem.number} part 2")
     }
 
@@ -104,5 +101,13 @@ class BasicTests2022 {
         problem.commonParts()
         assertEquals(10605L, problem.part1(), "Correct Answer day ${problem.number} part 1")
         assertEquals(2713310158L, problem.part2(), "Correct Answer day ${problem.number} part 2")
+    }
+
+    @Test
+    fun testDay12() {
+        val problem = Day12Problem().apply { testData = true }
+        problem.commonParts()
+        assertEquals(31, problem.part1(), "Correct Answer day ${problem.number} part 1")
+        assertEquals(29, problem.part2(), "Correct Answer day ${problem.number} part 2")
     }
 }
