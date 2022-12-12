@@ -11,13 +11,15 @@ class Day7Problem() : DailyProblem<Int>() {
     override val name = "No Space Left On Device"
 
     /* Commands and ls output */
-    sealed class Cmd
-    class CmdCd(var path: String) : Cmd()
-    class CmdLs(var content: List<LsLine>) : Cmd()
+    sealed interface Cmd {
+        class Cd(var path: String) : Cmd
+        class Ls(var content: List<Day7Problem.Ls>) : Cmd
+    }
 
-    sealed class LsLine
-    class LsFile(val name: String, val size: Int) : LsLine()
-    class LsDir(val name: String) : LsLine()
+    sealed interface Ls {
+        class File(val name: String, val size: Int) : Ls
+        class Dir(val name: String) : Ls
+    }
 
     private fun parseCommands(): List<Cmd> {
         val inputLines = getInputFile().readNonEmptyLines().toMutableList()
@@ -25,7 +27,7 @@ class Day7Problem() : DailyProblem<Int>() {
         while (inputLines.isNotEmpty()) {
             val command = inputLines.removeFirst()
             if (command.startsWith("$ cd ")) {
-                commands.add(CmdCd(command.substringAfter("$ cd ")))
+                commands.add(Cmd.Cd(command.substringAfter("$ cd ")))
             } else {
                 assert(command == "$ ls")
                 val content = buildList {
@@ -33,13 +35,13 @@ class Day7Problem() : DailyProblem<Int>() {
                         val lsLine = inputLines.removeFirst()
                         val (desc, name) = lsLine.split(" ")
                         if (desc == "dir") {
-                            add(LsDir(name))
+                            add(Ls.Dir(name))
                         } else {
-                            add(LsFile(name, desc.toInt()))
+                            add(Ls.File(name, desc.toInt()))
                         }
                     }
                 }
-                commands.add(CmdLs(content))
+                commands.add(Cmd.Ls(content))
             }
         }
         return commands
@@ -80,7 +82,7 @@ class Day7Problem() : DailyProblem<Int>() {
 
     private fun buildRootDirectory(commands: List<Cmd>): Directory {
         fun handleCd(
-            cmd: CmdCd,
+            cmd: Cmd.Cd,
             current: Directory
         ) = when (cmd.path) {
             ".." -> current.parent!!
@@ -88,11 +90,11 @@ class Day7Problem() : DailyProblem<Int>() {
             else -> current.subDirectories[cmd.path]!!
         }
 
-        fun handleLs(cmd: CmdLs, current: Directory) {
+        fun handleLs(cmd: Cmd.Ls, current: Directory) {
             cmd.content.forEach { lsLine ->
                 when (lsLine) {
-                    is LsDir -> current.subDirectories[lsLine.name] = Directory(lsLine.name, parent = current)
-                    is LsFile -> current.files.add(Pair(lsLine.name, lsLine.size))
+                    is Ls.Dir -> current.subDirectories[lsLine.name] = Directory(lsLine.name, parent = current)
+                    is Ls.File -> current.files.add(Pair(lsLine.name, lsLine.size))
                 }
             }
         }
@@ -101,8 +103,8 @@ class Day7Problem() : DailyProblem<Int>() {
         var current = root
         commands.forEach { cmd ->
             when (cmd) {
-                is CmdCd -> current = handleCd(cmd, current)
-                is CmdLs -> handleLs(cmd, current)
+                is Cmd.Cd -> current = handleCd(cmd, current)
+                is Cmd.Ls -> handleLs(cmd, current)
             }
         }
         return root

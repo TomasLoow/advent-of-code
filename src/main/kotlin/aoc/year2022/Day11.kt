@@ -26,9 +26,9 @@ class Day11Problem() : DailyProblem<Long>() {
         val (lineStart, lineOp, lineTest, lineTrue, lineFalse) = sLines.drop(1)
         val name = lineName.substringAfter("Monkey ").dropLast(1).toInt()
         val op = if ("+" in lineOp) {
-            MonkeyOpAdd(lineOp.substringAfter(" + ").toInt())
+            MonkeyOp.Add(lineOp.substringAfter(" + ").toInt())
         } else {
-            if ("old * old" in lineOp) MonkeyOpSquared(0) else MonkeyOpMul(lineOp.substringAfter(" * ").toInt())
+            if ("old * old" in lineOp) MonkeyOp.Squared() else MonkeyOp.Mul(lineOp.substringAfter(" * ").toInt())
         }
         val startingItems =
             lineStart.substringAfter("  Starting items: ").split(", ").map { it.toLong() }.toMutableList()
@@ -51,15 +51,16 @@ class Day11Problem() : DailyProblem<Long>() {
     }
 
     fun applyOp(op: MonkeyOp, v: Long): Long = when (op) {
-        is MonkeyOpAdd -> v + op.value
-        is MonkeyOpMul -> v * op.value
-        is MonkeyOpSquared -> v * v
+        is MonkeyOp.Add -> v + op.value
+        is MonkeyOp.Mul -> v * op.value
+        is MonkeyOp.Squared -> v * v
     }
 
-    sealed class MonkeyOp(internal val value: Int)
-    class MonkeyOpAdd(value: Int) : MonkeyOp(value)
-    class MonkeyOpMul(value: Int) : MonkeyOp(value)
-    class MonkeyOpSquared(_value: Int) : MonkeyOp(_value)
+    sealed interface MonkeyOp {
+        class Add(val value: Int) : MonkeyOp
+        class Mul(val value: Int) : MonkeyOp
+        class Squared() : MonkeyOp
+    }
 
     fun monkeyStep(state: Map<Int, Monkey>, divisor: Int = 3) {
         // To keep item values  for step 2, we calculate them modulo the lcm of all test values.

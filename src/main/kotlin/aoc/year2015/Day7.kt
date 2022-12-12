@@ -16,25 +16,26 @@ class Day7Problem() : DailyProblem<Int>() {
     private var valuePart1: Int? = null
 
 
-    sealed class Gate {}
-    class Const(val value: Int): Gate()
-    class And(val inpA: Wire, val inpB: Wire): Gate()
-    class Or(val inpA: Wire, val inpB: Wire): Gate()
-    class LShift(val inp: Wire, val amount: Int): Gate()
-    class RShift(val inp: Wire, val amount: Int): Gate()
-    class Not(val inp: Wire): Gate()
-    class Nop(val inp: Wire): Gate()
+    sealed interface Gate {
+        class Const(val value: Int): Gate
+        class And(val inpA: Wire, val inpB: Wire): Gate
+        class Or(val inpA: Wire, val inpB: Wire): Gate
+        class LShift(val inp: Wire, val amount: Int): Gate
+        class RShift(val inp: Wire, val amount: Int): Gate
+        class Not(val inp: Wire): Gate
+        class Nop(val inp: Wire): Gate
+    }
 
     fun parseGate(s: String): Gate {
-        if (s.all { c -> c.isDigit()}) return Const(s.toInt())
-        if (' ' !in s ) return Nop(s)
-        if (s.startsWith("NOT ")) return Not(s.substringAfter("NOT "))
+        if (s.all { c -> c.isDigit()}) return Gate.Const(s.toInt())
+        if (' ' !in s ) return Gate.Nop(s)
+        if (s.startsWith("NOT ")) return Gate.Not(s.substringAfter("NOT "))
         val (a, op, b) = s.split(" ")
         when(op) {
-            "AND" -> return And(a,b)
-            "OR" -> return Or(a,b)
-            "LSHIFT" -> return LShift(a, b.toInt())
-            "RSHIFT" -> return RShift(a, b.toInt())
+            "AND" -> return Gate.And(a,b)
+            "OR" -> return Gate.Or(a,b)
+            "LSHIFT" -> return Gate.LShift(a, b.toInt())
+            "RSHIFT" -> return Gate.RShift(a, b.toInt())
         }
         throw Exception("Parse error")
     }
@@ -51,13 +52,13 @@ class Day7Problem() : DailyProblem<Int>() {
         if (wire.all { c -> c.isDigit()}) return wire.toInt()
         val gate = circuit[wire]!!
         val value = when(gate) {
-            is Const ->  gate.value
-            is And -> evaluate(circuit, gate.inpA) and evaluate(circuit, gate.inpB)
-            is Or -> evaluate(circuit, gate.inpA) or evaluate(circuit, gate.inpB)
-            is LShift -> evaluate(circuit, gate.inp) shl gate.amount
-            is RShift -> evaluate(circuit, gate.inp) shr gate.amount
-            is Nop -> evaluate(circuit, gate.inp)
-            is Not -> evaluate(circuit, gate.inp).inv()
+            is Gate.Const ->  gate.value
+            is Gate.And -> evaluate(circuit, gate.inpA) and evaluate(circuit, gate.inpB)
+            is Gate.Or -> evaluate(circuit, gate.inpA) or evaluate(circuit, gate.inpB)
+            is Gate.LShift -> evaluate(circuit, gate.inp) shl gate.amount
+            is Gate.RShift -> evaluate(circuit, gate.inp) shr gate.amount
+            is Gate.Nop -> evaluate(circuit, gate.inp)
+            is Gate.Not -> evaluate(circuit, gate.inp).inv()
         }
         cache[wire] = value
         return value
@@ -77,7 +78,7 @@ class Day7Problem() : DailyProblem<Int>() {
         /* Change the value of b in the circuit to valuePart1 */
         val moddedCircuit = circuit.keys.associate { key ->
             if (key == "b") {
-                Pair(key, Const(valuePart1!!))
+                Pair(key, Gate.Const(valuePart1!!))
             } else {
                 Pair(key, circuit[key]!!)
             }

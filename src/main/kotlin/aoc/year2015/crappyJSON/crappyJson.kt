@@ -6,29 +6,31 @@ import aoc.utils.parseInt
 Yes, writing my own JSON parser instead of just importing the standard one was a *terrible* idea.
 But that's what I do.
 */
-sealed class JSON
-class JSONInt(val int: Int) : JSON()
-class JSONString(val string: String) : JSON()
-class JSONArray(val content: List<JSON>) : JSON()
-class JSONObject(val content: Map<String, JSON>) : JSON()
+sealed interface JSON {
+    class I(val int: Int) : JSON
+    class S(val string: String) : JSON
+    class A(val content: List<JSON>) : JSON
+    class O(val content: Map<String, JSON>) : JSON
 
-fun parseJSONInt(input: String): Pair<JSONInt, String> {
+}
+
+fun parseJInt(input: String): Pair<JSON.I, String> {
     return if (input.startsWith('-')) {
         val numPart = input.drop(1).takeWhile { it.isDigit() }
-        Pair(JSONInt(-parseInt(numPart)), input.drop(numPart.length + 1))
+        Pair(JSON.I(-parseInt(numPart)), input.drop(numPart.length + 1))
     } else {
         val numPart = input.takeWhile { it.isDigit() }
-        Pair(JSONInt(parseInt(numPart)), input.drop(numPart.length))
+        Pair(JSON.I(parseInt(numPart)), input.drop(numPart.length))
 
     }
 }
 
-fun parseJSONString(input: String): Pair<JSONString, String> {
+fun parseJString(input: String): Pair<JSON.S, String> {
     val s = input.drop(1).takeWhile { it != '\"' }
-    return Pair(JSONString(s), input.drop(s.length + 2))
+    return Pair(JSON.S(s), input.drop(s.length + 2))
 }
 
-fun parseJSONArray(input: String): Pair<JSONArray, String> {
+fun parseJArray(input: String): Pair<JSON.A, String> {
     var inp = input.drop(1)
     var consumed = 1
     val content = buildList<JSON> {
@@ -47,16 +49,16 @@ fun parseJSONArray(input: String): Pair<JSONArray, String> {
         inp = inp.drop(1)
         consumed++
     }
-    return Pair(JSONArray(content), inp)
+    return Pair(JSON.A(content), inp)
 }
 
-fun parseJSONObject(input: String): Pair<JSONObject, String> {
+fun parseJObject(input: String): Pair<JSON.O, String> {
     var inp = input.drop(1)
     var consumed = 1
     val content = buildMap<String, JSON> {
         while (true) {
             if (inp.first() == '}') break
-            val (keyJ, unparsedAfterKey) = parseJSONString(inp)
+            val (keyJ, unparsedAfterKey) = parseJString(inp)
             val consumedByKey = inp.length - unparsedAfterKey.length
             consumed += consumedByKey + 1
             inp = unparsedAfterKey.drop(1) // drop :
@@ -74,23 +76,23 @@ fun parseJSONObject(input: String): Pair<JSONObject, String> {
             this[keyJ.string] = valueJ
         }
     }
-    return Pair(JSONObject(content), inp)
+    return Pair(JSON.O(content), inp)
 }
 
 
 fun parseJSON(input: String): Pair<JSON, String> {
     when (input.first()) {
-        in "-0123456789" -> return parseJSONInt(input)
-        '\"' -> return parseJSONString(input)
-        '[' -> return parseJSONArray(input)
-        '{' -> return parseJSONObject(input)
+        in "-0123456789" -> return parseJInt(input)
+        '\"' -> return parseJString(input)
+        '[' -> return parseJArray(input)
+        '{' -> return parseJObject(input)
     }
     throw Exception("parse error")
 }
 
 fun printJSON(j: JSON) {
     when (j) {
-        is JSONArray -> {
+        is JSON.A -> {
             print("[")
             j.content.forEach { v ->
                 printJSON(v)
@@ -99,8 +101,8 @@ fun printJSON(j: JSON) {
             print("]")
         }
 
-        is JSONInt -> print(j.int)
-        is JSONObject -> {
+        is JSON.I -> print(j.int)
+        is JSON.O -> {
             print("{")
             j.content.forEach { k, v ->
                 print("\"$k\":")
@@ -109,8 +111,7 @@ fun printJSON(j: JSON) {
             }
             print("}")
         }
-
-        is JSONString -> {
+        is JSON.S -> {
             print("\"")
             print(j.string)
             print("\"")

@@ -13,9 +13,10 @@ class Day10Problem() : DailyProblem<Any>() {
     private lateinit var signal: Map<Int, Int>
     lateinit var output: String
 
-    sealed class Operator()
-    class Noop : Operator()
-    class Addx(val value: Int) : Operator()
+    sealed interface Op {
+        class Noop : Op
+        class Addx(val value: Int) : Op
+    }
 
     override fun commonParts() {
         val operators = parseOperators(getInputText())
@@ -23,14 +24,10 @@ class Day10Problem() : DailyProblem<Any>() {
     }
 
     private fun parseOperators(s: String) = s.nonEmptyLines().map { line ->
-        if (line == "noop") {
-            Noop()
-        } else {
-            Addx(line.substringAfter("addx ").toInt())
-        }
+        if (line == "noop") Op.Noop() else Op.Addx(line.substringAfter("addx ").toInt())
     }
 
-    private fun calculateFullSignal(data: List<Operator>): Map<Int, Int> {
+    private fun calculateFullSignal(data: List<Op>): Map<Int, Int> {
         var step = 1
         var signal = 1
 
@@ -38,7 +35,7 @@ class Day10Problem() : DailyProblem<Any>() {
             this[1] = 1
             data.forEach {
                 when (it) {
-                    is Addx -> {
+                    is Op.Addx -> {
                         step += 1
                         this[step] = signal
                         step += 1
@@ -46,7 +43,7 @@ class Day10Problem() : DailyProblem<Any>() {
                         this[step] = signal
                     }
 
-                    is Noop -> {
+                    is Op.Noop -> {
                         step += 1
                         this[step] = signal
                     }

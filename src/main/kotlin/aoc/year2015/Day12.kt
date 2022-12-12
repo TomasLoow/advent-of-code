@@ -22,20 +22,20 @@ class Day12Problem() : DailyProblem<Int>() {
 
     private fun sumInts(json: JSON): Int {
         return when(json) {
-            is JSONInt -> json.int
-            is JSONString -> 0
-            is JSONArray -> json.content.sumOf { sumInts(it) }
-            is JSONObject -> json.content.values.sumOf { sumInts(it) }
+            is JSON.I -> json.int
+            is JSON.S -> 0
+            is JSON.A -> json.content.sumOf { sumInts(it) }
+            is JSON.O -> json.content.values.sumOf { sumInts(it) }
         }
     }
 
     private fun sumIntsIfNotRed(json: JSON): Int {
         return when(json) {
-            is JSONInt -> json.int
-            is JSONString -> 0
-            is JSONArray -> json.content.sumOf { sumIntsIfNotRed(it) }
-            is JSONObject -> {
-                if (json.content.values.any { j -> j is JSONString && j.string == "red" }) {
+            is JSON.I -> json.int
+            is JSON.S -> 0
+            is JSON.A -> json.content.sumOf { sumIntsIfNotRed(it) }
+            is JSON.O -> {
+                if (json.content.values.any { j -> j is JSON.S && j.string == "red" }) {
                     0
                 } else
                 {
