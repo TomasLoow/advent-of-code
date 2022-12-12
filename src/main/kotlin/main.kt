@@ -57,6 +57,8 @@ val events = mapOf(
         aoc.year2015.day14Problem,
         aoc.year2015.day15Problem,
         aoc.year2015.day16Problem,
+        aoc.year2015.day17Problem,
+
         )
 )
 val RUN_FOR_YEAR: Int? = null

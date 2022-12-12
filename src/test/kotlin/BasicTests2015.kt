@@ -111,4 +111,12 @@ class BasicTests2015 {
 
     /* There was no test input for Day 16 */
 
+    @Test
+    fun testDay17() {
+        val problem = Day17Problem().apply { testData = true }.apply { testData = true }
+        problem.target = 25
+        problem.commonParts()
+        assertEquals(4, problem.part1(), "Correct Answer day ${problem.number } part 1")
+        assertEquals(3, problem.part2(), "Correct Answer day ${problem.number } part 2")
+    }
 }
