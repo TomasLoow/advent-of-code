@@ -6,6 +6,7 @@ import aoc.utils.parseBlockList
 import aoc.utils.product
 import kotlin.time.ExperimentalTime
 
+
 class Day11Problem() : DailyProblem<Long>() {
 
     override val number = 11
@@ -60,15 +61,18 @@ class Day11Problem() : DailyProblem<Long>() {
     class MonkeyOpMul(value: Int) : MonkeyOp(value)
     class MonkeyOpSquared(_value: Int) : MonkeyOp(_value)
 
-    fun monkeyStep(state: Map<Int, Monkey>, divisor: Int = 3, modulus: Int? = null) {
+    fun monkeyStep(state: Map<Int, Monkey>, divisor: Int = 3) {
+        // To keep item values  for step 2, we calculate them modulo the lcm of all test values.
+        // This doesn't affect any operations or tests.
+        // Mine were all prime so a simple product would have worked in hindsight, but oh well. 20/20
+        val modulus = state.values.map { it.test }.fold(1) { l, x -> lcm(l, x) }
+
         state.forEach { i, m ->
             m.heldItems.forEach { currentItem ->
                 var item = currentItem
                 item = applyOp(m.operation, item)
                 item /= divisor
-                if (modulus != null && item > modulus) {
-                    item %= modulus
-                }
+                item %= modulus
                 m.actions++
                 if (item % m.test == 0L) {
                     state[m.throwToTrue]!!.heldItems.add(item)
@@ -82,25 +86,16 @@ class Day11Problem() : DailyProblem<Long>() {
 
     override fun part1(): Long {
         state = parseMonkeys()
-
         repeat(20) { i ->
-            monkeyStep(state)
+            monkeyStep(state, divisor = 3)
         }
         return state.values.map { m -> m.actions }.sortedDescending().take(2).product()
     }
 
-
     override fun part2(): Long {
         state = parseMonkeys()
-
-
-        // To keep item values sane, we calculate them modulo the lcm of all test values.
-        // This doesn't affect any operations or tests.
-        // Mine were all prime so a simple product would have worked in hindsight, but oh well. 20/20
-        val modulus = state.values.map { it.test }.fold(1) { l, x -> lcm(l, x) }
-
         repeat(10000) { i ->
-            monkeyStep(state, 1, modulus = modulus)
+            monkeyStep(state, 1)
         }
         return state.values.map { m -> m.actions }.sortedDescending().take(2).product()
     }
