@@ -43,8 +43,12 @@ enum class Direction {
 
 data class Coord(val x: Int, val y: Int) {
 
+    override fun hashCode(): Int {
+        return (x * MAX_VALUE + y) // This will be collision free for all x & y < MAX_VALUE
+    }
+
     operator fun plus(d: Direction) = this.stepInDir(d)
-    operator fun plus(delta: Pair<Int, Int>) = Coord(x + delta.first, y + delta.second)
+    operator fun plus(delta: Pair<Int, Int>) = copy(x = x + delta.first, y = y + delta.second)
 
     operator fun minus(other: Coord): Pair<Int, Int> = Pair(x - other.x, y - other.y)
 
@@ -60,10 +64,10 @@ data class Coord(val x: Int, val y: Int) {
     fun stepInDir(d: Direction): Coord {
         val (x, y) = this
         return when (d) {
-            Direction.UP -> Coord(x, y - 1)
-            Direction.RIGHT -> Coord(x + 1, y)
-            Direction.DOWN -> Coord(x, y + 1)
-            Direction.LEFT -> Coord(x - 1, y)
+            Direction.UP -> copy(y = y - 1)
+            Direction.RIGHT -> copy(x = x + 1)
+            Direction.DOWN -> copy(y = y + 1)
+            Direction.LEFT -> copy(x = x - 1)
         }
     }
 
@@ -88,6 +92,8 @@ data class Coord(val x: Int, val y: Int) {
 
     companion object {
         val origin = Coord(0, 0)
+        private val MAX_VALUE = 1024
+
     }
 }
 

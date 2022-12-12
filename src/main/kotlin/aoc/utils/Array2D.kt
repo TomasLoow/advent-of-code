@@ -6,37 +6,41 @@ class Array2D<T> {
 
     val height: Int
     val width: Int
-    private val data: ArrayList<T>
+    val rect: Rect
 
+    private val data: ArrayList<T>
     constructor(input: Collection<Collection<T>>) {
         this.height = input.size
         this.width = input.first().size
         this.data = ArrayList(input.flatten())
+        this.rect = Rect(Coord(0, 0), Coord(width - 1, height - 1))
     }
 
     constructor(raw: Collection<T>, width: Int, height: Int) {
         assert(raw.size == height * width)
+        this.width = width
+        this.height = height
+        this.rect = Rect(Coord(0, 0), Coord(width - 1, height - 1))
         this.data = when (raw) {
             is ArrayList -> raw
             else -> {
                 ArrayList(raw)
             }
         }
-        this.width = width
-        this.height = height
     }
 
     constructor(width: Int, height: Int, initital: T) {
-        this.data = ArrayList(width * height)
-        repeat(width * height) { this.data.add(initital) }
-
         this.width = width
         this.height = height
+        this.rect = Rect(Coord(0, 0), Coord(width - 1, height - 1))
+        this.data = ArrayList(width * height)
+        repeat(width * height) { this.data.add(initital) }
     }
 
     constructor(width: Int, height: Int, f: (Coord) -> T) {
         this.width = width
         this.height = height
+        this.rect = Rect(Coord(0, 0), Coord(width - 1, height - 1))
         this.data = ArrayList((0 until height).flatMap { y ->
             (0 until width).map { x ->
                 f(Coord(x, y))
@@ -44,11 +48,6 @@ class Array2D<T> {
         })
     }
 
-
-    val rect: Rect
-        get() {
-            return Rect(Coord(0, 0), Coord(width - 1, height - 1))
-        }
 
     val xRange: IntRange
         get() {
@@ -148,7 +147,7 @@ class Array2D<T> {
 
     }
 
-    fun neighbourCoords(c: Coord, diagonal: Boolean): List<Coord> {
+    fun neighbourCoords(c: Coord, diagonal: Boolean = true): List<Coord> {
         val pattern = if (diagonal) IDX_STEPS_WITH_DIAG else STEPS_WITHOUT_DIAG
         val idx = c2Idx(c)
 
@@ -157,7 +156,16 @@ class Array2D<T> {
         }.map(::idx2c)
     }
 
-    fun neighbours(c: Coord, diagonal: Boolean = true): Map<Coord, T> {
+    fun neighbourValues(c: Coord, diagonal: Boolean = true): List<T> {
+        val pattern = if (diagonal) IDX_STEPS_WITH_DIAG else STEPS_WITHOUT_DIAG
+        val idx = c2Idx(c)
+
+        return pattern.map { it + idx }.filter { nIdx ->
+            nIdx >= 0 && nIdx < data.size && ((nIdx % width) - (c.x)).absoluteValue <= 1
+        }.map{ nIdx -> data[nIdx]}
+    }
+
+    fun neighbourCoordsAndValues(c: Coord, diagonal: Boolean = true): Map<Coord, T> {
         return neighbourCoords(c, diagonal).associateWith { coordinate -> get(coordinate) }
     }
 

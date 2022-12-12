@@ -62,7 +62,7 @@ val events = mapOf(
         )
 )
 val RUN_FOR_YEAR: Int? = null
-val TIMES_TO_RUN = 50
+val TIMES_TO_RUN = 10
 
 @OptIn(ExperimentalTime::class)
 fun main() {

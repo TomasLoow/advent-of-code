@@ -121,7 +121,7 @@ class Array2DTest {
                 listOf(4, 5, 6, 7)
             )
         )
-        val n = a2.neighbours(Coord(1, 1))
+        val n = a2.neighbourCoordsAndValues(Coord(1, 1))
         assertEquals(1, n[Coord(0, 0)])
         assertEquals(2, n[Coord(1, 0)])
         assertEquals(3, n[Coord(2, 0)])

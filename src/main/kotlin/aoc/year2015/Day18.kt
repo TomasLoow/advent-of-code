@@ -18,7 +18,7 @@ class Day18Problem() : DailyProblem<Int>() {
     fun step(grid: Array2D<Boolean>, gridNext: Array2D<Boolean>) {
         gridNext.mapIndexed{ c, _ ->
             val value = grid[c]
-            val neigboursOnCount = grid.neighbours(c).values.count { it }
+            val neigboursOnCount = grid.neighbourValues(c).count { it }
             if (value) (neigboursOnCount == 2 || neigboursOnCount == 3) else (neigboursOnCount == 3)
         }
     }

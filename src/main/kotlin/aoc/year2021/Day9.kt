@@ -12,12 +12,8 @@ class SeaFloor(private val map: Array2D<Int>) {
     operator fun get(c: Coord): Int = map[c]
     private fun isLowestPoint(p: Coord): Boolean {
         val here = map[p]
-        val neighbourValues = neighbourValuesOf(p)
+        val neighbourValues = map.neighbourValues(p, diagonal = false)
         return neighbourValues.all { it > here }
-    }
-
-    private fun neighbourValuesOf(p: Coord): Collection<Int> {
-        return map.neighbours(p, diagonal = false).values
     }
 
     fun findLowestPoints(): List<Coord> {

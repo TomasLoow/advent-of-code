@@ -10,7 +10,7 @@ import kotlin.time.ExperimentalTime
 class HillClimbBFS(protected val map: Array2D<Int>, goal: Coord) : BFS<Coord>(goal) {
     override fun reachable(state: Coord): Collection<Coord> {
         val currentHeight = map[state]
-        return map.neighbours(state, diagonal = false)
+        return map.neighbourCoordsAndValues(state, diagonal = false)
             .filter { (_, h) ->
                 (h - 1) <= currentHeight
             }.keys
@@ -24,7 +24,7 @@ class HillClimbAStar(protected val map: Array2D<Int>, goal: Coord) : AStar<Coord
 
     override fun reachable(state: Coord): Collection<Coord> {
         val currentHeight = map[state]
-        return map.neighbours(state, diagonal = false)
+        return map.neighbourCoordsAndValues(state, diagonal = false)
             .filter { (_, h) ->
                 (h - 1) <= currentHeight
             }.keys
@@ -74,7 +74,7 @@ class Day12Problem : DailyProblem<Int>() {
         val allLowPoints = map
             .filterIndexedByCoordinate { coordinate, height ->  // Find coords that are 'a' with a neighbour that is 'b'
                 (height == 1) && map
-                    .neighbours(coordinate)
+                    .neighbourCoordsAndValues(coordinate)
                     .any { it.value == 2 }
             }.map { it.first }
         return hillClimbProblemAStar.solve(allLowPoints).first
