@@ -132,6 +132,13 @@ class Array2D<T> {
         return (c.x == 0 || c.y == 0 || c.x == this.width - 1 || c.y == this.height - 1)
     }
 
+
+    fun onCorner(c: Coord): Boolean {
+        return (c.x == 0 || c.x == this.width - 1) && (c.y == 0 || c.y == this.height - 1)
+
+    }
+
+
     fun neighbourCoords(c: Coord, diagonal: Boolean): List<Coord> {
         val pattern = if (diagonal) STEPS_WITH_DIAG else STEPS_WITHOUT_DIAG
         return pattern
