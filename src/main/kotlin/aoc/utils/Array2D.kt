@@ -1,47 +1,53 @@
 package aoc.utils
 
+import kotlin.math.absoluteValue
+
 class Array2D<T> {
 
     val height: Int
     val width: Int
     private val data: ArrayList<T>
+
     constructor(input: Collection<Collection<T>>) {
         this.height = input.size
         this.width = input.first().size
         this.data = ArrayList(input.flatten())
     }
-    constructor(raw: Collection<T>, width: Int, height:Int) {
-        assert(raw.size == height*width)
+
+    constructor(raw: Collection<T>, width: Int, height: Int) {
+        assert(raw.size == height * width)
         this.data = when (raw) {
             is ArrayList -> raw
-            else -> { ArrayList(raw)}
+            else -> {
+                ArrayList(raw)
+            }
         }
         this.width = width
         this.height = height
     }
-    constructor(width: Int, height:Int, initital:T) {
-        this.data = ArrayList(width*height)
-        repeat(width*height) { this.data.add(initital)}
+
+    constructor(width: Int, height: Int, initital: T) {
+        this.data = ArrayList(width * height)
+        repeat(width * height) { this.data.add(initital) }
 
         this.width = width
         this.height = height
     }
 
-    constructor(width: Int, height:Int, f: (Coord) -> T) {
+    constructor(width: Int, height: Int, f: (Coord) -> T) {
         this.width = width
         this.height = height
         this.data = ArrayList((0 until height).flatMap { y ->
-            (0 until width). map { x ->
-                f(Coord(x,y))
+            (0 until width).map { x ->
+                f(Coord(x, y))
             }
         })
     }
 
 
-
     val rect: Rect
         get() {
-            return Rect(Coord(0,0), Coord(width-1,height-1))
+            return Rect(Coord(0, 0), Coord(width - 1, height - 1))
         }
 
     val xRange: IntRange
@@ -71,6 +77,10 @@ class Array2D<T> {
 
     private fun c2Idx(c: Coord): Int {
         return c.y * width + c.x
+    }
+
+    private fun idx2c(idx: Int): Coord {
+        return Coord(idx % width, idx / width)
     }
 
     operator fun get(x: Int, y: Int): T {
@@ -108,7 +118,7 @@ class Array2D<T> {
         r.yRange.forEach { y ->
             val startIdx = c2Idx(r.xRange.first, y)
             val lastIdx = c2Idx(r.xRange.last, y)
-            (startIdx..lastIdx).forEach { idx:Int ->
+            (startIdx..lastIdx).forEach { idx: Int ->
                 data[idx] = value
             }
         }
@@ -118,7 +128,7 @@ class Array2D<T> {
         r.yRange.forEach { y ->
             val startIdx = c2Idx(r.xRange.first, y)
             val lastIdx = c2Idx(r.xRange.last, y)
-            (startIdx..lastIdx).forEach { idx:Int ->
+            (startIdx..lastIdx).forEach { idx: Int ->
                 data[idx] = mod(data[idx])
             }
         }
@@ -138,14 +148,13 @@ class Array2D<T> {
 
     }
 
-
     fun neighbourCoords(c: Coord, diagonal: Boolean): List<Coord> {
-        val pattern = if (diagonal) STEPS_WITH_DIAG else STEPS_WITHOUT_DIAG
-        return pattern
-            .map { (dx, dy) -> Coord(dx + c.x, dy + c.y) }
-            .filter {
-                this.contains(it)
-            }
+        val pattern = if (diagonal) IDX_STEPS_WITH_DIAG else STEPS_WITHOUT_DIAG
+        val idx = c2Idx(c)
+
+        return pattern.map { it + idx }.filter {
+            it >= 0 && it < data.size && ((it % width) - (c.x)).absoluteValue <= 1
+        }.map(::idx2c)
     }
 
     fun neighbours(c: Coord, diagonal: Boolean = true): Map<Coord, T> {
@@ -155,8 +164,9 @@ class Array2D<T> {
     fun <R> map(function: (T) -> R): Array2D<R> {
         return Array2D(data.map(function), width, height)
     }
+
     fun <R> mapIndexed(function: (Coord, T) -> R): Array2D<R> {
-        return Array2D(allCoords.zip(data).map { (c,v) -> function(c,v) }, width, height)
+        return Array2D(allCoords.zip(data).map { (c, v) -> function(c, v) }, width, height)
     }
 
 
@@ -220,22 +230,27 @@ class Array2D<T> {
         print(show(renderer))
     }
 
+    val IDX_STEPS_WITH_DIAG: Array<Int>
+        get() = arrayOf(
+            width,
+            width - 1,
+            width + 1,
+            1,
+            -1,
+            -(width),
+            -(width - 1),
+            -(width + 1),
+        )
+
+    val STEPS_WITHOUT_DIAG: Array<Int>
+        get() = arrayOf(
+            width,
+            1,
+            -1,
+            -width,
+        )
 
     companion object {
-        val STEPS_WITH_DIAG: List<Coord> =
-            listOf(
-                Coord(1, 1),
-                Coord(1, 0),
-                Coord(1, -1),
-                Coord(0, 1),
-                Coord(0, -1),
-                Coord(-1, 1),
-                Coord(-1, 0),
-                Coord(-1, -1)
-            )
-
-        val STEPS_WITHOUT_DIAG: List<Coord> =
-            listOf(Coord(1, 0), Coord(0, 1), Coord(0, -1), Coord(-1, 0))
 
         fun <T> parseFromLines(string: String, charParser: (Char) -> T): Array2D<T> {
             return Array2D(
@@ -250,3 +265,4 @@ class Array2D<T> {
 
     }
 }
+
