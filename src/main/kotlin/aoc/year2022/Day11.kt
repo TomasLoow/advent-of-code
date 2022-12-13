@@ -16,8 +16,14 @@ class Day11Problem() : DailyProblem<Long>() {
     private lateinit var state: Map<Int, Monkey>
 
     fun parseMonkeys(): Map<Int, Monkey> {
-        return parseBlockList(getInputText(), ::parseMonkey).mapIndexed { idx, monkeyRule -> Pair(idx, monkeyRule) }
-            .toMap()
+        val monkeys =
+            parseBlockList(getInputText(), ::parseMonkey).mapIndexed { idx, monkeyRule -> Pair(idx, monkeyRule) }
+                .toMap()
+        monkeys.forEach { idx, monkey ->
+            monkey.throwToTrue = monkeys[monkey.throwToTrueIdx]!!
+            monkey.throwToFalse = monkeys[monkey.throwToFalseIdx]!!
+        }
+        return monkeys
     }
 
     private fun parseMonkey(s: String): Monkey {
@@ -35,19 +41,21 @@ class Day11Problem() : DailyProblem<Long>() {
         val test = lineTest.substringAfter("  Test: divisible by ").toInt()
         val ttt = lineTrue.substringAfter("If true: throw to monkey ").toInt()
         val ttf = lineFalse.substringAfter("If false: throw to monkey ").toInt()
-        return Monkey(name, startingItems, op, test, ttt, ttf)
+        return Monkey(name, ArrayDeque(startingItems), op, test, ttt, ttf)
     }
 
     data class Monkey(
         val number: Int,
-        val heldItems: MutableList<Long>,
+        val heldItems: ArrayDeque<Long>,
         val operation: MonkeyOp,
         val test: Int,
-        val throwToTrue: Int,
-        val throwToFalse: Int,
+        val throwToTrueIdx: Int,
+        val throwToFalseIdx: Int,
         var actions: Long = 0L
     ) {
 
+        var throwToTrue: Monkey? = null
+        var throwToFalse: Monkey? = null
     }
 
     fun applyOp(op: MonkeyOp, v: Long): Long = when (op) {
@@ -69,16 +77,16 @@ class Day11Problem() : DailyProblem<Long>() {
         val modulus = state.values.map { it.test }.fold(1) { l, x -> lcm(l, x) }
 
         state.forEach { i, m ->
-            m.heldItems.forEach { currentItem ->
-                var item = currentItem
+            while(m.heldItems.isNotEmpty()) {
+                var item = m.heldItems.removeFirst()
                 item = applyOp(m.operation, item)
                 item /= divisor
                 item %= modulus
                 m.actions++
                 if (item % m.test == 0L) {
-                    state[m.throwToTrue]!!.heldItems.add(item)
+                    m.throwToTrue!!.heldItems.addLast(item)
                 } else {
-                    state[m.throwToFalse]!!.heldItems.add(item)
+                    m.throwToFalse!!.heldItems.addLast(item)
                 }
             }
             m.heldItems.clear()
