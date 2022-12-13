@@ -31,6 +31,7 @@ fun parseJString(input: String): Pair<JSON.S, String> {
 }
 
 fun parseJArray(input: String): Pair<JSON.A, String> {
+    if (input.startsWith("[]")) return Pair(JSON.A(emptyList()), input.drop(2))
     var inp = input.drop(1)
     var consumed = 1
     val content = buildList<JSON> {
@@ -53,6 +54,7 @@ fun parseJArray(input: String): Pair<JSON.A, String> {
 }
 
 fun parseJObject(input: String): Pair<JSON.O, String> {
+    if (input.startsWith("{}")) return Pair(JSON.O(emptyMap()), input.drop(2))
     var inp = input.drop(1)
     var consumed = 1
     val content = buildMap<String, JSON> {

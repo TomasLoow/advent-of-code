@@ -2,8 +2,9 @@ package aoc.year2015
 
 import DailyProblem
 import aoc.utils.*
-import kotlin.time.ExperimentalTime
 import aoc.year2015.crappyJSON.*
+import kotlin.time.ExperimentalTime
+
 class Day12Problem() : DailyProblem<Int>() {
     override val number = 12
     override val year = 2015
@@ -21,7 +22,7 @@ class Day12Problem() : DailyProblem<Int>() {
     }
 
     private fun sumInts(json: JSON): Int {
-        return when(json) {
+        return when (json) {
             is JSON.I -> json.int
             is JSON.S -> 0
             is JSON.A -> json.content.sumOf { sumInts(it) }
@@ -30,15 +31,14 @@ class Day12Problem() : DailyProblem<Int>() {
     }
 
     private fun sumIntsIfNotRed(json: JSON): Int {
-        return when(json) {
+        return when (json) {
             is JSON.I -> json.int
             is JSON.S -> 0
             is JSON.A -> json.content.sumOf { sumIntsIfNotRed(it) }
             is JSON.O -> {
                 if (json.content.values.any { j -> j is JSON.S && j.string == "red" }) {
                     0
-                } else
-                {
+                } else {
                     json.content.values.sumOf { sumIntsIfNotRed(it) }
                 }
             }
