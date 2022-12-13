@@ -1,6 +1,6 @@
 package aoc.year2015.crappyJSON
 
-import aoc.utils.parseInt
+import java.lang.Integer.parseInt
 
 /*
 Yes, writing my own JSON parser instead of just importing the standard one was a *terrible* idea.

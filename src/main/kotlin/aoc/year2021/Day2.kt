@@ -1,8 +1,8 @@
 package aoc.year2021
 
 import DailyProblem
-import aoc.utils.parseInt
 import aoc.utils.parseListOfPairs
+import java.lang.Integer.parseInt
 
 
 enum class Command {

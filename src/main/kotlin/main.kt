@@ -62,8 +62,8 @@ val events = mapOf(
 
         )
 )
-val RUN_FOR_YEAR: Int? = null
-val TIMES_TO_RUN = 10
+val RUN_FOR_YEAR: Int? = 2022
+val TIMES_TO_RUN = 100
 
 @OptIn(ExperimentalTime::class)
 fun main() {
@@ -85,6 +85,10 @@ fun main() {
         val totalTime = durations.values.reduce { acc, duration -> acc + duration }
         println("Total time for $year: $totalTime")
         println()
+        val slowest = durations.toList().sortedByDescending { (num, dur) -> dur }.first()
+        println("Slowest problem: ${slowest.first}: ${slowest.second}")
+        println()
+
         yearSummary[year] = totalTime
     }
     println("=== Year totals ===")

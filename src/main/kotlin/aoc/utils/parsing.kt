@@ -1,5 +1,7 @@
 package aoc.utils
 
+import java.lang.Integer.parseInt
+
 
 fun <A,B> parseTwoBlocks(data: String, parserA : (String) -> A, parserB: (String) -> B) : Pair<A,B> {
     val (chunkA, chunkB) = data.ensureNl().split("\n\n").also { if (it.size != 2) throw Exception("Too many blocks") }
@@ -12,12 +14,12 @@ fun <A,B,C> parseThreeBlocks(data: String, parserA : (String) -> A, parserB: (St
 }
 
 fun <A> parseBlockList(data: String, parser : (String) -> A) : List<A> {
-    return data.ensureNl().split("\n\n").map(parser)
+    return data.split("\n\n").map(parser)
 }
 
 
 fun parseIntLines(data: String) :List<Int> {
-    return data.nonEmptyLines().map { line -> line.toInt() }
+    return data.nonEmptyLines().map(::parseInt)
 }
 
 fun parseIntArray(data: String) : Array2D<Int> {
@@ -59,13 +61,10 @@ fun <A> parseOneLineOfSeparated(data: String, parser: (String) -> A, s: String):
 }
 
 
+
 fun parseCoord(data: String): Coord {
     val (x, y) = data.split(",")
     return Coord(x.toInt(), y.toInt())
-}
-
-fun parseInt(data: String): Int {
-    return data.toInt()
 }
 
 fun <T> id(t:T) = t

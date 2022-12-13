@@ -2,6 +2,7 @@ package aoc.year2015
 
 import DailyProblem
 import aoc.utils.*
+import java.lang.Integer.parseInt
 import kotlin.math.max
 import kotlin.math.min
 import kotlin.time.ExperimentalTime

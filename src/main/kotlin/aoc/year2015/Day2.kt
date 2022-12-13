@@ -2,6 +2,7 @@ package aoc.year2015
 
 import DailyProblem
 import aoc.utils.*
+import java.lang.Integer.parseInt
 import kotlin.time.ExperimentalTime
 
 class Day2Problem() : DailyProblem<Int>() {

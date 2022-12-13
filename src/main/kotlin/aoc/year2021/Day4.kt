@@ -5,8 +5,8 @@ import DailyProblem
 import aoc.utils.Array2D
 import aoc.utils.Coord
 import aoc.utils.parseBlockList
-import aoc.utils.parseInt
 import java.io.File
+import java.lang.Integer.parseInt
 import kotlin.time.ExperimentalTime
 
 private fun parseBingoFile(path: String): Pair<List<Int>, List<BingoBoard>> {

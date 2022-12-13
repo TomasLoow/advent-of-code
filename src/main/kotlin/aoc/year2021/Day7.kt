@@ -1,8 +1,8 @@
 package aoc.year2021
 
 import DailyProblem
-import aoc.utils.parseInt
 import aoc.utils.parseOneLineOfSeparated
+import java.lang.Integer.parseInt
 import kotlin.math.absoluteValue
 import kotlin.math.min
 import kotlin.time.ExperimentalTime

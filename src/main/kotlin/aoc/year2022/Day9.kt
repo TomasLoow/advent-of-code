@@ -2,6 +2,7 @@ package aoc.year2022
 
 import DailyProblem
 import aoc.utils.*
+import java.lang.Integer.parseInt
 import kotlin.math.sign
 import kotlin.time.ExperimentalTime
 
@@ -28,8 +29,6 @@ class Day9Problem() : DailyProblem<Long>() {
     }
 
 
-
-
     private fun findHeadPath(): MutableList<Coord> {
         val headPositions = mutableListOf<Coord>()
         var headPos = Coord.origin
@@ -43,8 +42,8 @@ class Day9Problem() : DailyProblem<Long>() {
         return headPositions
     }
 
-    private fun followCoord(follower: Coord, leader: Coord) : Coord{
-        val (dx, dy) = leader-follower
+    private fun followCoord(follower: Coord, leader: Coord): Coord {
+        val (dx, dy) = leader - follower
         if (leader.chebyshevDistanceTo(follower) < 2) return follower
 
         return follower + Pair(dx.sign, dy.sign)
@@ -69,7 +68,8 @@ class Day9Problem() : DailyProblem<Long>() {
         val headPositions = findHeadPath()
         val tailTrail = ::followRopeBehindPath.iterate(headPositions, 9)
         return tailTrail.toSet().size.toLong()
-    }}
+    }
+}
 
 val day9Problem = Day9Problem()
 

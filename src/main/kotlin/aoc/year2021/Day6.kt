@@ -1,8 +1,8 @@
 package aoc.year2021
 
 import DailyProblem
-import aoc.utils.parseInt
 import aoc.utils.shiftLeft
+import java.lang.Integer.parseInt
 import kotlin.time.ExperimentalTime
 
 class Day6Problem() : DailyProblem<Long>() {

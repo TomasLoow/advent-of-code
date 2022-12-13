@@ -3,6 +3,7 @@ package aoc.year2022
 import DailyProblem
 import aoc.utils.parseBlockList
 import aoc.utils.parseIntLines
+import kotlin.time.ExperimentalTime
 
 class Day1Problem() : DailyProblem<Int>() {
     private lateinit var caloriesList: List<List<Int>>
@@ -27,5 +28,12 @@ class Day1Problem() : DailyProblem<Int>() {
 
 
 val day1Problem = Day1Problem()
+
+
+
+@OptIn(ExperimentalTime::class)
+fun main() {
+    println(day1Problem.runBoth(100))
+}
 
 
