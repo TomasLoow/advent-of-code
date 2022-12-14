@@ -61,6 +61,7 @@ val events = mapOf(
         aoc.year2015.day16Problem,
         aoc.year2015.day17Problem,
         aoc.year2015.day18Problem,
+        aoc.year2015.day19Problem,
 
         )
 )
