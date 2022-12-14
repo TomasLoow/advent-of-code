@@ -2,7 +2,10 @@ package aoc.year2022
 
 import DailyProblem
 import aoc.utils.*
+import kotlin.math.max
+import kotlin.math.min
 import kotlin.time.ExperimentalTime
+
 
 class Day14Problem() : DailyProblem<Int>() {
 
@@ -31,8 +34,11 @@ class Day14Problem() : DailyProblem<Int>() {
         map = Array2D(width, 500, SandSpot.Empty)
         input.forEach { line ->
             line.windowed(2) { (from, to) ->
-                val r = if (from.x <= to.x && from.y <= to.y) Rect(from, to) else Rect(to, from)
-                map[r] = SandSpot.Wall
+                if (from.y == to.y) {
+                    (min(from.x, to.x)..max(from.x, to.x)).forEach { x -> map[x, from.y] = SandSpot.Wall }
+                } else {
+                    (min(from.y, to.y)..max(from.y, to.y)).forEach { y -> map[from.x, y] = SandSpot.Wall }
+                }
             }
         }
     }
@@ -67,9 +73,13 @@ class Day14Problem() : DailyProblem<Int>() {
         try {
             var coord = SAND_SOURCE
             while (true) {
+                val curs = map.cursor(coord)
                 while (true) {
-                    val below = coord.stepInDir(Direction.DOWN)
-                    if (map[below] == SandSpot.Empty) coord = below else break
+                    if (!curs.moveDown()) return false
+                    if (curs.value != SandSpot.Empty) {
+                        coord = curs.prev
+                        break
+                    }
                 }
                 val bl = coord.stepInDir(Direction.DOWN).stepInDir(Direction.LEFT)
                 val br = coord.stepInDir(Direction.DOWN).stepInDir(Direction.RIGHT)

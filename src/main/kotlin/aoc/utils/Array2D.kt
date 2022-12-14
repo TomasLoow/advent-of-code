@@ -1,5 +1,6 @@
 package aoc.utils
 
+import aoc.utils.Direction.*
 import kotlin.math.absoluteValue
 
 @Suppress("UNCHECKED_CAST")
@@ -14,7 +15,6 @@ class Array2D<T> {
     constructor(input: Collection<Collection<T>>) {
         this.height = input.size
         this.width = input.first().size
-        val capacity = width * height
         this.rect = Rect(Coord(0, 0), Coord(width - 1, height - 1))
 
         val flatInput = input.flatten()
@@ -25,7 +25,6 @@ class Array2D<T> {
         assert(raw.size == height * width)
         this.width = width
         this.height = height
-        val capacity = width * height
         this.rect = Rect(Coord(0, 0), Coord(width - 1, height - 1))
         this.data = raw.toTypedArray()
     }
@@ -245,6 +244,10 @@ class Array2D<T> {
         print(show(renderer))
     }
 
+    fun cursor(coord: Coord): Cursor<T> {
+        return Cursor(this, coord)
+    }
+
     private val IDX_STEPS_WITH_DIAG: Array<Int>
         get() = arrayOf(
             width,
@@ -279,5 +282,100 @@ class Array2D<T> {
         fun a2renderInt(b: Int): String = b.toString()
 
     }
-}
 
+
+    class Cursor<T>(private val map: Array2D<T>, coord: Coord) {
+        var x: Int
+        var y: Int
+        var idx: Int
+        var prevIdx: Int? = null
+
+        init {
+            x = coord.x
+            y = coord.y
+            idx = map.c2Idx(coord)
+        }
+
+        val value: T
+            get() = map.data[idx] as T
+        val prev: Coord
+            get() {
+                if (prevIdx == null) throw Exception("No previous coordinate")
+                return map.idx2c(prevIdx!!)
+            }
+
+        fun moveRight(): Boolean {
+            if (x == map.width - 1) return false
+            x += 1
+            prevIdx = idx
+            idx += 1
+            return true
+        }
+        fun moveLeft(): Boolean {
+            if (x == 0) return false
+            x -= 1
+            prevIdx = idx
+            idx -= 1
+            return true
+        }
+        fun moveDown(): Boolean {
+            if (y == map.width - 1) return false
+            y += 1
+            prevIdx = idx
+            idx += map.width
+            return true
+        }
+        fun moveUp(): Boolean {
+            if (y == 0) return false
+            y -= 1
+            prevIdx = idx
+            idx -= map.width
+            return true
+        }
+        fun moveUpRight(): Boolean {
+            if (y == 0 || x == map.width-1) return false
+            y -= 1
+            x += 1
+            prevIdx = idx
+            idx -= (map.width-1)
+            return true
+        }
+        fun moveUpLeft(): Boolean {
+            if (y == 0 || x == 0) return false
+            y -= 1
+            x -= 1
+            prevIdx = idx
+            idx -= (map.width+1)
+            return true
+        }
+        fun moveDownRight(): Boolean {
+            if (y == map.height-1 || x == map.width-1) return false
+            y += 1
+            x += 1
+            prevIdx = idx
+            idx += (map.width+1)
+            return true
+        }
+        fun moveDownLeft(): Boolean {
+            if (y == map.height-1 || x == 0) return false
+            y += 1
+            x -=1
+            prevIdx = idx
+            idx += (map.width-1)
+            return true
+        }
+
+        fun move(dir:Direction): Boolean {
+            return when(dir) {
+                UP -> moveUp()
+                RIGHT -> moveRight()
+                DOWN -> moveDown()
+                LEFT -> moveLeft()
+                UPRIGHT -> moveUpRight()
+                UPLEFT -> moveUpLeft()
+                DOWNRIGHT -> moveDownRight()
+                DOWNLEFT -> moveDownLeft()
+            }
+        }
+    }
+}
