@@ -83,30 +83,23 @@ class Day14Problem() : DailyProblem<Int>() {
             return false
         }
     }
+    private fun part2BFS() : Int {
+        val q = ArrayDeque<Coord>(1000)
+        val visited = mutableSetOf<Coord>()
+        q.addLast(SAND_SOURCE)
+        while (q.isNotEmpty()) {
+            val c = q.removeFirst()
+            if (c in visited) continue
+            if (map[c] != SandSpot.Empty) continue
 
-    fun fallSand2() {
-        try {
-            var coord = SAND_SOURCE
-            while (true) {
-                if (coord.y == map.height - 1) {
-                    map[coord] = SandSpot.Sand
-                    return
-                }
-                while (true) {
-                    val below = coord.stepInDir(Direction.DOWN)
-                    if (map[below] == SandSpot.Empty) coord = below else break
-                }
-                val bl = coord.stepInDir(Direction.DOWNLEFT)
-                val br = coord.stepInDir(Direction.DOWNRIGHT)
-                if (map[bl] != SandSpot.Empty && map[br] != SandSpot.Empty) break
-                if (map[bl] == SandSpot.Empty) coord = bl
-                if (map[bl] != SandSpot.Empty && map[br] == SandSpot.Empty) coord = br
-            }
-            map[coord] = SandSpot.Sand
-        } catch (e: IndexOutOfBoundsException) {
-            return
+            visited.add(c)
+            q.addLast(c.stepInDir(Direction.DOWNLEFT))
+            q.addLast(c.stepInDir(Direction.DOWN))
+            q.addLast(c.stepInDir(Direction.DOWNRIGHT))
         }
+        return visited.size
     }
+
 
     override fun part1(): Int {
         buildMapPart1()
@@ -120,16 +113,9 @@ class Day14Problem() : DailyProblem<Int>() {
         return fallen
     }
 
-
     override fun part2(): Int {
         buildMapPart2()
-
-        var fallen = 0
-        while (map[SAND_SOURCE] != SandSpot.Sand) {
-            fallSand2()
-            fallen++
-        }
-        return fallen
+        return part2BFS()
     }
 }
 
@@ -138,5 +124,5 @@ val day14Problem = Day14Problem()
 @OptIn(ExperimentalTime::class)
 fun main() {
     day14Problem.testData = false
-    day14Problem.runBoth(100)
+    day14Problem.runBoth(1000)
 }
