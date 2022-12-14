@@ -119,4 +119,15 @@ class BasicTests2015 {
         assertEquals(4, problem.part1(), "Correct Answer day ${problem.number } part 1")
         assertEquals(3, problem.part2(), "Correct Answer day ${problem.number } part 2")
     }
+
+    @Test
+    fun testDay18() {
+        val problem = Day18Problem().apply { testData = true }.apply { testData = true }
+        problem.commonParts()
+        // Problem on page used two different inputs. I use the one for part two here, the expected result for part 1 was verified by hand
+        problem.steps = 4
+        assertEquals(6, problem.part1(), "Correct Answer day ${problem.number } part 1")
+        problem.steps = 5
+        assertEquals(17, problem.part2(), "Correct Answer day ${problem.number } part 2")
+    }
 }

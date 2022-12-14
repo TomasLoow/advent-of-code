@@ -6,6 +6,7 @@ import kotlin.time.ExperimentalTime
 
 class Day18Problem() : DailyProblem<Int>() {
 
+    var steps: Int = 100
     override val number = 18
     override val year = 2015
     override val name = "Like a GIF For Your Yard"
@@ -16,10 +17,10 @@ class Day18Problem() : DailyProblem<Int>() {
     }
 
     fun step(grid: Array2D<Boolean>, gridNext: Array2D<Boolean>) {
-        gridNext.mapIndexed{ c, _ ->
+        grid.allCoords.forEach {  c ->
             val value = grid[c]
             val neigboursOnCount = grid.neighbourValues(c).count { it }
-            if (value) (neigboursOnCount == 2 || neigboursOnCount == 3) else (neigboursOnCount == 3)
+            gridNext[c] = if (value) (neigboursOnCount == 2 || neigboursOnCount == 3) else (neigboursOnCount == 3)
         }
     }
     fun step2(grid: Array2D<Boolean>, gridNext: Array2D<Boolean>) {
@@ -31,9 +32,9 @@ class Day18Problem() : DailyProblem<Int>() {
     }
 
     override fun part1(): Int {
-        var g1 = startGrid
+        var g1 = startGrid.clone()
         var g2 = Array2D(startGrid.width,startGrid.height,false)
-        repeat(100) {
+        repeat(steps) {
             step(g1, g2)
             val temp = g1
             g1 = g2
@@ -46,7 +47,7 @@ class Day18Problem() : DailyProblem<Int>() {
     override fun part2(): Int {
         var g1 = startGrid
         var g2 = Array2D(startGrid.width,startGrid.height,false)
-        repeat(100) {
+        repeat(steps) {
             step2(g1, g2)
             val temp = g1
             g1 = g2

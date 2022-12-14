@@ -248,6 +248,10 @@ class Array2D<T> {
         return Cursor(this, coord)
     }
 
+    fun clone(): Array2D<T> {
+        return Array2D(this.data.toList() as List<T>, this.width, this.height)
+    }
+
     private val IDX_STEPS_WITH_DIAG: Array<Int>
         get() = arrayOf(
             width,
