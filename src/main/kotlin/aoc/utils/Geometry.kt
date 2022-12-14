@@ -1,6 +1,7 @@
 package aoc.utils
 
 import java.lang.Math.max
+import java.lang.Math.min
 import kotlin.math.absoluteValue
 
 /*
@@ -53,10 +54,16 @@ data class Coord(val x: Int, val y: Int) {
         return (x * MAX_VALUE + y) // This will be collision free for all x & y < MAX_VALUE
     }
 
+    override fun equals(other: Any?): Boolean {
+        other as Coord
+        return (x == other.x && y == other.y)
+    }
     operator fun plus(d: Direction) = this.stepInDir(d)
-    operator fun plus(delta: Pair<Int, Int>) = copy(x = x + delta.first, y = y + delta.second)
 
+    operator fun plus(delta: Pair<Int, Int>) = copy(x = x + delta.first, y = y + delta.second)
     operator fun minus(other: Coord): Pair<Int, Int> = Pair(x - other.x, y - other.y)
+
+    operator fun minus(delta: Pair<Int, Int>) = copy(x = x - delta.first, y = y - delta.second)
 
     fun manhattanDistanceTo(other: Coord): Int {
         return (x - other.x).absoluteValue + (y - other.y).absoluteValue
@@ -132,5 +139,22 @@ data class Rect(val topLeft: Coord, val bottomRight: Coord) {
 
     operator fun contains(point: Coord): Boolean {
         return point.x in xRange && point.y in yRange
+    }
+
+    companion object {
+        fun boundingCoords(points: Collection<Coord>): Rect {
+            var minX = Int.MAX_VALUE
+            var minY = Int.MAX_VALUE
+            var maxX = Int.MIN_VALUE
+            var maxY = Int.MIN_VALUE
+
+            points.forEach { (x, y) ->
+                minX = min(minX, x)
+                minY = min(minY, y)
+                maxX = max(maxX, x)
+                maxY = max(maxY, y)
+            }
+            return Rect(Coord(minX, minY), Coord(maxX, maxY))
+        }
     }
 }
