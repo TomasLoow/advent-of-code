@@ -20,7 +20,11 @@ enum class Direction {
     UP,
     RIGHT,
     DOWN,
-    LEFT;
+    LEFT,
+    UPRIGHT,
+    UPLEFT,
+    DOWNRIGHT,
+    DOWNLEFT;
 
     fun rotateCW(): Direction {
         return when (this) {
@@ -28,6 +32,7 @@ enum class Direction {
             RIGHT -> DOWN
             DOWN -> LEFT
             LEFT -> UP
+            else -> TODO()
         }
     }
 
@@ -37,6 +42,7 @@ enum class Direction {
             RIGHT -> UP
             DOWN -> RIGHT
             LEFT -> DOWN
+            else -> TODO()
         }
     }
 }
@@ -68,6 +74,11 @@ data class Coord(val x: Int, val y: Int) {
             Direction.RIGHT -> copy(x = x + 1)
             Direction.DOWN -> copy(y = y + 1)
             Direction.LEFT -> copy(x = x - 1)
+            Direction.UPRIGHT -> copy(x = x + 1, y = y - 1)
+            Direction.UPLEFT -> copy(x = x - 1, y = y - 1)
+            Direction.DOWNRIGHT -> copy(x = x + 1, y = y + 1)
+            Direction.DOWNLEFT -> copy(x = x - 1, y = y + 1)
+
         }
     }
 
@@ -80,6 +91,7 @@ data class Coord(val x: Int, val y: Int) {
             Direction.RIGHT -> dx = 1
             Direction.DOWN -> dy = 1
             Direction.LEFT -> dx = -1
+            else -> TODO()
         }
         return sequence {
             while (true) {

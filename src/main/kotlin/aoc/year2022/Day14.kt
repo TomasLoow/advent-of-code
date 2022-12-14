@@ -1,0 +1,142 @@
+package aoc.year2022
+
+import DailyProblem
+import aoc.utils.*
+import kotlin.time.ExperimentalTime
+
+class Day14Problem() : DailyProblem<Int>() {
+
+    override val number = 14
+    override val year = 2022
+    override val name = "Regolith Reservoir"
+
+    private lateinit var inputLines: List<List<Coord>>
+    private lateinit var map: Array2D<SandSpot>
+
+    companion object {
+        val SAND_SOURCE = Coord(500, 0)
+    }
+
+    enum class SandSpot {
+        Empty, Wall, Sand
+    }
+
+    override fun commonParts() {
+        inputLines = getInputText().nonEmptyLines().map { line ->
+            line.split(" -> ").map(::parseCoord)
+        }
+    }
+
+    private fun buildMap(width: Int, input: List<List<Coord>>) {
+        map = Array2D(width, 500, SandSpot.Empty)
+        input.forEach { line ->
+            line.windowed(2) { (from, to) ->
+                val r = if (from.x <= to.x && from.y <= to.y) Rect(from, to) else Rect(to, from)
+                map[r] = SandSpot.Wall
+            }
+        }
+    }
+
+    fun buildMapPart1() {
+        val maxX = inputLines.maxOf { line -> line.maxOf { it.x } }
+        buildMap(maxX + 1, inputLines)
+    }
+
+    fun buildMapPart2() {
+        val lineY = inputLines.maxOf { line -> line.maxOf { it.y } } + 2
+
+
+        val lines = inputLines + listOf(listOf<Coord>(Coord(500 - lineY, lineY), Coord(500 + lineY, lineY)))
+        val maxX = lines.maxOf { line -> line.maxOf { it.x } }
+        buildMap(maxX + 1, lines)
+
+    }
+
+
+    private fun printMap() {
+        map.print { s ->
+            when (s) {
+                SandSpot.Empty -> "."
+                SandSpot.Wall -> "#"
+                SandSpot.Sand -> "o"
+            }
+        }
+    }
+
+    fun fallSand1(): Boolean {
+        try {
+            var coord = SAND_SOURCE
+            while (true) {
+                while (true) {
+                    val below = coord.stepInDir(Direction.DOWN)
+                    if (map[below] == SandSpot.Empty) coord = below else break
+                }
+                val bl = coord.stepInDir(Direction.DOWN).stepInDir(Direction.LEFT)
+                val br = coord.stepInDir(Direction.DOWN).stepInDir(Direction.RIGHT)
+                if (map[bl] != SandSpot.Empty && map[br] != SandSpot.Empty) break
+                if (map[bl] == SandSpot.Empty) coord = bl
+                if (map[bl] != SandSpot.Empty && map[br] == SandSpot.Empty) coord = br
+            }
+            map[coord] = SandSpot.Sand
+            return true
+        } catch (e: IndexOutOfBoundsException) {
+            return false
+        }
+    }
+
+    fun fallSand2() {
+        try {
+            var coord = SAND_SOURCE
+            while (true) {
+                if (coord.y == map.height - 1) {
+                    map[coord] = SandSpot.Sand
+                    return
+                }
+                while (true) {
+                    val below = coord.stepInDir(Direction.DOWN)
+                    if (map[below] == SandSpot.Empty) coord = below else break
+                }
+                val bl = coord.stepInDir(Direction.DOWNLEFT)
+                val br = coord.stepInDir(Direction.DOWNRIGHT)
+                if (map[bl] != SandSpot.Empty && map[br] != SandSpot.Empty) break
+                if (map[bl] == SandSpot.Empty) coord = bl
+                if (map[bl] != SandSpot.Empty && map[br] == SandSpot.Empty) coord = br
+            }
+            map[coord] = SandSpot.Sand
+        } catch (e: IndexOutOfBoundsException) {
+            return
+        }
+    }
+
+    override fun part1(): Int {
+        buildMapPart1()
+
+        var done = false
+        var fallen = 0
+        while (!done) {
+            val landed = fallSand1()
+            if (landed) fallen++ else done = true
+        }
+        return fallen
+    }
+
+
+    override fun part2(): Int {
+        buildMapPart2()
+
+        var fallen = 0
+        while (map[SAND_SOURCE] != SandSpot.Sand) {
+            fallSand2()
+            fallen++
+        }
+        return fallen
+    }
+}
+
+val day14Problem = Day14Problem()
+
+@OptIn(ExperimentalTime::class)
+fun main() {
+    day14Problem.testData = false
+    day14Problem.runBoth(100)
+}
