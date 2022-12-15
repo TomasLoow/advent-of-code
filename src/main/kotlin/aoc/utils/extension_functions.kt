@@ -92,7 +92,7 @@ fun <T> Array<T>.shiftLeft(emptyValue:T): T {
     return head
 }
 
-fun <T> List<T>.permutationsSequence(): Sequence<List<T>> {
+fun <T> Collection<T>.permutationsSequence(): Sequence<List<T>> {
     if (this.isEmpty()) return sequenceOf(emptyList())
     val head = this.first()
     val tail = this.drop(1)
@@ -104,6 +104,22 @@ fun <T> List<T>.permutationsSequence(): Sequence<List<T>> {
         }
     }
 }
+
+
+fun <T> Collection<T>.subSets(): Sequence<Set<T>> {
+    if (this.isEmpty()) return sequenceOf(emptySet())
+    val head = this.first()
+    val tail = this.drop(1)
+    return sequence {
+        val tailSubsets = tail.subSets()
+        tailSubsets.forEach { ss ->
+            yield(ss)
+            yield(ss+head)
+        }
+    }
+}
+
+
 
 /** Apply a function to its own output a given number of times
  *

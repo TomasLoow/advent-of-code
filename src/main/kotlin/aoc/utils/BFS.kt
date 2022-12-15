@@ -1,9 +1,20 @@
 package aoc.utils
 
-abstract class BFS<State>(val goal: State) {
+abstract class BFS<State> {
+
+    val isGoal: (State) -> Boolean
+
+    constructor(goal: State) {
+        this.isGoal = { it == goal }
+    }
+
+    constructor(isGoal: (State) -> Boolean) {
+        this.isGoal = isGoal
+    }
+
     abstract fun reachable(state: State): Collection<State>
 
-    fun reconstructPath(cameFrom: MutableMap<State, State>): List<State> {
+    fun reconstructPath(cameFrom: MutableMap<State, State>, goal: State): List<State> {
         return buildList<State> {
             add(goal)
             var s = goal
@@ -21,8 +32,8 @@ abstract class BFS<State>(val goal: State) {
         val explored = mutableSetOf(startState)
         while (q.isNotEmpty()) {
             val v = q.removeFirst()
-            if (v == goal) {
-                return reconstructPath(cameFrom)
+            if (isGoal(v)) {
+                return reconstructPath(cameFrom, v)
             }
             reachable(v).forEach { n ->
                 if (n !in explored) {
