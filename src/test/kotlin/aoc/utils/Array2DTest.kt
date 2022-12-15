@@ -1,8 +1,5 @@
-package utils
+package aoc.utils
 
-import aoc.utils.Array2D
-import aoc.utils.Coord
-import aoc.utils.Rect
 import org.junit.Test
 import org.junit.jupiter.api.Assertions.assertEquals
 

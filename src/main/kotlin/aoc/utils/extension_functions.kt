@@ -6,8 +6,7 @@ import java.util.*
 import kotlin.math.max
 
 fun String.nonEmptyLines(): List<String> {
-    // For some reason this is *much* faster than using isNotEmpty()
-    return lines().filter { it.length > 0 }
+    return lines().filter { it.isNotEmpty() }
 }
 
 fun File.readNonEmptyLines(): List<String> {
@@ -23,6 +22,9 @@ fun String.md5(): String {
     val digest = md.digest(this.toByteArray())
     return HexFormat.of().formatHex(digest)
 }
+
+val IntRange.length: Int
+    get() = last - first + 1
 
 fun IntRange.containsRange(range2: IntRange): Boolean {
     return range2.first in this && range2.last in this
@@ -98,3 +100,9 @@ fun <K> MutableMap<K, Int>.increase(key: K, value: Int) {
 fun Int.truncPositive(): Int {
     return max(0, this)
 }
+
+val Int.even: Boolean
+    get() = this % 2 == 0
+
+val Int.odd: Boolean
+    get() = this % 2 == 1
