@@ -34,6 +34,33 @@ fun IntRange.intersectRange(range2: IntRange): Boolean {
     return !(range2.last < start || range2.first > endInclusive)
 }
 
+
+/** Returns the total length of a collection of IntRanges, points that are covered by more than one range are not counted twice */
+fun Collection<IntRange>.totalLengthOfCovered(): Int {
+    val endpoints: Map<Int, Int> = buildMap {  // Map of coordinates to depth changes
+        this@totalLengthOfCovered.forEach { range ->
+            this.increase(range.first, 1)
+            this.increase(range.last, -1)
+        }
+    }
+    val initial: Triple<Int, Int, Int?> = Triple(0, 0, null)
+    val (_, c, _) = endpoints.toList().filter{ it.second != 0}.sortedBy { it.first }.fold(initial) { (depth, count, posOfOpen), (pos, change) ->
+        val newDepth = depth + change
+
+        if(depth == 0) {
+            Triple(change, count, pos)// record opening pos
+        } else {
+            if (newDepth == 0) {
+                Triple(0, count + (pos-posOfOpen!! + 1), null)
+            } else {
+                Triple(newDepth, count, posOfOpen)
+            }
+        }
+    }
+    return c
+}
+
+
 /**
  * Parses a sequence of digits as an integer
  * listOf(1,3,7).parseDecimal() == 137
