@@ -252,6 +252,22 @@ class Array2D<T> {
         return Array2D(this.data.toList() as List<T>, this.width, this.height)
     }
 
+    fun shiftDown(lines: Int, fill: T) {
+        val shift = width*lines
+        (data.size-1 downTo  shift).forEach {idx ->
+            data[idx] = data[idx - shift]
+        }
+        (0 until shift).forEach { data[it] = fill }
+    }
+
+    fun shiftUp(lines: Int, fill: T) {
+        val shift = width*lines
+        (0 until data.size - shift).forEach {idx ->
+            data[idx] = data[idx + shift]
+        }
+        (data.size - shift+1  until data.size).forEach { data[it] = fill }
+    }
+
     private val IDX_STEPS_WITH_DIAG: Array<Int>
         get() = arrayOf(
             width,

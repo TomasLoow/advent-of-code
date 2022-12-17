@@ -184,4 +184,35 @@ class Array2DTest {
         assertEquals(true, boolArray[0,2])
         assertEquals(6, boolArray.countIndexedByCoordinate { c, b -> b })
     }
+
+
+    @Test
+    fun testShiftDown() {
+        val intArray = Array2D.parseFromLines(
+            """
+                123
+                149
+                187
+            """.trimIndent()) { c -> c.digitToInt() }
+
+        intArray.shiftDown(1,0)
+        val res = intArray.show { Array2D.a2renderInt(it) }
+        assertEquals("""
+            000
+            123
+            149
+            
+        """.trimIndent(), res)
+
+        intArray.shiftDown(1,0)
+        val res2 = intArray.show { Array2D.a2renderInt(it) }
+        assertEquals("""
+            000
+            000
+            123
+            
+        """.trimIndent(), res2)
+
+
+    }
 }
