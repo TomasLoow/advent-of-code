@@ -140,7 +140,7 @@ class Day17Problem() : DailyProblem<BigInteger>() {
                 rock.tryToMoveHorizontally(dir)
             }
             rock.place()
-            if (it % 500 == 0) h += cropPit().toBigInteger()
+            h += cropPit().toBigInteger()
         }
         return h + (tetrisPit.size - start).toBigInteger()
     }
@@ -158,17 +158,19 @@ class Day17Problem() : DailyProblem<BigInteger>() {
     }
 
     private fun findCycleLength(): Pair<Int,Int> {
-        val s = mutableMapOf<Int,Int>()
+        tetrisPit.hashCode()
+        val s = mutableSetOf<Pair<Int,Int>>()
 
         // Find an airflow value that has been seen at the start of a new block cycle twice
         var candidate: Int? = null
-        for(it in (1..2000)) {
+        for(it in (1..4000)) {
             solve(5)
-            if (airIdx in s && s[airIdx]!! >1) {
+            val signifier = Pair(airIdx, tetrisPit.takeLast(50).hashCode())
+            if (signifier in s) {
                 candidate = airIdx
                 break
             }
-            s.increase(airIdx, 1)
+            s.add(signifier)
         }
 
         /* Find three values for number of steps after which the candidate value is seen.
@@ -177,7 +179,7 @@ class Day17Problem() : DailyProblem<BigInteger>() {
         */
         resetProblem()
         val pattern = mutableListOf<Int>()
-        for(it in (1..2000)) {
+        for(it in (1..4000)) {
             solve(5)
             if (airIdx == candidate) {
                 pattern.add(it)
@@ -248,6 +250,6 @@ val day17Problem = Day17Problem()
 
 @OptIn(ExperimentalTime::class)
 fun main() {
-    day17Problem.testData = true
+    day17Problem.testData = false
     day17Problem.runBoth(100)
 }
