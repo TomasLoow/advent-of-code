@@ -49,21 +49,19 @@ class Day18Problem() : DailyProblem<Int>() {
         val (minX, maxX) = data.map { it.x }.minAndMax()
         val (minY, maxY) = data.map { it.y }.minAndMax()
         val (minZ, maxZ) = data.map { it.z }.minAndMax()
+        val xRange = minX - 1..maxX + 1
+        val yRange = minY - 1..maxY + 1
+        val zRange = minZ - 1..maxZ + 1
         val floodFillOutSide = floodFill(
-            Block(minX - 1, minY - 1, minZ - 1),
-            (minX - 1..maxX + 1),
-            (minY - 1..maxY + 1),
-            (minZ - 1..maxZ + 1), data
+            Block(xRange.first, yRange.first, zRange.first), xRange, yRange, zRange, data
         )
 
-        val full = (minX - 1..maxX + 1).flatMap { x ->
-            (minY - 1..maxY + 1).flatMap { y ->
-                (minZ - 1..maxZ + 1).map { z -> Block(x, y, z) }
+        val full = xRange.flatMap { x ->
+            yRange.flatMap { y ->
+                zRange.map { z -> Block(x, y, z) }
             }
         }.toSet()
-
-        val blob = full-floodFillOutSide
-        return surfaceArea(blob)
+        return surfaceArea(full - floodFillOutSide)
     }
 
     private fun floodFill(
