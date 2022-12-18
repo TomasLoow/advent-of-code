@@ -4,6 +4,7 @@ import java.io.File
 import java.security.MessageDigest
 import java.util.*
 import kotlin.math.max
+import kotlin.math.min
 
 fun String.nonEmptyLines(): List<String> {
     return lines().filter { it.isNotEmpty() }
@@ -149,3 +150,15 @@ val Int.even: Boolean
 
 val Int.odd: Boolean
     get() = this % 2 == 1
+
+
+
+/** Finds the max and min of a collection of numbers in a single loop */
+fun Iterable<Int>.minAndMax(): Pair<Int, Int> {
+    return this.fold(Pair(Integer.MAX_VALUE, Integer.MIN_VALUE)) { (currentMin, currentMax), v ->
+        Pair(
+            min(currentMin, v),
+            max(currentMax, v)
+        )
+    }
+}

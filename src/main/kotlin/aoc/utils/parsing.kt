@@ -48,8 +48,8 @@ fun <A, B, C> parseListOfTriples(
     separator2: String = " "
 ): List<Triple<A, B, C>> {
     return inputText.nonEmptyLines().map { line ->
-        val (a, rest) = line.split(separator1)
-        val (b,c) = rest.split(separator2)
+        val (a, rest) = line.split(separator1, limit=2)
+        val (b,c) = rest.split(separator2, limit=2)
         Triple(component1parser(a), component2parser(b), component3parser(c))
     }
 
