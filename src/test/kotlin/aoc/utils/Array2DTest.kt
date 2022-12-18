@@ -7,8 +7,8 @@ class Array2DTest {
 
     @Test
     fun `test construct with lambda`() {
-        val arr = Array2D(10,10) { (x,y) ->
-            (x+y) % 10
+        val arr = Array2D(10, 10) { (x, y) ->
+            (x + y) % 10
         }
         val expected = """
             0123456789
@@ -24,8 +24,8 @@ class Array2DTest {
 
         """.trimIndent()
         assertEquals(expected, arr.show { Array2D.a2renderInt(it) })
-        val arrB = Array2D(2,2) { (x,y) ->
-            2*x+3*y+1
+        val arrB = Array2D(2, 2) { (x, y) ->
+            2 * x + 3 * y + 1
         }
         val expectedB = """
             13
@@ -34,45 +34,47 @@ class Array2DTest {
         """.trimIndent()
         assertEquals(expectedB, arrB.show { Array2D.a2renderInt(it) })
     }
-        @Test
+
+    @Test
     fun `test get and set`() {
-        val arr = Array2D<Boolean>(listOf(listOf(false,false), listOf(false,false)))
-        assertEquals(false, arr[0,0])
-        arr[0,0]=true
-        assertEquals(true, arr[0,0])
-        assertEquals(false, arr[1,1])
-        arr[1,1]=!arr[1,1]
-        assertEquals(true, arr[1,1])
+        val arr = Array2D<Boolean>(listOf(listOf(false, false), listOf(false, false)))
+        assertEquals(false, arr[0, 0])
+        arr[0, 0] = true
+        assertEquals(true, arr[0, 0])
+        assertEquals(false, arr[1, 1])
+        arr[1, 1] = !arr[1, 1]
+        assertEquals(true, arr[1, 1])
     }
 
     @Test
     fun `test set and modify rectangle`() {
-        val arr = Array2D(listOf(listOf(0,0,0),listOf(0,0,0),listOf(0,0,0)))
+        val arr = Array2D(listOf(listOf(0, 0, 0), listOf(0, 0, 0), listOf(0, 0, 0)))
 
-        arr[Rect(Coord.origin,Coord(1,1))]=1
+        arr[Rect(Coord.origin, Coord(1, 1))] = 1
         /*
         110
         110
         000
          */
         assertEquals(4, arr.mapListIndexedByCoordinate { c, i -> i }.sum())
-        assertEquals(1, arr[0,0])
-        assertEquals(1, arr[1,0])
-        assertEquals(1, arr[0,1])
-        assertEquals(1, arr[1,1])
-        arr.modifyArea(Rect(Coord(0,1),Coord(2,2))) { it + 1 }
+        assertEquals(1, arr[0, 0])
+        assertEquals(1, arr[1, 0])
+        assertEquals(1, arr[0, 1])
+        assertEquals(1, arr[1, 1])
+        arr.modifyArea(Rect(Coord(0, 1), Coord(2, 2))) { it + 1 }
         /*
         110
         221
         111
          */
         assertEquals(10, arr.mapListIndexedByCoordinate { c, i -> i }.sum())
-        assertEquals(1, arr[0,0])
-        assertEquals(2, arr[1,1])
-        assertEquals(1, arr[2,2])
+        assertEquals(1, arr[0, 0])
+        assertEquals(2, arr[1, 1])
+        assertEquals(1, arr[2, 2])
 
 
     }
+
     @Test
     fun `test neighbourCoords`() {
         val a2 = Array2D(
@@ -99,7 +101,7 @@ class Array2DTest {
         assertEquals(
             setOf<Coord>(
                 Coord(2, 2), Coord(2, 3), Coord(1, 2), Coord(0, 3), Coord(0, 2)
-            ), a2.neighbourCoords(Coord(1,3), true).toSet(), "Correct coords for edge points"
+            ), a2.neighbourCoords(Coord(1, 3), true).toSet(), "Correct coords for edge points"
         )
         assertEquals(
             setOf<Coord>(
@@ -176,12 +178,12 @@ class Array2DTest {
         val boolArray = intArray.map { i -> i < 5 }
         assertEquals(intArray.width, boolArray.width)
         assertEquals(intArray.height, boolArray.height)
-        assertEquals(true, boolArray[0,0])
-        assertEquals(true, boolArray[1,0])
-        assertEquals(true, boolArray[2,0])
-        assertEquals(true, boolArray[0,1])
-        assertEquals(true, boolArray[1,1])
-        assertEquals(true, boolArray[0,2])
+        assertEquals(true, boolArray[0, 0])
+        assertEquals(true, boolArray[1, 0])
+        assertEquals(true, boolArray[2, 0])
+        assertEquals(true, boolArray[0, 1])
+        assertEquals(true, boolArray[1, 1])
+        assertEquals(true, boolArray[0, 2])
         assertEquals(6, boolArray.countIndexedByCoordinate { c, b -> b })
     }
 
@@ -193,26 +195,108 @@ class Array2DTest {
                 123
                 149
                 187
-            """.trimIndent()) { c -> c.digitToInt() }
+            """.trimIndent()
+        ) { c -> c.digitToInt() }
 
-        intArray.shiftDown(1,0)
+        intArray.shiftDown(1, 0)
         val res = intArray.show { Array2D.a2renderInt(it) }
-        assertEquals("""
+        assertEquals(
+            """
             000
             123
             149
             
-        """.trimIndent(), res)
+        """.trimIndent(), res
+        )
 
-        intArray.shiftDown(1,0)
+        intArray.shiftDown(1, 0)
         val res2 = intArray.show { Array2D.a2renderInt(it) }
-        assertEquals("""
+        assertEquals(
+            """
             000
             000
             123
             
-        """.trimIndent(), res2)
+        """.trimIndent(), res2
+        )
 
+
+    }
+
+    @Test
+    fun testShiftUp() {
+        val intArray = Array2D.parseFromLines(
+            """
+                123
+                149
+                187
+            """.trimIndent()
+        ) { c -> c.digitToInt() }
+
+        intArray.shiftUp(1, 0)
+        val res = intArray.show { Array2D.a2renderInt(it) }
+        assertEquals(
+            """
+            149
+            187
+            000
+            
+        """.trimIndent(), res
+        )
+
+        intArray.shiftUp(1, 0)
+        val res2 = intArray.show { Array2D.a2renderInt(it) }
+        assertEquals(
+            """
+            187
+            000
+            000
+            
+        """.trimIndent(), res2
+        )
+    }
+
+    @Test
+    fun testCursor() {
+
+        val arr = Array2D<Int>(5, 5, 0)
+
+        val c = arr.cursor(Coord(0, 0))
+
+        assertEquals(0, c.value)
+        assertEquals(Coord(0, 0), c.coord)
+        c.set(5)
+        assertEquals(5, c.value)
+
+        c.moveRight(); c.set(4)
+        c.moveDown(); c.set(5)
+        c.moveLeft(); c.set(6)
+        c.moveUp(); c.set(8)
+
+        assertEquals("""
+            84000
+            65000
+            00000
+            00000
+            00000
+            
+        """.trimIndent(), arr.show { Array2D.a2renderInt(it) })
+        assertEquals(c.prev, Coord(0, 1))
+
+        val a2 = Array2D<Int>(3, 3, 0)
+        val c2 = a2.cursor(Coord(0, 1))
+        c2.set(1); c2.moveUpRight()
+        c2.set(2); c2.moveDownRight()
+        c2.set(3); c2.moveDownLeft()
+        c2.set(4); c2.moveUpLeft()
+        assertEquals("""
+            020
+            103
+            040
+            
+        """.trimIndent(), a2.show { Array2D.a2renderInt(it) })
+        assertEquals(c2.coord, Coord(0, 1))
+        assertEquals(c2.prev, Coord(1, 2))
 
     }
 }

@@ -265,7 +265,7 @@ class Array2D<T> {
         (0 until data.size - shift).forEach {idx ->
             data[idx] = data[idx + shift]
         }
-        (data.size - shift+1  until data.size).forEach { data[it] = fill }
+        (data.size - shift  until data.size).forEach { data[it] = fill }
     }
 
     private val IDX_STEPS_WITH_DIAG: Array<Int>
@@ -305,10 +305,10 @@ class Array2D<T> {
 
 
     class Cursor<T>(private val map: Array2D<T>, coord: Coord) {
-        var x: Int
-        var y: Int
-        var idx: Int
-        var prevIdx: Int? = null
+        private var x: Int
+        private var y: Int
+        private var idx: Int
+        private var prevIdx: Int? = null
 
         init {
             x = coord.x
@@ -318,12 +318,18 @@ class Array2D<T> {
 
         val value: T
             get() = map.data[idx] as T
+
+        val coord: Coord
+            get() = map.idx2c(idx)
+
         val prev: Coord
             get() {
                 if (prevIdx == null) throw Exception("No previous coordinate")
                 return map.idx2c(prevIdx!!)
             }
-
+        fun set(new: T) {
+            map.data[idx] = new
+        }
         fun moveRight(): Boolean {
             if (x == map.width - 1) return false
             x += 1
