@@ -43,6 +43,9 @@ abstract class BFS<State> {
                 }
             }
         }
-        throw Exception("No path found")
+        @Suppress("UNCHECKED_CAST")
+        throw BFSNoPathFound(explored as Set<Any>)
     }
 }
+class BFSNoPathFound(val explored: Set<Any>) : Throwable()
+

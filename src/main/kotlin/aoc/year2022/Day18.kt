@@ -70,23 +70,19 @@ class Day18Problem() : DailyProblem<Int>() {
         yr: IntRange,
         zr: IntRange,
         blocked: Set<Block>
-    ): MutableSet<Block> {
-        val seen = mutableSetOf<Block>()
-        val q = mutableSetOf<Block>()
-        q.add(start)
-        while (q.isNotEmpty()) {
-            val current = q.first()
-            q.remove(current)
-            seen.add(current)
-            val ns = neigbours(current)
-            ns.forEach { n ->
-                if (n.x in xr && n.y in yr && n.z in zr && (n !in seen) && (n !in blocked)) {
-                    q.add(n)
-                }
+    ): Set<Block> {
+        class FloodFillBFS() : BFS<Block>({ false }) {
+            override fun reachable(state: Block): Collection<Block> {
+                return neigbours(state).filter { it.x in xr && it.y in yr && it.z in zr && it !in blocked }
             }
         }
-        return seen
-
+        try {
+            FloodFillBFS().solve(start)
+            throw Exception("That should have failed...")
+        } catch (e: BFSNoPathFound) {
+            @Suppress("UNCHECKED_CAST")
+            return e.explored as Set<Block>
+        }
     }
 
     private fun neigbours(b: Block): List<Block> {
