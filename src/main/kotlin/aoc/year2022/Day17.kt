@@ -12,7 +12,7 @@ class Day17Problem() : DailyProblem<BigInteger>() {
 
     override val number = 17
     override val year = 2022
-    override val name = "Problem name"
+    override val name = "Pyroclastic Flow"
 
 
     private lateinit var airFlowList: List<Direction>

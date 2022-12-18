@@ -10,7 +10,7 @@ class Day13Problem : DailyProblem<Int>() {
 
     override val number = 13
     override val year = 2022
-    override val name = "Problem name"
+    override val name = "Distress Signal"
 
     private lateinit var data: List<Pair<JSON.A, JSON.A>>
 
