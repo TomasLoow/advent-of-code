@@ -1,6 +1,8 @@
 package aoc.utils
 
 import aoc.utils.Direction.*
+import java.io.BufferedWriter
+import java.io.FileWriter
 import kotlin.math.absoluteValue
 
 @Suppress("UNCHECKED_CAST")
@@ -36,7 +38,7 @@ class Array2D<T> {
 
         this.rect = Rect(Coord(0, 0), Coord(width - 1, height - 1))
 
-        
+
         this.data = Array<Any?>(capacity) { initital as Any }
     }
 
@@ -84,12 +86,12 @@ class Array2D<T> {
     }
 
     operator fun get(x: Int, y: Int): T {
-        
+
         return data[c2Idx(x, y)] as T
     }
 
     operator fun get(c: Coord): T {
-        
+
         return data[c2Idx(c)] as T
     }
 
@@ -131,7 +133,7 @@ class Array2D<T> {
             val startIdx = c2Idx(r.xRange.first, y)
             val lastIdx = c2Idx(r.xRange.last, y)
             (startIdx..lastIdx).forEach { idx: Int ->
-                
+
                 data[idx] = mod(data[idx] as T) as Any
             }
         }
@@ -164,7 +166,7 @@ class Array2D<T> {
         val pattern = if (diagonal) IDX_STEPS_WITH_DIAG else STEPS_WITHOUT_DIAG
         val idx = c2Idx(c)
 
-        
+
         return pattern.map { it + idx }.filter { nIdx ->
             nIdx >= 0 && nIdx < data.size && ((nIdx % width) - (c.x)).absoluteValue <= 1
         }.map { nIdx -> data[nIdx] as T }
@@ -175,7 +177,7 @@ class Array2D<T> {
     }
 
     fun <R> map(function: (T) -> R): Array2D<R> {
-        
+
         return Array2D(data.map(function as ((Any?) -> R)), width, height)
     }
 
@@ -253,19 +255,35 @@ class Array2D<T> {
     }
 
     fun shiftDown(lines: Int, fill: T) {
-        val shift = width*lines
-        (data.size-1 downTo  shift).forEach {idx ->
+        val shift = width * lines
+        (data.size - 1 downTo shift).forEach { idx ->
             data[idx] = data[idx - shift]
         }
         (0 until shift).forEach { data[it] = fill }
     }
 
     fun shiftUp(lines: Int, fill: T) {
-        val shift = width*lines
-        (0 until data.size - shift).forEach {idx ->
+        val shift = width * lines
+        (0 until data.size - shift).forEach { idx ->
             data[idx] = data[idx + shift]
         }
-        (data.size - shift  until data.size).forEach { data[it] = fill }
+        (data.size - shift until data.size).forEach { data[it] = fill }
+    }
+
+    fun toImage(numColors: Int, filename: String    , func: (T) -> Int) {
+        val bw = BufferedWriter(FileWriter(filename))
+        bw.write("P2\n")
+        bw.write("${this.width} ${this.height}\n")
+        bw.write("$numColors\n")
+        bw.write("\n")
+
+        yRange.forEach { y ->
+            xRange.forEach { x ->
+                bw.write("${func(this[x,y])} ")
+            }
+            bw.write("\n")
+        }
+        bw.close()
     }
 
     private val IDX_STEPS_WITH_DIAG: Array<Int>
@@ -291,11 +309,10 @@ class Array2D<T> {
     companion object {
 
         fun <T> parseFromLines(string: String, charParser: (Char) -> T): Array2D<T> {
-            return Array2D(
-                string.nonEmptyLines().map { line ->
-                    line.map(charParser)
-                }
-            )
+            val lines = string.nonEmptyLines()
+            return Array2D(lines.map { line ->
+                line.map(charParser)
+            })
         }
 
         fun a2renderBool(b: Boolean): String = if (b) "█" else " "
@@ -327,81 +344,123 @@ class Array2D<T> {
                 if (prevIdx == null) throw Exception("No previous coordinate")
                 return map.idx2c(prevIdx!!)
             }
+
         fun set(new: T) {
             map.data[idx] = new
         }
-        fun moveRight(): Boolean {
-            if (x == map.width - 1) return false
+
+        fun moveRight(wrapping: Boolean=false): Boolean {
+            if (x == map.width - 1) {
+                if (wrapping) {
+                    x = 0
+                    idx = map.c2Idx(x,y)
+                    return true
+                } else return false
+            }
             x += 1
             prevIdx = idx
             idx += 1
             return true
         }
-        fun moveLeft(): Boolean {
-            if (x == 0) return false
+
+        fun moveLeft(wrapping: Boolean=false): Boolean {
+            if (x == 0) {
+                if (wrapping) {
+                    x = map.width - 1
+                    idx = map.c2Idx(x,y)
+                    return true
+
+                } else return false
+            }
             x -= 1
             prevIdx = idx
             idx -= 1
             return true
         }
-        fun moveDown(): Boolean {
-            if (y == map.width - 1) return false
+
+        fun moveDown(wrapping: Boolean=false): Boolean {
+            if (y == map.height - 1) {
+                if (wrapping) {
+                    y = 0
+                    idx = map.c2Idx(x,y)
+                    return true
+
+                } else return false
+            }
             y += 1
             prevIdx = idx
             idx += map.width
             return true
         }
-        fun moveUp(): Boolean {
-            if (y == 0) return false
+
+        fun moveUp(wrapping: Boolean=false): Boolean {
+            if (y == 0) {
+                if (wrapping) {
+                    y = map.height - 1
+                    idx = map.c2Idx(x,y)
+                    return true
+
+                } else return false
+            }
             y -= 1
             prevIdx = idx
             idx -= map.width
             return true
         }
-        fun moveUpRight(): Boolean {
-            if (y == 0 || x == map.width-1) return false
+
+        fun moveUpRight(wrapping: Boolean=false): Boolean {
+            if (y == 0 || x == map.width - 1) return if (wrapping) TODO() else false
             y -= 1
             x += 1
             prevIdx = idx
-            idx -= (map.width-1)
-            return true
-        }
-        fun moveUpLeft(): Boolean {
-            if (y == 0 || x == 0) return false
-            y -= 1
-            x -= 1
-            prevIdx = idx
-            idx -= (map.width+1)
-            return true
-        }
-        fun moveDownRight(): Boolean {
-            if (y == map.height-1 || x == map.width-1) return false
-            y += 1
-            x += 1
-            prevIdx = idx
-            idx += (map.width+1)
-            return true
-        }
-        fun moveDownLeft(): Boolean {
-            if (y == map.height-1 || x == 0) return false
-            y += 1
-            x -=1
-            prevIdx = idx
-            idx += (map.width-1)
+            idx -= (map.width - 1)
             return true
         }
 
-        fun move(dir:Direction): Boolean {
-            return when(dir) {
-                UP -> moveUp()
-                RIGHT -> moveRight()
-                DOWN -> moveDown()
-                LEFT -> moveLeft()
-                UPRIGHT -> moveUpRight()
-                UPLEFT -> moveUpLeft()
-                DOWNRIGHT -> moveDownRight()
-                DOWNLEFT -> moveDownLeft()
+        fun moveUpLeft(wrapping: Boolean=false): Boolean {
+            if (y == 0 || x == 0) return if (wrapping) TODO() else false
+            y -= 1
+            x -= 1
+            prevIdx = idx
+            idx -= (map.width + 1)
+            return true
+        }
+
+        fun moveDownRight(wrapping: Boolean=false): Boolean {
+            if (y == map.height - 1 || x == map.width - 1) return if (wrapping) TODO() else false
+            y += 1
+            x += 1
+            prevIdx = idx
+            idx += (map.width + 1)
+            return true
+        }
+
+        fun moveDownLeft(wrapping: Boolean=false): Boolean {
+            if (y == map.height - 1 || x == 0) return if (wrapping) TODO() else false
+            y += 1
+            x -= 1
+            prevIdx = idx
+            idx += (map.width - 1)
+            return true
+        }
+
+        fun move(dir: Direction, wrapping: Boolean): Boolean {
+            return when (dir) {
+                UP -> moveUp(wrapping)
+                RIGHT -> moveRight(wrapping)
+                DOWN -> moveDown(wrapping)
+                LEFT -> moveLeft(wrapping)
+                UPRIGHT -> moveUpRight(wrapping)
+                UPLEFT -> moveUpLeft(wrapping)
+                DOWNRIGHT -> moveDownRight(wrapping)
+                DOWNLEFT -> moveDownLeft(wrapping)
             }
+        }
+
+        fun moveTo(pos: Coord) {
+            this.x = pos.x
+            this.y = pos.y
+            this.idx = map.c2Idx(pos)
         }
     }
 }
