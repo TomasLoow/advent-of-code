@@ -34,12 +34,33 @@ fun IntRange.containsRange(range2: IntRange): Boolean {
 fun IntRange.intersectRange(range2: IntRange): Boolean {
     return !(range2.last < start || range2.first > endInclusive)
 }
-
-fun IntRange.intersects(other: IntRange): Boolean {
-    return (this.first <= other.last) && (this.last >= other.first)
+fun LongRange.intersectRange(range2: LongRange): Boolean {
+    return !(range2.last < start || range2.first > endInclusive)
 }
-fun LongRange.intersects(other: LongRange): Boolean {
-    return (this.first <= other.last) && (this.last >= other.first)
+
+fun LongRange.minusRange(other: LongRange): List<LongRange> {
+
+    // other fully contained in this
+    if ((other.first in this) && (other.last in this)) {
+        return listOf(this.first until other.first, other.last + 1..this.last)
+    }
+    // this fully contained in other
+    if ((this.first in other) && (this.last in other)) {
+        return listOf()
+    }
+
+    // No overlap
+    if ((other.first > this.last) || (other.last < this.first)) {
+        return listOf(this)
+    }
+
+    if ((other.first in this)) {
+        return listOf(this.first until other.first)
+    }
+    if ((other.last in this)) {
+        return listOf(other.last + 1 ..this.last)
+    }
+    TODO("This should be impossible")
 }
 
 
@@ -168,5 +189,13 @@ fun Iterable<Int>.minAndMax(): Pair<Int, Int> {
             min(currentMin, v),
             max(currentMax, v)
         )
+    }
+}
+
+fun<A,B,C> Iterable<A>.crossMap(other: Iterable<B>, func: ((A,B) -> C)): Iterable<C> {
+    return this.flatMap { a ->
+        other.map { b ->
+            func(a,b)
+        }
     }
 }

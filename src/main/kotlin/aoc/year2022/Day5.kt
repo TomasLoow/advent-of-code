@@ -1,8 +1,6 @@
 package aoc.year2022
 
 import DailyProblem
-import aoc.utils.nonEmptyLines
-import aoc.utils.parseBlockList
 import aoc.utils.*
 import kotlin.time.ExperimentalTime
 
@@ -71,24 +69,22 @@ class Day5Problem() : DailyProblem<Long>() {
         return seeds.map(::applyAllStepsPart1).minOf { it }.toLong()
     }
 
-    fun applyStepPart2(input: LongRange, step: Step): Pair<LongRange, List<LongRange>> {
-        for (rule in step) {
-            if (input.intersects(rule.sourceRange))
-                TODO()
+    fun applyStepPart2(inputRanges: List<LongRange>, step: Step): List<LongRange> {
+
+        val x = inputRanges.crossMap(step) { inputRange, rule ->
+            if (!inputRange.intersectRange(rule.sourceRange)) {
+                Pair(listOf(inputRange), emptyList<LongRange>())
+            } else {
+                val umatched = inputRange.minusRange(rule.sourceRange)
+                val matched = inputRange.intersectRange(rule.sourceRange)
+            }
         }
+
         TODO()
+        // return Pair(
     }
 
     fun applyAllStepsPart2(input: LongRange): Long {
-        var inputToHandle = mutableSetOf(input)
-        var mapped = mutableSetOf<LongRange>()
-        for (step in rules) {
-            for (rng in inputToHandle) {
-                val (handled, unhandled) = applyStepPart2(rng, step)
-                mapped.add(handled)
-                unhandled
-            }
-        }
         TODO()
     }
 
@@ -100,8 +96,6 @@ class Day5Problem() : DailyProblem<Long>() {
         return 1L
     }
 }
-
-
 
 val day5Problem = Day5Problem()
 

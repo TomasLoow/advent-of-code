@@ -44,12 +44,4 @@ class Extension_functionsKtTest {
         assertEquals(10, listOf((1..5), (7..11)).totalLengthOfCovered())
         assertEquals(11, listOf((1..5), (2..9), (7..11)).totalLengthOfCovered())
     }
-
-    @Test
-    fun `test intersects`() {
-        assertTrue( (1..5).intersects(5..9))
-        assertTrue( (1..5).intersects(2..3))
-        assertTrue( (10..50).intersects(1..10))
-        assertTrue( ! (10..50).intersects(1..9))
-    }
 }
