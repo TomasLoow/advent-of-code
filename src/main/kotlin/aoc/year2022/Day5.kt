@@ -2,90 +2,110 @@ package aoc.year2022
 
 import DailyProblem
 import aoc.utils.nonEmptyLines
-import aoc.utils.parseTwoBlocks
+import aoc.utils.parseBlockList
+import aoc.utils.*
 import kotlin.time.ExperimentalTime
 
-class Day5Problem() : DailyProblem<String>() {
+data class Rule(val source: Long, val dest: Long, val range: Long) {
+    val sourceRange: LongRange
+        get() {
+            return source until source + range
+        }
+
+    val destRange: LongRange
+        get() {
+            return dest until dest + range
+        }
+
+    val offSet: Long
+        get() {
+            return dest - source
+        }
+    fun getNonOverlap(range: LongRange): List<LongRange> {
+       TODO()
+    }
+}
+
+typealias Step = List<Rule>
+
+
+class Day5Problem() : DailyProblem<Long>() {
+
+    private lateinit var seeds: List<Long>
+    private lateinit var rules: List<Step>
 
     override val number = 5
     override val year = 2022
-    override val name = "Supply Stacks"
+    override val name = "If You Give A Seed A Fertilizer"
 
-    private fun parseStacks(stackpart: String): Array<ArrayDeque<Char>> {
-        val numStacks = (stackpart.nonEmptyLines().maxOf { it.length } + 1) / 4
-        val stacks = Array<ArrayDeque<Char>>(numStacks) { ArrayDeque() }
-        stackpart.nonEmptyLines().reversed().drop(1).forEach { line ->
-            repeat(numStacks) { idx ->
-                val pos = 4 * idx + 1
-                if (pos < line.length) {
-                    val c = line[pos]
-                    if (c != ' ') {
-                        stacks[idx].addFirst(c)
-                    }
-                }
+
+    override fun commonParts() {
+        val (seedsLine, restText) = this.getInputText().split("\n", limit = 2)
+        seeds = seedsLine.drop(7).split(" ").map{it.toLong()}
+        fun parseConvBlock(input: String): List<Rule> {
+            val rules = input.nonEmptyLines().drop(1)
+            return rules.map {
+                val (dest,source,range) = it.split(" ")
+                Rule(source = source.toLong(), dest = dest.toLong(), range = range.toLong())
             }
         }
-        return stacks
+        rules = parseBlockList(restText, ::parseConvBlock)
     }
 
-    private fun parseMoves(movepart: String): List<Triple<Int, Int, Int>> {
-        val moveRegex = """move (\d+) from (\d+) to (\d+)""".toRegex()
-        val moves = movepart.nonEmptyLines().map { line ->
-            val (count, from, to) = moveRegex.matchEntire(line)!!.destructured
-            Triple(count.toInt(), from.toInt(), to.toInt())
+    fun applyStepPart1(i: Long, step: Step): Long {
+        for (rule in step) {
+            if (i in rule.sourceRange) {
+                return i + rule.offSet
+            }
         }
-        return moves
+        return i
     }
-
-    private fun parseFile(): Pair<Array<ArrayDeque<Char>>, List<Triple<Int, Int, Int>>> {
-        return parseTwoBlocks(getInputText(), ::parseStacks, ::parseMoves)
-    }
-
-
-    private fun moveOneAtTheTime(
-        count: Int,
-        fromStack: ArrayDeque<Char>,
-        toStack: ArrayDeque<Char>,
-    ) {
-        repeat(count) {
-            toStack.addFirst(fromStack.removeFirst())
+    fun applyAllStepsPart1(i: Long): Long {
+        var tmp = i
+        for (step in rules) {
+            tmp = applyStepPart1(tmp, step)
         }
+        return tmp
+    }
+    override fun part1(): Long {
+        return seeds.map(::applyAllStepsPart1).minOf { it }.toLong()
     }
 
-    private fun moveMany(
-        count: Int,
-        fromStack: ArrayDeque<Char>,
-        toStack: ArrayDeque<Char>
-    ) {
-        fromStack.take(count).reversed().forEach{toStack.addFirst(it)}
-        repeat(count) { fromStack.removeFirst() }
-    }
-
-    override fun part1(): String {
-        val (stacks, moves) = parseFile()
-        moves.forEach { (count, from, to) ->
-            val toStack = stacks[to - 1]
-            val fromStack = stacks[from - 1]
-            moveOneAtTheTime(count, fromStack, toStack)
+    fun applyStepPart2(input: LongRange, step: Step): Pair<LongRange, List<LongRange>> {
+        for (rule in step) {
+            if (input.intersects(rule.sourceRange))
+                TODO()
         }
-        return stacks.map { it.first() }.joinToString("")
+        TODO()
     }
 
-    override fun part2(): String {
-        val (stacks, moves) = parseFile()
-        moves.forEach { (count, from, to) ->
-            val toStack = stacks[to - 1]
-            val fromStack = stacks[from - 1]
-            moveMany(count, fromStack, toStack)
+    fun applyAllStepsPart2(input: LongRange): Long {
+        var inputToHandle = mutableSetOf(input)
+        var mapped = mutableSetOf<LongRange>()
+        for (step in rules) {
+            for (rng in inputToHandle) {
+                val (handled, unhandled) = applyStepPart2(rng, step)
+                mapped.add(handled)
+                unhandled
+            }
         }
-        return stacks.map { it.first() }.joinToString("")
+        TODO()
+    }
+
+    override fun part2(): Long {
+        val seedRanges = seeds.chunked(2).map { pair ->
+            val (start, len) = pair
+            (start until (start+len))
+        }
+        return 1L
     }
 }
+
 
 
 val day5Problem = Day5Problem()
 
 @OptIn(ExperimentalTime::class)
 fun main() {
-    day5Problem.runBoth(1000)
+    day5Problem.runBoth(1)
 }

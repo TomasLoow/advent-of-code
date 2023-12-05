@@ -35,6 +35,14 @@ fun IntRange.intersectRange(range2: IntRange): Boolean {
     return !(range2.last < start || range2.first > endInclusive)
 }
 
+fun IntRange.intersects(other: IntRange): Boolean {
+    return (this.first <= other.last) && (this.last >= other.first)
+}
+fun LongRange.intersects(other: LongRange): Boolean {
+    return (this.first <= other.last) && (this.last >= other.first)
+}
+
+
 
 /** Returns the total length of a collection of IntRanges, points that are covered by more than one range are not counted twice */
 fun Collection<IntRange>.totalLengthOfCovered(): Int {
