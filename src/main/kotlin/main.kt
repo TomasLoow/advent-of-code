@@ -3,6 +3,7 @@ import kotlin.time.ExperimentalTime
 
 val events = mapOf(
     2024 to listOf(aoc.year2024.day1Problem,aoc.year2024.day2Problem),
+    2023 to listOf(aoc.year2023.day1Problem),
     2022 to listOf(
         aoc.year2022.day1Problem,
         aoc.year2022.day2Problem,
