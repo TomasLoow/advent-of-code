@@ -13,11 +13,17 @@ fun <A,B,C> parseThreeBlocks(data: String, parserA : (String) -> A, parserB: (St
     return Triple(parserA(chunkA), parserB(chunkB), parserC(chunkC))
 }
 
+/**
+ * Parses a file where the input is divided into multiple blocks separated by two newlines.
+ * Each such block is parsed by the provided parser and a list of its results is returned
+ */
 fun <A> parseBlockList(data: String, parser : (String) -> A) : List<A> {
-    return data.split("\n\n").map(parser)
+    return data.ensureNl().split("\n\n").map(parser)
 }
 
-
+/**
+ * Parses a file where each non-empty line is one single integers.
+ */
 fun parseIntLines(data: String) :List<Int> {
     return data.nonEmptyLines().map(::parseInt)
 }
@@ -26,6 +32,19 @@ fun parseIntArray(data: String) : Array2D<Int> {
     return Array2D.parseFromLines(data) { c -> c.digitToInt() }
 }
 
+
+/**
+ * Parses a file where each line is a pair of values separated a separator that is given as a constant string. Any empty lines are ignored.
+ *
+ * Example.
+ *
+ * parseListOfPairs(s, ::parseInt, ::parseInt, ",") would parse the string
+ * """1,2
+ * 11,3
+ * 1,4
+ * """
+ * returns listOf(Pair(1,2), Pair(11,3), Pair(1,4))
+ */
 fun <A, B> parseListOfPairs(
     inputText: String,
     component1parser: (String) -> A,
@@ -36,8 +55,31 @@ fun <A, B> parseListOfPairs(
         val (a, b) = line.split(separator)
         Pair(component1parser(a), component2parser(b))
     }
-
 }
+
+/**
+ * Parses a file where each line is a pair of values separated a separator that is given as a **Regex**. Any empty lines are ignored.
+ *
+ * Example
+ *
+ * parseListOfPairs(s, ::parseInt, ::parseInt, Regex("-"+)) would parse the string
+ * """1-2
+ * 11---3
+ * 1--4"""
+ * returns listOf(Pair(1,2), Pair(11,3), Pair(1,4))
+ */
+fun <A, B> parseListOfPairs(
+    inputText: String,
+    component1parser: (String) -> A,
+    component2parser: (String) -> B,
+    separator: Regex
+): List<Pair<A, B>> {
+    return inputText.nonEmptyLines().map { line ->
+        val (a, b) = line.split(separator)
+        Pair(component1parser(a), component2parser(b))
+    }
+}
+
 
 fun <A, B, C> parseListOfTriples(
     inputText: String,
@@ -75,8 +117,6 @@ fun <A, B, C> parseListOfTriples(
 fun <A> parseOneLineOfSeparated(data: String, parser: (String) -> A, s: String): List<A> {
     return data.nonEmptyLines().single().split(s).map { parser(it) }
 }
-
-
 
 fun parseCoord(data: String): Coord {
     val (x, y) = data.split(",")

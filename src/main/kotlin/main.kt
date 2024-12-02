@@ -2,6 +2,7 @@ import kotlin.time.Duration
 import kotlin.time.ExperimentalTime
 
 val events = mapOf(
+    2024 to listOf(aoc.year2024.day1Problem,aoc.year2024.day2Problem),
     2022 to listOf(
         aoc.year2022.day1Problem,
         aoc.year2022.day2Problem,
@@ -75,8 +76,8 @@ val events = mapOf(
 
         )
 )
-val RUN_FOR_YEAR: Int? = 2022
-val TIMES_TO_RUN = 20
+val RUN_FOR_YEAR: Int? = 2024
+val TIMES_TO_RUN = 1
 
 @OptIn(ExperimentalTime::class)
 fun main() {
