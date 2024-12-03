@@ -7,7 +7,7 @@ import kotlin.time.ExperimentalTime
 class Day999999Problem() : DailyProblem<Int>() {
 
     override val number = 999999
-    override val year = 2022
+    override val year = 2024
     override val name = "Problem name"
 
     private lateinit var data: Any
