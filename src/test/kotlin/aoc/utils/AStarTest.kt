@@ -1,6 +1,6 @@
 package aoc.utils
 
-import org.junit.Test
+import kotlin.test.Test
 import org.junit.jupiter.api.Assertions.assertEquals
 import kotlin.test.assertContains
 import kotlin.test.assertTrue
