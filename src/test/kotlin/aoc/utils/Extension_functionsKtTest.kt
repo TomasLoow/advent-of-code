@@ -1,9 +1,8 @@
 package aoc.utils
 
-import org.junit.Test
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
-import kotlin.test.assertContains
+import kotlin.test.Test
 
 class Extension_functionsKtTest {
 

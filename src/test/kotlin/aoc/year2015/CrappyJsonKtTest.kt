@@ -1,7 +1,8 @@
 package aoc.year2015
 
-import aoc.year2015.crappyJSON.*
-import org.junit.Test
+import aoc.year2015.crappyJSON.JSON
+import aoc.year2015.crappyJSON.parseJSON
+import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 

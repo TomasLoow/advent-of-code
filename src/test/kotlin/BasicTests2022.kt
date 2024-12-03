@@ -1,5 +1,5 @@
 import aoc.year2022.*
-import org.junit.Test
+import kotlin.test.Test
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertThrows
 

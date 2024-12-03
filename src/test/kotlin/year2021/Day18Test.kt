@@ -1,7 +1,7 @@
 import aoc.year2021.Tree
 import aoc.year2021.parseSnailNumber
 import org.junit.jupiter.api.Assertions.*
-import org.junit.jupiter.api.Test
+import kotlin.test.Test
 
 internal class Day18Test {
 

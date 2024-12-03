@@ -1,6 +1,6 @@
 package aoc.year2022
 
-import org.junit.Test
+import kotlin.test.Test
 import kotlin.test.assertEquals
 
 class Day21KtTest {
