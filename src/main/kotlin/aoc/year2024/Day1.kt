@@ -1,51 +1,54 @@
 package aoc.year2024
 
 import DailyProblem
-import aoc.utils.parseBlockList
-import aoc.utils.parseIntLines
+import aoc.utils.emptyMutableMap
 import aoc.utils.parseListOfPairs
 import java.lang.Integer.parseInt
 import kotlin.math.absoluteValue
 import kotlin.time.ExperimentalTime
 
 class Day1Problem() : DailyProblem<Int>() {
-    private lateinit var caloriesList: List<List<Int>>
-
     override val number = 1
     override val year = 2024
     override val name = "Historian Hysteria"
 
-    private lateinit var listOfPairs: List<Pair<Int, Int>>
-    val list1 = mutableListOf<Int>()
-    val list2 = mutableListOf<Int>()
+    private lateinit var listLeft : MutableList<Int>
+    private lateinit var listRight : MutableList<Int>
 
     override fun commonParts() {
-        listOfPairs  = parseListOfPairs(getInputText(), ::parseInt, ::parseInt, Regex(" +"))
+        val listOfPairs  = parseListOfPairs(getInputText(), ::parseInt, ::parseInt, Regex(" +"))
+        listLeft = mutableListOf()
+        listRight = mutableListOf()
         listOfPairs.forEach { (i1, i2) ->
-            list1.add(i1)
-            list2.add(i2)
+            listLeft.add(i1)
+            listRight.add(i2)
         }
+        listLeft.sort()
+        listRight.sort()
     }
 
     override fun part1(): Int {
-        return list1.sorted().zip(list2.sorted()).map {
-            (it.first - it.second).absoluteValue
+        return listLeft.zip(listRight).map { (l,r) ->
+            (l - r).absoluteValue
         }.sum()
     }
 
     override fun part2(): Int {
-        return list1.map { l ->
-            l*list2.count { r -> r == l }
+        val rCounts = emptyMutableMap<Int, Int>()
+        listRight.forEach { r ->
+            rCounts[r] = rCounts.getOrDefault(r, 0) + 1
+        }
+        return listLeft.map { l ->
+            l*rCounts.getOrDefault(l, 0)
         }.sum()
     }
 }
 
-
 val day1Problem = Day1Problem()
 
+@OptIn(ExperimentalTime::class)
 fun main() {
-    day1Problem.commonParts()
-    println(day1Problem.part2())
+    day1Problem.runBoth(100)
 }
 
 
