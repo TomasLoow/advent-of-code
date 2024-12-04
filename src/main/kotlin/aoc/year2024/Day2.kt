@@ -7,7 +7,7 @@ import java.lang.Integer.parseInt
 import kotlin.time.ExperimentalTime
 
 
-class Day2Problem() : DailyProblem<Int>() {
+class Day2Problem : DailyProblem<Int>() {
 
     override val number = 2
     override val year = 2024

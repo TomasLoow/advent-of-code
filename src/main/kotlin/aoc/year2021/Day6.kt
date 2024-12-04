@@ -5,7 +5,7 @@ import aoc.utils.shiftLeft
 import java.lang.Integer.parseInt
 import kotlin.time.ExperimentalTime
 
-class Day6Problem() : DailyProblem<Long>() {
+class Day6Problem : DailyProblem<Long>() {
     override val number = 6
     override val year = 2021
     override val name = "Lanternfish"

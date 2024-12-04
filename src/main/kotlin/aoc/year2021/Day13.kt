@@ -1,7 +1,10 @@
 package aoc.year2021
 
 import DailyProblem
-import aoc.utils.*
+import aoc.utils.Axis2D
+import aoc.utils.nonEmptyLines
+import aoc.utils.parseDisplay
+import aoc.utils.parseTwoBlocks
 import java.lang.Integer.parseInt
 import kotlin.time.ExperimentalTime
 
@@ -32,7 +35,7 @@ private data class Fold(val direction: Axis2D, val foldLinePos:Int) {
 }
 
 
-class Day13Problem() : DailyProblem<Any>() {
+class Day13Problem : DailyProblem<Any>() {
 
     override val number = 13
     override val year = 2021
@@ -65,11 +68,11 @@ class Day13Problem() : DailyProblem<Any>() {
         val maxX = pairCollection.maxOf { it.x }+1
         val maxY = pairCollection.maxOf { it.y }
 
-        return (0 .. maxY).map { y ->
-            (0 .. maxX).map { x ->
-                if (Point(x,y) in pairCollection) '█' else ' '
+        return (0..maxY).joinToString("\n") { y ->
+            (0..maxX).map { x ->
+                if (Point(x, y) in pairCollection) '█' else ' '
             }.joinToString("")
-        }.joinToString("\n")
+        }
     }
 
 

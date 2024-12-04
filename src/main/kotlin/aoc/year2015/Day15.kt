@@ -1,7 +1,8 @@
 package aoc.year2015
 
 import DailyProblem
-import aoc.utils.*
+import aoc.utils.nonEmptyLines
+import aoc.utils.truncPositive
 import kotlin.time.ExperimentalTime
 
 class Day15Problem : DailyProblem<Int>() {

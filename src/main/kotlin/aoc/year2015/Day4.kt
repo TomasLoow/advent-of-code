@@ -1,10 +1,11 @@
 package aoc.year2015
 
 import DailyProblem
-import aoc.utils.*
+import aoc.utils.md5
+import aoc.utils.nonEmptyLines
 import kotlin.time.ExperimentalTime
 
-class Day4Problem() : DailyProblem<Int>() {
+class Day4Problem : DailyProblem<Int>() {
 
     override val number = 4
     override val year = 2015

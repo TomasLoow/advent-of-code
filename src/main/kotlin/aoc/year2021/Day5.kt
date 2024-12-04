@@ -29,7 +29,7 @@ private class VentLine(private val start: Coord, private val end: Coord) {
         val distance: Int = start.chebyshevDistanceTo(end)
 
         var pos = start
-        (0..distance).forEach {
+        repeat(distance+1) {
             arr[pos]++
             pos += delta
         }
@@ -43,7 +43,7 @@ private fun List<VentLine>.countIntersections(): Long {
     return array.countIndexedByCoordinate { coord, i -> i > 1 }.toLong()
 }
 
-class Day5Problem() : DailyProblem<Long>() {
+class Day5Problem : DailyProblem<Long>() {
     override val number = 5
     override val year = 2021
     override val name = "Hydrothermal Venture"

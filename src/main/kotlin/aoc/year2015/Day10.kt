@@ -1,7 +1,8 @@
 package aoc.year2015
 
 import DailyProblem
-import aoc.utils.*
+import aoc.utils.emptyMutableMap
+import aoc.utils.nonEmptyLines
 import kotlin.time.ExperimentalTime
 
 /** A look and see sequence can be decomposed into "atoms". See
@@ -203,7 +204,7 @@ val decayMap = mapOf(
     "U" to listOf("Pa")
 )
 
-class Day10Problem() : DailyProblem<Long>() {
+class Day10Problem : DailyProblem<Long>() {
 
     override val number = 10
     override val year = 2015

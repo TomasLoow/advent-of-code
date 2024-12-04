@@ -36,7 +36,7 @@ class SeaFloor(private val map: Array2D<Int>) {
 }
 
 
-class Day9Problem() : DailyProblem<Long>() {
+class Day9Problem : DailyProblem<Long>() {
 
     override val number = 9
     override val year = 2021

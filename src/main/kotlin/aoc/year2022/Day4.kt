@@ -6,7 +6,7 @@ import aoc.utils.intersectRange
 import aoc.utils.readNonEmptyLines
 import kotlin.time.ExperimentalTime
 
-class Day4Problem() : DailyProblem<Int>() {
+class Day4Problem : DailyProblem<Int>() {
 
     override val number = 4
     override val year = 2022

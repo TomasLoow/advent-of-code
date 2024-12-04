@@ -1,8 +1,9 @@
 package aoc.year2022
 
 import DailyProblem
-import aoc.utils.*
-import aoc.year2015.crappyJSON.*  // Time to reuse **this** crap I guess!
+import aoc.utils.parseBlockList
+import aoc.year2015.crappyJSON.JSON
+import aoc.year2015.crappyJSON.parseJArray
 import kotlin.time.ExperimentalTime
 
 
@@ -21,7 +22,7 @@ class Day13Problem : DailyProblem<Int>() {
             if (left is JSON.I && right !is JSON.I) {
                 return comparePackets(JSON.A(listOf(left)), right)
             }
-            if (left !is JSON.I && right is JSON.I) {
+            if (right is JSON.I) {
                 return comparePackets(left, JSON.A(listOf(right)))
             }
 

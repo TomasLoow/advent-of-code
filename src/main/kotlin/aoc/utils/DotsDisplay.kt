@@ -223,7 +223,7 @@ val charToDispTable = dispToCharTable.map { (k,v) -> Pair(v,k) }.toMap()
 
 fun parseDisplay(display: String): String {
     val width = display.filter{ c -> c != '\n'}.length / 6
-    val array = Array2D<Boolean>(display.filter{ c -> c != '\n'}.map { it == '█' }, width = width, height = 6)
+    val array = Array2D(display.filter{ c -> c != '\n'}.map { it == '█' }, width = width, height = 6)
     val numChars = width/5
     val charSegments = (0 until  numChars).map { i ->
         array[Rect(Coord(5 * i, 0), Coord(5 * i + 4, 5))].show { Array2D.a2renderBool(it) }

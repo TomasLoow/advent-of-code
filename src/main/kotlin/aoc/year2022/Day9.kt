@@ -1,12 +1,15 @@
 package aoc.year2022
 
 import DailyProblem
-import aoc.utils.*
+import aoc.utils.Coord
+import aoc.utils.Direction
+import aoc.utils.iterate
+import aoc.utils.parseListOfPairs
 import java.lang.Integer.parseInt
 import kotlin.math.sign
 import kotlin.time.ExperimentalTime
 
-class Day9Problem() : DailyProblem<Long>() {
+class Day9Problem : DailyProblem<Long>() {
 
     override val number = 9
     override val year = 2022

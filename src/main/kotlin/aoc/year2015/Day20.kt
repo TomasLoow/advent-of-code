@@ -1,10 +1,10 @@
 package aoc.year2015
 
 import DailyProblem
-import aoc.utils.*
+import aoc.utils.nonEmptyLines
 import kotlin.time.ExperimentalTime
 
-class Day20Problem() : DailyProblem<Int>() {
+class Day20Problem : DailyProblem<Int>() {
 
     override val number = 20
     override val year = 2015
@@ -17,7 +17,7 @@ class Day20Problem() : DailyProblem<Int>() {
     }
 
     override fun part1(): Int {
-        val a = Array<Int>(target + 1) { 0 }
+        val a = Array(target + 1) { 0 }
 
         (1..target).forEach { elf ->
             (elf..target step elf).forEach { house ->
@@ -29,7 +29,7 @@ class Day20Problem() : DailyProblem<Int>() {
 
 
     override fun part2(): Int {
-        val a = Array<Int>(target + 1) { 0 }
+        val a = Array(target + 1) { 0 }
 
         (1..target).forEach { elf ->
             (elf..target step elf).take(50).forEach { house ->

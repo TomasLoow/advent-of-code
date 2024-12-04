@@ -1,7 +1,9 @@
 package aoc.year2022
 
 import DailyProblem
-import aoc.utils.*
+import aoc.utils.emptyMutableMap
+import aoc.utils.id
+import aoc.utils.parseListOfPairs
 import kotlin.time.ExperimentalTime
 
 

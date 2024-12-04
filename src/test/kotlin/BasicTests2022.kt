@@ -1,7 +1,7 @@
 import aoc.year2022.*
-import kotlin.test.Test
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertThrows
+import kotlin.test.Test
 
 class BasicTests2022 {
     @Test

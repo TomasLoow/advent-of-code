@@ -5,7 +5,6 @@ import aoc.utils.AStar
 import aoc.utils.Array2D
 import aoc.utils.Coord
 import aoc.utils.parseIntArray
-import java.util.*
 import kotlin.time.ExperimentalTime
 
 private fun embiggen(originalMap: Array2D<Int>): Array2D<Int> {
@@ -43,7 +42,7 @@ private class ChitinAStar(val map: Array2D<Int>, goal:Coord) : AStar<Coord>(goal
 
 }
 
-class Day15Problem() : DailyProblem<Long>() {
+class Day15Problem : DailyProblem<Long>() {
     override val number = 15
     override val year = 2021
     override val name = "Chiton"

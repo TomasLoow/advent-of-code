@@ -52,7 +52,7 @@ typealias Sign = Int
 
 typealias SignedRect = Pair<Sign, Rectangle>
 
-class Day22Problem() : DailyProblem<Long>() {
+class Day22Problem : DailyProblem<Long>() {
     override val number = 22
     override val year = 2021
     override val name = "Reactor Reboot"

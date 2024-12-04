@@ -1,7 +1,10 @@
 package aoc.year2022
 
 import DailyProblem
-import aoc.utils.*
+import aoc.utils.BFS
+import aoc.utils.emptyMutableMap
+import aoc.utils.parseListOfTriples
+import aoc.utils.subSets
 import java.lang.Integer.parseInt
 import kotlin.time.ExperimentalTime
 

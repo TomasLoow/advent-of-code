@@ -1,11 +1,11 @@
 package aoc.year2015
 
 import DailyProblem
-import aoc.utils.*
+import aoc.utils.nonEmptyLines
 import kotlin.time.ExperimentalTime
 
 private typealias Aunt = Map<String, Int>
-class Day16Problem() : DailyProblem<Int>() {
+class Day16Problem : DailyProblem<Int>() {
 
     override val number = 16
     override val year = 2015

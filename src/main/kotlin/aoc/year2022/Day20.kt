@@ -1,8 +1,7 @@
 package aoc.year2022
 
 import DailyProblem
-import aoc.utils.*
-import java.lang.Integer.*
+import aoc.utils.parseIntLines
 import kotlin.time.ExperimentalTime
 
 class Day20Problem : DailyProblem<Long>() {

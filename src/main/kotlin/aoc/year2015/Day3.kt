@@ -1,10 +1,11 @@
 package aoc.year2015
 
 import DailyProblem
-import aoc.utils.*
+import aoc.utils.Coord
+import aoc.utils.Direction
 import kotlin.time.ExperimentalTime
 
-class Day3Problem() : DailyProblem<Int>() {
+class Day3Problem : DailyProblem<Int>() {
 
     override val number = 3
     override val year = 2015
@@ -41,7 +42,7 @@ class Day3Problem() : DailyProblem<Int>() {
     override fun part2(): Int {
         var pos1 = Coord.origin
         var pos2 = Coord.origin
-        val seen = mutableSetOf<Coord>(pos1)
+        val seen = mutableSetOf(pos1)
         data.forEach { dir ->
             val temp = pos1.stepInDir(dir)
             pos1 = pos2

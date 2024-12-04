@@ -1,14 +1,17 @@
 package aoc.year2022
 
 import DailyProblem
-import aoc.utils.*
+import aoc.utils.Coord
+import aoc.utils.Direction
+import aoc.utils.emptyMutableSet
+import aoc.utils.nonEmptyLines
 import java.math.BigInteger
 import java.util.*
 import kotlin.collections.ArrayDeque
 import kotlin.time.ExperimentalTime
 
 private typealias Pit = ArrayDeque<BitSet>
-class Day17Problem() : DailyProblem<BigInteger>() {
+class Day17Problem : DailyProblem<BigInteger>() {
 
     override val number = 17
     override val year = 2022
@@ -218,7 +221,7 @@ class Day17Problem() : DailyProblem<BigInteger>() {
     }
 
     companion object {
-        val shapes = listOf<Set<Coord>>(
+        val shapes = listOf(
             // ####
             setOf(Coord(0, 0), Coord(1, 0), Coord(2, 0), Coord(3, 0)),
 

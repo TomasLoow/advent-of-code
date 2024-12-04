@@ -80,7 +80,7 @@ private class BingoBoard() {
     }
 }
 
-class Day4Problem() : DailyProblem<Long>() {
+class Day4Problem : DailyProblem<Long>() {
     override val number = 4
     override val year = 2021
 

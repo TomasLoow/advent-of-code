@@ -11,7 +11,7 @@ internal class ParserCombinatorsKtTest {
 
     @Test
     fun parseManySpecificCount() {
-        val example = "11100111011".toList().map {it -> it.digitToInt() }
+        val example = "11100111011".toList().map { it.digitToInt() }
         val parser = pManySpecificCount(3, pFixLenghtBinaryInt(3))
         val (res, rest) = parser(example)
 
@@ -22,7 +22,7 @@ internal class ParserCombinatorsKtTest {
 
     @Test
     fun parseManySpecificTokenCount() {
-        val example = "11100111011000110".toList().map {it -> it.digitToInt() }
+        val example = "11100111011000110".toList().map { it.digitToInt() }
         val parser = pManySpecificTokenCount(16, pFixLenghtBinaryInt(4))
         val (res, rest) = parser(example)
 
@@ -44,8 +44,8 @@ internal class ParserCombinatorsKtTest {
 
     @Test
     fun oneOfStrings() {
-        val fooParser = pLiteral<Char>("foo".toList())
-        val barParser = pLiteral<Char>("bar".toList())
+        val fooParser = pLiteral("foo".toList())
+        val barParser = pLiteral("bar".toList())
         val parser = pOneOf(fooParser, barParser)
 
         val (_, rest) = parser("foo is a good variable name".toList())

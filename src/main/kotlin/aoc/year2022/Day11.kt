@@ -7,7 +7,7 @@ import aoc.utils.product
 import kotlin.time.ExperimentalTime
 
 
-class Day11Problem() : DailyProblem<Long>() {
+class Day11Problem : DailyProblem<Long>() {
 
     override val number = 11
     override val year = 2022
@@ -67,7 +67,7 @@ class Day11Problem() : DailyProblem<Long>() {
     sealed interface MonkeyOp {
         class Add(val value: Int) : MonkeyOp
         class Mul(val value: Int) : MonkeyOp
-        class Squared() : MonkeyOp
+        class Squared : MonkeyOp
     }
 
     fun monkeyStep(state: Map<Int, Monkey>, divisor: Int = 3) {

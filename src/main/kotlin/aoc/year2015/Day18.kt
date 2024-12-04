@@ -1,10 +1,11 @@
 package aoc.year2015
 
 import DailyProblem
-import aoc.utils.*
+import aoc.utils.Array2D
+import aoc.utils.Coord
 import kotlin.time.ExperimentalTime
 
-class Day18Problem() : DailyProblem<Int>() {
+class Day18Problem : DailyProblem<Int>() {
 
     var steps: Int = 100
     override val number = 18

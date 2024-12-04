@@ -1,6 +1,6 @@
 import aoc.year2015.*
-import kotlin.test.Test
 import org.junit.jupiter.api.Assertions.assertEquals
+import kotlin.test.Test
 
 class BasicTests2015 {
     @Test

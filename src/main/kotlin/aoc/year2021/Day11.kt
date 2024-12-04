@@ -61,7 +61,7 @@ private class OctopusGrid(val grid: Array2D<Int>) {
     }
 }
 
-class Day11Problem() : DailyProblem<Long>() {
+class Day11Problem : DailyProblem<Long>() {
 
     override val number = 11
     override val year = 2021

@@ -4,7 +4,7 @@ import DailyProblem
 import aoc.utils.nonEmptyLines
 
 
-class Day3Problem() : DailyProblem<Int>() {
+class Day3Problem : DailyProblem<Int>() {
 
     override val number = 3
     override val year = 2022

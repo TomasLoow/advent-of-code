@@ -6,7 +6,7 @@ import aoc.utils.Coord
 import aoc.utils.parseIntArray
 import kotlin.time.ExperimentalTime
 
-class Day8Problem() : DailyProblem<Int>() {
+class Day8Problem : DailyProblem<Int>() {
 
     override val number = 8
     override val year = 2022

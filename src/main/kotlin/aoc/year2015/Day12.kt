@@ -1,11 +1,11 @@
 package aoc.year2015
 
 import DailyProblem
-import aoc.utils.*
-import aoc.year2015.crappyJSON.*
+import aoc.year2015.crappyJSON.JSON
+import aoc.year2015.crappyJSON.parseJSON
 import kotlin.time.ExperimentalTime
 
-class Day12Problem() : DailyProblem<Int>() {
+class Day12Problem : DailyProblem<Int>() {
     override val number = 12
     override val year = 2015
     override val name = "JSAbacusFramework.io"

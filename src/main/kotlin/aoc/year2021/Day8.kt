@@ -5,11 +5,10 @@ import aoc.utils.emptyMutableMap
 import aoc.utils.parseDecimal
 import aoc.utils.parseListOfPairs
 import aoc.utils.parseOneLineOfSeparated
-import java.io.File
 
 typealias ActiveWires = Set<Char>
 
-class Day8Problem() : DailyProblem<Long>() {
+class Day8Problem : DailyProblem<Long>() {
     override val number = 8
     override val year = 2021
     override val name = "Seven Segment Search"

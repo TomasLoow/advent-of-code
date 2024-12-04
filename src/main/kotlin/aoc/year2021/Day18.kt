@@ -27,7 +27,7 @@ class Tree(var arr: Array<Pair<TreePos, Int>>) {
     }
 
     private fun expandArray() {
-        val newArray = Array<Pair<TreePos,Int>>(arr.size * 2 ) { i ->
+        val newArray = Array(arr.size * 2 ) { i ->
             if (i < usedSize) arr[i] else Pair(emptyList(),0)
         }
         this.arr = newArray
@@ -117,8 +117,8 @@ fun leaf(i: Int): Tree {
 
 fun branch(left: Tree, right: Tree): Tree {
     val arr: Array<Pair<TreePos,Int>> = (
-            left.arrList().map { it -> it.copy(first=(listOf(ZigZag.L) + it.first)) } +
-            right.arrList().map { it -> it.copy(first=(listOf(ZigZag.R) + it.first)) }).toTypedArray()
+            left.arrList().map { it.copy(first=(listOf(ZigZag.L) + it.first)) } +
+            right.arrList().map { it.copy(first=(listOf(ZigZag.R) + it.first)) }).toTypedArray()
 
     return Tree(arr)
 }
@@ -150,7 +150,7 @@ fun parseSnailfishNumbersFile(path: String): List<Tree> {
     return File(path).readLines().map(::parseSnailNumber)
 }
 
-class Day18Problem() : DailyProblem<Long>() {
+class Day18Problem : DailyProblem<Long>() {
     private lateinit var parsedNumbers: List<Tree>
     override val number = 18
     override val year = 2021

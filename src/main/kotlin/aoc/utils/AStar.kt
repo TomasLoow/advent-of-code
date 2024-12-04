@@ -15,7 +15,7 @@ abstract class AStar<State>(val goal:State) {
     abstract fun getMoveCost(from: State, to: State): Int
 
     fun reconstructPath(cameFrom:MutableMap<State, State>): List<State> {
-        return buildList<State> {
+        return buildList {
             add(goal)
             var s = goal
             while(s in cameFrom) {
@@ -57,11 +57,11 @@ abstract class AStar<State>(val goal:State) {
                 } catch (e: ArrayIndexOutOfBoundsException) {
                     continue
                 }
-                val tentative_gScore = cheapestPathScoreMap.getOrDefault(current, Int.MAX_VALUE) + neighbourValue
-                if (tentative_gScore < cheapestPathScoreMap.getOrDefault(neighbour, Int.MAX_VALUE)) {
+                val tentativeGScore = cheapestPathScoreMap.getOrDefault(current, Int.MAX_VALUE) + neighbourValue
+                if (tentativeGScore < cheapestPathScoreMap.getOrDefault(neighbour, Int.MAX_VALUE)) {
                     cameFrom[neighbour] = current
-                    cheapestPathScoreMap[neighbour] = tentative_gScore
-                    heuristicScoreMap[neighbour] = tentative_gScore + heuristic(neighbour)
+                    cheapestPathScoreMap[neighbour] = tentativeGScore
+                    heuristicScoreMap[neighbour] = tentativeGScore + heuristic(neighbour)
                     openSet.add(heuristicScoreMap[neighbour]!! to neighbour)
                 }
             }

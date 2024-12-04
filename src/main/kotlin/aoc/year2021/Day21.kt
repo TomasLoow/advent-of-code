@@ -83,7 +83,7 @@ fun runDiracGame(startState: GameState): Pair<Long,Long>{
 
 
 
-class Day21Problem() : DailyProblem<Long>() {
+class Day21Problem : DailyProblem<Long>() {
     override val number = 21
     override val year = 2021
     override val name = "Dirac Dice"

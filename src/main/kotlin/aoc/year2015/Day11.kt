@@ -1,10 +1,9 @@
 package aoc.year2015
 
 import DailyProblem
-import aoc.utils.*
 import kotlin.time.ExperimentalTime
 
-class Day11Problem() : DailyProblem<String>() {
+class Day11Problem : DailyProblem<String>() {
     override val number = 11
     override val year = 2015
     override val name = "Corporate Policy"

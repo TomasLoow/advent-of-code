@@ -1,11 +1,14 @@
 package aoc.year2015
 
 import DailyProblem
-import aoc.utils.*
+import aoc.utils.emptyMutableMap
+import aoc.utils.flip
+import aoc.utils.id
+import aoc.utils.parseListOfPairs
 import kotlin.time.ExperimentalTime
 
 private typealias Wire = String
-class Day7Problem() : DailyProblem<Int>() {
+class Day7Problem : DailyProblem<Int>() {
 
     override val number = 7
     override val year = 2015
@@ -42,16 +45,15 @@ class Day7Problem() : DailyProblem<Int>() {
 
     override fun commonParts() {
 
-        circuit = parseListOfPairs(getInputText(), ::parseGate, ::id, separator = " -> ").map { it.flip() }.toMap()
-        cache = emptyMutableMap<Wire, Int>()
+        circuit = parseListOfPairs(getInputText(), ::parseGate, ::id, separator = " -> ").associate { it.flip() }
+        cache = emptyMutableMap()
     }
 
 
     fun evaluate(circuit: Map<Wire,Gate>, wire: Wire): Int {
         if (wire in cache) return cache[wire]!!
         if (wire.all { c -> c.isDigit()}) return wire.toInt()
-        val gate = circuit[wire]!!
-        val value = when(gate) {
+        val value = when(val gate = circuit[wire]!!) {
             is Gate.Const ->  gate.value
             is Gate.And -> evaluate(circuit, gate.inpA) and evaluate(circuit, gate.inpB)
             is Gate.Or -> evaluate(circuit, gate.inpA) or evaluate(circuit, gate.inpB)

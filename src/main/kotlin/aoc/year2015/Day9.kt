@@ -1,13 +1,16 @@
 package aoc.year2015
 
 import DailyProblem
-import aoc.utils.*
+import aoc.utils.emptyMutableMap
+import aoc.utils.id
+import aoc.utils.parseListOfTriples
+import aoc.utils.permutationsSequence
 import java.lang.Integer.parseInt
 import kotlin.math.max
 import kotlin.math.min
 import kotlin.time.ExperimentalTime
 
-class Day9Problem() : DailyProblem<Int>() {
+class Day9Problem : DailyProblem<Int>() {
 
     override val number = 9
     override val year = 2015
@@ -19,7 +22,7 @@ class Day9Problem() : DailyProblem<Int>() {
         val distances = parseListOfTriples(getInputText(), ::id, ::id, ::parseInt, " to ", " = ")
         val places = distances.flatMap { listOf(it.first, it.second) }.toSet().toList()
         distancesMap = buildMap {
-            places.forEach { place -> this[place] = emptyMutableMap<String, Int>() }
+            places.forEach { place -> this[place] = emptyMutableMap() }
             distances.forEach { (a, b, d) ->
                 this[a]!![b] = d
                 this[b]!![a] = d

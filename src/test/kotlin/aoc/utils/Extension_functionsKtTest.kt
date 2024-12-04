@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import kotlin.test.Test
 
-class Extension_functionsKtTest {
+class ExtensionFunctionsKtTest {
 
     @Test
     fun `test iterate`() {

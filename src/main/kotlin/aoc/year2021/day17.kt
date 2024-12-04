@@ -22,7 +22,7 @@ private fun parseTrickShot(path: String): List<Int> {
     return res
 }
 
-class Day17Problem() : DailyProblem<Long>() {
+class Day17Problem : DailyProblem<Long>() {
     override val number: Int = 17
     override val year: Int = 2021
     override val name: String = "Trick Shot"

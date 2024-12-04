@@ -1,11 +1,14 @@
 package aoc.year2015
 
 import DailyProblem
-import aoc.utils.*
+import aoc.utils.Array2D
+import aoc.utils.Coord
+import aoc.utils.Rect
+import aoc.utils.nonEmptyLines
 import java.lang.Math.max
 import kotlin.time.ExperimentalTime
 
-class Day6Problem() : DailyProblem<Int>() {
+class Day6Problem : DailyProblem<Int>() {
 
     override val number = 6
     override val year = 2015
