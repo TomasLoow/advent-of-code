@@ -42,7 +42,7 @@ class Day14Problem() : DailyProblem<Int>() {
     }
 
     override fun part2(): Int {
-        val scores = mutableMapOf<String, Int>()
+        val scores = emptyMutableMap<String, Int>()
         reindeers.forEach { scores[it.name] = 0 }
         (1 .. stopTime).forEach { t ->
             val ranking = reindeers.map { r -> Pair(r, r.distanceAfter(t)) }.sortedByDescending { it.second }

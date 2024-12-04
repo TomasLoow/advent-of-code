@@ -43,7 +43,7 @@ class Day7Problem() : DailyProblem<Int>() {
     override fun commonParts() {
 
         circuit = parseListOfPairs(getInputText(), ::parseGate, ::id, separator = " -> ").map { it.flip() }.toMap()
-        cache = mutableMapOf<Wire, Int>()
+        cache = emptyMutableMap<Wire, Int>()
     }
 
 

@@ -1,6 +1,8 @@
 package aoc.year2022
 
 import DailyProblem
+import aoc.utils.emptyMutableMap
+import aoc.utils.emptyMutableSet
 import aoc.utils.readNonEmptyLines
 import kotlin.time.ExperimentalTime
 
@@ -49,8 +51,8 @@ class Day7Problem() : DailyProblem<Int>() {
 
     class Directory(
         val name: String,
-        val subDirectories: MutableMap<String, Directory> = mutableMapOf(),
-        val files: MutableSet<Pair<String, Int>> = mutableSetOf(),
+        val subDirectories: MutableMap<String, Directory> = emptyMutableMap(),
+        val files: MutableSet<Pair<String, Int>> = emptyMutableSet(),
         val parent: Directory? = null
     ) {
 

@@ -35,7 +35,7 @@ class Day18Problem() : DailyProblem<Int>() {
     }
 
     private fun surfaceArea(blocks: Collection<Block>): Int {
-        val sharedEdges = mutableSetOf<Pair<Block, Block>>()
+        val sharedEdges = emptyMutableSet<Pair<Block, Block>>()
         val seenBlocks = mutableListOf<Block>()
         blocks.forEach { block ->
             seenBlocks.forEach { if (touches(block, it)) sharedEdges.add(Pair(block, it)) }
