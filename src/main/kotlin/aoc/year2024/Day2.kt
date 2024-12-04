@@ -1,25 +1,10 @@
 package aoc.year2024
 
 import DailyProblem
-import aoc.utils.*
+import aoc.utils.nonEmptyLines
+import aoc.utils.parseOneLineOfSeparated
 import java.lang.Integer.parseInt
-import java.util.stream.Stream
-import kotlin.math.absoluteValue
 import kotlin.time.ExperimentalTime
-
-
-private fun List<Int>.isAscending(): Boolean {
-    return this.windowed(2).all { it[0] <= it[1] }
-}
-
-private fun List<Int>.isDescending(): Boolean {
-    return this.windowed(2).all { it[0] >= it[1] }
-}
-
-private fun List<Int>.stepsBetweenOneAndThree() = this.windowed(2).all {
-    val diff = (it[0] - it[1]).absoluteValue
-    diff >= 1 && diff <= 3
-}
 
 
 class Day2Problem() : DailyProblem<Int>() {
@@ -59,8 +44,10 @@ class Day2Problem() : DailyProblem<Int>() {
         }
     }
 
-    private fun validLine(line: List<Int>) =
-        (line.isAscending() || line.isDescending()) && line.stepsBetweenOneAndThree()
+    private fun validLine(line: List<Int>): Boolean {
+        val diffs = line.zipWithNext { a, b -> b - a }
+        return diffs.all { it in (1..3) } || diffs.all { it in (-3..-1) }
+    }
 }
 
 val day2Problem = Day2Problem()
