@@ -45,8 +45,9 @@ class CrappyJsonKtTest {
     fun `parseJSON works with nested array`() {
         val (resParse, unparsed) = parseJSON("[[1],[2,3]]")
         assertTrue { resParse is JSON.A }
-        val firstSubArray = (resParse as JSON.A).content[0] as JSON.A
-        val secondSubArray = (resParse as JSON.A).content[1] as JSON.A
+        val resParseJsonA = resParse as JSON.A
+        val firstSubArray = resParseJsonA.content[0] as JSON.A
+        val secondSubArray = resParseJsonA.content[1] as JSON.A
         assertTrue { (firstSubArray.content[0] as JSON.I).int == 1 }
         assertTrue { (secondSubArray.content[0] as JSON.I).int == 2 }
         assertTrue { (secondSubArray.content[1] as JSON.I).int == 3 }
