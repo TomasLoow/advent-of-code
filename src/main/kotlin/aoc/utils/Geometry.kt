@@ -69,6 +69,7 @@ data class Coord(val x: Int, val y: Int) {
         return (x - other.x).absoluteValue + (y - other.y).absoluteValue
     }
 
+
     /** Also known as L_inf norm or Max-distance */
     fun chebyshevDistanceTo(other: Coord): Int {
         return max((x - other.x).absoluteValue, (y - other.y).absoluteValue)
@@ -98,7 +99,22 @@ data class Coord(val x: Int, val y: Int) {
             Direction.RIGHT -> dx = 1
             Direction.DOWN -> dy = 1
             Direction.LEFT -> dx = -1
-            else -> TODO()
+            Direction.UPLEFT -> {
+                dy = -1
+                dx = -1
+            }
+            Direction.UPRIGHT -> {
+                dy = -1
+                dx = 1
+            }
+            Direction.DOWNLEFT -> {
+                dy = 1
+                dx = -1
+            }
+            Direction.DOWNRIGHT -> {
+                dy = 1
+                dx = 1
+            }
         }
         return sequence {
             while (true) {

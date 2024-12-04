@@ -91,8 +91,15 @@ class Array2D<T> {
     }
 
     operator fun get(c: Coord): T {
-
         return data[c2Idx(c)] as T
+    }
+
+    operator fun get(c: Coord, dir: Direction): List<T> {
+        return c.walkInDir(dir).takeWhile { this.contains(it) }.map { this[it] }.toList()
+    }
+
+    operator fun get(c: Coord, dir: Direction, steps:Int): List<T> {
+        return c.walkInDir(dir).takeWhile { this.contains(it) }.take(steps).map { this[it] }.toList()
     }
 
     /** Extract a sub array */

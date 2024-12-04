@@ -32,6 +32,10 @@ fun parseIntArray(data: String) : Array2D<Int> {
     return Array2D.parseFromLines(data) { c -> c.digitToInt() }
 }
 
+fun parseCharArray(data: String) : Array2D<Char> {
+    return Array2D.parseFromLines(data, ::id)
+}
+
 
 /**
  * Parses a file where each line is a pair of values separated a separator that is given as a constant string. Any empty lines are ignored.
