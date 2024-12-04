@@ -36,7 +36,7 @@ class Array2D<T> {
 
         this.rect = Rect(Coord(0, 0), Coord(width - 1, height - 1))
 
-        
+
         this.data = Array<Any?>(capacity) { initital as Any }
     }
 
@@ -84,13 +84,20 @@ class Array2D<T> {
     }
 
     operator fun get(x: Int, y: Int): T {
-        
+
         return data[c2Idx(x, y)] as T
     }
 
     operator fun get(c: Coord): T {
-        
         return data[c2Idx(c)] as T
+    }
+
+    operator fun get(c: Coord, dir: Direction): List<T> {
+        return c.walkInDir(dir).takeWhile { this.contains(it) }.map { this[it] }.toList()
+    }
+
+    operator fun get(c: Coord, dir: Direction, steps:Int): List<T> {
+        return c.walkInDir(dir).takeWhile { this.contains(it) }.take(steps).map { this[it] }.toList()
     }
 
     /** Extract a sub array */
@@ -131,7 +138,7 @@ class Array2D<T> {
             val startIdx = c2Idx(r.xRange.first, y)
             val lastIdx = c2Idx(r.xRange.last, y)
             (startIdx..lastIdx).forEach { idx: Int ->
-                
+
                 data[idx] = mod(data[idx] as T) as Any
             }
         }
@@ -164,7 +171,7 @@ class Array2D<T> {
         val pattern = if (diagonal) IDX_STEPS_WITH_DIAG else STEPS_WITHOUT_DIAG
         val idx = c2Idx(c)
 
-        
+
         return pattern.map { it + idx }.filter { nIdx ->
             nIdx >= 0 && nIdx < data.size && ((nIdx % width) - (c.x)).absoluteValue <= 1
         }.map { nIdx -> data[nIdx] as T }
@@ -175,7 +182,7 @@ class Array2D<T> {
     }
 
     fun <R> map(function: (T) -> R): Array2D<R> {
-        
+
         return Array2D(data.map(function as ((Any?) -> R)), width, height)
     }
 
