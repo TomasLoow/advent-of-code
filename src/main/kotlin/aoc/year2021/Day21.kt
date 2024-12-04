@@ -1,6 +1,7 @@
 package aoc.year2021
 
 import DailyProblem
+import aoc.utils.emptyMutableMap
 import java.io.File
 import java.lang.Integer.max
 import java.lang.Integer.min
@@ -58,7 +59,7 @@ fun runDeterministicGame(startState: GameState): Int{
 }
 
 fun runDiracGame(startState: GameState): Pair<Long,Long>{
-    val memoized = mutableMapOf<GameState, Pair<Long,Long>>()
+    val memoized = emptyMutableMap<GameState, Pair<Long,Long>>()
     val threeDiceSumOutcomes = listOf(3 to 1, 4 to 3, 5 to 6, 6 to 7, 7 to 6, 8 to 3, 9 to 1) // Pair(roll sum, count rolls with sum)
     fun rec(state: GameState) : Pair<Long,Long> {
         if (state.score1 >= 21) return Pair(1,0)

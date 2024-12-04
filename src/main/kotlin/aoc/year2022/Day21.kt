@@ -59,7 +59,7 @@ class Day21Problem : DailyProblem<Long>() {
 
     }
 
-    private val cache = mutableMapOf<String, Long>()
+    private val cache = emptyMutableMap<String, Long>()
     private fun calculateSubtree(name: String, data: Map<String, Monkey>): Long {
         if (name in cache) return cache[name]!!
         val res = when (val m = data[name]!!) {

@@ -3,6 +3,7 @@ package aoc.year2021
 import DailyProblem
 import aoc.utils.Array2D
 import aoc.utils.Coord
+import aoc.utils.emptyMutableSet
 import aoc.utils.parseIntArray
 import kotlin.time.ExperimentalTime
 
@@ -30,7 +31,7 @@ private class OctopusGrid(val grid: Array2D<Int>) {
             .filterIndexedByCoordinate { coord, value -> value > 9 && coord !in coordsThatHaveFlashed }
             .map { it.first }.toMutableList()
 
-        val coordsThatHaveFlashedThisStep = mutableSetOf<Coord>()
+        val coordsThatHaveFlashedThisStep = emptyMutableSet<Coord>()
         var coordsToFlashQueue = findCoordsThatNeedToFlash(coordsThatHaveFlashedThisStep)
         do {
             var hasFlashedSomewhere = false

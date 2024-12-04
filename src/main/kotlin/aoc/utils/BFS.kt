@@ -28,7 +28,7 @@ abstract class BFS<State> {
     fun solve(startState: State): List<State> {
         val q = ArrayDeque<State>()
         q.addLast(startState)
-        val cameFrom = mutableMapOf<State, State>() //
+        val cameFrom = emptyMutableMap<State, State>() //
         val explored = mutableSetOf(startState)
         while (q.isNotEmpty()) {
             val v = q.removeFirst()

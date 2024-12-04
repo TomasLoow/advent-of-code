@@ -20,7 +20,7 @@ class Day13Problem() : DailyProblem<Int>() {
             }
             return s.substringAfter("gain ").toInt()
         }
-        val personsSet = mutableSetOf<String>()
+        val personsSet = emptyMutableSet<String>()
 
         rules = parseListOfTriples(
             getInputText(),

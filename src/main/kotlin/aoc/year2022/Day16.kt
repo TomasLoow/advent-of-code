@@ -36,7 +36,7 @@ class Day16Problem : DailyProblem<Int>() {
             .map { Pair(it.first, Room(it.first, it.second, it.third)) }).toMap()
         distances = buildMap {
             roomMap.keys.forEach {
-                this[it] = mutableMapOf()
+                this[it] = emptyMutableMap()
             }
             class ShortestPath(goal: Room) : BFS<Room>(goal) {
                 override fun reachable(state: Room): Collection<Room> {
@@ -58,7 +58,7 @@ class Day16Problem : DailyProblem<Int>() {
 
     private fun distance(r1: String, r2: String): Int = distances[r1]!![r2]!!
 
-    private val cache: MutableMap<Pair<List<String>, Int>, Int> = mutableMapOf()
+    private val cache: MutableMap<Pair<List<String>, Int>, Int> = emptyMutableMap()
     private fun scoreRoute(route: List<String>, time: Int): Int {
         if (Pair(route, time) in cache) {
             return cache[Pair(route, time)]!!

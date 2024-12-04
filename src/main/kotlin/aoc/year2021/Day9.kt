@@ -1,10 +1,7 @@
 package aoc.year2021
 
 import DailyProblem
-import aoc.utils.Array2D
-import aoc.utils.Coord
-import aoc.utils.parseIntArray
-import aoc.utils.product
+import aoc.utils.*
 import kotlin.time.ExperimentalTime
 
 
@@ -32,7 +29,7 @@ class SeaFloor(private val map: Array2D<Int>) {
     }
 
     fun sizeOfBasinAt(p: Coord): Int {
-        val basin = mutableSetOf<Coord>()
+        val basin = emptyMutableSet<Coord>()
         floodFill(p, basin)
         return basin.size
     }

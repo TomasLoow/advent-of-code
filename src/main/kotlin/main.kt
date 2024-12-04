@@ -1,3 +1,4 @@
+import aoc.utils.emptyMutableMap
 import kotlin.time.Duration
 import kotlin.time.ExperimentalTime
 
@@ -89,7 +90,7 @@ val TIMES_TO_RUN = 10
 
 @OptIn(ExperimentalTime::class)
 fun main() {
-    val yearSummary = mutableMapOf<Int, Duration>()
+    val yearSummary = emptyMutableMap<Int, Duration>()
     val eventsToRun = if (RUN_FOR_YEAR == null) {
         events
     } else {

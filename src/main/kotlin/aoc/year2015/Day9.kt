@@ -19,7 +19,7 @@ class Day9Problem() : DailyProblem<Int>() {
         val distances = parseListOfTriples(getInputText(), ::id, ::id, ::parseInt, " to ", " = ")
         val places = distances.flatMap { listOf(it.first, it.second) }.toSet().toList()
         distancesMap = buildMap {
-            places.forEach { place -> this[place] = mutableMapOf<String, Int>() }
+            places.forEach { place -> this[place] = emptyMutableMap<String, Int>() }
             distances.forEach { (a, b, d) ->
                 this[a]!![b] = d
                 this[b]!![a] = d

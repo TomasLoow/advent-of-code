@@ -159,7 +159,7 @@ class Day17Problem() : DailyProblem<BigInteger>() {
 
     private fun findCycleLength(): Pair<Int,Int> {
         tetrisPit.hashCode()
-        val s = mutableSetOf<Pair<Int,Int>>()
+        val s = emptyMutableSet<Pair<Int,Int>>()
 
         // Find an airflow value that has been seen at the start of a new block cycle twice
         var candidate: Int? = null

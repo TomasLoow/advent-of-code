@@ -95,7 +95,7 @@ class Day14Problem() : DailyProblem<Int>() {
     }
     private fun part2BFS() : Int {
         val q = ArrayDeque<Coord>(1000)
-        val visited = mutableSetOf<Coord>()
+        val visited = emptyMutableSet<Coord>()
         q.addLast(SAND_SOURCE)
         while (q.isNotEmpty()) {
             val c = q.removeFirst()

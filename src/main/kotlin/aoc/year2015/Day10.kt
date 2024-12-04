@@ -213,7 +213,7 @@ class Day10Problem() : DailyProblem<Long>() {
 
 
     /* cache for the lenDecay function to speed it up greatly */
-    private val cache = mutableMapOf<Int, MutableMap<Atom, Long>>()
+    private val cache = emptyMutableMap<Int, MutableMap<Atom, Long>>()
 
     fun lenAfterDecay(atom: Atom, steps: Int): Long {
         if (atom in cache[steps]!!) return cache[steps]!![atom]!!
@@ -228,7 +228,7 @@ class Day10Problem() : DailyProblem<Long>() {
 
     private fun resetCache() {
         cache.clear()
-        (0..50).forEach { cache[it] = mutableMapOf() }
+        (0..50).forEach { cache[it] = emptyMutableMap() }
     }
 
     override fun commonParts() {

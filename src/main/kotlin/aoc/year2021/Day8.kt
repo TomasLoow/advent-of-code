@@ -1,6 +1,7 @@
 package aoc.year2021
 
 import DailyProblem
+import aoc.utils.emptyMutableMap
 import aoc.utils.parseDecimal
 import aoc.utils.parseListOfPairs
 import aoc.utils.parseOneLineOfSeparated
@@ -29,7 +30,7 @@ class Day8Problem() : DailyProblem<Long>() {
     fun solveLine(line: Pair<List<ActiveWires>, List<ActiveWires>>): List<Int> {
         val (clues, displays) = line
 
-        val numToWiresMap: MutableMap<Int, ActiveWires> = mutableMapOf()
+        val numToWiresMap: MutableMap<Int, ActiveWires> = emptyMutableMap()
         numToWiresMap[1] = clues.find { it.size == 2 }!!
         numToWiresMap[4] = clues.find { it.size == 4 }!!
         numToWiresMap[7] = clues.find { it.size == 3 }!!
