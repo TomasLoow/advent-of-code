@@ -5,7 +5,7 @@ import aoc.utils.nonEmptyLines
 import aoc.utils.parseTwoBlocks
 import kotlin.time.ExperimentalTime
 
-class Day5Problem() : DailyProblem<String>() {
+class Day5Problem : DailyProblem<String>() {
 
     override val number = 5
     override val year = 2022

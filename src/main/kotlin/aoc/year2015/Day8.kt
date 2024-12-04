@@ -1,10 +1,10 @@
 package aoc.year2015
 
 import DailyProblem
-import aoc.utils.*
+import aoc.utils.nonEmptyLines
 import kotlin.time.ExperimentalTime
 
-class Day8Problem() : DailyProblem<Int>() {
+class Day8Problem : DailyProblem<Int>() {
 
     override val number = 8
     override val year = 2015
@@ -23,7 +23,7 @@ class Day8Problem() : DailyProblem<Int>() {
 
     private fun evaluate(s: String) : String {
         val s2 = s.drop(1).dropLast(1).toMutableList()
-        val cs = buildList<Char> {
+        val cs = buildList {
             while(s2.isNotEmpty()) {
                 val firstChar = s2.first()
                 if (firstChar != '\\') {

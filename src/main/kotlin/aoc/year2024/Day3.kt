@@ -3,7 +3,7 @@ package aoc.year2024
 import DailyProblem
 import kotlin.time.ExperimentalTime
 
-class Day3Problem() : DailyProblem<Int>() {
+class Day3Problem : DailyProblem<Int>() {
 
     override val number = 3
     override val year = 2024
@@ -37,7 +37,7 @@ class Day3Problem() : DailyProblem<Int>() {
             matching = (match.value == "do()")
             if (matching) {
                 // everything from here to the next match should be evaluated
-                val subStringUpToNextMatch = fixedData.substring(match.range.endInclusive + 1..next.range.start)
+                val subStringUpToNextMatch = fixedData.substring(match.range.last + 1..next.range.first)
                 res += evalMultsInString(subStringUpToNextMatch)
             }
         }

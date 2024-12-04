@@ -10,7 +10,7 @@ sealed interface Move {
 }
 
 
-class Day22Problem() : DailyProblem<Long>() {
+class Day22Problem : DailyProblem<Long>() {
     override val number = 22
     override val year = 2022
 
@@ -23,7 +23,7 @@ class Day22Problem() : DailyProblem<Long>() {
         fun parseMoves(s: String): List<Move> {
             var i = 0
             var curS = s.trim().substring(i)
-            return buildList<Move> {
+            return buildList {
                 while (true) {
                     val steps = curS.takeWhile { it.isDigit() }
                     this.add(Move.Forward(steps.toInt()))
@@ -40,11 +40,11 @@ class Day22Problem() : DailyProblem<Long>() {
 
         fun parseMap(s: String): Array2D<Char> {
             val mx = s.nonEmptyLines().maxOf { it.length }
-            val corrected = s.nonEmptyLines().map { line ->
+            val corrected = s.nonEmptyLines().joinToString("\n") { line ->
                 if (line.length < mx) {
                     line + " ".repeat(mx - line.length)
                 } else line
-            }.joinToString("\n")
+            }
             return Array2D.parseFromLines(corrected, ::id)
         }
 

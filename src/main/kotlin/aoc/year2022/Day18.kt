@@ -2,16 +2,24 @@ package aoc.year2022
 
 import DailyProblem
 import aoc.utils.*
-import java.lang.Integer.*
+import java.lang.Integer.parseInt
 import kotlin.math.absoluteValue
 import kotlin.time.ExperimentalTime
+
 data class Block(val x: Int, val y: Int, val z: Int) {
     override fun hashCode(): Int {
         return x.shl(8) + y.shl(4) + z
     }
+
+    override fun equals(other: Any?): Boolean { 
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+        other as Block
+        return ((x == other.x) && (y == other.y) && (z == other.z))
+    }
 }
 
-class Day18Problem() : DailyProblem<Int>() {
+class Day18Problem : DailyProblem<Int>() {
 
     override val number = 18
     override val year = 2022
@@ -71,7 +79,7 @@ class Day18Problem() : DailyProblem<Int>() {
         zr: IntRange,
         blocked: Set<Block>
     ): Set<Block> {
-        class FloodFillBFS() : BFS<Block>({ false }) {
+        class FloodFillBFS : BFS<Block>({ false }) {
             override fun reachable(state: Block): Collection<Block> {
                 return neigbours(state).filter { it.x in xr && it.y in yr && it.z in zr && it !in blocked }
             }

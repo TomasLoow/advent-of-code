@@ -1,10 +1,12 @@
 package aoc.year2022
 
 import DailyProblem
-import aoc.utils.*
+import aoc.utils.Array2D
+import aoc.utils.nonEmptyLines
+import aoc.utils.parseDisplay
 import kotlin.time.ExperimentalTime
 
-class Day10Problem() : DailyProblem<Any>() {
+class Day10Problem : DailyProblem<Any>() {
 
     override val number = 10
     override val year = 2022
@@ -31,7 +33,7 @@ class Day10Problem() : DailyProblem<Any>() {
         var step = 1
         var signal = 1
 
-        val fullSignal = buildMap<Int, Int> {
+        val fullSignal = buildMap {
             this[1] = 1
             data.forEach {
                 when (it) {

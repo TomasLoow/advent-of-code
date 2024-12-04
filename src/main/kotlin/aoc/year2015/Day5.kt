@@ -1,10 +1,10 @@
 package aoc.year2015
 
 import DailyProblem
-import aoc.utils.*
+import aoc.utils.nonEmptyLines
 import kotlin.time.ExperimentalTime
 
-class Day5Problem() : DailyProblem<Int>() {
+class Day5Problem : DailyProblem<Int>() {
 
     override val number = 5
     override val year = 2015
@@ -40,11 +40,11 @@ class Day5Problem() : DailyProblem<Int>() {
 
 
     override fun part1(): Int {
-        return inputStrings.filter { line -> isNice1(line) }.count()
+        return inputStrings.count { line -> isNice1(line) }
     }
 
     override fun part2(): Int {
-        return inputStrings.filter { line -> isNice2(line) }.count()
+        return inputStrings.count { line -> isNice2(line) }
     }
 }
 

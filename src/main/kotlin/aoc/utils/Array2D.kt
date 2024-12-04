@@ -39,7 +39,7 @@ class Array2D<T> {
         this.rect = Rect(Coord(0, 0), Coord(width - 1, height - 1))
 
 
-        this.data = Array<Any?>(capacity) { initital as Any }
+        this.data = Array(capacity) { initital as Any }
     }
 
     constructor(width: Int, height: Int, f: (Coord) -> T) {

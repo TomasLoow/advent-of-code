@@ -45,7 +45,7 @@ private fun CrabPositions.findPositionScore(pos: Int): Int {
     }
 }
 
-class Day7Problem() : DailyProblem<Int>() {
+class Day7Problem : DailyProblem<Int>() {
     override val number = 7
     override val year = 2021
     override val name = "The Treachery of Whales"

@@ -5,7 +5,7 @@ import aoc.utils.parseIntLines
 import kotlin.time.ExperimentalTime
 
 
-class Day1Problem() : DailyProblem<Long>() {
+class Day1Problem : DailyProblem<Long>() {
 
     override val number = 1
     override val year = 2021

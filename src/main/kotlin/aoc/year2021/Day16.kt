@@ -100,12 +100,12 @@ fun pPacket(input: List<Int>): ParseResult<Int, Packet> {
 
 class Packet(val version: Int, val type: Int, val value: Long, val children: List<Packet> = emptyList()) {
     fun sumVersions(): Int {
-        return version + children.map {it.sumVersions() }.sum()
+        return version + children.sumOf { it.sumVersions() }
     }
 
     fun calcValue(): Long {
         return when(type) {
-            0 -> children.map { it.calcValue() }.sum()
+            0 -> children.sumOf { it.calcValue() }
             1 -> children.map { it.calcValue() }.reduce { acc, i -> acc*i }
             2 -> children.map { it.calcValue() }.minOf { it }
             3 -> children.map { it.calcValue() }.maxOf { it }
@@ -120,7 +120,7 @@ class Packet(val version: Int, val type: Int, val value: Long, val children: Lis
 
 }
 
-class Day16Problem() : DailyProblem<Long>() {
+class Day16Problem : DailyProblem<Long>() {
     override val number: Int = 16
     override val year: Int = 2021
     override val name: String = "Packet Decoder"

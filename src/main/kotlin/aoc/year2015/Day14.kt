@@ -1,11 +1,13 @@
 package aoc.year2015
 
 import DailyProblem
-import aoc.utils.*
+import aoc.utils.emptyMutableMap
+import aoc.utils.increase
+import aoc.utils.nonEmptyLines
+import kotlin.math.min
 import kotlin.time.ExperimentalTime
-import kotlin.math.*
 
-class Day14Problem() : DailyProblem<Int>() {
+class Day14Problem : DailyProblem<Int>() {
 
     override val number = 14
     override val year = 2015
@@ -47,7 +49,7 @@ class Day14Problem() : DailyProblem<Int>() {
         (1 .. stopTime).forEach { t ->
             val ranking = reindeers.map { r -> Pair(r, r.distanceAfter(t)) }.sortedByDescending { it.second }
             val leaderPos = ranking.first().second
-            ranking.filter { (r, p) -> p == leaderPos }.forEach { (r, p) ->
+            ranking.filter { (_, p) -> p == leaderPos }.forEach { (r, _) ->
                 scores.increase(r.name, 1)
             }
         }

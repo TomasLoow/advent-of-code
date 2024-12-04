@@ -1,10 +1,12 @@
 package aoc.year2015
 
 import DailyProblem
-import aoc.utils.*
+import aoc.utils.id
+import aoc.utils.parseListOfPairs
+import aoc.utils.parseTwoBlocks
 import kotlin.time.ExperimentalTime
 
-class Day19Problem() : DailyProblem<Int>() {
+class Day19Problem : DailyProblem<Int>() {
 
     override val number = 19
     override val year = 2015

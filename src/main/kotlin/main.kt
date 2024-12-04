@@ -108,7 +108,7 @@ fun main() {
         val totalTime = durations.values.reduce { acc, duration -> acc + duration }
         println("Total time for $year: $totalTime")
         println()
-        val slowest = durations.toList().sortedByDescending { (_, dur) -> dur }.first()
+        val slowest = durations.toList().maxByOrNull { (_, dur) -> dur }!!
         println("Slowest problem: ${slowest.first}: ${slowest.second}")
         println()
 

@@ -1,10 +1,10 @@
 package aoc.year2015
 
 import DailyProblem
-import aoc.utils.*
+import aoc.utils.parseIntLines
 import kotlin.time.ExperimentalTime
 
-class Day17Problem() : DailyProblem<Int>() {
+class Day17Problem : DailyProblem<Int>() {
 
     override val number = 17
     override val year = 2015
@@ -38,7 +38,7 @@ class Day17Problem() : DailyProblem<Int>() {
 
     override fun part2(): Int {
         val minSize = combinations.minOf { it.size }
-        return combinations.filter { it.size == minSize }.count()
+        return combinations.count { it.size == minSize }
     }
 }
 

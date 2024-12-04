@@ -26,7 +26,7 @@ private fun digitize(s:String) : String {
     return tmp
 }
 
-class Day1Problem() : DailyProblem<Int>() {
+class Day1Problem : DailyProblem<Int>() {
     override val number = 1
     override val year = 2023
     override val name = "Trebuchet?!"
@@ -38,17 +38,17 @@ class Day1Problem() : DailyProblem<Int>() {
     }
 
     override fun part1(): Int {
-        return lines.map { line ->
+        return lines.sumOf { line ->
             val digits = line.filter { it.isDigit() }.map { parseInt(it.toString()) }
             digits.first() * 10 + digits.last()
-        }.sum()
+        }
     }
 
     override fun part2(): Int {
-        return lines.map { line ->
+        return lines.sumOf { line ->
             val digits = digitize(line).filter { it.isDigit() }.map { parseInt(it.toString()) }
             digits.first() * 10 + digits.last()
-        }.sum()
+        }
     }
 }
 

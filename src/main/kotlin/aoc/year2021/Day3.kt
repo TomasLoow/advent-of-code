@@ -8,7 +8,7 @@ typealias BinaryArray = Array<Boolean>
 
 
 
-class Day3Problem() : DailyProblem<Long>() {
+class Day3Problem : DailyProblem<Long>() {
 
     override val number = 3
     override val year = 2021

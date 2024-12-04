@@ -5,7 +5,7 @@ import aoc.utils.parseBlockList
 import aoc.utils.parseIntLines
 import kotlin.time.ExperimentalTime
 
-class Day1Problem() : DailyProblem<Int>() {
+class Day1Problem : DailyProblem<Int>() {
     private lateinit var caloriesList: List<List<Int>>
 
     override val number = 1

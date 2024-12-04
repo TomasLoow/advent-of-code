@@ -7,7 +7,7 @@ import java.lang.Integer.parseInt
 import kotlin.math.absoluteValue
 import kotlin.time.ExperimentalTime
 
-class Day1Problem() : DailyProblem<Int>() {
+class Day1Problem : DailyProblem<Int>() {
     override val number = 1
     override val year = 2024
     override val name = "Historian Hysteria"
@@ -38,9 +38,9 @@ class Day1Problem() : DailyProblem<Int>() {
         listRight.forEach { r ->
             rCounts[r] = rCounts.getOrDefault(r, 0) + 1
         }
-        return listLeft.map { l ->
-            l*rCounts.getOrDefault(l, 0)
-        }.sum()
+        return listLeft.sumOf { l ->
+            l * rCounts.getOrDefault(l, 0)
+        }
     }
 }
 

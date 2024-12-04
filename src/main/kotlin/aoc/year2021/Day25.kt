@@ -84,7 +84,7 @@ private fun move(map1: CucumberFloor, tempmap: CucumberFloor): Boolean {
     return moveHappenedHorz || moveHappenedVert
 }
 
-class Day25Problem() : DailyProblem<Long>() {
+class Day25Problem : DailyProblem<Long>() {
     override val number = 25
     override val year = 2021
 

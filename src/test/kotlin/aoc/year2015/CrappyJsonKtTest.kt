@@ -59,7 +59,7 @@ class CrappyJsonKtTest {
     fun `parseJSON works with objects`() {
         val (resParse, unparsed) = parseJSON("""{"a":1,"b":"foo","c":[1,2,3]}""")
         assertEquals("foo", ((resParse as JSON.O).content["b"] as JSON.S).string)
-        assertEquals(2, (((resParse as JSON.O).content["c"] as JSON.A).content[1] as JSON.I).int)
+        assertEquals(2, ((resParse.content["c"] as JSON.A).content[1] as JSON.I).int)
         assertTrue { unparsed.isEmpty() }
     }
 

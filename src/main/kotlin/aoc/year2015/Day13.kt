@@ -1,10 +1,13 @@
 package aoc.year2015
 
 import DailyProblem
-import aoc.utils.*
+import aoc.utils.emptyMutableSet
+import aoc.utils.id
+import aoc.utils.parseListOfTriples
+import aoc.utils.permutationsSequence
 import kotlin.time.ExperimentalTime
 
-class Day13Problem() : DailyProblem<Int>() {
+class Day13Problem : DailyProblem<Int>() {
 
     override val number = 13
     override val year = 2015

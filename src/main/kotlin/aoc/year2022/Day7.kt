@@ -6,7 +6,7 @@ import aoc.utils.emptyMutableSet
 import aoc.utils.readNonEmptyLines
 import kotlin.time.ExperimentalTime
 
-class Day7Problem() : DailyProblem<Int>() {
+class Day7Problem : DailyProblem<Int>() {
     private lateinit var fileSystem: Directory
     override val number = 7
     override val year = 2022

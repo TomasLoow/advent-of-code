@@ -1,7 +1,7 @@
 package aoc.utils
 
-import kotlin.test.Test
 import org.junit.jupiter.api.Assertions.assertEquals
+import kotlin.test.Test
 
 class Array2DTest {
 
@@ -37,7 +37,7 @@ class Array2DTest {
 
     @Test
     fun `test get and set`() {
-        val arr = Array2D<Boolean>(listOf(listOf(false, false), listOf(false, false)))
+        val arr = Array2D(listOf(listOf(false, false), listOf(false, false)))
         assertEquals(false, arr[0, 0])
         arr[0, 0] = true
         assertEquals(true, arr[0, 0])
@@ -87,7 +87,7 @@ class Array2DTest {
         )
 
         assertEquals(
-            setOf<Coord>(
+            setOf(
                 Coord(1, 1),
                 Coord(2, 1),
                 Coord(3, 1),
@@ -99,12 +99,12 @@ class Array2DTest {
             ), a2.neighbourCoords(Coord(2, 2), true).toSet(), "Correct coords for internal points"
         )
         assertEquals(
-            setOf<Coord>(
+            setOf(
                 Coord(2, 2), Coord(2, 3), Coord(1, 2), Coord(0, 3), Coord(0, 2)
             ), a2.neighbourCoords(Coord(1, 3), true).toSet(), "Correct coords for edge points"
         )
         assertEquals(
-            setOf<Coord>(
+            setOf(
                 Coord(0, 1), Coord(1, 1), Coord(1, 0)
             ), a2.neighbourCoords(Coord.origin, true).toSet(), "Correct coords for corner point"
         )
@@ -259,7 +259,7 @@ class Array2DTest {
     @Test
     fun testCursor() {
 
-        val arr = Array2D<Int>(5, 5, 0)
+        val arr = Array2D(5, 5, 0)
 
         val c = arr.cursor(Coord(0, 0))
 
@@ -283,7 +283,7 @@ class Array2DTest {
         """.trimIndent(), arr.show { Array2D.a2renderInt(it) })
         assertEquals(c.prev, Coord(0, 1))
 
-        val a2 = Array2D<Int>(3, 3, 0)
+        val a2 = Array2D(3, 3, 0)
         val c2 = a2.cursor(Coord(0, 1))
         c2.set(1); c2.moveUpRight()
         c2.set(2); c2.moveDownRight()

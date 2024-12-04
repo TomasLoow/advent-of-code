@@ -1,6 +1,9 @@
-import aoc.year2024.*
-import kotlin.test.Test
+import aoc.year2024.Day1Problem
+import aoc.year2024.Day2Problem
+import aoc.year2024.Day3Problem
+import aoc.year2024.Day4Problem
 import org.junit.jupiter.api.Assertions.assertEquals
+import kotlin.test.Test
 
 class BasicTests2024 {
     @Test

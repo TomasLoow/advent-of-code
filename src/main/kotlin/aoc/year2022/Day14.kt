@@ -7,7 +7,7 @@ import kotlin.math.min
 import kotlin.time.ExperimentalTime
 
 
-class Day14Problem() : DailyProblem<Int>() {
+class Day14Problem : DailyProblem<Int>() {
 
     override val number = 14
     override val year = 2022
@@ -52,7 +52,7 @@ class Day14Problem() : DailyProblem<Int>() {
         val lineY = inputLines.maxOf { line -> line.maxOf { it.y } } + 2
 
 
-        val lines = inputLines + listOf(listOf<Coord>(Coord(500 - lineY, lineY), Coord(500 + lineY, lineY)))
+        val lines = inputLines + listOf(listOf(Coord(500 - lineY, lineY), Coord(500 + lineY, lineY)))
         val maxX = lines.maxOf { line -> line.maxOf { it.x } }
         buildMap(maxX + 1, lines)
 

@@ -15,7 +15,7 @@ abstract class BFS<State> {
     abstract fun reachable(state: State): Collection<State>
 
     fun reconstructPath(cameFrom: MutableMap<State, State>, goal: State): List<State> {
-        return buildList<State> {
+        return buildList {
             add(goal)
             var s = goal
             while (s in cameFrom) {

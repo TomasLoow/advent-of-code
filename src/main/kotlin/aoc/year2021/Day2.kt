@@ -18,7 +18,7 @@ private typealias SubmarineState = Pair<Int, Int>
 private typealias SubmarineStateWithDelta = Triple<Int, Int, Int>
 
 
-class Day2Problem() : DailyProblem<Long>() {
+class Day2Problem : DailyProblem<Long>() {
     override val number = 2
     override val year = 2021
     override val name = "Dive!"

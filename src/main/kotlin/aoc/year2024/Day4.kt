@@ -21,9 +21,9 @@ class Day4Problem : DailyProblem<Int>() {
 
     override fun part1(): Int {
         val starts = grid.filterIndexedByCoordinate { _, c -> c == 'X' }
-        return starts.map { (c, _) ->
-            Direction.entries.count { d -> grid[c,d,4].joinToString("") == word }
-        }.sum()
+        return starts.sumOf { (c, _) ->
+            Direction.entries.count { d -> grid[c, d, 4].joinToString("") == word }
+        }
 
     }
 

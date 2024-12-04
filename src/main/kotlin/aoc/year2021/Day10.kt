@@ -6,7 +6,7 @@ import java.util.*
 import kotlin.time.ExperimentalTime
 
 
-class Day10Problem() : DailyProblem<Long>() {
+class Day10Problem : DailyProblem<Long>() {
 
     override val number = 10
     override val year = 2021
