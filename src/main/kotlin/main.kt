@@ -8,7 +8,8 @@ val events = mapOf(
         aoc.year2024.day2Problem,
         aoc.year2024.day3Problem,
         aoc.year2024.day4Problem,
-        aoc.year2024.day5Problem
+        aoc.year2024.day5Problem,
+        aoc.year2024.day6Problem,
     ),
     2023 to listOf(
         aoc.year2023.day1Problem,

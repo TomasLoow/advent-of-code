@@ -64,7 +64,7 @@ class Day22Problem : DailyProblem<Long>() {
         var distLeft = distance
         var lastGroundPos = this.coord
         while (distLeft > 0) {
-            this.move(dir, wrapping = true)
+            this.move(dir)
             when (this.value) {
                 '#' -> {
                     this.moveTo(lastGroundPos)
@@ -85,7 +85,7 @@ class Day22Problem : DailyProblem<Long>() {
 
     override fun part1(): Long {
         var dir = Direction.RIGHT
-        val curs = map.cursor(findStartPos())
+        val curs = map.cursor(findStartPos(), wrapping = true)
         // printMap(curs.coord)
         for ((loopIndex, move) in moves.withIndex()) {
             when (move) {

@@ -47,8 +47,8 @@ enum class Direction {
         }
     }
 
-    fun toArrowChar() : Char {
-        return when(this) {
+    fun toArrowChar(): Char {
+        return when (this) {
             UP -> '^'
             RIGHT -> '>'
             DOWN -> 'v'
@@ -56,8 +56,6 @@ enum class Direction {
             else -> throw Exception("not a cartesian direction")
         }
     }
-
-
 }
 
 data class Coord(val x: Int, val y: Int) {
@@ -70,6 +68,7 @@ data class Coord(val x: Int, val y: Int) {
         other as Coord
         return (x == other.x && y == other.y)
     }
+
     operator fun plus(d: Direction) = this.stepInDir(d)
 
     operator fun plus(delta: Pair<Int, Int>) = copy(x = x + delta.first, y = y + delta.second)
@@ -115,14 +114,17 @@ data class Coord(val x: Int, val y: Int) {
                 dy = -1
                 dx = -1
             }
+
             Direction.UPRIGHT -> {
                 dy = -1
                 dx = 1
             }
+
             Direction.DOWNLEFT -> {
                 dy = 1
                 dx = -1
             }
+
             Direction.DOWNRIGHT -> {
                 dy = 1
                 dx = 1
