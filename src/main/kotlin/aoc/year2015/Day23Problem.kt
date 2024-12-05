@@ -5,51 +5,19 @@ import aoc.utils.even
 import aoc.utils.nonEmptyLines
 import kotlin.time.ExperimentalTime
 
-typealias Register = String
+private typealias Register = String
 
-sealed interface Instruction {
-    class HLF(val reg: Register): Instruction
-    class TPL(val reg: Register): Instruction
-    class INC(val reg: Register): Instruction
-    class JMP(val offset: Int): Instruction
-    class JIE(val reg: Register, val offset: Int): Instruction
-    class JIO(val reg: Register, val offset: Int): Instruction
+private sealed interface Instruction {
+    data class HLF(val reg: Register): Instruction
+    data class TPL(val reg: Register): Instruction
+    data class INC(val reg: Register): Instruction
+    data class JMP(val offset: Int): Instruction
+    data class JIE(val reg: Register, val offset: Int): Instruction
+    data class JIO(val reg: Register, val offset: Int): Instruction
 }
 
-data class  ExecutionState(var instructionPointer: Int=0, val registers : MutableMap<Register, Int> = mutableMapOf("a" to 0, "b" to 0))
-
-fun step(program: List<Instruction>, state:ExecutionState):ExecutionState {
-    val i = program[state.instructionPointer]
-    var offset = 1
-    when(i) {
-        is Instruction.HLF -> {
-            state.registers[i.reg] = state.registers[i.reg]!! / 2
-        }
-        is Instruction.INC-> {
-            state.registers[i.reg] = state.registers[i.reg]!! + 1
-        }
-        is Instruction.TPL-> {
-            state.registers[i.reg] = state.registers[i.reg]!! * 3
-        }
-        is Instruction.JMP -> { offset = i.offset }
-        is Instruction.JIE -> {
-            val current = state.registers[i.reg]!!
-            offset = if (current.even) i.offset else 1
-        }
-        is Instruction.JIO-> {
-            val current = state.registers[i.reg]!!
-            offset = if (current == 1) i.offset else 1
-        }
-
-    }
-    state.instructionPointer += offset
-    if (state.instructionPointer !in program.indices) throw Stop()
-    return state
-}
-
-class Stop : Throwable() {
-
-}
+private data class  ExecutionState(var instructionPointer: Int=0, val registers : MutableMap<Register, Int> = mutableMapOf("a" to 0, "b" to 0))
+private class ExecutionComplete : Throwable()
 
 class Day23Problem : DailyProblem<Int>() {
 
@@ -59,9 +27,6 @@ class Day23Problem : DailyProblem<Int>() {
 
     private lateinit var program: List<Instruction>
 
-    override fun commonParts() {
-        program = getInputText().nonEmptyLines().map(::parseInstruction)
-    }
 
     private fun parseInstruction(s: String): Instruction {
         val instruction = when (s.take(3)) {
@@ -76,26 +41,57 @@ class Day23Problem : DailyProblem<Int>() {
         return instruction
     }
 
-    private fun runProgram(state: ExecutionState) {
+    override fun commonParts() {
+        program = getInputText().nonEmptyLines().map(::parseInstruction)
+    }
+
+    private fun step(program: List<Instruction>, state:ExecutionState) {
+        val i = program[state.instructionPointer]
+        var offset = 1
+        when(i) {
+            is Instruction.HLF -> {
+                state.registers[i.reg] = state.registers[i.reg]!! / 2
+            }
+            is Instruction.INC-> {
+                state.registers[i.reg] = state.registers[i.reg]!! + 1
+            }
+            is Instruction.TPL-> {
+                state.registers[i.reg] = state.registers[i.reg]!! * 3
+            }
+            is Instruction.JMP -> { offset = i.offset }
+            is Instruction.JIE -> {
+                val current = state.registers[i.reg]!!
+                offset = if (current.even) i.offset else 1
+            }
+            is Instruction.JIO-> {
+                val current = state.registers[i.reg]!!
+                offset = if (current == 1) i.offset else 1
+            }
+
+        }
+        state.instructionPointer += offset
+        if (state.instructionPointer !in program.indices) throw ExecutionComplete()
+    }
+
+    private fun runProgramUntilHalt(state: ExecutionState) {
         try {
             while (true) {
                 step(program, state)
             }
-        } catch (e: Stop) {
+        } catch (e: ExecutionComplete) {
             //done
         }
     }
 
-
     override fun part1(): Int {
         val state = ExecutionState()
-        runProgram(state)
+        runProgramUntilHalt(state)
         return state.registers["b"]!!
     }
 
     override fun part2(): Int {
         val state = ExecutionState(registers = mutableMapOf("a" to 1, "b" to 0))
-        runProgram(state)
+        runProgramUntilHalt(state)
         return state.registers["b"]!!
     }
 }
