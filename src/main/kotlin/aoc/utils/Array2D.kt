@@ -253,8 +253,9 @@ class Array2D<T> {
         print(show(renderer))
     }
 
-    fun cursor(coord: Coord): Cursor<T> {
-        return Cursor(this, coord)
+    fun cursor(coord: Coord, wrapping: Boolean = false): Cursor<T> {
+        if (wrapping) return WrappingCursor(this, coord)
+        else return Cursor(this, coord)
     }
 
     fun clone(): Array2D<T> {
@@ -277,7 +278,7 @@ class Array2D<T> {
         (data.size - shift until data.size).forEach { data[it] = fill }
     }
 
-    fun toImage(numColors: Int, filename: String    , func: (T) -> Int) {
+    fun toImage(numColors: Int, filename: String, func: (T) -> Int) {
         val bw = BufferedWriter(FileWriter(filename))
         bw.write("P2\n")
         bw.write("${this.width} ${this.height}\n")
@@ -286,7 +287,7 @@ class Array2D<T> {
 
         yRange.forEach { y ->
             xRange.forEach { x ->
-                bw.write("${func(this[x,y])} ")
+                bw.write("${func(this[x, y])} ")
             }
             bw.write("\n")
         }
@@ -328,11 +329,11 @@ class Array2D<T> {
     }
 
 
-    class Cursor<T>(private val map: Array2D<T>, coord: Coord) {
-        private var x: Int
-        private var y: Int
-        private var idx: Int
-        private var prevIdx: Int? = null
+    open class Cursor<T>(private val map: Array2D<T>, coord: Coord) {
+        protected var x: Int
+        protected var y: Int
+        protected var idx: Int
+        protected var prevIdx: Int? = null
 
         init {
             x = coord.x
@@ -356,13 +357,9 @@ class Array2D<T> {
             map.data[idx] = new
         }
 
-        fun moveRight(wrapping: Boolean=false): Boolean {
+        open fun moveRight(): Boolean {
             if (x == map.width - 1) {
-                if (wrapping) {
-                    x = 0
-                    idx = map.c2Idx(x,y)
-                    return true
-                } else return false
+                return false
             }
             x += 1
             prevIdx = idx
@@ -370,29 +367,20 @@ class Array2D<T> {
             return true
         }
 
-        fun moveLeft(wrapping: Boolean=false): Boolean {
-            if (x == 0) {
-                if (wrapping) {
-                    x = map.width - 1
-                    idx = map.c2Idx(x,y)
-                    return true
-
-                } else return false
+        open fun moveLeft(): Boolean {
+            if (x != 0) {
+                x -= 1
+                prevIdx = idx
+                idx -= 1
+                return true
+            } else {
+                return false
             }
-            x -= 1
-            prevIdx = idx
-            idx -= 1
-            return true
         }
 
-        fun moveDown(wrapping: Boolean=false): Boolean {
+        open fun moveDown(): Boolean {
             if (y == map.height - 1) {
-                if (wrapping) {
-                    y = 0
-                    idx = map.c2Idx(x,y)
-                    return true
-
-                } else return false
+                return false
             }
             y += 1
             prevIdx = idx
@@ -400,14 +388,9 @@ class Array2D<T> {
             return true
         }
 
-        fun moveUp(wrapping: Boolean=false): Boolean {
+        open fun moveUp(): Boolean {
             if (y == 0) {
-                if (wrapping) {
-                    y = map.height - 1
-                    idx = map.c2Idx(x,y)
-                    return true
-
-                } else return false
+                return false
             }
             y -= 1
             prevIdx = idx
@@ -415,8 +398,8 @@ class Array2D<T> {
             return true
         }
 
-        fun moveUpRight(wrapping: Boolean=false): Boolean {
-            if (y == 0 || x == map.width - 1) return if (wrapping) TODO() else false
+        open fun moveUpRight(): Boolean {
+            if (y == 0 || x == map.width - 1) return false
             y -= 1
             x += 1
             prevIdx = idx
@@ -424,8 +407,8 @@ class Array2D<T> {
             return true
         }
 
-        fun moveUpLeft(wrapping: Boolean=false): Boolean {
-            if (y == 0 || x == 0) return if (wrapping) TODO() else false
+        open fun moveUpLeft(): Boolean {
+            if (y == 0 || x == 0) return false
             y -= 1
             x -= 1
             prevIdx = idx
@@ -433,8 +416,8 @@ class Array2D<T> {
             return true
         }
 
-        fun moveDownRight(wrapping: Boolean=false): Boolean {
-            if (y == map.height - 1 || x == map.width - 1) return if (wrapping) TODO() else false
+        open fun moveDownRight(): Boolean {
+            if (y == map.height - 1 || x == map.width - 1) return false
             y += 1
             x += 1
             prevIdx = idx
@@ -442,8 +425,8 @@ class Array2D<T> {
             return true
         }
 
-        fun moveDownLeft(wrapping: Boolean=false): Boolean {
-            if (y == map.height - 1 || x == 0) return if (wrapping) TODO() else false
+        open fun moveDownLeft(): Boolean {
+            if (y == map.height - 1 || x == 0) return false
             y += 1
             x -= 1
             prevIdx = idx
@@ -451,16 +434,16 @@ class Array2D<T> {
             return true
         }
 
-        fun move(dir: Direction, wrapping: Boolean): Boolean {
+        fun move(dir: Direction): Boolean {
             return when (dir) {
-                UP -> moveUp(wrapping)
-                RIGHT -> moveRight(wrapping)
-                DOWN -> moveDown(wrapping)
-                LEFT -> moveLeft(wrapping)
-                UPRIGHT -> moveUpRight(wrapping)
-                UPLEFT -> moveUpLeft(wrapping)
-                DOWNRIGHT -> moveDownRight(wrapping)
-                DOWNLEFT -> moveDownLeft(wrapping)
+                UP -> moveUp()
+                DOWN -> moveDown()
+                LEFT -> moveLeft()
+                RIGHT -> moveRight()
+                UPRIGHT -> moveUpRight()
+                UPLEFT -> moveUpLeft()
+                DOWNRIGHT -> moveDownRight()
+                DOWNLEFT -> moveDownLeft()
             }
         }
 
@@ -468,6 +451,80 @@ class Array2D<T> {
             this.x = pos.x
             this.y = pos.y
             this.idx = map.c2Idx(pos)
+        }
+
+        fun back() {
+            this.x = prev.x
+            this.y = prev.y
+            this.idx = prevIdx!!
+            prevIdx = null
+        }
+    }
+
+    class WrappingCursor<T>(private val map: Array2D<T>, coord: Coord) : Cursor<T>(map, coord) {
+        override fun moveRight(): Boolean {
+            if (x == map.width - 1) {
+                x = 0
+                idx = map.c2Idx(x, y)
+                return true
+            }
+            x += 1
+            prevIdx = idx
+            idx += 1
+            return true
+        }
+
+        override fun moveLeft(): Boolean {
+            if (x == 0) {
+                x = map.width - 1
+                idx = map.c2Idx(x, y)
+                return true
+            }
+            x -= 1
+            prevIdx = idx
+            idx -= 1
+            return true
+        }
+
+        override fun moveDown(): Boolean {
+            if (y == map.height - 1) {
+                y = 0
+                idx = map.c2Idx(x, y)
+                return true
+
+            }
+            y += 1
+            prevIdx = idx
+            idx += map.width
+            return true
+        }
+
+        override fun moveUp(): Boolean {
+            if (y == 0) {
+                y = map.height - 1
+                idx = map.c2Idx(x, y)
+                return true
+            }
+            y -= 1
+            prevIdx = idx
+            idx -= map.width
+            return true
+        }
+
+        override fun moveUpRight(): Boolean {
+            TODO()
+        }
+
+        override fun moveUpLeft(): Boolean {
+            TODO()
+        }
+
+        override fun moveDownRight(): Boolean {
+            TODO()
+        }
+
+        override fun moveDownLeft(): Boolean {
+            TODO()
         }
     }
 }
