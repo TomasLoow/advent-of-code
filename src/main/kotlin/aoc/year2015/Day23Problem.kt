@@ -29,13 +29,14 @@ class Day23Problem : DailyProblem<Int>() {
 
 
     private fun parseInstruction(s: String): Instruction {
-        val instruction = when (s.take(3)) {
-            "hlf" -> Instruction.HLF(s.drop(4))
-            "tpl" -> Instruction.TPL(s.drop(4))
-            "inc" -> Instruction.INC(s.drop(4))
-            "jmp" -> Instruction.JMP(s.drop(4).toInt())
-            "jie" -> Instruction.JIE(s.drop(4).takeWhile { it != ',' }, s.drop(4).split(", ").last().toInt())
-            "jio" -> Instruction.JIO(s.drop(4).takeWhile { it != ',' }, s.drop(4).split(", ").last().toInt())
+        val split = s.split(Regex(",? "))
+        val instruction = when (split.component1()) {
+            "hlf" -> Instruction.HLF(split.component2())
+            "tpl" -> Instruction.TPL(split.component2())
+            "inc" -> Instruction.INC(split.component2())
+            "jmp" -> Instruction.JMP(split.component2().toInt())
+            "jie" -> Instruction.JIE(split.component2(), split.component3().toInt())
+            "jio" -> Instruction.JIO(split.component2(), split.component3().toInt())
             else -> throw Exception("Invalid input")
         }
         return instruction
