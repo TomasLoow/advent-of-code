@@ -46,6 +46,18 @@ enum class Direction {
             else -> TODO()
         }
     }
+
+    fun toArrowChar() : Char {
+        return when(this) {
+            UP -> '^'
+            RIGHT -> '>'
+            DOWN -> 'v'
+            LEFT -> '<'
+            else -> throw Exception("not a cartesian direction")
+        }
+    }
+
+
 }
 
 data class Coord(val x: Int, val y: Int) {
