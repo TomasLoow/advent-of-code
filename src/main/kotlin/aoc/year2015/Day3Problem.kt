@@ -3,6 +3,7 @@ package aoc.year2015
 import DailyProblem
 import aoc.utils.Coord
 import aoc.utils.Direction
+import aoc.utils.parseDirectionFromArrow
 import kotlin.time.ExperimentalTime
 
 class Day3Problem : DailyProblem<Int>() {
@@ -14,17 +15,7 @@ class Day3Problem : DailyProblem<Int>() {
     private lateinit var data: List<Direction>
 
     private fun parseFile(): List<Direction> {
-        return getInputText().map {
-            when (it) {
-                '>' -> Direction.RIGHT
-                '<' -> Direction.LEFT
-                '^' -> Direction.UP
-                'v' -> Direction.DOWN
-                else -> {
-                    throw Exception("Bad input")
-                }
-            }
-        }
+        return getInputText().map(::parseDirectionFromArrow)
     }
 
     override fun commonParts() {

@@ -127,4 +127,16 @@ fun parseCoord(data: String): Coord {
     return Coord(x.toInt(), y.toInt())
 }
 
+fun parseDirectionFromArrow(it: Char): Direction {
+    return when (it) {
+        '>' -> Direction.RIGHT
+        '<' -> Direction.LEFT
+        '^' -> Direction.UP
+        'v' -> Direction.DOWN
+        else -> {
+            throw Exception("Bad input")
+        }
+    }
+}
+
 fun <T> id(t:T) = t
