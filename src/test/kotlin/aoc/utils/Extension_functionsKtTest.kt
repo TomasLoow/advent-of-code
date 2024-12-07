@@ -2,6 +2,8 @@ package aoc.utils
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
+import kotlin.math.roundToInt
+import kotlin.math.roundToLong
 import kotlin.test.Test
 
 class ExtensionFunctionsKtTest {
@@ -44,4 +46,23 @@ class ExtensionFunctionsKtTest {
         assertEquals(10, listOf((1..5), (7..11)).totalLengthOfCovered())
         assertEquals(11, listOf((1..5), (2..9), (7..11)).totalLengthOfCovered())
     }
+
+    @Test
+    fun `test concat long`() {
+        repeat(100000) {
+            val x = (Math.random()*1_000_000).roundToLong()
+            val y = (Math.random()*1_000_000).roundToLong()
+            assertEquals((x.toString()+y.toString()).toLong(), x.concat(y))
+        }
+    }
+
+    @Test
+    fun `test concat int`() {
+        repeat(100000) {
+            val x = (Math.random()*10_000).roundToInt()
+            val y = (Math.random()*10_000).roundToInt()
+            assertEquals((x.toString()+y.toString()).toInt(), x.concat(y))
+        }
+    }
+
 }
