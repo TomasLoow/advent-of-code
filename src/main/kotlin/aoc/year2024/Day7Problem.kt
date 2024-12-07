@@ -1,6 +1,7 @@
 package aoc.year2024
 
 import DailyProblem
+import aoc.utils.concat
 import aoc.utils.nonEmptyLines
 import kotlin.time.ExperimentalTime
 
@@ -67,24 +68,11 @@ class Day7Problem : DailyProblem<Long>() {
     }
 }
 
-private fun Long.concat(x: Long): Long {
-    if (x < 10L) return this * 10L + x
-    if (x < 100L) return this * 100L + x
-    if (x < 1000L) return this * 1000L + x
-    if (x < 10000L) return this * 10000L + x
-    if (x < 100000L) return this * 100000L + x
-    if (x < 1000000L) return this * 1000000L + x
-    if (x < 10000000L) return this * 10000000L + x
-    if (x < 100000000L) return this * 100000000L + x
-    if (x < 1000000000L) return this * 1000000000L + x
-    if (x < 10000000000L) return this * 10000000000L + x
-    throw NotImplementedError("Add even more branches to Long.concat or do something more clever")
-}
 
 val day7Problem = Day7Problem()
 
 @OptIn(ExperimentalTime::class)
 fun main() {
-    day7Problem.testData=false
-    day7Problem.runBoth(100)
+    day7Problem.testData=true
+    day7Problem.runBoth(10)
 }

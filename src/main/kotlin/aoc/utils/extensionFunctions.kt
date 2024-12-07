@@ -151,6 +151,51 @@ val Int.even: Boolean
 val Int.odd: Boolean
     get() = this % 2 == 1
 
+/**
+ * Concatenates the given Long value to the current Long as if appending digits.
+ *
+ * 123.concat(78) == 12378L
+ *
+ * Equivalent to (a.toString() + b.toString()).toLong() but faster.
+ *
+ * @param x The Long value to be concatenated to the current Long value.
+ * @return The resulting Long value after concatenation.
+ */
+fun Long.concat(x: Long): Long {
+    if (x < 0) throw Exception("Cannot concat a negative number")
+    if (x < 10L) return this * 10L + x
+    if (x < 100L) return this * 100L + x
+    if (x < 1000L) return this * 1000L + x
+    if (x < 10000L) return this * 10000L + x
+    if (x < 100000L) return this * 100000L + x
+    if (x < 1000000L) return this * 1000000L + x
+    if (x < 10000000L) return this * 10000000L + x
+    if (x < 100000000L) return this * 100000000L + x
+    throw NotImplementedError("Add even more branches to Long.concat or do something more clever")
+}
+
+/**
+ * Concatenates the given Int value to the current Int as if appending digits.
+ *
+ * 123.concat(78) == 12378
+ *
+ * Equivalent to (a.toString() + b.toString()).toInt() but faster.
+ *
+ * @param x The Long value to be concatenated to the current Long value.
+ * @return The resulting Int value after concatenation.
+ */
+fun Int.concat(x: Int): Int {
+    if (x < 0) throw Exception("Cannot concat a negative number")
+    if (x < 10) return this * 10 + x
+    if (x < 100) return this * 100 + x
+    if (x < 1000) return this * 1000 + x
+    if (x < 10000) return this * 10000 + x
+    if (x < 100000) return this * 100000 + x
+    if (x < 1000000) return this * 1000000 + x
+    throw NotImplementedError("Add even more branches to Int.concat or do something more clever")
+}
+
+
 
 
 /** Finds the max and min of a collection of numbers in a single loop */
