@@ -334,11 +334,15 @@ class Array2D<T> {
         protected var y: Int
         protected var idx: Int
         protected var prevIdx: Int? = null
+        protected val h: Int
+        protected val w: Int
 
         init {
             x = coord.x
             y = coord.y
             idx = map.c2Idx(coord)
+            h = map.height
+            w = map.width
         }
 
         val value: T
@@ -358,7 +362,7 @@ class Array2D<T> {
         }
 
         open fun moveRight(): Boolean {
-            if (x == map.width - 1) {
+            if (x == w - 1) {
                 return false
             }
             x += 1
@@ -368,23 +372,23 @@ class Array2D<T> {
         }
 
         open fun moveLeft(): Boolean {
-            if (x != 0) {
+            if (x == 0) {
+                return false
+            } else {
                 x -= 1
                 prevIdx = idx
                 idx -= 1
                 return true
-            } else {
-                return false
             }
         }
 
         open fun moveDown(): Boolean {
-            if (y == map.height - 1) {
+            if (y == h - 1) {
                 return false
             }
             y += 1
             prevIdx = idx
-            idx += map.width
+            idx += w
             return true
         }
 
@@ -394,16 +398,16 @@ class Array2D<T> {
             }
             y -= 1
             prevIdx = idx
-            idx -= map.width
+            idx -= w
             return true
         }
 
         open fun moveUpRight(): Boolean {
-            if (y == 0 || x == map.width - 1) return false
+            if (y == 0 || x == w - 1) return false
             y -= 1
             x += 1
             prevIdx = idx
-            idx -= (map.width - 1)
+            idx -= (w - 1)
             return true
         }
 
@@ -412,25 +416,25 @@ class Array2D<T> {
             y -= 1
             x -= 1
             prevIdx = idx
-            idx -= (map.width + 1)
+            idx -= (w + 1)
             return true
         }
 
         open fun moveDownRight(): Boolean {
-            if (y == map.height - 1 || x == map.width - 1) return false
+            if (y == h - 1 || x == w - 1) return false
             y += 1
             x += 1
             prevIdx = idx
-            idx += (map.width + 1)
+            idx += (w + 1)
             return true
         }
 
         open fun moveDownLeft(): Boolean {
-            if (y == map.height - 1 || x == 0) return false
+            if (y == h - 1 || x == 0) return false
             y += 1
             x -= 1
             prevIdx = idx
-            idx += (map.width - 1)
+            idx += (w - 1)
             return true
         }
 
@@ -463,7 +467,7 @@ class Array2D<T> {
 
     class WrappingCursor<T>(private val map: Array2D<T>, coord: Coord) : Cursor<T>(map, coord) {
         override fun moveRight(): Boolean {
-            if (x == map.width - 1) {
+            if (x == w - 1) {
                 x = 0
                 idx = map.c2Idx(x, y)
                 return true
@@ -476,7 +480,7 @@ class Array2D<T> {
 
         override fun moveLeft(): Boolean {
             if (x == 0) {
-                x = map.width - 1
+                x = w - 1
                 idx = map.c2Idx(x, y)
                 return true
             }
@@ -487,7 +491,7 @@ class Array2D<T> {
         }
 
         override fun moveDown(): Boolean {
-            if (y == map.height - 1) {
+            if (y == h - 1) {
                 y = 0
                 idx = map.c2Idx(x, y)
                 return true
@@ -495,19 +499,19 @@ class Array2D<T> {
             }
             y += 1
             prevIdx = idx
-            idx += map.width
+            idx += w
             return true
         }
 
         override fun moveUp(): Boolean {
             if (y == 0) {
-                y = map.height - 1
+                y = h - 1
                 idx = map.c2Idx(x, y)
                 return true
             }
             y -= 1
             prevIdx = idx
-            idx -= map.width
+            idx -= w
             return true
         }
 
