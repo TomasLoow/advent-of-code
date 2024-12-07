@@ -12,23 +12,17 @@ class Day1Problem : DailyProblem<Int>() {
     override val year = 2024
     override val name = "Historian Hysteria"
 
-    private lateinit var listLeft : MutableList<Int>
-    private lateinit var listRight : MutableList<Int>
+    private lateinit var listLeft : List<Int>
+    private lateinit var listRight : List<Int>
 
     override fun commonParts() {
-        val listOfPairs  = parseListOfPairs(getInputText(), ::parseInt, ::parseInt, Regex(" +"))
-        listLeft = mutableListOf()
-        listRight = mutableListOf()
-        listOfPairs.forEach { (i1, i2) ->
-            listLeft.add(i1)
-            listRight.add(i2)
-        }
-        listLeft.sort()
-        listRight.sort()
+        val lists  = parseListOfPairs(getInputText(), ::parseInt, ::parseInt, Regex(" +")).unzip()
+        listLeft = lists.first
+        listRight = lists.second
     }
 
     override fun part1(): Int {
-        return listLeft.zip(listRight).map { (l,r) ->
+        return listLeft.sorted().zip(listRight.sorted()).map { (l,r) ->
             (l - r).absoluteValue
         }.sum()
     }
