@@ -207,3 +207,21 @@ fun Iterable<Int>.minAndMax(): Pair<Int, Int> {
         )
     }
 }
+
+/**
+ * Generates a sequence of all possible unordered pairs of elements from the iterable,
+ * where each pair consists of two elements such that the second element
+ * in the pair comes after the first element in the iterable.
+ * if input contains a and b, then *one of* Pair(a,b) and Pair(b,a) will be producede but not both.
+ *
+ * Example: listOf(1,2,3,4) = sequenceOf(1 to 2, 1 to 3, 1 to 4, 2 to 3, 2 to 4, 3 to 4)
+ */
+fun <E> Iterable<E>.allUnorderedPairs(): Sequence<Pair<E, E>> {
+    return sequence {
+        this@allUnorderedPairs.forEachIndexed { index1, e ->
+            this@allUnorderedPairs.drop(index1+1).forEach { e2 ->
+                yield(e to e2)
+            }
+        }
+    }
+}
