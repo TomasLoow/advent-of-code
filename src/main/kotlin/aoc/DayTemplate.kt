@@ -1,6 +1,7 @@
 package aoc
 
 import DailyProblem
+import aoc.year2024.day9Problem
 import kotlin.time.ExperimentalTime
 
 class Day999999Problem : DailyProblem<Int>() {
@@ -30,5 +31,6 @@ val day999999Problem = Day999999Problem()
 
 @OptIn(ExperimentalTime::class)
 fun main() {
+    day999999Problem.testData = true
     day999999Problem.runBoth(100)
 }
