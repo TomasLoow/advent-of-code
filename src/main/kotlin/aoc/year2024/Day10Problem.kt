@@ -3,6 +3,7 @@ package aoc.year2024
 import DailyProblem
 import aoc.utils.*
 import kotlin.time.ExperimentalTime
+import kotlin.time.measureTime
 
 class Day10Problem : DailyProblem<Int>() {
 
@@ -15,11 +16,9 @@ class Day10Problem : DailyProblem<Int>() {
 
     override fun commonParts() {
         map = parseIntArray(getInputText())
-        zeros = map.filterIndexedByCoordinate { _, i -> i == 0 }.map { it.first }
+        zeros = map.mapAndFilterToListByNotNull { c, v -> if (v == 0) c else null }
 
     }
-
-
 
 
     private fun solve(z: Coord): List<Coord> {
@@ -40,7 +39,7 @@ class Day10Problem : DailyProblem<Int>() {
     }
 
     private fun solve1(z: Coord): Int {
-        return solve(z).toSet().size
+        return solve(z).distinct().size
     }
 
     private fun solve2(z: Coord): Int {
@@ -50,17 +49,23 @@ class Day10Problem : DailyProblem<Int>() {
 
     override fun part1(): Int {
         return zeros.sumOf {
-            try { solve1(it) } catch (e: BFSNoPathFound) { 0 }
+            try {
+                solve1(it)
+            } catch (e: BFSNoPathFound) {
+                0
+            }
         }
     }
 
     override fun part2(): Int {
         return zeros.sumOf {
-            try { solve2(it) } catch (e: BFSNoPathFound) { 0 }
+            try {
+                solve2(it)
+            } catch (e: BFSNoPathFound) {
+                0
+            }
         }
     }
-
-
 }
 
 val day10Problem = Day10Problem()

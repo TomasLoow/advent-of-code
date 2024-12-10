@@ -72,7 +72,7 @@ class Day12Problem : DailyProblem<Int>() {
 
     override fun part2(): Int {
         val allLowPoints = map
-            .filterIndexedByCoordinate { coordinate, height ->  // Find coords that are 'a' with a neighbour that is 'b'
+            .filterToList { coordinate, height ->  // Find coords that are 'a' with a neighbour that is 'b'
                 (height == 1) && map
                     .neighbourCoordsAndValues(coordinate)
                     .any { it.value == 2 }

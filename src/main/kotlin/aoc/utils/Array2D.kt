@@ -6,13 +6,13 @@ import java.io.FileWriter
 import kotlin.math.absoluteValue
 
 @Suppress("UNCHECKED_CAST")
-class Array2D<T> {
+class Array2D<T: Any> {
 
     val height: Int
     val width: Int
     val rect: Rect
 
-    private val data: Array<Any?>
+    private val data: Array<Any>
 
     constructor(input: Collection<Collection<T>>) {
         this.height = input.size
@@ -98,7 +98,7 @@ class Array2D<T> {
         return c.walkInDir(dir).takeWhile { this.contains(it) }.map { this[it] }.toList()
     }
 
-    operator fun get(c: Coord, dir: Direction, steps:Int): List<T> {
+    operator fun get(c: Coord, dir: Direction, steps: Int): List<T> {
         return c.walkInDir(dir).takeWhile { this.contains(it) }.take(steps).map { this[it] }.toList()
     }
 
@@ -183,32 +183,18 @@ class Array2D<T> {
         return neighbourCoords(c, diagonal).associateWith { coordinate -> get(coordinate) }
     }
 
-    fun <R> map(function: (T) -> R): Array2D<R> {
-
-        return Array2D(data.map(function as ((Any?) -> R)), width, height)
+    fun <R: Any> map(function: (T) -> R): Array2D<R> {
+        return Array2D(data.map { function(it as T) }, width, height)
     }
 
-    fun <R> mapIndexed(function: (Coord, T) -> R): Array2D<R> {
+    fun <R: Any> mapIndexed(function: (Coord, T) -> R): Array2D<R> {
         return Array2D(allCoords.zip(data).map { (c, v) -> function(c, v as T) }, width, height)
-    }
-
-
-    fun <R> mapListIndexedByCoordinate(function: (Coord, T) -> R): List<R> {
-        return buildList {
-            repeat(height) { y ->
-                repeat(width) { x ->
-                    add(function(Coord(x, y), this@Array2D[x, y]))
-                }
-            }
-        }
     }
 
     fun countIndexedByCoordinate(function: (Coord, T) -> Boolean): Int {
         var counter = 0
-        repeat(height) { y ->
-            repeat(width) { x ->
-                if (function(Coord(x, y), this[x, y])) counter++
-            }
+        data.forEachIndexed { idx, v ->
+            if (function(idx2c(idx), v as T)) counter++
         }
         return counter
     }
@@ -224,17 +210,18 @@ class Array2D<T> {
         return null
     }
 
-    fun filterIndexedByCoordinate(function: (Coord, T) -> Boolean): List<Pair<Coord, T>> {
+    fun <Q> mapAndFilterToListByNotNull(block: (Coord, T) -> Q?): List<Q> {
         return buildList {
-            repeat(height) { y ->
-                repeat(width) { x ->
-                    val coord = Coord(x, y)
-                    val value = this@Array2D[x, y]
-                    if (function(coord, value)) {
-                        add(Pair(coord, value))
-                    }
-                }
+            data.forEachIndexed { index, value ->
+                val r = block(idx2c(index), value as T)
+                if (r != null) add(r)
             }
+        }
+    }
+
+    fun filterToList(function: (Coord, T) -> Boolean): List<Pair<Coord, T>> {
+        return mapAndFilterToListByNotNull { c, v ->
+            if (function(c,v)) Pair(c,v) else null
         }
     }
 
@@ -316,7 +303,7 @@ class Array2D<T> {
 
     companion object {
 
-        fun <T> parseFromLines(string: String, charParser: (Char) -> T): Array2D<T> {
+        fun <T: Any> parseFromLines(string: String, charParser: (Char) -> T): Array2D<T> {
             val lines = string.nonEmptyLines()
             return Array2D(lines.map { line ->
                 line.map(charParser)
@@ -329,7 +316,7 @@ class Array2D<T> {
     }
 
 
-    open class Cursor<T>(private val map: Array2D<T>, coord: Coord) {
+    open class Cursor<T: Any>(private val map: Array2D<T>, coord: Coord) {
         protected var x: Int
         protected var y: Int
         protected var idx: Int
@@ -465,7 +452,7 @@ class Array2D<T> {
         }
     }
 
-    class WrappingCursor<T>(private val map: Array2D<T>, coord: Coord) : Cursor<T>(map, coord) {
+    class WrappingCursor<T: Any>(private val map: Array2D<T>, coord: Coord) : Cursor<T>(map, coord) {
         override fun moveRight(): Boolean {
             if (x == w - 1) {
                 x = 0

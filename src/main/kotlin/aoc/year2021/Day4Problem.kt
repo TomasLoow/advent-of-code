@@ -55,7 +55,7 @@ private class BingoBoard() {
     }
 
     fun getScore(): Int {
-        val coordsOfUnmarked = marked.filterIndexedByCoordinate { c, v -> !v }.map{it.first}
+        val coordsOfUnmarked = marked.mapAndFilterToListByNotNull { c, marked -> if (marked) null else c }
         return coordsOfUnmarked.sumOf { this.numbers[it] }
     }
 

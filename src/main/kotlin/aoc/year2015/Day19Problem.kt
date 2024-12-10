@@ -37,7 +37,7 @@ class Day19Problem : DailyProblem<Int>() {
     override fun part1(): Int {
         return rules.flatMap { (k, v) ->
             applyRule(start, k, v)
-        }.toSet().size
+        }.distinct().size
     }
 
 

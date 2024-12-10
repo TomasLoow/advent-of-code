@@ -84,7 +84,7 @@ class Day13Problem : DailyProblem<Any>() {
         val firstFold = folds.first()
 
         firstFold.applyToGrid(grid)
-        return grid.toSet().size
+        return grid.distinct().size
     }
 
     override fun part2(): String {

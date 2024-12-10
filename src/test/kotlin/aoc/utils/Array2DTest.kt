@@ -56,7 +56,7 @@ class Array2DTest {
         110
         000
          */
-        assertEquals(4, arr.mapListIndexedByCoordinate { c, i -> i }.sum())
+        assertEquals(4, arr.mapAndFilterToListByNotNull { c, i -> i }.sum())
         assertEquals(1, arr[0, 0])
         assertEquals(1, arr[1, 0])
         assertEquals(1, arr[0, 1])
@@ -67,7 +67,7 @@ class Array2DTest {
         221
         111
          */
-        assertEquals(10, arr.mapListIndexedByCoordinate { c, i -> i }.sum())
+        assertEquals(10, arr.mapAndFilterToListByNotNull { c, i -> i }.sum())
         assertEquals(1, arr[0, 0])
         assertEquals(2, arr[1, 1])
         assertEquals(1, arr[2, 2])
