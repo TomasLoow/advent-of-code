@@ -16,7 +16,7 @@ class Day8Problem : DailyProblem<Int>() {
     override fun commonParts() {
         map = parseCharArray(getInputText())
         antennas = emptyMutableMap()
-        map.mapListIndexedByCoordinate { coord, c -> c to coord }.forEach { (c, coord) ->
+        map.mapAndFilterToListByNotNull { coord, c -> c to coord }.forEach { (c, coord) ->
             if (c != '.') {
                 val list = antennas.getOrDefault(c, mutableListOf<Coord>())
                 list.add(coord)

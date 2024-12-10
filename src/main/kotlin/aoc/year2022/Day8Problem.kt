@@ -62,7 +62,7 @@ class Day8Problem : DailyProblem<Int>() {
     }
 
     override fun part2(): Int {
-        return forrestMap.mapListIndexedByCoordinate { c, height ->
+        return forrestMap.mapAndFilterToListByNotNull { c, height ->
             scenicScore(forrestMap, c, height)
         }.maxOf { it }
     }

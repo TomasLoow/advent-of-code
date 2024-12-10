@@ -28,8 +28,8 @@ private class OctopusGrid(val grid: Array2D<Int>) {
 
     private fun doFlashes(): Int {
         fun findCoordsThatNeedToFlash(coordsThatHaveFlashed: MutableSet<Coord>) = grid
-            .filterIndexedByCoordinate { coord, value -> value > 9 && coord !in coordsThatHaveFlashed }
-            .map { it.first }.toMutableList()
+            .mapAndFilterToListByNotNull { coord, value -> if (value > 9 && coord !in coordsThatHaveFlashed) coord else null }
+            .toMutableList()
 
         val coordsThatHaveFlashedThisStep = emptyMutableSet<Coord>()
         var coordsToFlashQueue = findCoordsThatNeedToFlash(coordsThatHaveFlashedThisStep)

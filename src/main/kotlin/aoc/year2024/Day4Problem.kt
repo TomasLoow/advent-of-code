@@ -20,7 +20,7 @@ class Day4Problem : DailyProblem<Int>() {
 
 
     override fun part1(): Int {
-        val starts = grid.filterIndexedByCoordinate { _, c -> c == 'X' }
+        val starts = grid.filterToList { _, c -> c == 'X' }
         return starts.sumOf { (c, _) ->
             Direction.entries.count { d -> grid[c, d, 4].joinToString("") == word }
         }
@@ -28,7 +28,7 @@ class Day4Problem : DailyProblem<Int>() {
     }
 
     override fun part2(): Int {
-        val positionsOfAs = grid.filterIndexedByCoordinate { _, char -> char == 'A' }
+        val positionsOfAs = grid.filterToList { _, char -> char == 'A' }
         return positionsOfAs
             .filter{ (c,_) -> !grid.onEdge(c)}
             .count { (c, _) ->

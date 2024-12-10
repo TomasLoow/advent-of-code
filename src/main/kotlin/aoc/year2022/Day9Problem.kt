@@ -64,13 +64,13 @@ class Day9Problem : DailyProblem<Long>() {
     override fun part1(): Long {
         val headPositions = findHeadPath()
         val tailPositions = followRopeBehindPath(headPositions)
-        return tailPositions.toSet().size.toLong()
+        return tailPositions.distinct().size.toLong()
     }
 
     override fun part2(): Long {
         val headPositions = findHeadPath()
         val tailTrail = ::followRopeBehindPath.iterate(headPositions, 9)
-        return tailTrail.toSet().size.toLong()
+        return tailTrail.distinct().size.toLong()
     }
 }
 
