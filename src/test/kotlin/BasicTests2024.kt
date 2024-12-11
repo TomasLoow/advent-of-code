@@ -53,4 +53,32 @@ class BasicTests2024 {
         assertEquals(3749, problem.part1(), "Correct Answer day ${problem.number} part 1")
         assertEquals(11387L, problem.part2(), "Correct Answer day ${problem.number} part 2")
     }
+    @Test
+    fun testDay8() {
+        val problem = Day8Problem().apply { testData = true }.apply { testData = true }
+        problem.commonParts()
+        assertEquals(14, problem.part1(), "Correct Answer day ${problem.number} part 1")
+        assertEquals(34, problem.part2(), "Correct Answer day ${problem.number} part 2")
+    }
+    @Test
+    fun testDay9() {
+        val problem = Day9Problem().apply { testData = true }.apply { testData = true }
+        problem.commonParts()
+        assertEquals(1928L, problem.part1(), "Correct Answer day ${problem.number} part 1")
+        assertEquals(2858L, problem.part2(), "Correct Answer day ${problem.number} part 2")
+    }
+    @Test
+    fun testDay10() {
+        val problem = Day10Problem().apply { testData = true }.apply { testData = true }
+        problem.commonParts()
+        assertEquals(36, problem.part1(), "Correct Answer day ${problem.number} part 1")
+        assertEquals(81, problem.part2(), "Correct Answer day ${problem.number} part 2")
+    }
+    @Test
+    fun testDay11() {
+        val problem = Day11Problem().apply { testData = true }.apply { testData = true }
+        problem.commonParts()
+        assertEquals(55312L, problem.part1(), "Correct Answer day ${problem.number} part 1")
+        assertEquals(65601038650482L, problem.part2(), "Correct Answer day ${problem.number} part 2")
+    }
 }

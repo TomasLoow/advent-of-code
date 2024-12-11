@@ -21,4 +21,13 @@ class BasicTests2023 {
         assertEquals(2286, problem.part2())
         problem.getInputFile()
     }
+    @Test
+    fun testDay15() {
+        val problem = aoc.year2023.Day15Problem()
+        problem.testData = true
+        problem.commonParts()
+        assertEquals(1320, problem.part1())
+        assertEquals(145, problem.part2())
+        problem.getInputFile()
+    }
 }
