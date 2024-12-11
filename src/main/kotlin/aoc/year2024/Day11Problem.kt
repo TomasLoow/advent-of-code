@@ -53,7 +53,6 @@ class Day11Problem : DailyProblem<Long>() {
         data.forEach {
             counters.increase(it.toLong(), 1)
         }
-
         repeat(steps) {
             val currentCounts = counters.toList()
             counters.clear()

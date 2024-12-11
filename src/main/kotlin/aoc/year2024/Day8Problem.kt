@@ -18,9 +18,7 @@ class Day8Problem : DailyProblem<Int>() {
         antennas = emptyMutableMap()
         map.mapAndFilterToListByNotNull { coord, c -> c to coord }.forEach { (c, coord) ->
             if (c != '.') {
-                val list = antennas.getOrDefault(c, mutableListOf<Coord>())
-                list.add(coord)
-                antennas[c] = list
+                antennas.mutateImp(c, mutableListOf<Coord>()) { it -> it.add(coord) }
             }
         }
     }

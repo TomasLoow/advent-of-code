@@ -25,7 +25,10 @@ fun String.md5(): String {
 }
 
 val IntRange.length: Int
-    get() = last - first + 1
+    get() {
+        if (this.step != 1) throw NotImplementedError("TODO")
+        return last - first + 1
+    }
 
 fun IntRange.containsRange(range2: IntRange): Boolean {
     return range2.first in this && range2.last in this
@@ -45,19 +48,23 @@ fun Collection<IntRange>.totalLengthOfCovered(): Int {
         }
     }
     val initial: Triple<Int, Int, Int?> = Triple(0, 0, null)
-    val (_, c, _) = endpoints.toList().filter{ it.second != 0}.sortedBy { it.first }.fold(initial) { (depth, count, posOfOpen), (pos, change) ->
-        val newDepth = depth + change
+    val (_, c, _) = endpoints
+        .toList()
+        .filter { it.second != 0 }
+        .sortedBy { it.first }
+        .fold(initial) { (depth, count, posOfOpen), (pos, change) ->
+            val newDepth = depth + change
 
-        if(depth == 0) {
-            Triple(change, count, pos)// record opening pos
-        } else {
-            if (newDepth == 0) {
-                Triple(0, count + (pos-posOfOpen!! + 1), null)
+            if (depth == 0) {
+                Triple(change, count, pos)// record opening pos
             } else {
-                Triple(newDepth, count, posOfOpen)
+                if (newDepth == 0) {
+                    Triple(0, count + (pos - posOfOpen!! + 1), null)
+                } else {
+                    Triple(newDepth, count, posOfOpen)
+                }
             }
         }
-    }
     return c
 }
 
@@ -66,13 +73,14 @@ fun Collection<IntRange>.totalLengthOfCovered(): Int {
  * Parses a sequence of digits as an integer
  * listOf(1,3,7).parseDecimal() == 137
  */
-fun Iterable<Int>.parseDecimal() : Int{
-    return fold(0) {parsed, digit -> parsed*10 + digit }
+fun Iterable<Int>.parseDecimal(): Int {
+    return fold(0) { parsed, digit -> parsed * 10 + digit }
 }
 
 fun Collection<Int>.product(): Int {
     return reduce { acc, i -> acc * i }
 }
+
 fun Collection<Long>.product(): Long {
     return reduce { acc, i -> acc * i }
 }
@@ -83,16 +91,21 @@ fun <A, B> Pair<A, B>.flip(): Pair<B, A> = Pair(this.second, this.first)
 /** Shifts array so element at idx+1 moves to idx,
  * sets last element to provided emptyValue.
  * Returns the head element that is pushed out of the array */
-fun <T> Array<T>.shiftLeft(emptyValue:T): T {
+fun <T> Array<T>.shiftLeft(emptyValue: T): T {
 
     val head = this[0]
-    repeat(this.size-1) { idx ->
-        this[idx]=this[idx+1]
+    repeat(this.size - 1) { idx ->
+        this[idx] = this[idx + 1]
     }
-    this[size-1] = emptyValue
+    this[size - 1] = emptyValue
     return head
 }
 
+/**
+ * Yields all permutations of a collection in some unspecified order
+ *
+ * listOf(1,2,3).permutationsSequence() == sequenceOf(listOf(1,2,3),listOf(1,3,2),listOf(2,1,3),listOf(2,3,1),listOf(3,1,2),listOf(3,2,1))
+ */
 fun <T> Collection<T>.permutationsSequence(): Sequence<List<T>> {
     if (this.isEmpty()) return sequenceOf(emptyList())
     val head = this.first()
@@ -100,7 +113,7 @@ fun <T> Collection<T>.permutationsSequence(): Sequence<List<T>> {
     return sequence {
         tail.permutationsSequence().forEach { perm ->
             repeat(perm.size + 1) { pos ->
-                yield( perm.take(pos)+ listOf(head)+perm.drop(pos))
+                yield(perm.take(pos) + listOf(head) + perm.drop(pos))
             }
         }
     }
@@ -115,11 +128,10 @@ fun <T> Collection<T>.subSets(): Sequence<Set<T>> {
         val tailSubsets = tail.subSets()
         tailSubsets.forEach { ss ->
             yield(ss)
-            yield(ss+head)
+            yield(ss + head)
         }
     }
 }
-
 
 
 /** Apply a function to its own output a given number of times
@@ -128,18 +140,31 @@ fun <T> Collection<T>.subSets(): Sequence<Set<T>> {
  * f.iterate(a,1) == f(a)
  * f.iterate(a,n) == f(f.iterate(a, n-1))
  */
-fun <A> ((A)->A).iterate(init: A, steps:Int):A {
-    return (1 .. steps).fold(init) { state, _ -> this(state) }
+fun <A> ((A) -> A).iterate(init: A, steps: Int): A {
+    return (1..steps).fold(init) { state, _ -> this(state) }
 }
 
 
-fun <K> MutableMap<K, Long>.increase(key: K, value: Long) {
-    this[key] = getOrDefault(key, 0L) + value
+/**
+ * Replace the value at this[key] with mutator(this[key]), if key is not in the map, behave as if emptyValue was the value for this[key]
+ */
+fun <K, V> MutableMap<K, V>.mutate(key: K, emptyValue: V, mutator: (V) -> V) {
+    this[key] = mutator(getOrDefault(key, emptyValue))
 }
 
-fun <K> MutableMap<K, Int>.increase(key: K, value: Int) {
-    this[key] = getOrDefault(key, 0) + value
+/**
+ * Perform some action with the value at this[key], if it is not in the map, initialize it with
+ */
+fun <K, V> MutableMap<K, V>.mutateImp(key: K, emptyValue: V, mutator: (V) -> Unit) {
+    if (key !in this.keys) {
+        this[key] = emptyValue
+    }
+    mutator(this[key]!!)
 }
+
+fun <K> MutableMap<K, Long>.increase(key: K, value: Long) = this.mutate(key, 0L, { it + value })
+fun <K> MutableMap<K, Int>.increase(key: K, value: Int) = this.mutate(key, 0, { it + value })
+
 
 fun Int.truncPositive(): Int {
     return max(0, this)
@@ -202,8 +227,6 @@ fun Int.concat(x: Int): Int {
 }
 
 
-
-
 /** Finds the max and min of a collection of numbers in a single loop */
 fun Iterable<Int>.minAndMax(): Pair<Int, Int> {
     return this.fold(Pair(Integer.MAX_VALUE, Integer.MIN_VALUE)) { (currentMin, currentMax), v ->
@@ -225,7 +248,7 @@ fun Iterable<Int>.minAndMax(): Pair<Int, Int> {
 fun <E> Iterable<E>.allUnorderedPairs(): Sequence<Pair<E, E>> {
     return sequence {
         this@allUnorderedPairs.forEachIndexed { index1, e ->
-            this@allUnorderedPairs.drop(index1+1).forEach { e2 ->
+            this@allUnorderedPairs.drop(index1 + 1).forEach { e2 ->
                 yield(e to e2)
             }
         }

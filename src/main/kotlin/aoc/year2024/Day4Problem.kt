@@ -24,7 +24,6 @@ class Day4Problem : DailyProblem<Int>() {
         return starts.sumOf { (c, _) ->
             Direction.entries.count { d -> grid[c, d, 4].joinToString("") == word }
         }
-
     }
 
     override fun part2(): Int {

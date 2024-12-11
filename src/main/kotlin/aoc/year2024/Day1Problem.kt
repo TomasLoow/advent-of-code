@@ -2,6 +2,7 @@ package aoc.year2024
 
 import DailyProblem
 import aoc.utils.emptyMutableMap
+import aoc.utils.increase
 import aoc.utils.parseListOfPairs
 import java.lang.Integer.parseInt
 import kotlin.math.absoluteValue
@@ -29,9 +30,7 @@ class Day1Problem : DailyProblem<Int>() {
 
     override fun part2(): Int {
         val rCounts = emptyMutableMap<Int, Int>()
-        listRight.forEach { r ->
-            rCounts[r] = rCounts.getOrDefault(r, 0) + 1
-        }
+        listRight.forEach { r -> rCounts.increase(r, 1) }
         return listLeft.sumOf { l ->
             l * rCounts.getOrDefault(l, 0)
         }
