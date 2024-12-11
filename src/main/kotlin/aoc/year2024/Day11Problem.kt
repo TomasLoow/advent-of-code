@@ -1,7 +1,7 @@
 package aoc.year2024
 
 import DailyProblem
-import aoc.utils.even
+import aoc.utils.increase
 import aoc.utils.parseOneLineOfSeparated
 import java.lang.Integer.parseInt
 import kotlin.time.ExperimentalTime
@@ -49,20 +49,16 @@ class Day11Problem : DailyProblem<Long>() {
     }
 
     private fun solve(steps: Int): Long {
-        var counters = mutableMapOf<Long, Long>()
+        val counters = mutableMapOf<Long, Long>()
         data.forEach {
-            val c = counters.getOrDefault(it.toLong(), 0L)
-            counters[it.toLong()] = c + 1
+            counters.increase(it.toLong(), 1)
         }
 
         repeat(steps) {
             val currentCounts = counters.toList()
             counters.clear()
             currentCounts.forEach { (stone, count) ->
-                evolve(stone).forEach { newStone ->
-                    val current = counters.getOrDefault(newStone, 0L)
-                    counters[newStone] = current + count
-                }
+                evolve(stone).forEach { counters.increase(it, count) }
             }
         }
         return counters.map { it.value }.sum()
@@ -74,5 +70,5 @@ val day11Problem = Day11Problem()
 @OptIn(ExperimentalTime::class)
 fun main() {
     day11Problem.testData = false
-    day11Problem.runBoth(100)
+    day11Problem.runBoth(1000)
 }
