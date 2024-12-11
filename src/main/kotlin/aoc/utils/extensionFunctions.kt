@@ -151,6 +151,12 @@ val Int.even: Boolean
 val Int.odd: Boolean
     get() = this % 2 == 1
 
+val Long.even: Boolean
+    get() = this % 2L == 0L
+
+val Long.odd: Boolean
+    get() = this % 2L == 1L
+
 /**
  * Concatenates the given Long value to the current Long as if appending digits.
  *
