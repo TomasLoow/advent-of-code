@@ -18,19 +18,25 @@ class Day11Problem : DailyProblem<Long>() {
         data = parseOneLineOfSeparated(getInputText(), ::parseInt, " ")
     }
 
-    private fun evolve(x: Long) : List<Long> {
-        if (x == 0L) {
-            return listOf(1L)
-        }
-        val asString = x.toString()
-        val length = asString.length
-        if (length.even) {
-            return listOf(
-                asString.take(length/2).toLong(),
-                asString.drop(length/2).toLong(),
-            )
-        }
-        return listOf(x*2024)
+
+    private fun evolve(x: Long): List<Long> {
+        // If it looks really stupid but works and is quite fast, is it actually stupid?
+        if (x == 0L) return listOf(1L)
+        if (x < 10L) return listOf(x * 2024L)
+        if (x < 100L) return listOf(x / 10L, x % 10L)
+        if (x < 1000L) return listOf(x * 2024L)
+        if (x < 10000L) return listOf(x / 100L, x % 100L)
+        if (x < 100000L) return listOf(x * 2024L)
+        if (x < 1000000L) return listOf(x / 1000L, x % 1000L)
+        if (x < 10000000L) return listOf(x * 2024L)
+        if (x < 100000000L) return listOf(x / 10000L, x % 10000L)
+        if (x < 1000000000L) return listOf(x * 2024L)
+        if (x < 10000000000L) return listOf(x / 100000L, x % 100000L)
+        if (x < 100000000000L) return listOf(x * 2024L)
+        if (x < 1000000000000L) return listOf(x / 1000000L, x % 1000000L)
+        if (x < 10000000000000L) return listOf(x * 2024L)
+        if (x < 100000000000000L) return listOf(x / 10000000L, x % 10000000L)
+        throw Exception("What? Even BIGGER?!")
     }
 
 
@@ -46,7 +52,7 @@ class Day11Problem : DailyProblem<Long>() {
         var counters = mutableMapOf<Long, Long>()
         data.forEach {
             val c = counters.getOrDefault(it.toLong(), 0L)
-            counters[it.toLong()] = c+1
+            counters[it.toLong()] = c + 1
         }
 
         repeat(steps) {
@@ -55,11 +61,11 @@ class Day11Problem : DailyProblem<Long>() {
             currentCounts.forEach { (stone, count) ->
                 evolve(stone).forEach { newStone ->
                     val current = counters.getOrDefault(newStone, 0L)
-                    counters[newStone] = current+count
+                    counters[newStone] = current + count
                 }
             }
         }
-        return counters.map{ it.value }.sum()
+        return counters.map { it.value }.sum()
     }
 }
 
@@ -68,5 +74,5 @@ val day11Problem = Day11Problem()
 @OptIn(ExperimentalTime::class)
 fun main() {
     day11Problem.testData = false
-    day11Problem.runBoth(10)
+    day11Problem.runBoth(100)
 }
