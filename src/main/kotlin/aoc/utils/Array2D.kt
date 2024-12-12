@@ -225,6 +225,26 @@ class Array2D<T: Any> {
         }
     }
 
+    fun forEach(block: (Coord, T) -> Any): Unit {
+        data.forEachIndexed { index, value ->
+            block(idx2c(index), value as T)
+        }
+    }
+
+    fun floodFill(coord: Coord): Set<Coord> {
+        val v = get(coord)
+        val filled = mutableSetOf<Coord>()
+        val toVisitQueue = mutableListOf(coord)
+        while (toVisitQueue.isNotEmpty()) {
+            val possibleCoord = toVisitQueue.removeFirst()
+            if (possibleCoord in filled) continue
+            filled.add(possibleCoord)
+            toVisitQueue.addAll(
+                neighbourCoords(possibleCoord, diagonal = false).filter { get(it) == v && it !in filled })
+        }
+        return filled
+    }
+
     fun show(renderer: (T) -> String): String {
         return buildList {
             rect.yRange.forEach { y ->
