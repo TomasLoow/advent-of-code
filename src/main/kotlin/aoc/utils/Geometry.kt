@@ -86,6 +86,19 @@ data class Coord(val x: Int, val y: Int) {
         return max((x - other.x).absoluteValue, (y - other.y).absoluteValue)
     }
 
+    fun neighbours(): List<Coord> {
+        return listOf(
+            this.copy(x = this.x - 1),
+            this.copy(x = this.x + 1),
+            this.copy(y = this.y - 1),
+            this.copy(y = this.y + 1)
+        )
+    }
+
+    fun isNeighbourWith(other: Coord): Boolean {
+        return this.manhattanDistanceTo(other) == 1
+    }
+
     fun stepInDir(d: Direction): Coord {
         val (x, y) = this
         return when (d) {
