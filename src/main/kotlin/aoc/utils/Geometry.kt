@@ -13,9 +13,11 @@ enum class Axis2D {
     X, Y
 }
 
-enum class Axis3D {
-    X, Y, Z
-}
+typealias Vector = Pair<Int, Int>
+
+operator fun Vector.plus(v2:Vector) = Pair(first + v2.first, second + v2.second)
+operator fun Vector.times(factor: Int) = Pair(first * factor, second * factor)
+operator fun Int.times(pair: Vector) = Pair(pair.first * this, pair.second * this)
 
 enum class Direction {
     UP,
@@ -71,10 +73,10 @@ data class Coord(val x: Int, val y: Int) {
 
     operator fun plus(d: Direction) = this.stepInDir(d)
 
-    operator fun plus(delta: Pair<Int, Int>) = copy(x = x + delta.first, y = y + delta.second)
-    operator fun minus(other: Coord): Pair<Int, Int> = Pair(x - other.x, y - other.y)
+    operator fun plus(delta: Vector) = copy(x = x + delta.first, y = y + delta.second)
+    operator fun minus(other: Coord): Vector = Pair(x - other.x, y - other.y)
 
-    operator fun minus(delta: Pair<Int, Int>) = copy(x = x - delta.first, y = y - delta.second)
+    operator fun minus(delta: Vector) = copy(x = x - delta.first, y = y - delta.second)
 
     fun manhattanDistanceTo(other: Coord): Int {
         return (x - other.x).absoluteValue + (y - other.y).absoluteValue
@@ -86,17 +88,25 @@ data class Coord(val x: Int, val y: Int) {
         return max((x - other.x).absoluteValue, (y - other.y).absoluteValue)
     }
 
-    fun neighbours(): List<Coord> {
-        return listOf(
-            this.copy(x = this.x - 1),
-            this.copy(x = this.x + 1),
-            this.copy(y = this.y - 1),
-            this.copy(y = this.y + 1)
-        )
-    }
+    fun neighbours(diagonal: Boolean = false): List<Coord> = if (!diagonal) listOf(
+        this.copy(x = this.x - 1),
+        this.copy(x = this.x + 1),
+        this.copy(y = this.y - 1),
+        this.copy(y = this.y + 1)
+    ) else listOf(
+        this.copy(x = this.x - 1),
+        this.copy(x = this.x + 1),
+        this.copy(y = this.y - 1),
+        this.copy(y = this.y + 1),
+        this.copy(x = this.x - 1, y = this.y - 1),
+        this.copy(x = this.x + 1, y = this.y + 1),
+        this.copy(x = this.x - 1, y = this.y + 1),
+        this.copy(x = this.x + 1, y = this.y - 1),
+    )
 
-    fun isNeighbourWith(other: Coord): Boolean {
-        return this.manhattanDistanceTo(other) == 1
+    fun isNeighbourWith(other: Coord, diagonal: Boolean = false): Boolean {
+        return if (!diagonal) this.manhattanDistanceTo(other) == 1
+        else this.chebyshevDistanceTo(other) == 1
     }
 
     fun stepInDir(d: Direction): Coord {
@@ -158,6 +168,7 @@ data class Coord(val x: Int, val y: Int) {
 
     }
 }
+
 
 data class Rect(val topLeft: Coord, val bottomRight: Coord) {
     val width: Int
