@@ -68,38 +68,28 @@ class Day14Problem : DailyProblem<Int>() {
     }
 
     override fun part2(): Int {
-        (1..100_000).forEach { i ->
-            val movedRobots = initialRobots.map { moveRobot(it, i) }
-            val variance = calculateVariance(movedRobots)
-            if (variance < 1000 && movedRobots.map { it.c }.toSet().size == initialRobots.size) {
-                val rendered = show(movedRobots)
-                if ("1111111111111111111111111111111" in rendered) {
-                    //println(rendered)
-                    return i
-                }
-            }
+        // The target image has a very low variance in both the x and y coordinates
+        // The x positions loop with a cycle of mapWidth. Find index where the x positions have the lowest variance
+        val idxVarMinX = (0..mapWidth).map { idx ->
+            val movedRobots = initialRobots.map { robot -> moveRobot(robot, idx) }
+            idx to movedRobots.map { it.c.x }.variance()
+        }.sortedBy { it.second }.first().first
+
+        // The y positions loop with a cycle of mapHeight. Find index where the y positions have the lowest variance
+        val idxVarMinY = (0..mapHeight).map { idx ->
+            val movedRobots = initialRobots.map { robot -> moveRobot(robot, idx) }
+            idx to movedRobots.map { it.c.y }.variance()
+        }.sortedBy { it.second }.first().first
+
+        // Find the index that is idxVarMinX (mod) mapWidth and  idxVarMinY (mod) mapHeight
+        val resIdx = (0..mapWidth * mapHeight).first { idx ->
+            // initialRobots.map { moveRobot(it, idx) }.let { println(show(it)) }
+            idx % mapWidth == idxVarMinX && idx % mapHeight == idxVarMinY
         }
-        return 1
+        // initialRobots.map { moveRobot(it, resIdx) }.let { println(show(it)) }
+        return resIdx
     }
 
-    private fun calculateVariance(moved: List<Robot>): Double {
-        val xs = emptyMutableList<Int>()
-        val ys = emptyMutableList<Int>()
-        var xSum = 0
-        var ySum = 0
-        moved.forEach { (c,_) ->
-            xs.add(c.x)
-            ys.add(c.y)
-            xSum += c.x
-            ySum += c.y
-        }
-        val xavg = xSum.toDouble() / xs.size
-        val yavg = ySum.toDouble() / xs.size
-        val xvariance = xs.sumOf { (it - xavg).pow(2) } / xs.size
-        val yvariance = ys.sumOf { (it - yavg).pow(2) } / ys.size
-        val variance = xvariance + yvariance
-        return variance
-    }
 
     private fun show(robots: List<Robot>): String {
         val a = Array2D<Int>(mapWidth, mapHeight) { _ -> 0 }
