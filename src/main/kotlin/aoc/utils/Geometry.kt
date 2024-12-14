@@ -162,6 +162,8 @@ data class Coord(val x: Int, val y: Int) {
         }
     }
 
+    fun toPair(): Pair<Int,Int> = Pair(x, y)
+
     companion object {
         val origin = Coord(0, 0)
         private val MAX_VALUE = 1024
