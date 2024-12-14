@@ -5,6 +5,7 @@ import java.security.MessageDigest
 import java.util.*
 import kotlin.math.max
 import kotlin.math.min
+import kotlin.math.pow
 
 fun String.nonEmptyLines(): List<String> {
     return lines().filter { it.isNotEmpty() }
@@ -253,4 +254,9 @@ fun <E> Iterable<E>.allUnorderedPairs(): Sequence<Pair<E, E>> {
             }
         }
     }
+}
+
+fun List<Int>.variance(): Double {
+    val xavg = this.sum().toDouble() / this.size
+    return this.sumOf { (it - xavg).pow(2) } / this.size
 }
