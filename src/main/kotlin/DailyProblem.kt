@@ -28,6 +28,7 @@ abstract class DailyProblem<Res> {
     @ExperimentalTime
     fun runBoth(timesToRun: Int = 1): Duration {
         println("=== Day $number : $name ===")
+        println("https://adventofcode.com/$year/day/$number")
         var result1: Res? = null
         var result2: Res? = null
         val runDuration = measureTime {
