@@ -39,6 +39,12 @@ fun IntRange.intersectRange(range2: IntRange): Boolean {
     return !(range2.last < start || range2.first > endInclusive)
 }
 
+fun IntRange.intersectionOrNull(other: IntRange): IntRange? {
+    val r = (Integer.max(this.first, other.first)..Integer.min(this.last, other.last))
+    if (r.isEmpty()) return null else return r
+}
+
+
 
 /** Returns the total length of a collection of IntRanges, points that are covered by more than one range are not counted twice */
 fun Collection<IntRange>.totalLengthOfCovered(): Int {
