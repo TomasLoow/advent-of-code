@@ -13,6 +13,7 @@ abstract class AStar<State>(val goal:State) {
     abstract fun heuristic(state: State):Int
     abstract fun reachable(state: State): Collection<State>
     abstract fun getMoveCost(from: State, to: State): Int
+    open fun isGoal(state: State): Boolean = state == goal
 
     fun reconstructPath(cameFrom:MutableMap<State, State>): List<State> {
         return buildList {
