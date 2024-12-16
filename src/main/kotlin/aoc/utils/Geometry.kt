@@ -49,14 +49,31 @@ enum class Direction {
         }
     }
 
+    fun rotate180(): Direction {
+        return when (this) {
+            UP -> DOWN
+            RIGHT -> LEFT
+            DOWN -> UP
+            LEFT -> RIGHT
+            else -> TODO()
+        }
+    }
+
     fun toArrowChar(): Char {
         return when (this) {
             UP -> '^'
             RIGHT -> '>'
             DOWN -> 'v'
             LEFT -> '<'
-            else -> throw Exception("not a cartesian direction")
+            UPRIGHT -> '7'
+            UPLEFT -> 'F'
+            DOWNRIGHT -> 'J'
+            DOWNLEFT -> 'L'
         }
+    }
+    companion object {
+        val cartesian get() = listOf(UP, RIGHT, DOWN, LEFT)
+        val diagonal get() = listOf(UPRIGHT, DOWNRIGHT, DOWNLEFT, UPLEFT)
     }
 }
 
