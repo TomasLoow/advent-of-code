@@ -26,12 +26,9 @@ private class WalkStar(
         return cost
     }
 
+    override fun isGoal(state: MazeState): Boolean { return state.pos == goal.pos}
+
     override fun reachable(state: MazeState): Collection<MazeState> {
-        if (goal.pos == state.pos) return listOf(  // special case, allow spinning around if we are at the goal but in wrong direction
-            state.copy(dir = state.dir.rotateCW()),
-            state.copy(dir = state.dir.rotateCCW()),
-            state.copy(dir = state.dir.rotate180())
-        )
         val reachable = buildList {
             if (!map[state.pos + state.dir]) add(state.copy(pos = state.pos + state.dir))
             add(state.copy(dir = state.dir.rotateCW()))
@@ -44,8 +41,7 @@ private class WalkStar(
 
     override fun getMoveCost(from: MazeState, to: MazeState): Int {
         if (from.pos == to.pos) {
-            return if (from.pos == goal.pos) 0 // special case, spinning around when we are at the goal but in wrong direction is free
-            else 1000
+            return 1000
         }
         return 1
     }
