@@ -1,6 +1,7 @@
 package aoc.year2024
 
 import DailyProblem
+import aoc.utils.emptyMutableSet
 import aoc.utils.parseOneLineOfSeparated
 import aoc.utils.parseTwoBlocks
 import kotlin.math.pow
@@ -10,9 +11,11 @@ import kotlin.time.ExperimentalTime
 data class Register(var a: Long = 0L, var b: Long = 0L, var c: Long = 0L)
 data class State(
     val registers: Register,
-    val ops: List<Long>,
-    var pointer: Long
+    val ops: ThreeBitWordList,
+    var pointer: Int
 )
+
+typealias ThreeBitWordList = List<Int>
 
 class Day17Problem : DailyProblem<String>() {
 
@@ -21,7 +24,7 @@ class Day17Problem : DailyProblem<String>() {
     override val name = "Chronospatial Computer"
 
     private lateinit var initialReg: Register
-    lateinit var program: List<Long>
+    lateinit var program: ThreeBitWordList
 
     override fun commonParts() {
         fun parseRegisters(input: String): Register {
@@ -30,8 +33,8 @@ class Day17Problem : DailyProblem<String>() {
             return Register(a, b, c)
         }
 
-        fun parseOps(input: String): List<Long> {
-            return parseOneLineOfSeparated(input.removePrefix("Program: "), { it.toLong() }, ",")
+        fun parseOps(input: String): ThreeBitWordList {
+            return parseOneLineOfSeparated(input.removePrefix("Program: "), { it.toInt() }, ",")
         }
 
         val data = parseTwoBlocks(getInputText(), ::parseRegisters, ::parseOps)
@@ -42,35 +45,34 @@ class Day17Problem : DailyProblem<String>() {
 
     override fun part1(): String {
         val state = State(initialReg, program, 0)
-        val r = runAsSequence(state).toList()
+        val r = runForA(state.registers.a)
         return r.joinToString(",")
     }
 
-    fun runAsSequence(state: State): Sequence<Long> {
-        fun combo(state: State, operand: Long): Long {
+    fun run(state: State): List<Int> {
+        fun combo(state: State, operand: Int): Long {
             if (operand in (0..3)) return operand.toLong()
-            if (operand == 4L) return state.registers.a
-            if (operand == 5L) return state.registers.b
-            if (operand == 6L) return state.registers.c
+            if (operand == 4) return state.registers.a
+            if (operand == 5) return state.registers.b
+            if (operand == 6) return state.registers.c
             TODO()
         }
-        return sequence {
+        return buildList {
             while (state.pointer < state.ops.indices.last) {
-                val op = state.ops[state.pointer.toInt()]
-                val operand = state.ops[state.pointer.toInt() + 1]
+                val op = state.ops[state.pointer]
+                val operand = state.ops[state.pointer + 1]
                 when (op) {
-                    0L-> state.registers.a = truncate(state.registers.a / 2.0.pow(1.0 * combo(state, operand))).toLong()
-                    1L-> state.registers.b = state.registers.b xor operand.toLong()
-                    2L-> state.registers.b = combo(state, operand) % 8
-                    3L-> if (state.registers.a != 0L) {
+                    0 -> state.registers.a = state.registers.a.shr(combo(state, operand).toInt())
+                    1 -> state.registers.b = state.registers.b xor operand.toLong()
+                    2 -> state.registers.b = combo(state, operand) and 7
+                    3 -> if (state.registers.a != 0L) {
                         state.pointer = operand
                         continue
                     }
-
-                    4L -> state.registers.b = state.registers.b xor state.registers.c
-                    5L -> yield(combo(state, operand) % 8)
-                    6L -> state.registers.b = truncate(state.registers.a / 2.0.pow(1.0 * combo(state, operand))).toLong()
-                    7L -> state.registers.c = truncate(state.registers.a / 2.0.pow(1.0 * combo(state, operand))).toLong()
+                    4 -> state.registers.b = state.registers.b xor state.registers.c
+                    5 -> add((combo(state, operand) and 7).toInt())
+                    6 -> state.registers.b = state.registers.a.shr(combo(state, operand).toInt())
+                    7 -> state.registers.c = state.registers.a.shr(combo(state, operand).toInt())
                     else -> TODO("Invalid opcode")
                 }
                 state.pointer += 2
@@ -79,12 +81,12 @@ class Day17Problem : DailyProblem<String>() {
     }
 
     /** Runs a program with a set to the value you get by combining l as a list of 3-digit numbers */
-    fun runList(l: List<Int>): List<Long> {
-        return runForA(tribitListToLong(l))
+    private fun runThreeBitWordList(l: ThreeBitWordList): ThreeBitWordList {
+        return runForA(triBitWordListToLong(l))
     }
 
-    fun runForA(a: Long): List<Long> {
-        return runAsSequence(State(Register(a = a), program, 0)).toList()
+    fun runForA(a: Long): ThreeBitWordList {
+        return run(State(Register(a = a), program, 0))
     }
 
     override fun part2(): String {
@@ -95,49 +97,42 @@ class Day17Problem : DailyProblem<String>() {
         */
 
         val allTriples = (0..511).map {
-            Triple(it.shr(6), (it.shr(3)) % 8, it % 8)
+            listOf(it.shr(6), (it.shr(3)) and 7, it and 7)
         }
-        var candidatePaths: Set<List<Int>> = allTriples.map { it.toList() }.toSet()
-        candidatePaths = candidatePaths.filter { runList(it).first() == program.first().toLong() }.toSet()
-        var correctOutput = 0
-        while (correctOutput < program.size) {
-            correctOutput++
-            val extendedPaths = candidatePaths.toList().flatMap { p ->
-                (0..7).flatMap { d ->
-                    val candidate = listOf(d) + p
-                    val out = runList(candidate)
-                    if (out.zip(program)
-                            .takeWhile { (a, b) -> a == b.toLong() }.size >= correctOutput
-                    ) listOf(candidate)
-                    else emptyList()
+        /** TODO Change this to a DFS instead of BFS search */
+        val candidatePathsStack: MutableList<ThreeBitWordList> = allTriples.map { it }.toMutableList()
+        candidatePathsStack.removeIf { runThreeBitWordList(it).first() != program.first() }
+        val sols = emptyMutableSet<ThreeBitWordList>()
+        while (candidatePathsStack.isNotEmpty()) {
+            val candidate = candidatePathsStack.removeFirst()
+            if (candidate.size >= program.size ) continue
+            val expectedCorrectOutputLen = candidate.size - 2
+            for (d in (0..7)) {
+                val newCandidate = buildList { add(d); addAll(candidate) }
+                val out = runThreeBitWordList(newCandidate)
+                if (out.take(expectedCorrectOutputLen) == program.take(expectedCorrectOutputLen)) {
+                    candidatePathsStack.add(newCandidate)
+                    if (out == program) {
+                        sols.add(newCandidate)
+                        break
+                    }
                 }
-            }.toSet()
-            if (extendedPaths.isEmpty()) break
-            else candidatePaths = extendedPaths
+            }
         }
-        val res = candidatePaths
-            .map { it to runList(it) }
-            .filter { it.second.size == program.size }
-            .filter { it.second.zip(program).all { (a,b) -> a==b } }
-            .sortedBy{ it.first.toString()}
-            .first()
-
-        return tribitListToLong(res.first).toString()
+        return sols.map { triBitWordListToLong(it) }.minOf { it }.toString()
     }
 
     /**
-     * Converts a list of integers, where each integer represents a tribit (a single base-8 digit),
-     * into a single long integer. The tribits in the list are treated sequentially to construct
+     * Converts a list of integers, where each integer represents a ThreeBitWord (a single base-8 digit),
+     * into a single long integer. The ThreeBitWords in the list are treated sequentially to construct
      * the resulting number in base-8.
+     * triBitWordListToLong(listOf(2,5,1)) == /* 010 101 001 == 0 10101001 */ ==  169
      *
-     * @param listOf A list of integers representing tribits (valid integers from 0 to 7).
+     *  @param listOf A list of integers representing ThreeBitWord (valid integers from 0 to 7).
      * @return A single long integer created by interpreting the input list as a base-8 number.
      */
-    private fun tribitListToLong(listOf: List<Int>): Long {
-        var res = 0L
-        listOf.forEach { res = 8L * res + it }
-        return res
-    }
+    private fun triBitWordListToLong(listOf: ThreeBitWordList): Long =
+        listOf.fold(0L) { acc: Long, i: Int ->  8L * acc + i }
 }
 
 
