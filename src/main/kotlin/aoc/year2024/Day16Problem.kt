@@ -65,8 +65,8 @@ class Day16Problem : DailyProblem<Int>() {
     }
 
     private fun solve(): Pair<Int, List<MazeState>> {
-        val solver = WalkStar(initialMap, MazeState(goal, Direction.RIGHT))
-        return solver.solve(MazeState(start, Direction.DOWN))
+        val solver = WalkStar(initialMap, MazeState(goal, Direction.UPRIGHT))
+        return solver.solve(MazeState(start, Direction.RIGHT))
     }
 
     override fun part1(): Int {
@@ -112,6 +112,6 @@ val day16Problem = Day16Problem()
 
 @OptIn(ExperimentalTime::class)
 fun main() {
-    day16Problem.testData = false
+    day16Problem.testData = true
     day16Problem.runBoth(1)
 }
