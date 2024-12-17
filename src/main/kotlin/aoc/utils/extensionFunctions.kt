@@ -173,6 +173,16 @@ fun <K> MutableMap<K, Long>.increase(key: K, value: Long) = this.mutate(key, 0L,
 fun <K> MutableMap<K, Int>.increase(key: K, value: Int) = this.mutate(key, 0, { it + value })
 
 
+fun <K, V> Map<K, V>.invert(): Map<V, Set<K>> {
+    val res = emptyMutableMap<V, Set<K>>()
+    this.forEach { k, v ->
+        val s = res.getOrDefault(v, emptySet())
+        res[v] = s.plus(k)
+    }
+    return res
+}
+
+
 fun Int.truncPositive(): Int {
     return max(0, this)
 }
@@ -188,6 +198,18 @@ val Long.even: Boolean
 
 val Long.odd: Boolean
     get() = this % 2L == 1L
+
+
+fun Int.showBits(): String {
+    Int.MAX_VALUE
+    var sb = StringBuilder()
+    (0..31).reversed().forEach { b ->
+        if ((1.shl(b) and this) != 0) sb.append("1")
+        else sb.append("0")
+    }
+    return sb.toString()
+}
+
 
 /**
  * Concatenates the given Long value to the current Long as if appending digits.
