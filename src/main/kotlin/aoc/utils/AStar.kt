@@ -15,10 +15,10 @@ abstract class AStar<State>(val goal:State) {
     abstract fun getMoveCost(from: State, to: State): Int
     open fun isGoal(state: State): Boolean = state == goal
 
-    fun reconstructPath(cameFrom:MutableMap<State, State>): List<State> {
+    fun reconstructPath(cameFrom:MutableMap<State, State>, end: State): List<State> {
         return buildList {
-            add(goal)
-            var s = goal
+            add(end)
+            var s = end
             while(s in cameFrom) {
                 s = cameFrom[s]!!
                 add(s)
@@ -46,8 +46,8 @@ abstract class AStar<State>(val goal:State) {
             steps++
             val currentPair = openSet.first()!!
             val current= currentPair.second
-            if (current == goal) {
-                return Pair(cheapestPathScoreMap[current]!!, reconstructPath(cameFrom))
+            if (isGoal(current)) {
+                return Pair(cheapestPathScoreMap[current]!!, reconstructPath(cameFrom, current))
             }
             openSet.remove(currentPair)
 
