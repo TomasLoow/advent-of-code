@@ -6,7 +6,7 @@ import kotlin.test.Test
 class BasicTests2022 {
     @Test
     fun testDay1() {
-        val problem = Day1Problem().apply { testData = true }.apply { testData = true }
+        val problem = Day1Problem().apply { testData = true }
         problem.commonParts()
         assertEquals(24000, problem.part1(), "Correct Answer day ${problem.number} part 1")
         assertEquals(45000, problem.part2(), "Correct Answer day ${problem.number} part 2")
@@ -14,7 +14,7 @@ class BasicTests2022 {
 
     @Test
     fun testDay2() {
-        val problem = Day2Problem().apply { testData = true }.apply { testData = true }
+        val problem = Day2Problem().apply { testData = true }
         problem.commonParts()
         assertEquals(15, problem.part1(), "Correct Answer day ${problem.number} part 1")
         assertEquals(12, problem.part2(), "Correct Answer day ${problem.number} part 2")
