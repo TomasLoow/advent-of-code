@@ -53,18 +53,11 @@ class Day18Problem : DailyProblem<String>() {
 
     override fun part2(): String {
         // Bisect until we find the border between solvable and unsolvable
-        var good = part1Steps
-        var bad = data.size
-        while (good + 1 < bad) {
-            val mid = (good + bad) / 2
-            try {
-                solveForSteps(mid)
-                good = mid
-
-            } catch (e: Exception) {
-                bad = mid
-            }
+        val good = bisect(part1Steps, data.size) {
+            try { solveForSteps(it); true } catch (e: Exception) { false }
         }
+        val bad = good + 1
+
         val c = (data[bad - 1])  // if we fail at step n then we have used blocks 0..(n-1).
         return "${c.x},${c.y}"
     }
