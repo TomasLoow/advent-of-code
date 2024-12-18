@@ -5,7 +5,7 @@ import aoc.utils.*
 import kotlin.time.ExperimentalTime
 
 
-class RAMRun(val blocked: List<Coord>, val rect: Rect, goal: Coord) : AStar<Coord>(goal) {
+class RAMRun(val blocked: Set<Coord>, val rect: Rect, goal: Coord) : AStar<Coord>(goal) {
     override fun heuristic(state: Coord): Int {
         return state.manhattanDistanceTo(goal)
     }
@@ -15,7 +15,7 @@ class RAMRun(val blocked: List<Coord>, val rect: Rect, goal: Coord) : AStar<Coor
     }
 
     override fun reachable(state: Coord): Collection<Coord> {
-        return state.neighbours().filter { it !in blocked }.filter { it in rect }
+        return state.neighbours().filter { it in rect }.filter { it !in blocked }
     }
 
     override fun getMoveCost(from: Coord, to: Coord): Int {
@@ -40,7 +40,7 @@ class Day18Problem : DailyProblem<String>() {
     }
 
     fun solveForSteps(steps: Int): Pair<Int, List<Coord>> {
-        val solver = RAMRun(data.take(steps), Rect(Coord(0, 0), Coord(size, size)), Coord(size, size))
+        val solver = RAMRun(data.take(steps).toSet(), Rect(Coord(0, 0), Coord(size, size)), Coord(size, size))
         val res = solver.solve(Coord(0, 0))
         return res
     }
@@ -75,5 +75,5 @@ val day18Problem = Day18Problem()
 @OptIn(ExperimentalTime::class)
 fun main() {
     day18Problem.testData = false
-    day18Problem.runBoth(1)
+    day18Problem.runBoth(20)
 }
