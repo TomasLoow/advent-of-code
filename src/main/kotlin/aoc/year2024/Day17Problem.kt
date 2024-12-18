@@ -1,11 +1,8 @@
 package aoc.year2024
 
 import DailyProblem
-import aoc.utils.emptyMutableSet
 import aoc.utils.parseOneLineOfSeparated
 import aoc.utils.parseTwoBlocks
-import kotlin.math.pow
-import kotlin.math.truncate
 import kotlin.time.ExperimentalTime
 
 data class Register(var a: Long = 0L, var b: Long = 0L, var c: Long = 0L)
@@ -69,6 +66,7 @@ class Day17Problem : DailyProblem<String>() {
                         state.pointer = operand
                         continue
                     }
+
                     4 -> state.registers.b = state.registers.b xor state.registers.c
                     5 -> add((combo(state, operand) and 7).toInt())
                     6 -> state.registers.b = state.registers.a.shr(combo(state, operand).toInt())
@@ -92,33 +90,33 @@ class Day17Problem : DailyProblem<String>() {
     override fun part2(): String {
         /*
         Based on inspecting the input files, Only the last 9 bit affect the yielded value
-        So we can Construct the quine by starting with three digits that generate the first int of the program
-        and then try to add digits in front of them so the generated output matches more and more digits.
+        So we can Construct the quine by starting with a digit that generate the last int of the program
+        and then in a DFS try to add digits after them so the generated output matches more and more
+        digits of the suffix of the program.
         */
+        val stack: MutableList<ThreeBitWordList> = (0..7).filter { runForA(it.toLong()).first() == program.last() }
+            .map { listOf(it) }
+            .toMutableList()
 
-        val allTriples = (0..511).map {
-            listOf(it.shr(6), (it.shr(3)) and 7, it and 7)
-        }
-        val candidatePathsStack: MutableList<ThreeBitWordList> = allTriples.map { it }.toMutableList()
-        candidatePathsStack.removeIf { runThreeBitWordList(it).first() != program.first() }
-        val sols = emptyMutableSet<ThreeBitWordList>()
-        while (candidatePathsStack.isNotEmpty()) {
-            val candidate = candidatePathsStack.removeFirst()
-            if (candidate.size >= program.size ) continue
-            val expectedCorrectOutputLen = candidate.size - 2
+        var sol: ThreeBitWordList? = null
+        while (stack.isNotEmpty()) {
+            val candidate = stack.removeFirst()
+            val size = candidate.size
+            val new = mutableListOf<ThreeBitWordList>()
             for (d in (0..7)) {
-                val newCandidate = buildList { add(d); addAll(candidate) }
+                val newCandidate = candidate + d
                 val out = runThreeBitWordList(newCandidate)
-                if (out.take(expectedCorrectOutputLen) == program.take(expectedCorrectOutputLen)) {
-                    candidatePathsStack.add(newCandidate)
+                if (out.takeLast(size) == program.takeLast(size)) {
+                    new.add(newCandidate)
                     if (out == program) {
-                        sols.add(newCandidate)
+                        sol = newCandidate
                         break
                     }
                 }
             }
+            new.reversed().forEach { stack.add(it) }  // reverse to ensure we visit numbers in ascending order.
         }
-        return sols.map { triBitWordListToLong(it) }.minOf { it }.toString()
+        return triBitWordListToLong(sol!!).toString()
     }
 
     /**
@@ -131,7 +129,7 @@ class Day17Problem : DailyProblem<String>() {
      * @return A single long integer created by interpreting the input list as a base-8 number.
      */
     private fun triBitWordListToLong(listOf: ThreeBitWordList): Long =
-        listOf.fold(0L) { acc: Long, i: Int ->  8L * acc + i }
+        listOf.fold(0L) { acc: Long, i: Int -> 8L * acc + i }
 }
 
 
