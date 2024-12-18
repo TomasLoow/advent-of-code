@@ -15,7 +15,7 @@ enum class Axis2D {
 
 typealias Vector = Pair<Int, Int>
 
-operator fun Vector.plus(v2:Vector) = Pair(first + v2.first, second + v2.second)
+operator fun Vector.plus(v2: Vector) = Pair(first + v2.first, second + v2.second)
 operator fun Vector.times(factor: Int) = Pair(first * factor, second * factor)
 operator fun Int.times(pair: Vector) = Pair(pair.first * this, pair.second * this)
 
@@ -71,6 +71,7 @@ enum class Direction {
             DOWNLEFT -> 'L'
         }
     }
+
     companion object {
         val cartesian get() = listOf(UP, RIGHT, DOWN, LEFT)
         val diagonal get() = listOf(UPRIGHT, DOWNRIGHT, DOWNLEFT, UPLEFT)
@@ -179,7 +180,7 @@ data class Coord(val x: Int, val y: Int) {
         }
     }
 
-    fun toPair(): Pair<Int,Int> = Pair(x, y)
+    fun toPair(): Pair<Int, Int> = Pair(x, y)
 
     companion object {
         val origin = Coord(0, 0)
@@ -200,6 +201,16 @@ data class Rect(val topLeft: Coord, val bottomRight: Coord) {
             return bottomRight.y - topLeft.y + 1
         }
 
+    val topRight: Coord
+        get() {
+            return Coord(bottomRight.x, topLeft.y)
+        }
+
+    val bottomLeft: Coord
+        get() {
+            return Coord(topLeft.x, bottomRight.y)
+        }
+
     val xRange: IntRange
         get() {
             return (topLeft.x..bottomRight.x)
@@ -214,18 +225,19 @@ data class Rect(val topLeft: Coord, val bottomRight: Coord) {
         return point.x in xRange && point.y in yRange
     }
 
-    companion object {
-        fun boundingCoords(points: Collection<Coord>): Rect {
-            var minX = Int.MAX_VALUE
-            var minY = Int.MAX_VALUE
-            var maxX = Int.MIN_VALUE
-            var maxY = Int.MIN_VALUE
 
-            points.forEach { (x, y) ->
-                minX = min(minX, x)
-                minY = min(minY, y)
-                maxX = max(maxX, x)
-                maxY = max(maxY, y)
+    companion object {
+        fun bounding(points: Collection<Coord>): Rect {
+            data class Acc(val minX: Int, val minY: Int, val maxX: Int, val maxY: Int)
+            val (minX, minY, maxX, maxY) = points.fold(
+                Acc(minX = Int.MAX_VALUE, minY = Int.MAX_VALUE, maxX = Int.MIN_VALUE, maxY = Int.MIN_VALUE)
+            ) { acc: Acc, coord: Coord ->
+                Acc(
+                    minX = min(coord.x, acc.minX),
+                    minY = min(coord.y, acc.minY),
+                    maxX = max(coord.x, acc.maxX),
+                    maxY = max(coord.y, acc.maxY)
+                )
             }
             return Rect(Coord(minX, minY), Coord(maxX, maxY))
         }
