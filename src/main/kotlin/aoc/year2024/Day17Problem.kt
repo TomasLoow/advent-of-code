@@ -99,7 +99,6 @@ class Day17Problem : DailyProblem<String>() {
         val allTriples = (0..511).map {
             listOf(it.shr(6), (it.shr(3)) and 7, it and 7)
         }
-        /** TODO Change this to a DFS instead of BFS search */
         val candidatePathsStack: MutableList<ThreeBitWordList> = allTriples.map { it }.toMutableList()
         candidatePathsStack.removeIf { runThreeBitWordList(it).first() != program.first() }
         val sols = emptyMutableSet<ThreeBitWordList>()
