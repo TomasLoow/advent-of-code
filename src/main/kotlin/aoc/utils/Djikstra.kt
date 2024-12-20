@@ -2,17 +2,31 @@ package aoc.utils
 
 import java.util.*
 
+data class DjikstraResult<S>(val costs: MutableMap<S, Int>, val cameFrom: Map<S, S>)
+
 abstract class Djikstra<State>(val goal:State) {
     var steps = 0
 
     abstract fun reachable(state: State): Collection<State>
     abstract fun getMoveCost(from: State, to: State): Int
 
-    fun solve(start: State): MutableMap<State, Int> {
+    fun solve(start: State): DjikstraResult<State> {
         return solve(listOf(start))
     }
 
-    fun solve(startStates: List<State>): MutableMap<State, Int> {
+    fun reconstructPathTo(cameFrom: MutableMap<State, State>, goal: State): List<State> {
+        return buildList {
+            add(goal)
+            var s = goal
+            while (s in cameFrom) {
+                s = cameFrom[s]!!
+                add(s)
+            }
+        }.reversed()
+    }
+
+
+    fun solve(startStates: List<State>): DjikstraResult<State> {
         steps = 0
         val openSet = emptyMutableSet<State>()
         val cameFrom: MutableMap<State, State> = HashMap(4096)
@@ -41,6 +55,6 @@ abstract class Djikstra<State>(val goal:State) {
                 }
             }
         }
-        return cheapestPathScoreMap
+        return DjikstraResult(costs = cheapestPathScoreMap, cameFrom = cameFrom)
     }
 }

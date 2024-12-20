@@ -39,7 +39,7 @@ class Day20Problem : DailyProblem<Int>() {
 
         // Calculate best path to each point from both directions
         val fwdSolver = RaceDjik(initialMap, goal)
-        costToReachCoord = fwdSolver.solve(start)
+        costToReachCoord = fwdSolver.solve(start).costs
 
         bestCost = costToReachCoord[goal]!!
     }
