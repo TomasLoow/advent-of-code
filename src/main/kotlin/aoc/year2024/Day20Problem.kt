@@ -28,8 +28,7 @@ class Day20Problem : DailyProblem<Int>() {
     private lateinit var initialMap: Array2D<Boolean>
     private lateinit var start: Coord
     private lateinit var goal: Coord
-    private lateinit var fwdCosts: Map<Coord, Int>
-    private lateinit var bwdCosts: Map<Coord, Int>
+    private lateinit var costToReachCoord: Map<Coord, Int>
     private var bestCost = 0
 
     override fun commonParts() {
@@ -40,12 +39,9 @@ class Day20Problem : DailyProblem<Int>() {
 
         // Calculate best path to each point from both directions
         val fwdSolver = RaceDjik(initialMap, goal)
-        val bwdSolver = RaceDjik(initialMap, goal)
-        bwdCosts = bwdSolver.solve(goal)
-        fwdCosts = fwdSolver.solve(start)
+        costToReachCoord = fwdSolver.solve(start)
 
-        bestCost = fwdCosts[goal]!!
-        assert(bestCost == bwdCosts[start]) // Sanity check
+        bestCost = costToReachCoord[goal]!!
     }
 
 
@@ -61,7 +57,7 @@ class Day20Problem : DailyProblem<Int>() {
 
         val q = possibleGlitches.sumOf { glitches ->
             glitches.allUnorderedPairs().count { (n1, n2) ->
-                ((fwdCosts[n1]!! + bwdCosts[n2]!! + 2) <= bestCost - limit) || ((bwdCosts[n1]!! + fwdCosts[n2]!! + 2) <= bestCost - limit)
+                (costToReachCoord[n1]!! + 2 <= costToReachCoord[n2]!! - limit) || (costToReachCoord[n2]!! + 2 <= costToReachCoord[n1]!! - limit)
             }
         }
 
@@ -71,15 +67,13 @@ class Day20Problem : DailyProblem<Int>() {
 
     override fun part2(): Int {
         val limit = if (testData) 50 else 100
-        val openFloors = fwdCosts.keys
+        val openFloors = costToReachCoord.keys
         val countCheats = openFloors
-            .flatMap { floor ->
-                openFloors
-                    .filter { other -> other.manhattanDistanceTo(floor) <= 20 }
-                    .map { other -> fwdCosts[floor]!! + bwdCosts[other]!! + other.manhattanDistanceTo(floor) }
-                    .filter { it <= bestCost - limit }
+            .sumOf { floor ->
+                initialMap.coordsWithin(floor, 20).asSequence().filter { !initialMap[it] }
+                    .count { other -> costToReachCoord[floor]!! + other.manhattanDistanceTo(floor) <=  costToReachCoord[other]!! - limit }
             }
-        return countCheats.size
+        return countCheats
     }
 }
 
@@ -89,5 +83,5 @@ val day20Problem = Day20Problem()
 @OptIn(ExperimentalTime::class)
 fun main() {
     day20Problem.testData = false
-    day20Problem.runBoth(20)
+    day20Problem.runBoth(100)
 }

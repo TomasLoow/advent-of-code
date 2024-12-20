@@ -6,7 +6,7 @@ import java.io.FileWriter
 import kotlin.math.absoluteValue
 
 @Suppress("UNCHECKED_CAST")
-class Array2D<T: Any> {
+class Array2D<T : Any> {
 
     val height: Int
     val width: Int
@@ -39,7 +39,7 @@ class Array2D<T: Any> {
         this.rect = Rect(Coord(0, 0), Coord(width - 1, height - 1))
 
 
-        this.data = Array(capacity) { initital as Any }
+        this.data = Array(capacity) { initital }
     }
 
     constructor(width: Int, height: Int, f: (Coord) -> T) {
@@ -48,7 +48,7 @@ class Array2D<T: Any> {
         val capacity = width * height
 
         this.rect = Rect(Coord(0, 0), Coord(width - 1, height - 1))
-        this.data = Array(capacity) { i -> f(idx2c(i)) as Any }
+        this.data = Array(capacity) { i -> f(idx2c(i)) }
     }
 
 
@@ -183,11 +183,11 @@ class Array2D<T: Any> {
         return neighbourCoords(c, diagonal).associateWith { coordinate -> get(coordinate) }
     }
 
-    fun <R: Any> map(function: (T) -> R): Array2D<R> {
+    fun <R : Any> map(function: (T) -> R): Array2D<R> {
         return Array2D(data.map { function(it as T) }, width, height)
     }
 
-    fun <R: Any> mapIndexed(function: (Coord, T) -> R): Array2D<R> {
+    fun <R : Any> mapIndexed(function: (Coord, T) -> R): Array2D<R> {
         return Array2D(allCoords.zip(data).map { (c, v) -> function(c, v as T) }, width, height)
     }
 
@@ -221,11 +221,11 @@ class Array2D<T: Any> {
 
     fun filterToList(function: (Coord, T) -> Boolean): List<Pair<Coord, T>> {
         return mapAndFilterToListByNotNull { c, v ->
-            if (function(c,v)) Pair(c,v) else null
+            if (function(c, v)) Pair(c, v) else null
         }
     }
 
-    fun forEach(block: (Coord, T) -> Any): Unit {
+    fun forEach(block: (Coord, T) -> Any) {
         data.forEachIndexed { index, value ->
             block(idx2c(index), value as T)
         }
@@ -301,6 +301,21 @@ class Array2D<T: Any> {
         bw.close()
     }
 
+    /**
+     * Returns the coordinates within a specified Manhattan distance from a given coordinate.
+     *
+     * @param c Center coordinate.
+     * @param d Maximum Manhattan distance.
+     * @return List of coordinates within the distance.
+     */
+    fun coordsWithin(c: Coord, d: Int): List<Coord> {
+        return (c.x - d..c.x + d).flatMap { x ->
+            (c.y - d..c.y + d).map { y ->
+                Coord(x, y)
+            }.filter { contains(it) && it.manhattanDistanceTo(c) <= d }
+        }
+    }
+
     private val IDX_STEPS_WITH_DIAG: Array<Int>
         get() = arrayOf(
             width,
@@ -323,7 +338,7 @@ class Array2D<T: Any> {
 
     companion object {
 
-        fun <T: Any> parseFromLines(string: String, charParser: (Char) -> T): Array2D<T> {
+        fun <T : Any> parseFromLines(string: String, charParser: (Char) -> T): Array2D<T> {
             val lines = string.nonEmptyLines()
             return Array2D(lines.map { line ->
                 line.map(charParser)
@@ -336,7 +351,7 @@ class Array2D<T: Any> {
     }
 
 
-    open class Cursor<T: Any>(private val map: Array2D<T>, coord: Coord) {
+    open class Cursor<T : Any>(private val map: Array2D<T>, coord: Coord) {
         protected var x: Int
         protected var y: Int
         protected var idx: Int
@@ -472,7 +487,7 @@ class Array2D<T: Any> {
         }
     }
 
-    class WrappingCursor<T: Any>(private val map: Array2D<T>, coord: Coord) : Cursor<T>(map, coord) {
+    class WrappingCursor<T : Any>(private val map: Array2D<T>, coord: Coord) : Cursor<T>(map, coord) {
         override fun moveRight(): Boolean {
             if (x == w - 1) {
                 x = 0

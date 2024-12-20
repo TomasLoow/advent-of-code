@@ -299,4 +299,15 @@ class Array2DTest {
         assertEquals(c2.prev, Coord(1, 2))
 
     }
+
+    @Test
+    fun testCoordWithin() {
+
+        val arr = Array2D(10, 10, 0)
+
+        assertEquals(setOf(Coord(0,0), Coord(0,1), Coord(1,0)), arr.coordsWithin(Coord(0,0), 1).toSet())
+        assertEquals(13, arr.coordsWithin(Coord(4,4), 2).size)
+        assertEquals(100, arr.coordsWithin(Coord(7,4), 20).size)
+    }
+
 }
