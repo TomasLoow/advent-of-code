@@ -309,10 +309,16 @@ class Array2D<T : Any> {
      * @return List of coordinates within the distance.
      */
     fun coordsWithin(c: Coord, d: Int): List<Coord> {
-        return (c.x - d..c.x + d).flatMap { x ->
-            (c.y - d..c.y + d).map { y ->
-                Coord(x, y)
-            }.filter { contains(it) && it.manhattanDistanceTo(c) <= d }
+        return buildList {
+            for (dx in -d..d) {
+                val remainingDist = d - kotlin.math.abs(dx)
+                for (dy in -remainingDist..remainingDist) {
+                    val new = Coord(c.x + dx, c.y + dy)
+                    if (new in this@Array2D) {
+                        add(new)
+                    }
+                }
+            }
         }
     }
 
