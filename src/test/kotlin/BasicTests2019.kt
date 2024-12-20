@@ -11,4 +11,13 @@ class BasicTests2019 {
         assertEquals(33583+654+2+2, problem.part1())
         assertEquals(50346+966+2+2, problem.part2())
     }
+
+    @Test
+    fun testDay3() {
+        val problem = aoc.year2019.Day3Problem()
+        problem.testData = true
+        problem.commonParts()
+        assertEquals(159, problem.part1())
+        assertEquals(610, problem.part2())
+    }
 }
