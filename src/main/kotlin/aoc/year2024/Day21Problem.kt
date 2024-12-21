@@ -4,192 +4,327 @@ import DailyProblem
 import aoc.utils.*
 import kotlin.time.ExperimentalTime
 
-data class NumpadState<Out>(val pos: Coord, val yielded: List<Out>) {
+data class NumButton(val i: Int?) {
+    fun isA(): Boolean = i == null
 
+    companion object {
+        val a = NumButton(null)
+    }
 }
 
-data class NumPress(val i: Int?) {
-    fun isEnter(): Boolean = i == null
-}
-
-data class DirPress(val dir: Direction?) {
+data class DirButton(val dir: Direction?) {
     fun isEnter(): Boolean = dir == null
+
+    companion object {
+        val enter = DirButton(null)
+    }
+
+    fun toChar(): Char {
+        return if (isEnter()) 'A'
+        else dir!!.toArrowChar()
+    }
+
+}
+
+
+data class Action(val dir: Direction?) {
+    fun isPress(): Boolean = dir == null
+
+    companion object {
+        val press = Action(null)
+    }
 }
 
 abstract class Pad<A> {
-    abstract fun press(press: DirPress): Pair<Pad<A>,A?>
-}
+    abstract val padMap: MutableMap<Coord, A>
+    abstract val start: A
+    abstract val void: Coord
+    abstract val rect: Rect
+    protected val cache1 = emptyMutableMap<Pair<A, A>, List<Action>>()
+    protected val cache2 = emptyMutableMap<String, List<Action>>()
 
-data class NumPad(val pos:Coord): Pad<NumPress>() {
-    val rect = numPadRect
-    val void = numPadVoid
-    val padMap = numPad
 
-     override fun press(press: DirPress): Pair<NumPad, NumPress?> {
-        if (press.isEnter()) {
-            val r = padMap[pos]!!
-            return this to r
+    abstract fun parseA(c: Char): A
+    abstract fun renderA(l: A): Char
+    open fun parseAs(s: String): List<A> = s.map { parseA(it) }
+    open fun renderAs(l: List<A>): String = l.joinToString("") { renderA(it).toString() }
+
+    /**
+     * Returns the shortest paths from `from` to `to`
+     */
+    open fun solve(from: A, to: A): List<Action> {
+        if ((from to to) in cache1) return cache1[(from to to)]!!
+        val posStart = padMap.filterValues { it == from }.keys.first()
+        val posEnd = padMap.filterValues { it == to }.keys.first()
+        val stepsToTake = (posEnd - posStart).decomposeDirs()
+        var res: List<Action>?
+        if (stepsToTake.isEmpty()) res = listOf()
+        else if (stepsToTake.size == 1) res = buildList {
+            val count = stepsToTake.values.first()
+            val dir = stepsToTake.keys.first()
+            repeat(count) { add(Action(dir)) }
         }
-        val newPos = pos + press.dir!!
-        if (newPos !in rect || newPos == void) throw OutOfKeyPadError()
-        return copy(pos=newPos) to null
-    }
-}
+        else {
+            val dirH = stepsToTake.toList().first { it.first == Direction.RIGHT || it.first == Direction.LEFT }.first
+            val dirV = stepsToTake.toList().first { it.first == Direction.UP || it.first == Direction.DOWN }.first
+            val countH = stepsToTake[dirH]!!
+            val countV = stepsToTake[dirV]!!
+            val verticalFirst = (1..countV).map { Action(dirV) } + (1..countH).map { Action(dirH) }
+            val horizontalFirst = (1..countH).map { Action(dirH) } + (1..countV).map { Action(dirV) }
 
-data class DirPad(val pos:Coord): Pad<DirPress>() {
-    val rect = dirPadRect
-    val void = dirPadVoid
-    val padMap = dirPad
-
-    override fun press(press: DirPress): Pair<DirPad,DirPress?> {
-        if (press.isEnter()) {
-            val r = padMap[pos]!!
-            return this to r
+            res = if (void == Coord(posStart.x, posEnd.y)) {
+                horizontalFirst
+            } else if (void == Coord(posEnd.x, posStart.y)) {
+                verticalFirst
+            } else {
+                if (dirH == Direction.LEFT && dirV == Direction.DOWN) {
+                    horizontalFirst
+                } else if (dirH == Direction.RIGHT && dirV == Direction.UP) {
+                    verticalFirst
+                } else if (dirH == Direction.LEFT && dirV == Direction.UP) {
+                    horizontalFirst
+                } else {
+                    verticalFirst
+                }
+            }
         }
-        val newPos = pos + press.dir!!
-        if (newPos !in rect || newPos == void) throw OutOfKeyPadError()
-        return copy(pos=newPos) to null
+        if (res == listOf(Action(Direction.DOWN), Action(Direction.LEFT), Action(Direction.LEFT))) {
+            res = listOf(Action(Direction.LEFT), Action(Direction.DOWN), Action(Direction.LEFT))
+        }
+
+        cache1[(from to to)] = res
+        return res
     }
+
+    fun solve(s: String): List<Action> {
+        val points = listOf(start) + parseAs(s)
+        return solve(points)
+    }
+
+    fun solve(points: List<A>): List<Action> {
+        val ps = renderAs(points)
+        if (ps in cache2) {
+            return cache2[ps]!!
+        }
+
+        if (points.size == 1) return emptyList()
+        val firstParts = solve(points[0], points[1])
+        val restParts = solve(points.drop(1))
+        val res = firstParts + listOf(Action.press) + restParts
+        cache2[ps] = res
+        return res
+    }
+
 }
 
+data class NumPad(val pos: Coord) : Pad<NumButton>() {
+    override val rect = numPadRect
+    override val start = NumButton.a
+
+    override fun parseA(c: Char): NumButton {
+        return if (c == 'A') NumButton.a else NumButton(c.toString().toInt())
+    }
+
+    override fun renderA(l: NumButton): Char {
+        return if (l.isA()) 'A' else l.i.toString()[0]
+    }
+
+    override val void = numPadVoid
+    override val padMap = numPad
+}
+
+data class DirPad(val pos: Coord) : Pad<DirButton>() {
+    override val rect = dirPadRect
+    override val void = dirPadVoid
+    override val padMap = dirPad
+    override val start = DirButton.enter
+
+    override fun parseA(c: Char): DirButton {
+        return if (c == 'A') DirButton.enter else DirButton(parseDirectionFromArrow(c))
+    }
+
+    override fun renderA(l: DirButton): Char {
+        return if (l.isEnter()) 'A' else l.dir!!.toArrowChar()
+    }
+
+    private val moveMap = buildMap {
+        put('A' to '^', "<")
+        put('A' to '>', "v")
+        put('A' to 'v', "<v")
+        put('A' to '<', "v<<")
+        put('A' to 'A', "")
+
+        put('^' to 'A', ">")
+        put('^' to '^', "")
+        put('^' to '<', "v<")
+        put('^' to 'v', "v")
+        put('^' to '>', "v>")
+
+        put('>' to '>', "")
+        put('>' to 'A', "^")
+        put('>' to '^', "<^")
+        put('>' to 'v', "<")
+        put('>' to '<', "<<")
+
+        put('v' to 'v', "")
+        put('v' to 'A', "^>")
+        put('v' to '>', ">")
+        put('v' to '^', "^")
+        put('v' to '<', "<")
+
+        put('<' to '<', "")
+        put('<' to 'A', ">>^")
+        put('<' to '^', ">^")
+        put('<' to 'v', ">")
+        put('<' to '>', ">>")
+    }
+    override fun solve(from: DirButton, to: DirButton): List<Action> {
+        return parseActions(moveMap[from.toChar() to to.toChar()]!!)
+    }
+
+}
 
 
 /*
-         +---+---+
-         | ^ | A |
-     +---+---+---+
-     | < | v | > |
-     +---+---+---+
+    +---+---+
+    | ^ | A |
++---+---+---+
+| < | v | > |
++---+---+---+
  */
 val dirPad = mutableMapOf(
-    Coord(1, 0) to DirPress(Direction.UP),
-    Coord(2, 0) to DirPress(null),
-    Coord(0, 1) to DirPress(Direction.LEFT),
-    Coord(1, 1) to DirPress(Direction.DOWN),
-    Coord(2, 1) to DirPress(Direction.RIGHT),
+    Coord(1, 0) to DirButton(Direction.UP),
+    Coord(2, 0) to DirButton.enter,
+    Coord(0, 1) to DirButton(Direction.LEFT),
+    Coord(1, 1) to DirButton(Direction.DOWN),
+    Coord(2, 1) to DirButton(Direction.RIGHT),
 )
 val dirPadStart = dirPad.toList().first { it.second.isEnter() }.first
 val dirPadVoid = Coord(0, 0)
 val dirPadRect = Rect.bounding(dirPad.keys)
 
 val numPad = mutableMapOf(
-    Coord(0, 0) to NumPress(7),
-    Coord(1, 0) to NumPress(8),
-    Coord(2, 0) to NumPress(9),
-    Coord(0, 1) to NumPress(4),
-    Coord(1, 1) to NumPress(5),
-    Coord(2, 1) to NumPress(6),
-    Coord(0, 2) to NumPress(1),
-    Coord(1, 2) to NumPress(2),
-    Coord(2, 2) to NumPress(3),
-    Coord(1, 3) to NumPress(0),
-    Coord(2, 3) to NumPress(null),
+    Coord(0, 0) to NumButton(7),
+    Coord(1, 0) to NumButton(8),
+    Coord(2, 0) to NumButton(9),
+    Coord(0, 1) to NumButton(4),
+    Coord(1, 1) to NumButton(5),
+    Coord(2, 1) to NumButton(6),
+    Coord(0, 2) to NumButton(1),
+    Coord(1, 2) to NumButton(2),
+    Coord(2, 2) to NumButton(3),
+    Coord(1, 3) to NumButton(0),
+    Coord(2, 3) to NumButton.a,
 )
 val numPadStart = Coord(2, 3)
 val numPadVoid = Coord(0, 3)
 val numPadRect = Rect.bounding(numPad.keys)
 
-data class FullState(val dp1: DirPad, val dp2: DirPad, val np: NumPad, val yielded: List<NumPress>) {
-    fun press(userInput:DirPress): FullState {
-        var newDp1 = dp1
-        var newDp2 = dp2
-        var newNp = np
-        var newYielded: List<NumPress> = yielded
-        val dp1Res = dp1.press(userInput)
-        newDp1 = dp1Res.first
-        val inputForDp2 = dp1Res.second
-        if (inputForDp2 != null) {
-            val dp2Res = dp2.press(dp1Res.second!!)
-            newDp2 = dp2Res.first
-            val inputForNp = dp2Res.second
-            if (inputForNp != null) {
-                val npRes = np.press(dp2Res.second!!)
-                newNp = npRes.first
-                if (npRes.second != null) {
-                    newYielded = newYielded + npRes.second!!
-                }
-            }
-        }
-        return FullState(newDp1, newDp2, newNp, newYielded)
-    }
-}
-
-class PadStar(goal: List<NumPress>): AStar<FullState>(FullState(DirPad(dirPadStart), DirPad(dirPadStart), NumPad(numPadStart), goal)) {
-
-    override fun isGoal(state: FullState): Boolean {
-        return state.yielded == goal.yielded
-    }
-
-    override fun heuristic(state: FullState): Int {
-        return 0
-    }
-
-    override fun reachable(state: FullState): Collection<FullState> {
-        val allPressess = Direction.cartesian.map { DirPress(it) } + DirPress(null)
-        return buildList {
-            allPressess.forEach {
-                try {
-                    val next = state.press(it)
-                    if (next.yielded == goal.yielded.take(next.yielded.size)) add(next)
-                } catch (e: OutOfKeyPadError) {
-
-                }
-            }
-        }
-    }
-
-    override fun getMoveCost(from: FullState, to: FullState): Int {
-        return 1
-    }
-
-}
-
-class Day21Problem : DailyProblem<Int>() {
+class Day21Problem : DailyProblem<Long>() {
 
     override val number = 21
     override val year = 2024
     override val name = "Keypad Conundrum"
 
-    private lateinit var data: List<List<NumPress>>
-
-    fun parseActionLine(line: String): List<NumPress> {
-        return line.map { c -> if (c == 'A') NumPress(null) else NumPress(c.toString().toInt()) }
-    }
+    private lateinit var goalNumbers: List<String>
 
     override fun commonParts() {
-        data = getInputText().lines().map { line ->
-            parseActionLine(line)
+        goalNumbers = getInputText().nonEmptyLines()
+    }
+
+    override fun part1(): Long {
+
+        return goalNumbers.sumOf { line ->
+            val target = solveNumPad(line)
+            val x = line.filter { it != 'A' }.toInt()
+            val sol = solveN(target, 2)
+            x * sol
         }
     }
 
-    fun solve(code: String) : Int{
-        val goal = code.map { c ->
-            if (c =='A') NumPress(null) else NumPress(c.toString().toInt())
+    override fun part2(): Long {
+        return goalNumbers.sumOf { line ->
+            val target = solveNumPad(line)
+            val x = line.filter { it != 'A' }.toInt()
+            val sol = solveN(target, 25)
+            x * sol
         }
-        val codeVal = code.filter { it.isDigit() }.toInt()
-        var solLen = 0
-        var npPos = numPadStart
-        for (n in goal) {
-            val solver = PadStar(listOf(n))
-            val s = solver.solve(FullState(DirPad(dirPadStart), DirPad(dirPadStart), NumPad(npPos), listOf()))
-            solLen += s.first
-            npPos = s.second.last().np.pos
-        }
-        return solLen*codeVal
-
     }
 
-    override fun part1(): Int {
-        return getInputText().nonEmptyLines().map { line -> solve(line) }.sum()
+    private fun solveNumPad(first: String): String {
+        val np = NumPad(numPadStart)
+        val p: List<Action> = np.solve(first)
+        return p.renderActions()
+    }
+
+    private fun solveN(code: String, times: Int = 25): Long {
+
+        val goal = parseDirButtons(code)
+        val divided = splitDirPresses(goal)
+        assert(divided.joinToString("") == goal.renderDBs())
+        val dp = DirPad(dirPadStart)
+        var chunkCounts = buildMap {
+            divided.distinct().forEach { chunk ->
+                put(chunk, divided.count { it == chunk }.toLong())
+            }
+        }
+
+        repeat(times) {
+            // if (idx > 1 ) dp.special = true
+            val r = chunkCounts.map { (chunk, amount) ->
+                dp.solve(chunk).renderActions() to amount
+            }
+
+            chunkCounts = buildMap {
+                r.forEach { (chunk, amount) ->
+                    splitDirPresses(parseDirButtons(chunk)).forEach { newChunk ->
+                        if (newChunk in this) {
+                            this[newChunk] = this[newChunk]!! + amount
+                        } else {
+                            this[newChunk] = amount
+                        }
+                    }
+                }
+            }
+        }
+        return (chunkCounts.toList().sumOf { (st, c) -> c * st.length.toLong() })
     }
 
 
-    override fun part2(): Int {
-        return 1
+    private fun splitDirPresses(points: List<DirButton>): List<String> {
+        val sb = StringBuilder(points.renderDBs())
+
+        return buildList {
+            while (sb.isNotEmpty()) {
+                val pre = sb.takeWhile { it != 'A' }
+                sb.delete(0, pre.length + 1)
+                add(pre.toString() + "A")
+            }
+        }
     }
 }
 
-class OutOfKeyPadError : Throwable()
+private fun List<DirButton>.renderDBs(): String {
+    return this.map { if (it.isEnter()) 'A' else it.dir!!.toArrowChar() }.joinToString("")
+}
+
+fun List<Action>.renderActions(): String {
+    return this.map { if (it.isPress()) 'A' else it.dir!!.toArrowChar() }.joinToString("")
+}
+
+
+private fun parseActions(code: String): List<Action> {
+    return code.map { c ->
+        if (c == 'A') Action.press else Action(parseDirectionFromArrow(c))
+    }
+}
+
+private fun parseDirButtons(code: String): List<DirButton> {
+    return code.map { c ->
+        if (c == 'A') DirButton.enter else DirButton(parseDirectionFromArrow(c))
+    }
+}
+
 
 val day21Problem = Day21Problem()
 
