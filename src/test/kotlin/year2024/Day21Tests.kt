@@ -1,70 +1,85 @@
 package year2024
 
-import aoc.utils.Coord
-import aoc.utils.Rect
-import aoc.utils.parseDirectionFromArrow
 import aoc.year2024.*
-import org.junit.jupiter.api.Assertions.assertTrue
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
 class Day21Tests {
-
-
     @Test
-    fun `test FullState`() {
-        val presses = "<vA<AA>>^AvAA<^A>A<v<A>>^AvA^A<vA>^A<v<A>^A>AAvA^A<v<A>A>^AAAvA<^A>A".map { c ->
-            if (c == 'A') DirPress(
-                null
-            ) else DirPress(parseDirectionFromArrow(c))
-        }
-        val fs = FullState(DirPad(dirPadStart), DirPad(dirPadStart), NumPad(numPadStart), emptyList())
-        val end = presses.fold(fs) { acc, press ->
-            acc.press(press)
-        }
-        println(end)
+    fun `test 375A`() {
+        val np = NumPad(numPadStart)
+        val lv1 = np.solve("375A").renderActions()
+        val dp = DirPad(dirPadStart)
+        val lv2 = dp.solve(lv1).renderActions()
+        val lv3 = dp.solve(lv2).renderActions()
+        assertEquals(70, lv3.length)
     }
 
     @Test
-    fun `test FullState thows if first OOB`() {
-        val presses = "<<<<<".map { c ->
-            if (c == 'A') DirPress(
-                null
-            ) else DirPress(parseDirectionFromArrow(c))
-        }
-        val fs = FullState(DirPad(dirPadStart), DirPad(dirPadStart), NumPad(numPadStart), emptyList())
-        try {
-            presses.fold(fs) { acc, press ->
-                acc.press(press)
-            }
-            assertTrue(false)
-        } catch (e: OutOfKeyPadError) {
-
-        }
+    fun `test 2`() {
+        val np = NumPad(numPadStart)
+        val lv1 = np.solve("2").renderActions()
+        assertEquals("<^A", lv1)
+        val dp = DirPad(dirPadStart)
+        val lv2 = dp.solve(lv1).renderActions()
+        assertEquals("v<<A>^A>A", lv2)
+        val lv3 = dp.solve(lv2).renderActions()
+        assertEquals("<vA<AA>>^AvA<^A>AvA^A", lv3)
     }
 
     @Test
-    fun `test FullState thows if second OOB`() {
-        val presses = "v<<AAAAAAA".map { c ->
-            if (c == 'A') DirPress(
-                null
-            ) else DirPress(parseDirectionFromArrow(c))
-        }
-        val fs = FullState(DirPad(dirPadStart), DirPad(dirPadStart), NumPad(numPadStart), emptyList())
-        try {
-            presses.fold(fs) { acc, press ->
-                acc.press(press)
-            }
-            assertTrue(false)
-        } catch (e: OutOfKeyPadError) {
-
-        }
+    fun `test 080A`() {
+        val np = NumPad(numPadStart)
+        val lv1 = np.solve("080A").renderActions()
+        val dp = DirPad(dirPadStart)
+        val lv2 = dp.solve(lv1).renderActions()
+        val lv3 = dp.solve(lv2).renderActions()
+        assertEquals(60, lv3.length)
     }
 
     @Test
-    fun `test solve Part1 example`() {
-        val p = Day21Problem()
-        assertEquals(68 * 29, p.solve("029A"))
+    fun `test 894A`() {
+        val np = NumPad(numPadStart)
+        val lv1 = np.solve("894A").renderActions()
+        val dp = DirPad(dirPadStart)
+        val lv2 = dp.solve(lv1).renderActions()
+        val lv3 = dp.solve(lv2).renderActions()
+        assertEquals(78, lv3.length)
     }
 
+    @Test
+    fun `test 159A`() {
+        val np = NumPad(numPadStart)
+        val lv1 = np.solve("159A").renderActions()
+        val dp = DirPad(dirPadStart)
+        val lv2 = dp.solve(lv1).renderActions()
+        val lv3 = dp.solve(lv2).renderActions()
+        assertEquals(82, lv3.length)
+    }
+
+    @Test
+    fun `test 613A`() {
+        val np = NumPad(numPadStart)
+        val lv1 = np.solve("613A").renderActions()
+        val dp = DirPad(dirPadStart)
+        val lv2 = dp.solve(lv1).renderActions()
+        val lv3 = dp.solve(lv2).renderActions()
+        assertEquals(62, lv3.length)
+    }
+
+    @Test
+    fun `test 029A`() {
+        val np = NumPad(numPadStart)
+        val lv1 = np.solve("029A").renderActions()
+        assertEquals("<A^A^^>AvvvA", lv1)
+        val dp = DirPad(dirPadStart)
+        val lv2 = dp.solve(lv1).renderActions()
+        assertEquals("v<<A>>^A<A>A<AAv>A^A<vAAA^>A", lv2)
+        val lv3 = dp.solve(lv2).renderActions()
+        assertEquals("<vA<AA>>^AvAA<^A>Av<<A>>^AvA^Av<<A>>^AA<vA>A^A<A>Av<<A>A^>AAA<Av>A^A", lv3)
+        val lv4 = dp.solve(lv3).renderActions()
+        assertEquals(164, lv4.length)
+        val lv5 = dp.solve(lv4).renderActions()
+        assertEquals(404, lv5.length)
+    }
 }
