@@ -155,9 +155,8 @@ fun <A> ((A) -> A).iterate(init: A, steps: Int): A {
 /**
  * Replace the value at this[key] with mutator(this[key]), if key is not in the map, behave as if emptyValue was the value for this[key]
  */
-fun <K, V> MutableMap<K, V>.mutate(key: K, emptyValue: V, mutator: (V) -> V) {
-    this[key] = mutator(getOrDefault(key, emptyValue))
-}
+fun <K, V> MutableMap<K, V>.mutate(key: K, emptyValue: V, mutator: (V) -> V) =
+    if (key in this.keys) this[key] = mutator(this[key]!!) else this[key] = mutator(emptyValue)
 
 /**
  * Perform some action with the value at this[key], if it is not in the map, initialize it with
