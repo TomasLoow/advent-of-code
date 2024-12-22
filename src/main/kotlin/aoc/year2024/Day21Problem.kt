@@ -330,6 +330,6 @@ val day21Problem = Day21Problem()
 
 @OptIn(ExperimentalTime::class)
 fun main() {
-    day21Problem.testData = false
-    day21Problem.runBoth(100)
+    day21Problem.testData = true
+    day21Problem.runBoth(1)
 }
