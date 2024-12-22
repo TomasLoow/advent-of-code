@@ -38,9 +38,9 @@ class Day22Problem : DailyProblem<Long>() {
     }
 
     private fun step(it: Long): Long {
-        val step1 = ((it * 64) xor it) % 16777216L
-        val step2 = ((step1 / 32) xor step1) % 16777216L
-        return ((step2 * 2048) xor step2) % 16777216L
+        val step1 = ((it.shl(6)) xor it) and 16777215L
+        val step2 = ((step1.shr(5) xor step1)) and 16777215L
+        return ((step2.shl(11)) xor step2) and 16777215L
     }
 
 
@@ -48,8 +48,8 @@ class Day22Problem : DailyProblem<Long>() {
         (a + 10).shl(15) + (b + 10).shl(10) + (c + 10).shl(5) + d + 10
 
 
-    private fun calc2(n: Int): MutableMap<Long, Long> {
-        val map: MutableMap<Long, Long> = mutableMapOf()
+    private fun calc2(n: Int, map:MutableMap<Long,Long>) {
+        map.clear()
         val nums = precalculated[n]!!
         val digits = Array(nums.size) { nums[it] % 10 }
         val diffs = Array(digits.size - 1) { digits[it + 1] - digits[it] } // diffs[3] == digits[4]-digits[3]
@@ -57,13 +57,14 @@ class Day22Problem : DailyProblem<Long>() {
             val seq = checkSum(diffs[i - 3], diffs[i - 2], diffs[i - 1], diffs[i])
             if (seq !in map) map[seq] = digits[i + 1]
         }
-        return map
     }
 
     override fun part2(): Long {
         val scoresForSequences: MutableMap<Long, Long> = HashMap<Long, Long>(160000)
+        val map = HashMap<Long, Long>(3000)
         data.forEach { i ->
-            calc2(i).forEach { (k, v) -> scoresForSequences.mutate(k, 0) { it + v } }
+            calc2(i, map)
+            map.forEach { (k, v) -> scoresForSequences.mutate(k, 0) { it + v } }
         }
 
         return scoresForSequences.maxOf { it.value }
