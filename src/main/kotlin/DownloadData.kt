@@ -27,7 +27,7 @@ suspend fun main() {
                 dir.mkdir()
             }
 
-            for (day in 1..date) {
+            for (day in (1..date).reversed()) {
                 val fileName = "input/aoc$year/day$day.txt"
                 val file = File(fileName)
                 if (file.exists()) {
@@ -38,6 +38,7 @@ suspend fun main() {
                 val body = response.readBytes()
                 file.writeBytes(body)
                 println("$fileName downloaded.")
+                Thread.sleep(1000)
             }
         }
     }
