@@ -2,6 +2,7 @@ package aoc.year2024
 
 import DailyProblem
 import aoc.utils.allUnorderedPairs
+import aoc.utils.emptyMutableSet
 import aoc.utils.mutate
 import aoc.utils.nonEmptyLines
 import kotlin.time.ExperimentalTime
@@ -57,8 +58,12 @@ class Day23Problem : DailyProblem<String>() {
             } else {
                 for (v in pSet.toList()) {
                     val newR = rSet + v
-                    val newP = pSet.intersect(neighbors[v] ?: emptySet()).toMutableSet()
-                    val newX = xSet.intersect(neighbors[v] ?: emptySet()).toMutableSet()
+                    if (v !in neighbors) {
+                        run(newR, emptyMutableSet(), emptyMutableSet())
+                        continue
+                    }
+                    val newP = pSet.intersect(neighbors[v]!!).toMutableSet()
+                    val newX = xSet.intersect(neighbors[v]!!).toMutableSet()
                     run(newR, newP, newX)
                     pSet.remove(v)
                     xSet.add(v)
