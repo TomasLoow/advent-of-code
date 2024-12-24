@@ -1,6 +1,7 @@
 package aoc.year2024
 
 import DailyProblem
+import aoc.utils.allUnorderedPairs
 import aoc.utils.nonEmptyLines
 import aoc.utils.parseTwoBlocks
 import kotlin.time.ExperimentalTime
@@ -26,20 +27,36 @@ private sealed interface LogicGate {
     fun eval(a: Boolean, b: Boolean): Boolean
 }
 
+
+/*
+cIn─────────────────────────────────┬─┐  ┌────────────┐
+                                    │ └──►            │
+                   ┌────────────┐   │    │ outXor     ├───────────────────►
+                   │            │   │ ┌──►            │
+   ┌───────────────► firstXor   ┼─┬─┼─┘  └────────────┘
+  a┼──────┬───────►│            │ │ │
+   │      │        └────────────┘ │ │
+   │      │                       │ │    ┌────────────┐
+   │      │                       │ └────►            │
+   │      │        ┌────────────┐ │      │ andTakingC ┼─┐
+   │      │        │            │ └──────►            │ │  ┌─────────┐
+  b│      └────────► fistAnd    ├─────┐  └────────────┘ └──►         │
+   └───────────────►            │     │                    │ Or      ┼────►
+                   └────────────┘     └────────────────────►         │
+                                                           └─────────┘
+ */
 private data class FullAdder(
     val inpA: Wire,
     val inpB: Wire,
     val output: Wire,
     val carryIn: Wire,
     val carryOut: Wire,
-    val and1: LogicGate.And,
-    val xor1: LogicGate.Xor,
-    val xor2: LogicGate.Xor,
-    val and2: LogicGate.And,
-    val o: LogicGate.Or
-) {
-
-}
+    val firstAnd: LogicGate.And,
+    val firstXor: LogicGate.Xor,
+    val xorOut: LogicGate.Xor,
+    val andTakingCin: LogicGate.And,
+    val orCarryOut: LogicGate.Or
+)
 
 
 class Day24Problem : DailyProblem<String>() {
@@ -56,7 +73,7 @@ class Day24Problem : DailyProblem<String>() {
         fun parseWires(s: String): Map<Wire, Boolean> {
             return s.nonEmptyLines().map {
                 val (w, b) = it.split(": ")
-                w to (if (b == "1") true else false)
+                w to (b == "1")
             }.associate { it }
         }
 
@@ -110,45 +127,145 @@ class Day24Problem : DailyProblem<String>() {
     }
 
     override fun part2(): String {
-        for (i in (1..44)) {
+        /*
+        This codes makes a few assumptions. If these do not hold for all input files it will fail.
+
+        ASSUMPTION 1. All swaps are within a single full adder. No wires need to be swapped where
+        wire a and wire b are parts of different full adders.
+
+        ASSUMPTION 2: There are never two broken full-adders adjacent to each other.
+         */
+        val adders = (1..44).associate { i ->
             val d = i.toString().padStart(2, '0')
-            println(findFullAdders("x$d", "y$d", "z$d"))
+            i to findFullAdder("x$d", "y$d", "z$d")
         }
-        // Solved by manuallt inspecting the above. It seems that all swaps are within one broken FullAdder
-        return ""
+
+        val missing = adders.filter { (_, a) -> a == null }.map { it.key }
+        val fixes = missing.flatMap { i ->
+            val d = i.toString().padStart(2, '0')
+            fixAdder(cin = adders[i - 1]!!.carryOut, x = "x$d", y = "y$d", out = "z$d", cout = adders[i + 1]!!.carryIn)
+        }
+        return fixes.sorted().joinToString(",")
     }
 
-    private fun findFullAdders(input1: Wire, input2: Wire, output: Wire): FullAdder? {
-        val xor = gates.values.filter { it is LogicGate.Xor }
+    /**
+     * Given an added that's not working, try all possible wire swaps until one makes it work.
+     */
+    private fun fixAdder(
+        cin: Wire,
+        x: Wire,
+        y: Wire,
+        out: Wire,
+        cout: Wire
+    ): List<Wire> {
+        val inputWires = listOf(x, y, cin)
+        val outputWires = listOf(out, cout)
+        val involvedGates = mutableSetOf<LogicGate>()
+        involvedGates.addAll(this.gates.values.filter { it.inpA in inputWires || it.inpB in inputWires })
+        involvedGates.addAll(this.gates.values.filter { it.out in outputWires })
+        val involvedInternalWires = involvedGates.map { it.out }
+        involvedInternalWires.allUnorderedPairs().forEach { (a, b) ->
+            println("Swap $a <-> $b")
+            val newGates = involvedGates.map { it ->
+                when (it) {
+                    is LogicGate.And -> {
+                        if (it.out !in listOf(a, b)) it.copy()
+                        else if (it.out == a) it.copy(out = b)
+                        else it.copy(out = a)
+                    }
+
+                    is LogicGate.Or -> {
+                        if (it.out !in listOf(a, b)) it.copy()
+                        else if (it.out == a) it.copy(out = b)
+                        else it.copy(out = a)
+                    }
+
+                    is LogicGate.Xor -> {
+                        if (it.out !in listOf(a, b)) it.copy()
+                        else if (it.out == a) it.copy(out = b)
+                        else it.copy(out = a)
+                    }
+                }
+            }
+            if (!newGates.any { it.inpA == it.out || it.inpB == it.out } && testIsAdder(
+                    newGates,
+                    inputWires,
+                    outputWires
+                )) return listOf(a, b)
+        }
+        return emptyList()
+    }
+
+    /**
+     * Tests if the set of gates form a full adder.
+    @param inputs a list with the labels for the x,y,carry-in wires
+    @output outputs a list with the labels for the out, carry-out wires
+     */
+    private fun testIsAdder(
+        gates: List<LogicGate>,
+        inputs: List<Wire>,
+        outputs: List<Wire>
+    ): Boolean {
+        val (a, b, cin) = inputs
+        val (o, cout) = outputs
+        val cases = listOf(
+            listOf(false, false, false, false, false),
+            listOf(false, false, true, false, true),
+            listOf(false, true, false, false, true),
+            listOf(true, false, false, false, true),
+            listOf(false, true, true, true, false),
+            listOf(true, true, false, true, false),
+            listOf(true, false, true, true, false),
+            listOf(true, true, true, true, true),
+        )
+        for (case in cases) {
+            val (aval, bval, cinval, coutval, oval) = case
+            try {
+                val res = this.evalGates(mapOf(a to aval, b to bval, cin to cinval), gates.associate { it.out to it })
+                if (res[o] != oval) {
+                    return false
+                }
+                if (res[cout] != coutval) {
+                    return false
+                }
+            } catch (_: Exception) {
+                return false
+            }
+        }
+        return true
+    }
+
+    private fun findFullAdder(input1: Wire, input2: Wire, output: Wire): FullAdder? {
+        val firstXor = gates.values.filter { it is LogicGate.Xor }
             .find { (it.inpA == input1 && it.inpB == input2) || (it.inpA == input2 && it.inpB == input1) }
-        if (xor == null) return null
-        val and = gates.values.filter { it is LogicGate.And }
+        if (firstXor == null) return null
+        val firstAnd = gates.values.filter { it is LogicGate.And }
             .find { (it.inpA == input1 && it.inpB == input2) || (it.inpA == input2 && it.inpB == input1) }
-        if (and == null) return null
+        if (firstAnd == null) return null
         val outXor = gates[output]
-        if (outXor!!.inpA != xor.out && outXor.inpB != xor.out) return null
-        val carryin = if (outXor.inpA == xor.out) outXor.inpB else outXor.inpA
+        if (outXor!!.inpA != firstXor.out && outXor.inpB != firstXor.out) return null
+        val carryIn = if (outXor.inpA == firstXor.out) outXor.inpB else outXor.inpA
 
-        val and2 = gates.values.filter { it is LogicGate.And }
-            .find { (it.inpA == xor.out && it.inpB == carryin) || (it.inpB == xor.out && it.inpA == carryin) }
-        if (and2 == null) return null
+        val andTakingCin = gates.values.filter { it is LogicGate.And }
+            .find { (it.inpA == firstXor.out && it.inpB == carryIn) || (it.inpB == firstXor.out && it.inpA == carryIn) }
+        if (andTakingCin == null) return null
 
-        val o = gates.values.filter { it is LogicGate.Or }
-            .find { (it.inpA == and.out && it.inpB == and2.out) || (it.inpB == and.out && it.inpA == and2.out) }
-        if (o == null) return null
+        val orCarryOut = gates.values.filter { it is LogicGate.Or }
+            .find { (it.inpA == firstAnd.out && it.inpB == andTakingCin.out) || (it.inpB == firstAnd.out && it.inpA == andTakingCin.out) }
+        if (orCarryOut == null) return null
 
 
         return FullAdder(
             inpA = input1,
             inpB = input2,
             output = output,
-            carryIn = carryin,
-            carryOut = o.out,
-            and1 = and as LogicGate.And,
-            xor1 = xor as LogicGate.Xor,
-            xor2 = outXor as LogicGate.Xor,
-            and2 = and2 as LogicGate.And,
-            o = o as LogicGate.Or
+            carryIn = carryIn,
+            carryOut = orCarryOut.out,
+            firstAnd = firstAnd as LogicGate.And,
+            firstXor = firstXor as LogicGate.Xor,
+            xorOut = outXor as LogicGate.Xor,
+            andTakingCin = andTakingCin as LogicGate.And,
+            orCarryOut = orCarryOut as LogicGate.Or
         )
     }
 }
@@ -158,5 +275,5 @@ val day24Problem = Day24Problem()
 @OptIn(ExperimentalTime::class)
 fun main() {
     day24Problem.testData = false
-    day24Problem.runBoth(100)
+    day24Problem.runBoth(1)
 }
