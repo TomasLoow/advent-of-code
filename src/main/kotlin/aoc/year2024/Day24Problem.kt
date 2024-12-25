@@ -165,7 +165,6 @@ class Day24Problem : DailyProblem<String>() {
         involvedGates.addAll(this.gates.values.filter { it.out in outputWires })
         val involvedInternalWires = involvedGates.map { it.out }
         involvedInternalWires.allUnorderedPairs().forEach { (a, b) ->
-            println("Swap $a <-> $b")
             val newGates = involvedGates.map { it ->
                 when (it) {
                     is LogicGate.And -> {

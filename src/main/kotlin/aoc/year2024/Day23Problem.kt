@@ -11,7 +11,7 @@ class Day23Problem : DailyProblem<String>() {
 
     override val number = 23
     override val year = 2024
-    override val name = "Problem name"
+    override val name = "LAN Party"
 
     private lateinit var data: Map<String, Set<String>>
 
