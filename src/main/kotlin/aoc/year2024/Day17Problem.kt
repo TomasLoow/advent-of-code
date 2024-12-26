@@ -1,6 +1,7 @@
 package aoc.year2024
 
 import DailyProblem
+import aoc.utils.parseAllDigits
 import aoc.utils.parseOneLineOfSeparated
 import aoc.utils.parseTwoBlocks
 import kotlin.time.ExperimentalTime
@@ -25,8 +26,7 @@ class Day17Problem : DailyProblem<String>() {
 
     override fun commonParts() {
         fun parseRegisters(input: String): Register {
-            val findAllNumbers = """(\d+)""".toRegex()
-            val (a, b, c) = findAllNumbers.findAll(input).map { it.value.toLong() }.toList()
+            val (a, b, c) = parseAllDigits(input).map { it.toLong() }
             return Register(a, b, c)
         }
 

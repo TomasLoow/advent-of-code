@@ -1,6 +1,7 @@
 package aoc.year2015
 
 import DailyProblem
+import aoc.utils.parseAllDigits
 import kotlin.time.ExperimentalTime
 
 class Day25Problem : DailyProblem<Long>() {
@@ -18,8 +19,7 @@ class Day25Problem : DailyProblem<Long>() {
             targetRow = 4
             return
         }
-        val findAllNumbers = Regex("""\d+""")
-        val digits = findAllNumbers.findAll(getInputText()).map { it.value.toInt() }.toList()
+        val digits = parseAllDigits(getInputText())
         targetCol = digits[1]
         targetRow = digits[0]
     }
