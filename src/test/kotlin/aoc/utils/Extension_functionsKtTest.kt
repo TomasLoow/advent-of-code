@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Assertions.assertTrue
 import kotlin.math.roundToInt
 import kotlin.math.roundToLong
 import kotlin.test.Test
+import kotlin.test.assertFalse
 
 class ExtensionFunctionsKtTest {
 
@@ -91,5 +92,53 @@ class ExtensionFunctionsKtTest {
         val perms =  (1..10).toList().permutationsSequence()
         val expectedCount = (1..10).toList().product()
         assertEquals(expectedCount, perms.count())
+    }
+
+    @Test
+    fun `test isAscending for integers`() {
+        assertTrue(listOf(1, 2, 3, 4, 5).isAscending())
+        assertTrue(listOf(1, 2, 3, 4, 5).isStrictlyAscending())
+
+        assertTrue(listOf(5,4,3,2,1).isStrictlyDescending())
+        assertTrue(listOf(5,4,3,2,1).isDescending())
+        assertTrue(listOf(5,4,3,2,2).isDescending())
+        assertFalse(listOf(5,4,3,2,2).isStrictlyDescending())
+
+        assertTrue(listOf(2, 2, 3, 3, 5).isAscending())
+        assertFalse(listOf(2, 2, 3, 3, 5).isStrictlyAscending())
+
+        assertTrue(listOf(1).isAscending())
+        assertTrue(emptyList<Int>().isAscending())
+        assertTrue(listOf(1, 2, 2, 3).isAscending())
+        assertFalse(listOf(1, 2, 2, 3).isStrictlyAscending())
+
+        assertFalse(listOf(5, 4, 3, 2, 1).isAscending())
+        assertFalse(listOf(1, 3, 2, 4, 5).isAscending())
+    }
+
+    @Test
+    fun `test isAscending for strings`() {
+        assertTrue("abc".isAscending())
+        assertTrue("a".isAscending())
+        assertTrue("".isAscending())
+        assertTrue("aabbcc".isAscending())
+        assertFalse("aabbcc".isStrictlyAscending())
+        assertFalse("cba".isAscending())
+        assertTrue("cba".isDescending())
+        assertFalse("abdc".isAscending())
+        assertFalse("abdc".isDescending())
+
+        assertTrue("dcccba".isDescending())
+        assertFalse("dcccba".isStrictlyDescending())
+
+    }
+
+    @Test
+    fun `test toDecimalList`() {
+        assertEquals(listOf(1), 1.toDecimalList())
+        assertEquals(listOf(1, 0), 10.toDecimalList())
+        assertEquals(listOf(1, 2, 3), 123.toDecimalList())
+        assertEquals(listOf(9, 9, 9, 9), 9999.toDecimalList())
+        assertEquals(listOf(0), 0.toDecimalList())
     }
 }

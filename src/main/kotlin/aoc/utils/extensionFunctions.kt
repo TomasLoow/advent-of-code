@@ -44,8 +44,6 @@ fun IntRange.intersectionOrNull(other: IntRange): IntRange? {
     if (r.isEmpty()) return null else return r
 }
 
-
-
 /** Returns the total length of a collection of IntRanges, points that are covered by more than one range are not counted twice */
 fun Collection<IntRange>.totalLengthOfCovered(): Int {
     val endpoints: Map<Int, Int> = buildMap {  // Map of coordinates to depth changes
@@ -82,6 +80,22 @@ fun Collection<IntRange>.totalLengthOfCovered(): Int {
  */
 fun Iterable<Int>.parseDecimal(): Int {
     return fold(0) { parsed, digit -> parsed * 10 + digit }
+}
+
+/**
+ * Expands a positive int to a list of its decimal digits.
+ * 137.toDecimal() == listOf(1,3,7)
+ */
+fun Int.toDecimalList(): List<Int> {
+    if (this < 0) throw Exception("undefined for negative numbers")
+    var number = this
+
+    return buildList {
+        do {
+            add(number % 10) // Lägg till den sista siffran.
+            number /= 10                // Ta bort den sista siffran.
+        } while (number > 0)
+    }.reversed()
 }
 
 fun Collection<Int>.product(): Int {
@@ -127,6 +141,12 @@ fun <T> Collection<T>.permutationsSequence(): Sequence<List<T>> {
 }
 
 
+
+/**
+ * Generates all possible subsets of the collection as a sequence of sets.
+ *
+ * @return A sequence containing all subsets of the collection, including the empty set and the collection itself.
+ */
 fun <T> Collection<T>.subSets(): Sequence<Set<T>> {
     if (this.isEmpty()) return sequenceOf(emptySet())
     val head = this.first()
@@ -172,6 +192,17 @@ fun <K> MutableMap<K, Long>.increase(key: K, value: Long) = this.mutate(key, 0L,
 fun <K> MutableMap<K, Int>.increase(key: K, value: Int) = this.mutate(key, 0, { it + value })
 
 
+
+/**
+ * Creates a new map where keys and values of the original map are inverted.
+ * Each value in the original map becomes a key in the new map,
+ * and its corresponding value is a set containing all keys from the original map
+ * that had the same value.
+ *
+ * @return A new map with inverted keys and values. Original map's values
+ *         are the keys in the new map, and corresponding values are sets of
+ *         keys from the original map.
+ */
 fun <K, V> Map<K, V>.invert(): Map<V, Set<K>> {
     val res = emptyMutableMap<V, Set<K>>()
     this.forEach { k, v ->
@@ -201,7 +232,7 @@ val Long.odd: Boolean
 
 fun Int.showBits(): String {
     Int.MAX_VALUE
-    var sb = StringBuilder()
+    val sb = StringBuilder()
     (0..31).reversed().forEach { b ->
         if ((1.shl(b) and this) != 0) sb.append("1")
         else sb.append("0")
@@ -286,4 +317,35 @@ fun <E> Iterable<E>.allUnorderedPairs(): Sequence<Pair<E, E>> {
 fun List<Int>.variance(): Double {
     val xavg = this.sum().toDouble() / this.size
     return this.sumOf { (it - xavg).pow(2) } / this.size
+}
+
+fun <T : Comparable<T>> Iterable<T>.isAscending(): Boolean {
+    return this.zipWithNext().all { (a, b) -> a <= b }
+}
+
+fun <T : Comparable<T>> Iterable<T>.isStrictlyAscending(): Boolean {
+    return this.zipWithNext().all { (a, b) -> a < b }
+}
+
+fun <T : Comparable<T>> Iterable<T>.isDescending(): Boolean {
+    return this.zipWithNext().all { (a, b) -> a >= b }
+}
+
+fun <T : Comparable<T>> Iterable<T>.isStrictlyDescending(): Boolean {
+    return this.zipWithNext().all { (a, b) -> a > b }
+}
+
+fun CharSequence.isAscending(): Boolean {
+    return this.zipWithNext().all { (a, b) -> a <= b }
+}
+fun CharSequence.isStrictlyAscending(): Boolean {
+    return this.zipWithNext().all { (a, b) -> a < b }
+}
+
+fun CharSequence.isDescending(): Boolean {
+    return this.zipWithNext().all { (a, b) -> a >= b }
+}
+
+fun CharSequence.isStrictlyDescending(): Boolean {
+    return this.zipWithNext().all { (a, b) -> a > b }
 }
