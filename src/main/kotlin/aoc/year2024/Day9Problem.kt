@@ -1,7 +1,7 @@
 package aoc.year2024
 
 import DailyProblem
-import aoc.utils.odd
+import aoc.utils.extensionFunctions.odd
 import kotlin.time.ExperimentalTime
 
 data class Block(var fileIdx: Int, var length: Int) {

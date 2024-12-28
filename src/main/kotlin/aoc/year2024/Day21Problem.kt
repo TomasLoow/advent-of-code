@@ -2,6 +2,11 @@ package aoc.year2024
 
 import DailyProblem
 import aoc.utils.*
+import aoc.utils.extensionFunctions.nonEmptyLines
+import aoc.utils.geometry.Coord
+import aoc.utils.geometry.Direction
+import aoc.utils.geometry.Rect
+import aoc.utils.geometry.decomposeDirs
 import kotlin.time.ExperimentalTime
 
 data class NumButton(val i: Int?) {

@@ -1,7 +1,9 @@
 package aoc.year2020
 
 import DailyProblem
-import aoc.utils.*
+import aoc.utils.extensionFunctions.nonEmptyLines
+import aoc.utils.geometry.Coord
+import aoc.utils.geometry.Direction
 import kotlin.time.ExperimentalTime
 
 class Day24Problem : DailyProblem<Int>() {

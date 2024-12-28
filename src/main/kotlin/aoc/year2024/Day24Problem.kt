@@ -1,8 +1,8 @@
 package aoc.year2024
 
 import DailyProblem
-import aoc.utils.allUnorderedPairs
-import aoc.utils.nonEmptyLines
+import aoc.utils.extensionFunctions.allUnorderedPairs
+import aoc.utils.extensionFunctions.nonEmptyLines
 import aoc.utils.parseTwoBlocks
 import kotlin.time.ExperimentalTime
 

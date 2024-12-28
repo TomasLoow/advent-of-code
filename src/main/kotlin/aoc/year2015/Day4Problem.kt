@@ -1,8 +1,8 @@
 package aoc.year2015
 
 import DailyProblem
-import aoc.utils.md5
-import aoc.utils.nonEmptyLines
+import aoc.utils.extensionFunctions.md5
+import aoc.utils.extensionFunctions.nonEmptyLines
 import kotlin.time.ExperimentalTime
 
 class Day4Problem : DailyProblem<Int>() {

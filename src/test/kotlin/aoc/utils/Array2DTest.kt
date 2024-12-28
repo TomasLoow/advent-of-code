@@ -1,5 +1,8 @@
 package aoc.utils
 
+import aoc.utils.geometry.Array2D
+import aoc.utils.geometry.Coord
+import aoc.utils.geometry.Rect
 import org.junit.jupiter.api.Assertions.assertEquals
 import kotlin.test.Test
 

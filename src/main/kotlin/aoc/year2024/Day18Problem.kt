@@ -2,6 +2,9 @@ package aoc.year2024
 
 import DailyProblem
 import aoc.utils.*
+import aoc.utils.extensionFunctions.nonEmptyLines
+import aoc.utils.geometry.Coord
+import aoc.utils.geometry.Rect
 import kotlin.time.ExperimentalTime
 
 

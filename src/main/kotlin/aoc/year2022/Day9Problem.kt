@@ -1,9 +1,9 @@
 package aoc.year2022
 
 import DailyProblem
-import aoc.utils.Coord
-import aoc.utils.Direction
-import aoc.utils.iterate
+import aoc.utils.geometry.Coord
+import aoc.utils.geometry.Direction
+import aoc.utils.extensionFunctions.iterate
 import aoc.utils.parseListOfPairs
 import java.lang.Integer.parseInt
 import kotlin.math.sign

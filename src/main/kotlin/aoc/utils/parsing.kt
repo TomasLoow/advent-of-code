@@ -1,5 +1,10 @@
 package aoc.utils
 
+import aoc.utils.extensionFunctions.ensureNl
+import aoc.utils.extensionFunctions.nonEmptyLines
+import aoc.utils.geometry.Array2D
+import aoc.utils.geometry.Coord
+import aoc.utils.geometry.Direction
 import java.lang.Integer.parseInt
 
 

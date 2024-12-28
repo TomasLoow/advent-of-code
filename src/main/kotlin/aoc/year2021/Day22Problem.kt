@@ -1,11 +1,9 @@
 package aoc.year2021
 
 import DailyProblem
-import aoc.utils.intersectionOrNull
-import aoc.utils.length
+import aoc.utils.extensionFunctions.intersectionOrNull
+import aoc.utils.extensionFunctions.length
 import java.io.File
-import java.lang.Integer.max
-import java.lang.Integer.min
 import kotlin.time.ExperimentalTime
 
 fun parseReactorFile(path: String) : List<SignedBlock> {

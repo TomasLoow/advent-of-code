@@ -1,10 +1,10 @@
 package aoc.year2022
 
 import DailyProblem
-import aoc.utils.Coord
-import aoc.utils.Direction
+import aoc.utils.geometry.Coord
+import aoc.utils.geometry.Direction
 import aoc.utils.emptyMutableSet
-import aoc.utils.nonEmptyLines
+import aoc.utils.extensionFunctions.nonEmptyLines
 import java.math.BigInteger
 import java.util.*
 import kotlin.collections.ArrayDeque

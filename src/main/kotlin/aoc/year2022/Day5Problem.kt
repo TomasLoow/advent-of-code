@@ -1,7 +1,7 @@
 package aoc.year2022
 
 import DailyProblem
-import aoc.utils.nonEmptyLines
+import aoc.utils.extensionFunctions.nonEmptyLines
 import aoc.utils.parseTwoBlocks
 import kotlin.time.ExperimentalTime
 

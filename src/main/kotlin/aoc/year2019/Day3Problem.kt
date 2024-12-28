@@ -1,7 +1,9 @@
 package aoc.year2019
 
 import DailyProblem
-import aoc.utils.*
+import aoc.utils.extensionFunctions.nonEmptyLines
+import aoc.utils.geometry.Coord
+import aoc.utils.geometry.Direction
 import kotlin.time.ExperimentalTime
 
 private typealias WireSpec = List<Pair<Direction, Int>>

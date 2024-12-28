@@ -2,7 +2,7 @@ package aoc.year2015
 
 import DailyProblem
 import aoc.utils.emptyMutableMap
-import aoc.utils.nonEmptyLines
+import aoc.utils.extensionFunctions.nonEmptyLines
 import kotlin.time.ExperimentalTime
 
 /** A look and see sequence can be decomposed into "atoms". See

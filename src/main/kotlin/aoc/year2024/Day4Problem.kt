@@ -1,8 +1,8 @@
 package aoc.year2024
 
 import DailyProblem
-import aoc.utils.Array2D
-import aoc.utils.Direction
+import aoc.utils.geometry.Array2D
+import aoc.utils.geometry.Direction
 import aoc.utils.parseCharArray
 import kotlin.time.ExperimentalTime
 

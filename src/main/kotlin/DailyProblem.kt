@@ -1,4 +1,4 @@
-import aoc.utils.ensureNl
+import aoc.utils.extensionFunctions.ensureNl
 import java.io.File
 import kotlin.time.Duration
 import kotlin.time.ExperimentalTime

@@ -1,8 +1,9 @@
 package aoc.year2015
 
 import DailyProblem
-import aoc.utils.nonEmptyLines
-import aoc.utils.truncPositive
+import aoc.utils.extensionFunctions.allSumsOfLength
+import aoc.utils.extensionFunctions.nonEmptyLines
+import aoc.utils.extensionFunctions.truncPositive
 import kotlin.time.ExperimentalTime
 
 class Day15Problem : DailyProblem<Int>() {
@@ -29,25 +30,8 @@ class Day15Problem : DailyProblem<Int>() {
             val (name, capacity, durability, flavor, texture, calories) = re.matchEntire(line)!!.destructured
             Ingredient(name, capacity.toInt(), durability.toInt(), flavor.toInt(), texture.toInt(), calories.toInt())
         }
-        amountsList = getAllPossibleSumsTo(100, 4)
+        amountsList = 100.allSumsOfLength(4)
 
-    }
-
-    /** Generates all the ways to decompose a number into a sum with a given length
-     * getAllPossibleSumsTo(5,3) = [[0,0,5],[0,1,4],[0,2,3],[0,3,2]],[0,4,1],[0,5,0],[1,0,4], ...]
-     */
-    private fun getAllPossibleSumsTo(target: Int, elements: Int): List<List<Int>> {
-        if (elements == 1) {
-            return listOf(listOf(target))
-
-        }
-        return buildList {
-            (0..target).forEach { v ->
-                getAllPossibleSumsTo(target - v, elements - 1).forEach { rest ->
-                    add(rest + v)
-                }
-            }
-        }
     }
 
     private fun score(amounts: List<Int>): Int {

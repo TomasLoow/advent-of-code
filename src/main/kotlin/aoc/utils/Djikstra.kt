@@ -10,8 +10,8 @@ abstract class Djikstra<State>(val goal:State) {
     abstract fun reachable(state: State): Collection<State>
     abstract fun getMoveCost(from: State, to: State): Int
 
-    fun solve(start: State): DjikstraResult<State> {
-        return solve(listOf(start))
+    fun solveScoreForAllStates(start: State): DjikstraResult<State> {
+        return solveScoreForAllStates(listOf(start))
     }
 
     fun reconstructPathTo(cameFrom: MutableMap<State, State>, goal: State): List<State> {
@@ -26,7 +26,7 @@ abstract class Djikstra<State>(val goal:State) {
     }
 
 
-    fun solve(startStates: List<State>): DjikstraResult<State> {
+    fun solveScoreForAllStates(startStates: List<State>): DjikstraResult<State> {
         steps = 0
         val openSet = emptyMutableSet<State>()
         val cameFrom: MutableMap<State, State> = HashMap(4096)

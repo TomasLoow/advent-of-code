@@ -2,7 +2,7 @@ package aoc.year2024
 
 import DailyProblem
 import aoc.utils.*
-import java.util.HashMap
+import aoc.utils.extensionFunctions.nonEmptyLines
 import kotlin.time.ExperimentalTime
 
 class Day19Problem : DailyProblem<Long>() {

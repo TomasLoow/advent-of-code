@@ -1,8 +1,8 @@
 package aoc.year2015
 
 import DailyProblem
-import aoc.utils.Coord
-import aoc.utils.Direction
+import aoc.utils.geometry.Coord
+import aoc.utils.geometry.Direction
 import aoc.utils.parseDirectionFromArrow
 import kotlin.time.ExperimentalTime
 

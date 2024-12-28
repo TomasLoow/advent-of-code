@@ -2,8 +2,8 @@ package aoc.year2021
 
 import DailyProblem
 import aoc.utils.AStar
-import aoc.utils.Array2D
-import aoc.utils.Coord
+import aoc.utils.geometry.Array2D
+import aoc.utils.geometry.Coord
 import aoc.utils.parseIntArray
 import kotlin.time.ExperimentalTime
 
@@ -26,7 +26,7 @@ private fun embiggen(originalMap: Array2D<Int>): Array2D<Int> {
 }
 
 
-private class ChitinAStar(val map: Array2D<Int>, goal:Coord) : AStar<Coord>(goal) {
+private class ChitinAStar(val map: Array2D<Int>, goal: Coord) : AStar<Coord>(goal) {
     override fun heuristic(state: Coord): Int {
         return 0  // 0 means it's actually djikstra's algorithm. The manhattan heuristics did not really help
         // return (map.size - pos.second) + (map[0].size - pos.first)

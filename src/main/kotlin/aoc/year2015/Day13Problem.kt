@@ -4,7 +4,7 @@ import DailyProblem
 import aoc.utils.emptyMutableSet
 import aoc.utils.id
 import aoc.utils.parseListOfTriples
-import aoc.utils.permutationsSequence
+import aoc.utils.extensionFunctions.permutationsSequence
 import kotlin.time.ExperimentalTime
 
 class Day13Problem : DailyProblem<Int>() {

@@ -2,7 +2,7 @@ package aoc.year2023
 
 import DailyProblem
 import aoc.utils.emptyMutableList
-import aoc.utils.nonEmptyLines
+import aoc.utils.extensionFunctions.nonEmptyLines
 import kotlin.time.ExperimentalTime
 
 private sealed interface Op {

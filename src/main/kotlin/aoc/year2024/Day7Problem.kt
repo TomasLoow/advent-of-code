@@ -1,8 +1,8 @@
 package aoc.year2024
 
 import DailyProblem
-import aoc.utils.concat
-import aoc.utils.nonEmptyLines
+import aoc.utils.extensionFunctions.concat
+import aoc.utils.extensionFunctions.nonEmptyLines
 import kotlin.time.ExperimentalTime
 
 class Day7Problem : DailyProblem<Long>() {

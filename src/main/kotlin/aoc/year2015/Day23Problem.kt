@@ -1,8 +1,8 @@
 package aoc.year2015
 
 import DailyProblem
-import aoc.utils.even
-import aoc.utils.nonEmptyLines
+import aoc.utils.extensionFunctions.even
+import aoc.utils.extensionFunctions.nonEmptyLines
 import kotlin.time.ExperimentalTime
 
 private typealias Register = String

@@ -1,15 +1,12 @@
 package aoc.year2021
 
 import DailyProblem
-import aoc.utils.nonEmptyLines
+import aoc.utils.extensionFunctions.nonEmptyLines
+import aoc.utils.extensionFunctions.toInt
 
 typealias BinaryArray = Array<Boolean>
 
-
-
-
 class Day3Problem : DailyProblem<Long>() {
-
     override val number = 3
     override val year = 2021
     override val name = "Binary Diagnostic"
@@ -44,15 +41,6 @@ class Day3Problem : DailyProblem<Long>() {
         return (countTrue < countFalse)
     }
 
-    private fun binaryToInt(bits: BinaryArray): Int {
-        var res = 0
-        for (bit in bits) {
-            res *= 2
-            if (bit) res++
-        }
-        return res
-    }
-
     private fun bitCriteria(mode: CountMode): Int {
         var data = input.toList() // Make a copy
         val rowLength: Int = data[0].size
@@ -62,7 +50,7 @@ class Day3Problem : DailyProblem<Long>() {
             data = data.filter { it[idx] == target }
             if (data.size == 1) break
         }
-        return binaryToInt(data[0])
+        return data[0].toInt()
     }
 
     override fun commonParts() {
@@ -82,8 +70,8 @@ class Day3Problem : DailyProblem<Long>() {
             epsilon[idx] = !mostCommon
         }
 
-        val deltaVal = binaryToInt(delta)
-        val epsilonVal = binaryToInt(epsilon)
+        val deltaVal = delta.toInt()
+        val epsilonVal = epsilon.toInt()
 
         return (deltaVal * epsilonVal).toLong()
     }

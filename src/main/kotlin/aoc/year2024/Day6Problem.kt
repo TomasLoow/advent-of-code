@@ -2,6 +2,10 @@ package aoc.year2024
 
 import DailyProblem
 import aoc.utils.*
+import aoc.utils.geometry.Array2D
+import aoc.utils.geometry.Coord
+import aoc.utils.geometry.Cursor
+import aoc.utils.geometry.Direction
 import kotlin.time.ExperimentalTime
 
 
@@ -10,7 +14,7 @@ class Day6Problem : DailyProblem<Int>() {
     override val year = 2024
     override val name = "Guard Gallivant"
 
-    data class Guard(val cursor: Array2D.Cursor<Boolean>, var dir: Direction)
+    data class Guard(val cursor: Cursor<Boolean>, var dir: Direction)
     private lateinit var map: Array2D<Boolean>
     private lateinit var guardStartPos: Coord
     private lateinit var guardStartDir: Direction
@@ -46,7 +50,7 @@ class Day6Problem : DailyProblem<Int>() {
 
 
     fun runPart2(extraWall: Coord): Boolean {
-        val s: Sequence<Pair<Coord,Direction>> = sequence {
+        val s: Sequence<Pair<Coord, Direction>> = sequence {
             val guard = Guard(map.cursor(guardStartPos), guardStartDir)
             while (true) {
                 val inside = guard.cursor.move(guard.dir)

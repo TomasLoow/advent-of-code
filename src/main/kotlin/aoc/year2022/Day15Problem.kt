@@ -1,9 +1,9 @@
 package aoc.year2022
 
 import DailyProblem
-import aoc.utils.Coord
-import aoc.utils.nonEmptyLines
-import aoc.utils.totalLengthOfCovered
+import aoc.utils.geometry.Coord
+import aoc.utils.extensionFunctions.nonEmptyLines
+import aoc.utils.extensionFunctions.totalLengthOfCovered
 import java.lang.Integer.parseInt
 import kotlin.math.absoluteValue
 import kotlin.math.max

@@ -1,4 +1,4 @@
-package aoc.utils
+package aoc.utils.extensionFunctions
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
@@ -7,7 +7,7 @@ import kotlin.math.roundToLong
 import kotlin.test.Test
 import kotlin.test.assertFalse
 
-class ExtensionFunctionsKtTest {
+class MiscKtTest {
 
     @Test
     fun `test iterate`() {
@@ -49,23 +49,6 @@ class ExtensionFunctionsKtTest {
         assertEquals(11, listOf((1..5), (2..9), (7..11)).totalLengthOfCovered())
     }
 
-    @Test
-    fun `test concat long`() {
-        repeat(100000) {
-            val x = (Math.random()*1_000_000).roundToLong()
-            val y = (Math.random()*1_000_000).roundToLong()
-            assertEquals((x.toString()+y.toString()).toLong(), x.concat(y))
-        }
-    }
-
-    @Test
-    fun `test concat int`() {
-        repeat(100000) {
-            val x = (Math.random()*10_000).roundToInt()
-            val y = (Math.random()*10_000).roundToInt()
-            assertEquals((x.toString()+y.toString()).toInt(), x.concat(y))
-        }
-    }
 
     @Test
     fun `test permutationsSequence`() {
@@ -133,12 +116,5 @@ class ExtensionFunctionsKtTest {
 
     }
 
-    @Test
-    fun `test toDecimalList`() {
-        assertEquals(listOf(1), 1.toDecimalList())
-        assertEquals(listOf(1, 0), 10.toDecimalList())
-        assertEquals(listOf(1, 2, 3), 123.toDecimalList())
-        assertEquals(listOf(9, 9, 9, 9), 9999.toDecimalList())
-        assertEquals(listOf(0), 0.toDecimalList())
-    }
+
 }

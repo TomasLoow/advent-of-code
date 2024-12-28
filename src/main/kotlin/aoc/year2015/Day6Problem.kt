@@ -1,10 +1,10 @@
 package aoc.year2015
 
 import DailyProblem
-import aoc.utils.Array2D
-import aoc.utils.Coord
-import aoc.utils.Rect
-import aoc.utils.nonEmptyLines
+import aoc.utils.geometry.Array2D
+import aoc.utils.geometry.Coord
+import aoc.utils.geometry.Rect
+import aoc.utils.extensionFunctions.nonEmptyLines
 import java.lang.Math.max
 import kotlin.time.ExperimentalTime
 

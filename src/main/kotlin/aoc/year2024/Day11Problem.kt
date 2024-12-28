@@ -1,7 +1,7 @@
 package aoc.year2024
 
 import DailyProblem
-import aoc.utils.increase
+import aoc.utils.extensionFunctions.increase
 import aoc.utils.parseOneLineOfSeparated
 import java.lang.Integer.parseInt
 import kotlin.time.ExperimentalTime

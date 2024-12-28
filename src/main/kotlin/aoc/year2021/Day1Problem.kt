@@ -1,6 +1,7 @@
 package aoc.year2021
 
 import DailyProblem
+import aoc.utils.extensionFunctions.countIncreases
 import aoc.utils.parseIntLines
 import kotlin.time.ExperimentalTime
 
@@ -12,11 +13,6 @@ class Day1Problem : DailyProblem<Long>() {
     override val name = "Sonar Sweep"
 
     private lateinit var data: List<Int>
-
-    private fun Collection<Int>.countIncreases(): Long {
-        return windowed(2).count { it[0] < it[1] }.toLong()
-    }
-
 
     private fun Collection<Int>.threeElementWindowSums(): Collection<Int> {
         return windowed(3)

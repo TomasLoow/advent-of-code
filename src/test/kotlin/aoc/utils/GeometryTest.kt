@@ -1,5 +1,9 @@
 package aoc.utils
 
+import aoc.utils.geometry.Coord
+import aoc.utils.geometry.Rect
+import aoc.utils.geometry.plus
+import aoc.utils.geometry.times
 import org.junit.jupiter.api.Assertions.assertEquals
 import kotlin.test.Test
 

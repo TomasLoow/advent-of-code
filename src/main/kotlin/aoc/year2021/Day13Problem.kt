@@ -1,8 +1,8 @@
 package aoc.year2021
 
 import DailyProblem
-import aoc.utils.Axis2D
-import aoc.utils.nonEmptyLines
+import aoc.utils.geometry.Axis2D
+import aoc.utils.extensionFunctions.nonEmptyLines
 import aoc.utils.parseDisplay
 import aoc.utils.parseTwoBlocks
 import java.lang.Integer.parseInt

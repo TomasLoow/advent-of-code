@@ -1,7 +1,7 @@
 package aoc.year2022
 
 import DailyProblem
-import aoc.utils.nonEmptyLines
+import aoc.utils.extensionFunctions.nonEmptyLines
 
 
 class Day3Problem : DailyProblem<Int>() {

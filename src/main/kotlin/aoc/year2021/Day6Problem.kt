@@ -1,7 +1,7 @@
 package aoc.year2021
 
 import DailyProblem
-import aoc.utils.shiftLeft
+import aoc.utils.extensionFunctions.shiftLeft
 import java.lang.Integer.parseInt
 import kotlin.time.ExperimentalTime
 

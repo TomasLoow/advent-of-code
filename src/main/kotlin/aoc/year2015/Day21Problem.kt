@@ -1,7 +1,7 @@
 package aoc.year2015
 
 import DailyProblem
-import aoc.utils.allUnorderedPairs
+import aoc.utils.extensionFunctions.allUnorderedPairs
 import aoc.utils.parseAllDigits
 import kotlin.time.ExperimentalTime
 

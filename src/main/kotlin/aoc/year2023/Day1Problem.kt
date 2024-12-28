@@ -1,7 +1,7 @@
 package aoc.year2023
 
 import DailyProblem
-import aoc.utils.nonEmptyLines
+import aoc.utils.extensionFunctions.nonEmptyLines
 import java.lang.Integer.parseInt
 import kotlin.time.ExperimentalTime
 

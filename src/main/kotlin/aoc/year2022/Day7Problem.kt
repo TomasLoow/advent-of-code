@@ -3,7 +3,7 @@ package aoc.year2022
 import DailyProblem
 import aoc.utils.emptyMutableMap
 import aoc.utils.emptyMutableSet
-import aoc.utils.readNonEmptyLines
+import aoc.utils.extensionFunctions.readNonEmptyLines
 import kotlin.time.ExperimentalTime
 
 class Day7Problem : DailyProblem<Int>() {

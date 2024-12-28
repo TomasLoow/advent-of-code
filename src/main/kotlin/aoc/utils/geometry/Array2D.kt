@@ -1,6 +1,6 @@
-package aoc.utils
+package aoc.utils.geometry
 
-import aoc.utils.Direction.*
+import aoc.utils.extensionFunctions.nonEmptyLines
 import java.io.BufferedWriter
 import java.io.FileWriter
 import kotlin.math.absoluteValue
@@ -12,7 +12,7 @@ class Array2D<T : Any> {
     val width: Int
     val rect: Rect
 
-    private val data: Array<Any>
+    internal val data: Array<Any>
 
     constructor(input: Collection<Collection<T>>) {
         this.height = input.size
@@ -73,15 +73,15 @@ class Array2D<T : Any> {
             }
         }
 
-    private fun c2Idx(x: Int, y: Int): Int {
+    internal fun c2Idx(x: Int, y: Int): Int {
         return y * width + x
     }
 
-    private fun c2Idx(c: Coord): Int {
+    internal fun c2Idx(c: Coord): Int {
         return c.y * width + c.x
     }
 
-    private fun idx2c(idx: Int): Coord {
+    internal fun idx2c(idx: Int): Coord {
         return Coord(idx % width, idx / width)
     }
 
@@ -155,13 +155,14 @@ class Array2D<T : Any> {
     }
 
 
+    @Suppress("unused")
     fun onCorner(c: Coord): Boolean {
         return (c.x == 0 || c.x == this.width - 1) && (c.y == 0 || c.y == this.height - 1)
 
     }
 
     fun neighbourCoords(c: Coord, diagonal: Boolean = true): List<Coord> {
-        val pattern = if (diagonal) IDX_STEPS_WITH_DIAG else STEPS_WITHOUT_DIAG
+        val pattern = if (diagonal) STEPSWITHDIAGONALS else STEPSWITHOUTDIAGONALS
         val idx = c2Idx(c)
 
         return pattern.map { it + idx }.filter {
@@ -170,7 +171,7 @@ class Array2D<T : Any> {
     }
 
     fun neighbourValues(c: Coord, diagonal: Boolean = true): List<T> {
-        val pattern = if (diagonal) IDX_STEPS_WITH_DIAG else STEPS_WITHOUT_DIAG
+        val pattern = if (diagonal) STEPSWITHDIAGONALS else STEPSWITHOUTDIAGONALS
         val idx = c2Idx(c)
 
 
@@ -261,8 +262,8 @@ class Array2D<T : Any> {
     }
 
     fun cursor(coord: Coord, wrapping: Boolean = false): Cursor<T> {
-        if (wrapping) return WrappingCursor(this, coord)
-        else return Cursor(this, coord)
+        return if (wrapping) WrappingCursor(this, coord)
+        else Cursor(this, coord)
     }
 
     fun clone(): Array2D<T> {
@@ -285,6 +286,7 @@ class Array2D<T : Any> {
         (data.size - shift until data.size).forEach { data[it] = fill }
     }
 
+    @Suppress("unused")
     fun toImage(numColors: Int, filename: String, func: (T) -> Int) {
         val bw = BufferedWriter(FileWriter(filename))
         bw.write("P2\n")
@@ -322,7 +324,7 @@ class Array2D<T : Any> {
         }
     }
 
-    private val IDX_STEPS_WITH_DIAG: Array<Int>
+    private val STEPSWITHDIAGONALS: Array<Int>
         get() = arrayOf(
             width,
             width - 1,
@@ -334,7 +336,7 @@ class Array2D<T : Any> {
             -(width + 1),
         )
 
-    private val STEPS_WITHOUT_DIAG: Array<Int>
+    private val STEPSWITHOUTDIAGONALS: Array<Int>
         get() = arrayOf(
             width,
             1,
@@ -357,206 +359,6 @@ class Array2D<T : Any> {
     }
 
 
-    open class Cursor<T : Any>(private val map: Array2D<T>, coord: Coord) {
-        protected var x: Int
-        protected var y: Int
-        protected var idx: Int
-        protected var prevIdx: Int? = null
-        protected val h: Int
-        protected val w: Int
-
-        init {
-            x = coord.x
-            y = coord.y
-            idx = map.c2Idx(coord)
-            h = map.height
-            w = map.width
-        }
-
-        val value: T
-            get() = map.data[idx] as T
-
-        val coord: Coord
-            get() = map.idx2c(idx)
-
-        val prev: Coord
-            get() {
-                if (prevIdx == null) throw Exception("No previous coordinate")
-                return map.idx2c(prevIdx!!)
-            }
-
-        fun set(new: T) {
-            map.data[idx] = new
-        }
-
-        open fun moveRight(): Boolean {
-            if (x == w - 1) {
-                return false
-            }
-            x += 1
-            prevIdx = idx
-            idx += 1
-            return true
-        }
-
-        open fun moveLeft(): Boolean {
-            if (x == 0) {
-                return false
-            } else {
-                x -= 1
-                prevIdx = idx
-                idx -= 1
-                return true
-            }
-        }
-
-        open fun moveDown(): Boolean {
-            if (y == h - 1) {
-                return false
-            }
-            y += 1
-            prevIdx = idx
-            idx += w
-            return true
-        }
-
-        open fun moveUp(): Boolean {
-            if (y == 0) {
-                return false
-            }
-            y -= 1
-            prevIdx = idx
-            idx -= w
-            return true
-        }
-
-        open fun moveUpRight(): Boolean {
-            if (y == 0 || x == w - 1) return false
-            y -= 1
-            x += 1
-            prevIdx = idx
-            idx -= (w - 1)
-            return true
-        }
-
-        open fun moveUpLeft(): Boolean {
-            if (y == 0 || x == 0) return false
-            y -= 1
-            x -= 1
-            prevIdx = idx
-            idx -= (w + 1)
-            return true
-        }
-
-        open fun moveDownRight(): Boolean {
-            if (y == h - 1 || x == w - 1) return false
-            y += 1
-            x += 1
-            prevIdx = idx
-            idx += (w + 1)
-            return true
-        }
-
-        open fun moveDownLeft(): Boolean {
-            if (y == h - 1 || x == 0) return false
-            y += 1
-            x -= 1
-            prevIdx = idx
-            idx += (w - 1)
-            return true
-        }
-
-        fun move(dir: Direction): Boolean {
-            return when (dir) {
-                UP -> moveUp()
-                DOWN -> moveDown()
-                LEFT -> moveLeft()
-                RIGHT -> moveRight()
-                UPRIGHT -> moveUpRight()
-                UPLEFT -> moveUpLeft()
-                DOWNRIGHT -> moveDownRight()
-                DOWNLEFT -> moveDownLeft()
-            }
-        }
-
-        fun moveTo(pos: Coord) {
-            this.x = pos.x
-            this.y = pos.y
-            this.idx = map.c2Idx(pos)
-        }
-
-        fun back() {
-            this.x = prev.x
-            this.y = prev.y
-            this.idx = prevIdx!!
-            prevIdx = null
-        }
-    }
-
-    class WrappingCursor<T : Any>(private val map: Array2D<T>, coord: Coord) : Cursor<T>(map, coord) {
-        override fun moveRight(): Boolean {
-            if (x == w - 1) {
-                x = 0
-                idx = map.c2Idx(x, y)
-                return true
-            }
-            x += 1
-            prevIdx = idx
-            idx += 1
-            return true
-        }
-
-        override fun moveLeft(): Boolean {
-            if (x == 0) {
-                x = w - 1
-                idx = map.c2Idx(x, y)
-                return true
-            }
-            x -= 1
-            prevIdx = idx
-            idx -= 1
-            return true
-        }
-
-        override fun moveDown(): Boolean {
-            if (y == h - 1) {
-                y = 0
-                idx = map.c2Idx(x, y)
-                return true
-
-            }
-            y += 1
-            prevIdx = idx
-            idx += w
-            return true
-        }
-
-        override fun moveUp(): Boolean {
-            if (y == 0) {
-                y = h - 1
-                idx = map.c2Idx(x, y)
-                return true
-            }
-            y -= 1
-            prevIdx = idx
-            idx -= w
-            return true
-        }
-
-        override fun moveUpRight(): Boolean {
-            TODO()
-        }
-
-        override fun moveUpLeft(): Boolean {
-            TODO()
-        }
-
-        override fun moveDownRight(): Boolean {
-            TODO()
-        }
-
-        override fun moveDownLeft(): Boolean {
-            TODO()
-        }
-    }
 }
+
+

@@ -1,8 +1,8 @@
 package aoc.year2022
 
 import DailyProblem
-import aoc.utils.Array2D
-import aoc.utils.nonEmptyLines
+import aoc.utils.geometry.Array2D
+import aoc.utils.extensionFunctions.nonEmptyLines
 import aoc.utils.parseDisplay
 import kotlin.time.ExperimentalTime
 

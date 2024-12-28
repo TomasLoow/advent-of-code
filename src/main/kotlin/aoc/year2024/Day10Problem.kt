@@ -2,8 +2,9 @@ package aoc.year2024
 
 import DailyProblem
 import aoc.utils.*
+import aoc.utils.geometry.Array2D
+import aoc.utils.geometry.Coord
 import kotlin.time.ExperimentalTime
-import kotlin.time.measureTime
 
 class Day10Problem : DailyProblem<Int>() {
 

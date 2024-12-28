@@ -2,6 +2,9 @@ package aoc.year2024
 
 import DailyProblem
 import aoc.utils.*
+import aoc.utils.extensionFunctions.allUnorderedPairs
+import aoc.utils.geometry.Array2D
+import aoc.utils.geometry.Coord
 import kotlin.time.ExperimentalTime
 
 
@@ -39,7 +42,7 @@ class Day20Problem : DailyProblem<Int>() {
 
         // Calculate best path to each point from both directions
         val fwdSolver = RaceDjik(initialMap, goal)
-        costToReachCoord = fwdSolver.solve(start).costs
+        costToReachCoord = fwdSolver.solveScoreForAllStates(start).costs
 
         bestCost = costToReachCoord[goal]!!
     }

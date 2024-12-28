@@ -2,6 +2,8 @@ package aoc.year2021
 
 import DailyProblem
 import aoc.utils.*
+import aoc.utils.extensionFunctions.increase
+import aoc.utils.extensionFunctions.iterate
 
 private typealias PairCount = Map<String, Long>
 private typealias Rules = Map<String, List<String>>

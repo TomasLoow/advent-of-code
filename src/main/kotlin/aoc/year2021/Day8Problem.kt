@@ -2,7 +2,7 @@ package aoc.year2021
 
 import DailyProblem
 import aoc.utils.emptyMutableMap
-import aoc.utils.parseDecimal
+import aoc.utils.extensionFunctions.parseDecimalList
 import aoc.utils.parseListOfPairs
 import aoc.utils.parseOneLineOfSeparated
 
@@ -72,7 +72,7 @@ class Day8Problem : DailyProblem<Long>() {
     }
 
     override fun part2(): Long {
-        val converted = solved.map { digits -> digits.parseDecimal() }
+        val converted = solved.map { digits -> digits.parseDecimalList() }
         return converted.sum().toLong()
     }
 }

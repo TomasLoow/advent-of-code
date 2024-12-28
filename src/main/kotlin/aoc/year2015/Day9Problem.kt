@@ -4,7 +4,7 @@ import DailyProblem
 import aoc.utils.emptyMutableMap
 import aoc.utils.id
 import aoc.utils.parseListOfTriples
-import aoc.utils.permutationsSequence
+import aoc.utils.extensionFunctions.permutationsSequence
 import java.lang.Integer.parseInt
 import kotlin.math.max
 import kotlin.math.min

@@ -1,6 +1,7 @@
 package aoc.year2015
 
 import DailyProblem
+import aoc.utils.extensionFunctions.allSubsetsWithSum
 import aoc.utils.parseIntLines
 import kotlin.time.ExperimentalTime
 
@@ -17,19 +18,9 @@ class Day17Problem : DailyProblem<Int>() {
 
     override fun commonParts() {
         data = parseIntLines(getInputText())
-        combinations = getCombinations(data, target)
+        combinations = data.allSubsetsWithSum(target)
     }
 
-    fun getCombinations(set: List<Int>, target: Int): List<List<Int>> {
-        if (target == 0) return listOf(listOf())
-        if (set.size == 1) {
-            return if (set.first() == target) listOf(listOf(target)) else listOf()
-        }
-        val current = set.first()
-        val setWithout = set.drop(1)
-
-        return getCombinations(setWithout, target) + getCombinations(setWithout, target-current).map { it + current }
-    }
 
     override fun part1(): Int {
         return combinations.size

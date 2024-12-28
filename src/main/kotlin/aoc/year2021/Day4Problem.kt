@@ -2,8 +2,8 @@ package aoc.year2021
 
 
 import DailyProblem
-import aoc.utils.Array2D
-import aoc.utils.Coord
+import aoc.utils.geometry.Array2D
+import aoc.utils.geometry.Coord
 import aoc.utils.parseBlockList
 import java.io.File
 import java.lang.Integer.parseInt

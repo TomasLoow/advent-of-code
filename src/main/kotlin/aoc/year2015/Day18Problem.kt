@@ -1,8 +1,8 @@
 package aoc.year2015
 
 import DailyProblem
-import aoc.utils.Array2D
-import aoc.utils.Coord
+import aoc.utils.geometry.Array2D
+import aoc.utils.geometry.Coord
 import kotlin.time.ExperimentalTime
 
 class Day18Problem : DailyProblem<Int>() {

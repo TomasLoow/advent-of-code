@@ -1,7 +1,7 @@
 package aoc.year2019
 
 import DailyProblem
-import aoc.utils.isAscending
+import aoc.utils.extensionFunctions.isAscending
 import kotlin.properties.Delegates
 import kotlin.time.ExperimentalTime
 

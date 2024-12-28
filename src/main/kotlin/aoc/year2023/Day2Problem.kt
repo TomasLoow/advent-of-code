@@ -1,7 +1,7 @@
 package aoc.year2023
 
 import DailyProblem
-import aoc.utils.nonEmptyLines
+import aoc.utils.extensionFunctions.nonEmptyLines
 import kotlin.time.ExperimentalTime
 
 typealias Game = Pair<Int,List<Map<String, Int>>>

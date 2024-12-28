@@ -2,9 +2,9 @@ package aoc.year2022
 
 import DailyProblem
 import aoc.utils.AStar
-import aoc.utils.Array2D
+import aoc.utils.geometry.Array2D
 import aoc.utils.BFS
-import aoc.utils.Coord
+import aoc.utils.geometry.Coord
 import kotlin.time.ExperimentalTime
 
 class HillClimbBFS(protected val map: Array2D<Int>, goal: Coord) : BFS<Coord>(goal) {

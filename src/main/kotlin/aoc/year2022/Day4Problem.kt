@@ -1,9 +1,9 @@
 package aoc.year2022
 
 import DailyProblem
-import aoc.utils.containsRange
-import aoc.utils.intersectRange
-import aoc.utils.readNonEmptyLines
+import aoc.utils.extensionFunctions.containsRange
+import aoc.utils.extensionFunctions.intersectRange
+import aoc.utils.extensionFunctions.readNonEmptyLines
 import kotlin.time.ExperimentalTime
 
 class Day4Problem : DailyProblem<Int>() {

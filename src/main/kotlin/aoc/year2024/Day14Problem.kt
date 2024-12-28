@@ -1,8 +1,12 @@
 package aoc.year2024
 
 import DailyProblem
-import aoc.utils.*
-import kotlin.math.pow
+import aoc.utils.extensionFunctions.nonEmptyLines
+import aoc.utils.extensionFunctions.variance
+import aoc.utils.geometry.Array2D
+import aoc.utils.geometry.Coord
+import aoc.utils.geometry.Vector
+import aoc.utils.geometry.times
 import kotlin.properties.Delegates
 import kotlin.time.ExperimentalTime
 

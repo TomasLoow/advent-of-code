@@ -2,6 +2,7 @@ package aoc.year2024
 
 import DailyProblem
 import aoc.utils.*
+import aoc.utils.geometry.*
 import kotlin.time.ExperimentalTime
 
 class Day15Problem : DailyProblem<Int>() {
@@ -54,7 +55,7 @@ class Day15Problem : DailyProblem<Int>() {
         }.sum()
     }
 
-    private fun showPart1(map: Array2D<Char>, cursor: Array2D.Cursor<Char>) {
+    private fun showPart1(map: Array2D<Char>, cursor: Cursor<Char>) {
         map.mapIndexed() { c, v -> if (c == cursor.coord) '@' else v }.print { it.toString() }
     }
 
@@ -168,7 +169,7 @@ class Day15Problem : DailyProblem<Int>() {
 
     private fun showPart2(
         map: Array2D<Char>,
-        cursor: Array2D.Cursor<Char>,
+        cursor: Cursor<Char>,
         boxes: List<Box>
     ) {
         map.mapIndexed() { c, v ->

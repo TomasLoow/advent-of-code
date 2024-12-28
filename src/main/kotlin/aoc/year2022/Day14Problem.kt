@@ -2,6 +2,10 @@ package aoc.year2022
 
 import DailyProblem
 import aoc.utils.*
+import aoc.utils.extensionFunctions.nonEmptyLines
+import aoc.utils.geometry.Array2D
+import aoc.utils.geometry.Coord
+import aoc.utils.geometry.Direction
 import kotlin.math.max
 import kotlin.math.min
 import kotlin.time.ExperimentalTime

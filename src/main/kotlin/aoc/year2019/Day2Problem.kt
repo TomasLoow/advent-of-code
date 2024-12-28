@@ -2,6 +2,7 @@ package aoc.year2019
 
 import DailyProblem
 import aoc.utils.*
+import aoc.utils.extensionFunctions.nonEmptyLines
 import kotlin.time.ExperimentalTime
 
 class Day2Problem : DailyProblem<Int>() {

@@ -1,5 +1,9 @@
 package aoc.utils
 
+import aoc.utils.geometry.Array2D
+import aoc.utils.geometry.Coord
+import aoc.utils.geometry.Rect
+
 val dispToCharTable = mapOf(
     """
     ███  

@@ -4,7 +4,7 @@ import DailyProblem
 import aoc.utils.BFS
 import aoc.utils.emptyMutableMap
 import aoc.utils.parseListOfTriples
-import aoc.utils.subSets
+import aoc.utils.extensionFunctions.subSets
 import java.lang.Integer.parseInt
 import kotlin.time.ExperimentalTime
 

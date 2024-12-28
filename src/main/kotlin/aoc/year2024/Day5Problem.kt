@@ -1,7 +1,7 @@
 package aoc.year2024
 
 import DailyProblem
-import aoc.utils.nonEmptyLines
+import aoc.utils.extensionFunctions.nonEmptyLines
 import aoc.utils.parseListOfPairs
 import aoc.utils.parseTwoBlocks
 import java.lang.Integer.parseInt

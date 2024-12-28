@@ -2,6 +2,9 @@ package aoc.year2024
 
 import DailyProblem
 import aoc.utils.*
+import aoc.utils.geometry.Array2D
+import aoc.utils.geometry.Coord
+import aoc.utils.geometry.Direction
 import kotlin.time.ExperimentalTime
 
 /* Bad, slow and I'm not sure it's guaranteed to give the right answer.

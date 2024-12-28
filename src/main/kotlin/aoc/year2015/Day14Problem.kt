@@ -2,8 +2,8 @@ package aoc.year2015
 
 import DailyProblem
 import aoc.utils.emptyMutableMap
-import aoc.utils.increase
-import aoc.utils.nonEmptyLines
+import aoc.utils.extensionFunctions.increase
+import aoc.utils.extensionFunctions.nonEmptyLines
 import kotlin.math.min
 import kotlin.time.ExperimentalTime
 

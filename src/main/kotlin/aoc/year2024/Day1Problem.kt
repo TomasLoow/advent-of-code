@@ -2,7 +2,7 @@ package aoc.year2024
 
 import DailyProblem
 import aoc.utils.emptyMutableMap
-import aoc.utils.increase
+import aoc.utils.extensionFunctions.increase
 import aoc.utils.parseListOfPairs
 import java.lang.Integer.parseInt
 import kotlin.math.absoluteValue

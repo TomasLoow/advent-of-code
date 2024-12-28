@@ -1,7 +1,7 @@
 package aoc.year2015
 
 import DailyProblem
-import aoc.utils.nonEmptyLines
+import aoc.utils.extensionFunctions.nonEmptyLines
 import kotlin.time.ExperimentalTime
 
 private typealias Aunt = Map<String, Int>

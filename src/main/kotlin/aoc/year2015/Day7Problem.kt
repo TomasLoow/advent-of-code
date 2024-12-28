@@ -2,7 +2,7 @@ package aoc.year2015
 
 import DailyProblem
 import aoc.utils.emptyMutableMap
-import aoc.utils.flip
+import aoc.utils.extensionFunctions.flip
 import aoc.utils.id
 import aoc.utils.parseListOfPairs
 import kotlin.time.ExperimentalTime
