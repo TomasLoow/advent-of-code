@@ -122,7 +122,7 @@ class Day24Problem : DailyProblem<String>() {
         return toDecimalString(q).toString()
     }
 
-    fun toDecimalString(l: List<Boolean>): Long {
+    private fun toDecimalString(l: List<Boolean>): Long {
         return l.fold(0L) { acc, b -> 2 * acc + if (b) 1L else 0L }
     }
 
@@ -135,9 +135,9 @@ class Day24Problem : DailyProblem<String>() {
 
         ASSUMPTION 2: There are never two broken full-adders adjacent to each other.
          */
-        val adders = (1..44).associate { i ->
+        val adders = (1..44).associateWith { i ->
             val d = i.toString().padStart(2, '0')
-            i to findFullAdder("x$d", "y$d", "z$d")
+            findFullAdder("x$d", "y$d", "z$d")
         }
 
         val missing = adders.filter { (_, a) -> a == null }.map { it.key }
@@ -165,24 +165,30 @@ class Day24Problem : DailyProblem<String>() {
         involvedGates.addAll(this.gates.values.filter { it.out in outputWires })
         val involvedInternalWires = involvedGates.map { it.out }
         involvedInternalWires.allUnorderedPairs().forEach { (a, b) ->
-            val newGates = involvedGates.map { it ->
+            val newGates = involvedGates.map {
                 when (it) {
                     is LogicGate.And -> {
-                        if (it.out !in listOf(a, b)) it.copy()
-                        else if (it.out == a) it.copy(out = b)
-                        else it.copy(out = a)
+                        when (it.out) {
+                            !in listOf(a, b) -> it.copy()
+                            a -> it.copy(out = b)
+                            else -> it.copy(out = a)
+                        }
                     }
 
                     is LogicGate.Or -> {
-                        if (it.out !in listOf(a, b)) it.copy()
-                        else if (it.out == a) it.copy(out = b)
-                        else it.copy(out = a)
+                        when (it.out) {
+                            !in listOf(a, b) -> it.copy()
+                            a -> it.copy(out = b)
+                            else -> it.copy(out = a)
+                        }
                     }
 
                     is LogicGate.Xor -> {
-                        if (it.out !in listOf(a, b)) it.copy()
-                        else if (it.out == a) it.copy(out = b)
-                        else it.copy(out = a)
+                        when (it.out) {
+                            !in listOf(a, b) -> it.copy()
+                            a -> it.copy(out = b)
+                            else -> it.copy(out = a)
+                        }
                     }
                 }
             }
@@ -220,7 +226,7 @@ class Day24Problem : DailyProblem<String>() {
         for (case in cases) {
             val (aval, bval, cinval, coutval, oval) = case
             try {
-                val res = this.evalGates(mapOf(a to aval, b to bval, cin to cinval), gates.associate { it.out to it })
+                val res = this.evalGates(mapOf(a to aval, b to bval, cin to cinval), gates.associateBy { it.out })
                 if (res[o] != oval) {
                     return false
                 }
@@ -235,21 +241,21 @@ class Day24Problem : DailyProblem<String>() {
     }
 
     private fun findFullAdder(input1: Wire, input2: Wire, output: Wire): FullAdder? {
-        val firstXor = gates.values.filter { it is LogicGate.Xor }
+        val firstXor = gates.values.filterIsInstance<LogicGate.Xor>()
             .find { (it.inpA == input1 && it.inpB == input2) || (it.inpA == input2 && it.inpB == input1) }
         if (firstXor == null) return null
-        val firstAnd = gates.values.filter { it is LogicGate.And }
+        val firstAnd = gates.values.filterIsInstance<LogicGate.And>()
             .find { (it.inpA == input1 && it.inpB == input2) || (it.inpA == input2 && it.inpB == input1) }
         if (firstAnd == null) return null
         val outXor = gates[output]
         if (outXor!!.inpA != firstXor.out && outXor.inpB != firstXor.out) return null
         val carryIn = if (outXor.inpA == firstXor.out) outXor.inpB else outXor.inpA
 
-        val andTakingCin = gates.values.filter { it is LogicGate.And }
+        val andTakingCin = gates.values.filterIsInstance<LogicGate.And>()
             .find { (it.inpA == firstXor.out && it.inpB == carryIn) || (it.inpB == firstXor.out && it.inpA == carryIn) }
         if (andTakingCin == null) return null
 
-        val orCarryOut = gates.values.filter { it is LogicGate.Or }
+        val orCarryOut = gates.values.filterIsInstance<LogicGate.Or>()
             .find { (it.inpA == firstAnd.out && it.inpB == andTakingCin.out) || (it.inpB == firstAnd.out && it.inpA == andTakingCin.out) }
         if (orCarryOut == null) return null
 

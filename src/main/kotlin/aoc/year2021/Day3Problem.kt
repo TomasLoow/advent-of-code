@@ -18,7 +18,7 @@ class Day3Problem : DailyProblem<Long>() {
         LeastCommon,
     }
 
-    fun parseBinaryFile(): List<BinaryArray> {
+    private fun parseBinaryFile(): List<BinaryArray> {
         val lines: List<String> = getInputText().nonEmptyLines()
         return lines.map { line ->
             line.map { c -> c == '1' }.toTypedArray()

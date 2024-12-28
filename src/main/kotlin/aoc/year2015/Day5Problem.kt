@@ -20,7 +20,7 @@ class Day5Problem : DailyProblem<Int>() {
         inputStrings = getInputText().nonEmptyLines()
     }
 
-    fun isNice1(string: String): Boolean {
+    private fun isNice1(string: String): Boolean {
         val vowelCount = string.count { c -> c in "aeiou" }
         val hasDuplicate = string.windowed(2).find { pair -> pair[0] == pair[1] } != null
         val containsBadString = badStrings.any { it in string }
@@ -28,7 +28,7 @@ class Day5Problem : DailyProblem<Int>() {
         return (vowelCount >= 3) && hasDuplicate && !containsBadString
     }
 
-    fun isNice2(string: String): Boolean {
+    private fun isNice2(string: String): Boolean {
         val repeatsPair = string.windowed(2).filterIndexed { idx, subString ->
             val foundIdx = string.indexOf(subString, idx+2)
                 foundIdx > 0

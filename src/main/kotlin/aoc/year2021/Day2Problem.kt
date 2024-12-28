@@ -29,7 +29,7 @@ class Day2Problem : DailyProblem<Long>() {
         commands = parseCommandFile()
     }
 
-    fun parseCommandFile(): List<CommandLine> {
+    private fun parseCommandFile(): List<CommandLine> {
         fun parseCommand(s: String): Command {
             return when (s) {
                 "forward" -> Command.Forward
@@ -42,7 +42,7 @@ class Day2Problem : DailyProblem<Long>() {
     }
 
     /* Move one step with the rules from part 1 of the problem */
-    fun updatePos(state: SubmarineState, cmd: CommandLine): SubmarineState {
+    private fun updatePos(state: SubmarineState, cmd: CommandLine): SubmarineState {
         val (command, arg) = cmd
         val (x, depth) = state
         return when (command) {
@@ -53,7 +53,7 @@ class Day2Problem : DailyProblem<Long>() {
     }
 
     /* Move one step with the rules from part 2 of the problem */
-    fun updatePosWithDelta(state: SubmarineStateWithDelta, cmd: CommandLine): SubmarineStateWithDelta {
+    private fun updatePosWithDelta(state: SubmarineStateWithDelta, cmd: CommandLine): SubmarineStateWithDelta {
         val (command, arg) = cmd
         val (x, depth, delta) = state
         return when (command) {

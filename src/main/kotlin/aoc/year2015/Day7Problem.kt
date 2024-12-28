@@ -50,7 +50,7 @@ class Day7Problem : DailyProblem<Int>() {
     }
 
 
-    fun evaluate(circuit: Map<Wire,Gate>, wire: Wire): Int {
+    private fun evaluate(circuit: Map<Wire,Gate>, wire: Wire): Int {
         if (wire in cache) return cache[wire]!!
         if (wire.all { c -> c.isDigit()}) return wire.toInt()
         val value = when(val gate = circuit[wire]!!) {

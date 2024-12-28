@@ -27,10 +27,10 @@ class Day17Problem : DailyProblem<Long>() {
     override val year: Int = 2021
     override val name: String = "Trick Shot"
 
-    var minX:Int = 0
-    var minY:Int = 0
-    var maxX:Int = 0
-    var maxY:Int = 0
+    private var minX:Int = 0
+    private var minY:Int = 0
+    private var maxX:Int = 0
+    private var maxY:Int = 0
 
     override fun commonParts() {
        val parsed = parseTrickShot(getInputFile().absolutePath)

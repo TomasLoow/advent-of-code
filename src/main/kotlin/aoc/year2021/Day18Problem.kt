@@ -8,9 +8,9 @@ enum class ZigZag {L,R}
 
 typealias TreePos = List<ZigZag>
 
-class Tree(var arr: Array<Pair<TreePos, Int>>) {
+class Tree(private var arr: Array<Pair<TreePos, Int>>) {
 
-    internal var usedSize = arr.size
+    private var usedSize = arr.size
 
     val right: Tree
         get() = Tree(arrList().filter { it.first.first() == ZigZag.R }.map { it.copy(first = it.first.drop(1))}.toTypedArray())
@@ -18,7 +18,7 @@ class Tree(var arr: Array<Pair<TreePos, Int>>) {
     val left: Tree
         get() = Tree(arrList().filter { it.first.first() == ZigZag.L }.map { it.copy(first = it.first.drop(1))}.toTypedArray())
 
-    fun isLeaf(): Boolean = arr.size==1
+    private fun isLeaf(): Boolean = arr.size==1
 
     fun getMagnitue(): Int {
         if (arr.size == 1) return arr[0].second
@@ -79,7 +79,7 @@ class Tree(var arr: Array<Pair<TreePos, Int>>) {
         return true
     }
 
-    fun reduce() {
+    private fun reduce() {
         var changed=true
         while (changed) {
 
@@ -98,11 +98,10 @@ class Tree(var arr: Array<Pair<TreePos, Int>>) {
     }
 
     fun print(): String {
-        if (isLeaf()) {
-            return this.arr.first().second.toString()
-        }
-        else {
-            return "[${left.print()},${right.print()}]"
+        return if (isLeaf()) {
+            this.arr.first().second.toString()
+        } else {
+            "[${left.print()},${right.print()}]"
         }
     }
 

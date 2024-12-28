@@ -8,7 +8,7 @@ import aoc.utils.geometry.Rect
 import kotlin.time.ExperimentalTime
 
 
-class RAMRun(val blocked: Set<Coord>, val rect: Rect, goal: Coord) : AStar<Coord>(goal) {
+class RAMRun(private val blocked: Set<Coord>, val rect: Rect, goal: Coord) : AStar<Coord>(goal) {
     override fun heuristic(state: Coord): Int {
         return state.manhattanDistanceTo(goal)
     }
@@ -42,7 +42,7 @@ class Day18Problem : DailyProblem<String>() {
         part1Steps = if (testData) 12 else 1024
     }
 
-    fun solveForSteps(steps: Int): Pair<Int, List<Coord>> {
+    private fun solveForSteps(steps: Int): Pair<Int, List<Coord>> {
         val solver = RAMRun(data.take(steps).toSet(), Rect(Coord(0, 0), Coord(size, size)), Coord(size, size))
         val res = solver.solve(Coord(0, 0))
         return res

@@ -1,3 +1,4 @@
+@file:Suppress("unused")
 package aoc.utils.extensionFunctions
 
 import kotlin.math.max
@@ -38,19 +39,15 @@ fun Int.truncPositive(): Int {
     return max(0, this)
 }
 
-@SuppressWarnings("unused")
 val Int.even: Boolean
     get() = this % 2 == 0
 
-@SuppressWarnings("unused")
 val Int.odd: Boolean
     get() = this % 2 == 1
 
-@SuppressWarnings("unused")
 val Long.even: Boolean
     get() = this % 2L == 0L
 
-@SuppressWarnings("unused")
 val Long.odd: Boolean
     get() = this % 2L == 1L
 
@@ -64,7 +61,6 @@ val Long.odd: Boolean
  * @param x The Long value to be concatenated to the current Long value.
  * @return The resulting Long value after concatenation.
  */
-@SuppressWarnings("unused")
 fun Long.concat(x: Long): Long {
     if (x < 0) throw Exception("Cannot concat a negative number")
     if (x < 10L) return this * 10L + x
@@ -88,7 +84,6 @@ fun Long.concat(x: Long): Long {
  * @param x The Long value to be concatenated to the current Long value.
  * @return The resulting Int value after concatenation.
  */
-@SuppressWarnings("unused")
 fun Int.concat(x: Int): Int {
     if (x < 0) throw Exception("Cannot concat a negative number")
     if (x < 10) return this * 10 + x
@@ -100,7 +95,6 @@ fun Int.concat(x: Int): Int {
     throw NotImplementedError("Add even more branches to Int.concat or do something more clever")
 }
 
-@SuppressWarnings("unused")
 fun Int.toBinaryArray(): Array<Boolean> {
     if (this < 0) throw Exception("undefined for negative numbers")
     val binaryString = this.toString(2)

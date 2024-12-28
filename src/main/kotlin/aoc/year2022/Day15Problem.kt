@@ -70,7 +70,7 @@ class Day15Problem : DailyProblem<Long>() {
     }
 }
 
-class Rhombus {
+private class Rhombus {
     private var mUp: IntRange
     private var mDown: IntRange
     constructor(mUp: IntRange, mDown: IntRange) {

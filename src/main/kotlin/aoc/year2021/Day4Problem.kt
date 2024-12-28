@@ -16,7 +16,7 @@ private fun parseBingoFile(path: String): Pair<List<Int>, List<BingoBoard>> {
         .map(::parseInt)
     lines = lines.drop(2)
 
-    val boards: List<BingoBoard> = parseBlockList(lines.joinToString("\n"), { BingoBoard(it) })
+    val boards: List<BingoBoard> = parseBlockList(lines.joinToString("\n")) { BingoBoard(it) }
     return Pair(balls, boards)
 }
 

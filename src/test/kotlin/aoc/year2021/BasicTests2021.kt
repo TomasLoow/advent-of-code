@@ -1,3 +1,5 @@
+package aoc.year2021
+
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Assertions.assertEquals
 import kotlin.test.Test
@@ -5,7 +7,7 @@ import kotlin.test.Test
 class BasicTests2021 {
     @Test
     fun testDay1() {
-        val problem = aoc.year2021.Day1Problem()
+        val problem = Day1Problem()
         problem.testData = true
         problem.commonParts()
         assertEquals(7, problem.part1())
@@ -14,7 +16,7 @@ class BasicTests2021 {
 
     @Test
     fun testDay2() {
-        val problem = aoc.year2021.Day2Problem()
+        val problem = Day2Problem()
         problem.testData = true
         problem.commonParts()
         assertEquals(150, problem.part1())
@@ -23,7 +25,7 @@ class BasicTests2021 {
 
     @Test
     fun testDay3() {
-        val problem = aoc.year2021.Day3Problem()
+        val problem = Day3Problem()
         problem.testData = true
         problem.commonParts()
         assertEquals(198, problem.part1())
@@ -32,7 +34,7 @@ class BasicTests2021 {
 
     @Test
     fun testDay4() {
-        val problem = aoc.year2021.Day4Problem()
+        val problem = Day4Problem()
         problem.testData = true
         problem.commonParts()
         assertEquals(4512, problem.part1())
@@ -41,7 +43,7 @@ class BasicTests2021 {
 
     @Test
     fun testDay5() {
-        val problem = aoc.year2021.Day5Problem()
+        val problem = Day5Problem()
         problem.testData = true
         problem.commonParts()
         assertEquals(5, problem.part1())
@@ -50,7 +52,7 @@ class BasicTests2021 {
 
     @Test
     fun testDay6() {
-        val problem = aoc.year2021.Day6Problem()
+        val problem = Day6Problem()
         problem.testData = true
         problem.commonParts()
         assertEquals(5934, problem.part1())
@@ -59,7 +61,7 @@ class BasicTests2021 {
 
     @Test
     fun testDay7() {
-        val problem = aoc.year2021.Day7Problem()
+        val problem = Day7Problem()
         problem.testData = true
         problem.commonParts()
         assertEquals(37, problem.part1())
@@ -68,7 +70,7 @@ class BasicTests2021 {
 
     @Test
     fun testDay8() {
-        val problem = aoc.year2021.Day8Problem()
+        val problem = Day8Problem()
         problem.testData = true
         problem.commonParts()
         assertEquals(26, problem.part1())
@@ -77,7 +79,7 @@ class BasicTests2021 {
 
     @Test
     fun testDay9() {
-        val problem = aoc.year2021.Day9Problem()
+        val problem = Day9Problem()
         problem.testData = true
         problem.commonParts()
         assertEquals(15, problem.part1())
@@ -86,7 +88,7 @@ class BasicTests2021 {
 
     @Test
     fun testDay10() {
-        val problem = aoc.year2021.Day10Problem()
+        val problem = Day10Problem()
         problem.testData = true
         problem.commonParts()
         assertEquals(26397, problem.part1())
@@ -95,7 +97,7 @@ class BasicTests2021 {
 
     @Test
     fun testDay11() {
-        val problem = aoc.year2021.Day11Problem()
+        val problem = Day11Problem()
         problem.testData = true
         problem.commonParts()
         assertEquals(1656, problem.part1())
@@ -104,7 +106,7 @@ class BasicTests2021 {
 
     @Test
     fun testDay12() {
-        val problem = aoc.year2021.Day12Problem()
+        val problem = Day12Problem()
         problem.testData = true
         problem.commonParts()
         assertEquals(10, problem.part1())
@@ -113,7 +115,7 @@ class BasicTests2021 {
 
     @Test
     fun testDay13() {
-        val problem = aoc.year2021.Day13Problem()
+        val problem = Day13Problem()
         problem.testData = true
         problem.commonParts()
         assertEquals(17, problem.part1())
@@ -131,7 +133,7 @@ class BasicTests2021 {
 
     @Test
     fun testDay14() {
-        val problem = aoc.year2021.Day14Problem()
+        val problem = Day14Problem()
         problem.testData = true
         problem.commonParts()
         assertEquals(1588, problem.part1())
@@ -140,7 +142,7 @@ class BasicTests2021 {
 
     @Test
     fun testDay15() {
-        val problem = aoc.year2021.Day15Problem()
+        val problem = Day15Problem()
         problem.testData = true
         problem.commonParts()
         assertEquals(40, problem.part1())
@@ -149,7 +151,7 @@ class BasicTests2021 {
 
     @Test
     fun testDay16() {
-        val problem = aoc.year2021.Day16Problem()
+        val problem = Day16Problem()
         problem.testData = true
         problem.commonParts()
         assertEquals(20, problem.part1())
@@ -158,7 +160,7 @@ class BasicTests2021 {
 
     @Test
     fun testDay17() {
-        val problem = aoc.year2021.Day17Problem()
+        val problem = Day17Problem()
         problem.testData = true
         problem.commonParts()
         assertEquals(45, problem.part1())
@@ -167,7 +169,7 @@ class BasicTests2021 {
 
     @Test
     fun testDay18() {
-        val problem = aoc.year2021.Day18Problem()
+        val problem = Day18Problem()
         problem.testData = true
         problem.commonParts()
         assertEquals(4140, problem.part1())
@@ -176,7 +178,7 @@ class BasicTests2021 {
 
     @Test
     fun testDay21() {
-        val problem = aoc.year2021.Day21Problem()
+        val problem = Day21Problem()
         problem.testData = true
         problem.commonParts()
         assertEquals(739785, problem.part1())
@@ -185,7 +187,7 @@ class BasicTests2021 {
 
     @Test
     fun testDay22() {
-        val problem = aoc.year2021.Day22Problem()
+        val problem = Day22Problem()
         problem.testData = true
         problem.commonParts()
         assertEquals(474140, problem.part1())
@@ -194,7 +196,7 @@ class BasicTests2021 {
 
     @Test
     fun testDay25() {
-        val problem = aoc.year2021.Day25Problem()
+        val problem = Day25Problem()
         problem.testData = true
         problem.commonParts()
         assertEquals(58, problem.part1())

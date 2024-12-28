@@ -23,9 +23,9 @@ class Day1Problem : DailyProblem<Int>() {
     }
 
     override fun part1(): Int {
-        return listLeft.sorted().zip(listRight.sorted()).map { (l,r) ->
+        return listLeft.sorted().zip(listRight.sorted()).sumOf { (l, r) ->
             (l - r).absoluteValue
-        }.sum()
+        }
     }
 
     override fun part2(): Int {

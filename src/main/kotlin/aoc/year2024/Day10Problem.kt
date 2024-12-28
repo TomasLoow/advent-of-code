@@ -24,8 +24,7 @@ class Day10Problem : DailyProblem<Int>() {
 
     private fun solve(z: Coord): List<Coord> {
         val q = mutableListOf(z to 0)
-        var done = false
-        while (!done) {
+        while (true) {
             val (pos, dist) = q.first()
             if (dist == 9) {
                 break

@@ -1,6 +1,8 @@
+@file:Suppress("unused")
 package aoc.utils.geometry
 
 import kotlin.math.absoluteValue
+import kotlin.math.max
 
 data class Coord(val x: Int, val y: Int) {
 
@@ -27,7 +29,7 @@ data class Coord(val x: Int, val y: Int) {
 
     /** Also known as L_inf norm or Max-distance */
     fun chebyshevDistanceTo(other: Coord): Int {
-        return Math.max((x - other.x).absoluteValue, (y - other.y).absoluteValue)
+        return max((x - other.x).absoluteValue, (y - other.y).absoluteValue)
     }
 
     fun neighbours(diagonal: Boolean = false): List<Coord> = if (!diagonal) listOf(
@@ -108,7 +110,7 @@ data class Coord(val x: Int, val y: Int) {
 
     companion object {
         val origin = Coord(0, 0)
-        private val MAX_VALUE = 1024
+        private const val MAX_VALUE = 1024
 
     }
 }

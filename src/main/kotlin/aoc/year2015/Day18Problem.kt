@@ -24,7 +24,7 @@ class Day18Problem : DailyProblem<Int>() {
             gridNext[c] = if (value) (neigboursOnCount == 2 || neigboursOnCount == 3) else (neigboursOnCount == 3)
         }
     }
-    fun step2(grid: Array2D<Boolean>, gridNext: Array2D<Boolean>) {
+    private fun step2(grid: Array2D<Boolean>, gridNext: Array2D<Boolean>) {
         step(grid, gridNext)
         gridNext[Coord(0,0)] = true
         gridNext[Coord(0,gridNext.height-1)] = true

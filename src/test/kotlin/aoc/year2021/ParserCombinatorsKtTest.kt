@@ -1,4 +1,4 @@
-package year2021
+package aoc.year2021
 
 import aoc.year2021.*
 import org.junit.jupiter.api.Assertions

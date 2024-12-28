@@ -1,3 +1,4 @@
+@file:Suppress("unused")
 package aoc.utils
 
 import aoc.utils.extensionFunctions.ensureNl

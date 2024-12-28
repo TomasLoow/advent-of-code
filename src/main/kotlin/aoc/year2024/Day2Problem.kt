@@ -38,7 +38,7 @@ class Day2Problem : DailyProblem<Int>() {
 
     private fun dropOneFrom(line: List<Int>): List<List<Int>> {
         return buildList {
-            (0..line.size - 1).forEach { i ->
+            line.indices.forEach { i ->
                 add(line.take(i) + line.drop(i + 1))
             }
         }

@@ -1,3 +1,5 @@
+package aoc.year2015
+
 import aoc.year2015.Day21Problem
 import aoc.year2015.RPGEntity
 import kotlin.test.Test

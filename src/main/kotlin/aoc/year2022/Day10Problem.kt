@@ -3,6 +3,7 @@ package aoc.year2022
 import DailyProblem
 import aoc.utils.geometry.Array2D
 import aoc.utils.extensionFunctions.nonEmptyLines
+import aoc.utils.geometry.showBooleanArray
 import aoc.utils.parseDisplay
 import kotlin.time.ExperimentalTime
 
@@ -16,7 +17,7 @@ class Day10Problem : DailyProblem<Any>() {
     lateinit var output: String
 
     sealed interface Op {
-        class Noop : Op
+        data object Noop : Op
         class Addx(val value: Int) : Op
     }
 
@@ -26,7 +27,7 @@ class Day10Problem : DailyProblem<Any>() {
     }
 
     private fun parseOperators(s: String) = s.nonEmptyLines().map { line ->
-        if (line == "noop") Op.Noop() else Op.Addx(line.substringAfter("addx ").toInt())
+        if (line == "noop") Op.Noop else Op.Addx(line.substringAfter("addx ").toInt())
     }
 
     private fun calculateFullSignal(data: List<Op>): Map<Int, Int> {
@@ -74,7 +75,7 @@ class Day10Problem : DailyProblem<Any>() {
             }
         }
         val screen: Array2D<Boolean> = Array2D(screenData, 40, 6)
-        this.output = screen.show { Array2D.a2renderBool(it) }
+        this.output = showBooleanArray(screen)
         return parseDisplay(output)
     }
 }

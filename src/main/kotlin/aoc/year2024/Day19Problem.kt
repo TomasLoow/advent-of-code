@@ -30,7 +30,7 @@ class Day19Problem : DailyProblem<Long>() {
     }
 
     /** Simple recursive count with a cache of already calculated substrings */
-    fun countWaysToMakeDesign(goal: String, cache: MutableMap<String, Long>): Long {
+    private fun countWaysToMakeDesign(goal: String, cache: MutableMap<String, Long>): Long {
         if (goal.isEmpty()) return 1
         if (goal in cache) return cache[goal]!!
         val prefixes: List<String> = patterns.filter { goal.startsWith(it) }
@@ -45,7 +45,7 @@ class Day19Problem : DailyProblem<Long>() {
     }
 
     override fun part2(): Long {
-        return counts.map { it }.sum()
+        return counts.sumOf { it }
     }
 }
 

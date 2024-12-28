@@ -5,14 +5,13 @@ import kotlin.math.roundToInt
 import kotlin.math.roundToLong
 import kotlin.test.Test
 import kotlin.test.assertEquals
-import kotlin.test.assertFailsWith
 
 class NumbersKtTest {
     @Test
     fun `test concat long`() {
         repeat(100000) {
-            val x = (Math.random()*1_000_000).roundToLong()
-            val y = (Math.random()*1_000_000).roundToLong()
+            val x = (Math.random() * 1_000_000).roundToLong()
+            val y = (Math.random() * 1_000_000).roundToLong()
             Assertions.assertEquals((x.toString() + y.toString()).toLong(), x.concat(y))
         }
     }
@@ -20,8 +19,8 @@ class NumbersKtTest {
     @Test
     fun `test concat int`() {
         repeat(100000) {
-            val x = (Math.random()*10_000).roundToInt()
-            val y = (Math.random()*10_000).roundToInt()
+            val x = (Math.random() * 10_000).roundToInt()
+            val y = (Math.random() * 10_000).roundToInt()
             Assertions.assertEquals((x.toString() + y.toString()).toInt(), x.concat(y))
         }
     }
@@ -46,6 +45,7 @@ class NumbersKtTest {
             )
         }
     }
+
     @Test
     fun `test toDecimalList`() {
         Assertions.assertEquals(listOf(1), 1.toDecimalList())
@@ -58,7 +58,7 @@ class NumbersKtTest {
     @Test
     fun `test toDecimalList is inverse of parseDecimalList`() {
         repeat(1000) {
-            val i = (Math.random()*1_000_000).roundToInt()
+            val i = (Math.random() * 1_000_000).roundToInt()
             Assertions.assertEquals(i, i.toDecimalList().parseDecimalList())
         }
     }

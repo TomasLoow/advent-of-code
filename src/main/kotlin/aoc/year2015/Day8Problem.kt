@@ -57,8 +57,7 @@ class Day8Problem : DailyProblem<Int>() {
                 }
             }
         }.joinToString("")
-        var res = "\"" + encoded + "\""
-        return res
+        return  "\"" + encoded + "\""
     }
 
     override fun part2(): Int {

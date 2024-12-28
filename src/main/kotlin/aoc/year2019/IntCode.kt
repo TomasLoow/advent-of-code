@@ -12,16 +12,16 @@ class IntCode(var memory: Array<Int>) {
     fun step(): Boolean {
         val op = memory[ptr]
         if (op == OPCODE_HALT) return false
-        val operand_1 = memory[ptr + 1]
-        val operand_2 = memory[ptr + 2]
-        val operand_3 = memory[ptr + 3]
+        val operand1 = memory[ptr + 1]
+        val operand2 = memory[ptr + 2]
+        val operand3 = memory[ptr + 3]
 
-        if (opUsesMemory(op) && (operand_1 >= memory.size || operand_2 >= memory.size || operand_3 >= memory.size)) {
+        if (opUsesMemory(op) && (operand1 >= memory.size || operand2 >= memory.size || operand3 >= memory.size)) {
             throw ExecutionFailed()
         }
         when (op) {
-            OPCODE_ADD -> memory[operand_3] = memory[operand_1] + memory[operand_2]
-            OPCODE_MUL -> memory[operand_3] = memory[operand_1] * memory[operand_2]
+            OPCODE_ADD -> memory[operand3] = memory[operand1] + memory[operand2]
+            OPCODE_MUL -> memory[operand3] = memory[operand1] * memory[operand2]
             else -> throw Exception("Unknown instruction: $op")
         }
         ptr += 4

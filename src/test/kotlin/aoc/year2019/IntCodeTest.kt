@@ -1,3 +1,5 @@
+package aoc.year2019
+
 import aoc.year2019.IntCode
 import org.junit.jupiter.api.Assertions.assertEquals
 import kotlin.test.Test

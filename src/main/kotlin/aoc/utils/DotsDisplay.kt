@@ -1,8 +1,7 @@
+@file:Suppress("unused")
 package aoc.utils
 
-import aoc.utils.geometry.Array2D
-import aoc.utils.geometry.Coord
-import aoc.utils.geometry.Rect
+import aoc.utils.geometry.*
 
 val dispToCharTable = mapOf(
     """
@@ -230,7 +229,7 @@ fun parseDisplay(display: String): String {
     val array = Array2D(display.filter{ c -> c != '\n'}.map { it == '█' }, width = width, height = 6)
     val numChars = width/5
     val charSegments = (0 until  numChars).map { i ->
-        array[Rect(Coord(5 * i, 0), Coord(5 * i + 4, 5))].show { Array2D.a2renderBool(it) }
+        showBooleanArray(array[Rect(Coord(5 * i, 0), Coord(5 * i + 4, 5))])
     }
     return charSegments.map {
         if (it !in dispToCharTable) {

@@ -12,9 +12,9 @@ private sealed interface Op {
         fun parse(s: String): Op {
             if ('=' in s) {
                 val (label, value) = s.split("=")
-                return Op.Set(label, value.toInt())
+                return Set(label, value.toInt())
             }
-            return Op.Del(s.dropLast(1))
+            return Del(s.dropLast(1))
         }
     }
 }

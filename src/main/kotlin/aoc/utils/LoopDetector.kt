@@ -1,8 +1,5 @@
 package aoc.utils
 
-import java.util.ArrayDeque
-import java.util.Deque
-import java.util.LinkedList
 
 /**
  * Determines if a sequence has a loop using Floyd’s Cycle Finding Algorithm
@@ -17,7 +14,7 @@ fun <T> hasLoop(seq: Sequence<T>): Boolean {
         return false
     }
     val buffer = ArrayDeque<T>(4096)
-    val fastSeq = sequence<T> {
+    val fastSeq = sequence {
         var b = false
         seq.forEach {
             buffer.addLast(it)

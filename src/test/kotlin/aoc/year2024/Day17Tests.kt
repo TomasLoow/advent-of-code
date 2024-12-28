@@ -1,4 +1,4 @@
-package year2024
+package aoc.year2024
 
 import aoc.year2024.Day17Problem
 import aoc.year2024.Register

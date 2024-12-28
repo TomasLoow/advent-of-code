@@ -51,7 +51,7 @@ class Day5Problem : DailyProblem<Int>() {
         return orderedUpdates.sumOf(::findMiddle)
     }
 
-    fun fixOrdering(list: List<Int>): List<Int> {
+    private fun fixOrdering(list: List<Int>): List<Int> {
         // No braining allowed at six in the morning. Let us just iterate until nothing changes... 😅
         val mut = list.toMutableList()
         var didStuff: Boolean

@@ -55,8 +55,9 @@ class Day15Problem : DailyProblem<Int>() {
         }.sum()
     }
 
+    @Suppress("unused")
     private fun showPart1(map: Array2D<Char>, cursor: Cursor<Char>) {
-        map.mapIndexed() { c, v -> if (c == cursor.coord) '@' else v }.print { it.toString() }
+        map.mapIndexed { c, v -> if (c == cursor.coord) '@' else v }.print { it.toString() }
     }
 
     private data class Box(var coordOfLeft: Coord) {
@@ -106,21 +107,21 @@ class Day15Problem : DailyProblem<Int>() {
             Direction.LEFT -> {
                 val movingTo = box.coordOfLeft + dir
                 val collidesWith = boxes.find { it.coordOfRight == movingTo }
-                box.coordOfLeft = box.coordOfLeft + dir
+                box.coordOfLeft += dir
                 if (collidesWith != null) doPushBox(map, boxes, collidesWith, dir)
             }
 
             Direction.RIGHT -> {
                 val movingTo = box.coordOfRight + dir
                 val collidesWith = boxes.find { it.coordOfLeft == movingTo }
-                box.coordOfLeft = box.coordOfLeft + dir
+                box.coordOfLeft += dir
                 if (collidesWith != null) doPushBox(map, boxes, collidesWith, dir)
             }
 
             Direction.UP, Direction.DOWN -> {
                 val (movingTo1, movingTo2) = (box.coordOfLeft + dir to box.coordOfRight + dir)
                 val collidesWith = boxes.filter { movingTo1 in it || movingTo2 in it }
-                box.coordOfLeft = box.coordOfLeft + dir
+                box.coordOfLeft += dir
                 collidesWith.forEach { doPushBox(map, boxes, it, dir) }
             }
 
@@ -167,12 +168,13 @@ class Day15Problem : DailyProblem<Int>() {
         return boxes.sumOf { box -> box.coordOfLeft.y * 100 + box.coordOfLeft.x }
     }
 
+    @Suppress("unused")
     private fun showPart2(
         map: Array2D<Char>,
         cursor: Cursor<Char>,
         boxes: List<Box>
     ) {
-        map.mapIndexed() { c, v ->
+        map.mapIndexed { c, v ->
             if (c == cursor.coord) '@'
             else if (boxes.any { box -> box.coordOfLeft == c }) '['
             else if (boxes.any { box -> box.coordOfRight == c }) ']'

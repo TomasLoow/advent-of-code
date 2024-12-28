@@ -52,7 +52,7 @@ class Day7Problem : DailyProblem<Int>() {
 
     private lateinit var crabPositions: List<Int>
 
-    fun parseCrabPositions(): CrabPositions {
+    private fun parseCrabPositions(): CrabPositions {
         return parseOneLineOfSeparated(getInputText(), ::parseInt, ",")
     }
 

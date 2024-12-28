@@ -121,7 +121,7 @@ val events = mapOf(
         )
 )
 val RUN_FOR_YEAR: Int? = null
-val TIMES_TO_RUN = 10
+const val TIMES_TO_RUN = 10
 
 @OptIn(ExperimentalTime::class)
 fun main() {
@@ -150,7 +150,7 @@ fun main() {
         yearSummary[year] = totalTime
     }
     println("=== Year totals ===")
-    yearSummary.forEach { year, dur ->
+    yearSummary.forEach { (year, dur) ->
         val numProblems = eventsToRun[year]!!.size
         val avg = dur / numProblems
         println("Year ${year}\t${dur}\t($numProblems solved)\t$avg/problem")

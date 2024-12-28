@@ -1,3 +1,5 @@
+@file:Suppress("unused")
+
 package aoc.utils.geometry
 
 import aoc.utils.extensionFunctions.nonEmptyLines
@@ -31,7 +33,7 @@ class Array2D<T : Any> {
         this.data = raw.toTypedArray()
     }
 
-    constructor(width: Int, height: Int, initital: T) {
+    constructor(width: Int, height: Int, initial: T) {
         this.width = width
         this.height = height
         val capacity = width * height
@@ -39,7 +41,7 @@ class Array2D<T : Any> {
         this.rect = Rect(Coord(0, 0), Coord(width - 1, height - 1))
 
 
-        this.data = Array(capacity) { initital }
+        this.data = Array(capacity) { initial }
     }
 
     constructor(width: Int, height: Int, f: (Coord) -> T) {
@@ -162,7 +164,7 @@ class Array2D<T : Any> {
     }
 
     fun neighbourCoords(c: Coord, diagonal: Boolean = true): List<Coord> {
-        val pattern = if (diagonal) STEPSWITHDIAGONALS else STEPSWITHOUTDIAGONALS
+        val pattern = if (diagonal) stepsWithDiagonals else stepsWithoutDiagonals
         val idx = c2Idx(c)
 
         return pattern.map { it + idx }.filter {
@@ -171,7 +173,7 @@ class Array2D<T : Any> {
     }
 
     fun neighbourValues(c: Coord, diagonal: Boolean = true): List<T> {
-        val pattern = if (diagonal) STEPSWITHDIAGONALS else STEPSWITHOUTDIAGONALS
+        val pattern = if (diagonal) stepsWithDiagonals else stepsWithoutDiagonals
         val idx = c2Idx(c)
 
 
@@ -324,7 +326,7 @@ class Array2D<T : Any> {
         }
     }
 
-    private val STEPSWITHDIAGONALS: Array<Int>
+    private val stepsWithDiagonals: Array<Int>
         get() = arrayOf(
             width,
             width - 1,
@@ -336,7 +338,7 @@ class Array2D<T : Any> {
             -(width + 1),
         )
 
-    private val STEPSWITHOUTDIAGONALS: Array<Int>
+    private val stepsWithoutDiagonals: Array<Int>
         get() = arrayOf(
             width,
             1,
@@ -353,12 +355,16 @@ class Array2D<T : Any> {
             })
         }
 
-        fun a2renderBool(b: Boolean): String = if (b) "█" else " "
-        fun a2renderInt(b: Int): String = b.toString()
-
+        fun renderBool(a: Boolean): String = if (a) "█" else " "
+        fun renderInt(a: Int): String = a.toString()
+        fun renderChar(a: Char): String = a.toString()
     }
-
-
 }
 
+fun showCharArray(a: Array2D<Char>) = a.show { it.toString() }
+fun showIntArray(a: Array2D<Int>) = a.show { it.toString() }
+fun showBooleanArray(a: Array2D<Boolean>) = a.show { if (it) "█" else " " }
 
+fun printCharArray(a: Array2D<Char>) = println(showCharArray(a))
+fun printIntArray(a: Array2D<Int>) = println(showIntArray(a))
+fun printBooleanArray(a: Array2D<Boolean>) = println(showBooleanArray(a))

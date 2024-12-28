@@ -1,3 +1,4 @@
+@file:Suppress("unused")
 package aoc.utils.extensionFunctions
 
 /** Shifts array so element at idx+1 moves to idx,
@@ -67,22 +68,18 @@ fun <E> Iterable<E>.allUnorderedPairs(): Sequence<Pair<E, E>> {
     }
 }
 
-@SuppressWarnings("unused")
 fun <T : Comparable<T>> Iterable<T>.isAscending(): Boolean {
     return this.zipWithNext().all { (a, b) -> a <= b }
 }
 
-@SuppressWarnings("unused")
 fun <T : Comparable<T>> Iterable<T>.isStrictlyAscending(): Boolean {
     return this.zipWithNext().all { (a, b) -> a < b }
 }
 
-@SuppressWarnings("unused")
 fun <T : Comparable<T>> Iterable<T>.isDescending(): Boolean {
     return this.zipWithNext().all { (a, b) -> a >= b }
 }
 
-@SuppressWarnings("unused")
 fun <T : Comparable<T>> Iterable<T>.isStrictlyDescending(): Boolean {
     return this.zipWithNext().all { (a, b) -> a > b }
 }

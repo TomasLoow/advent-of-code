@@ -17,6 +17,7 @@ data class CucumberFloor(
         map[coordToIdx(x,y)] = c
     }
 
+    @Suppress("unused")
     fun print() {
         map.toList().chunked(width).forEach {
             it.forEach { c: Char -> print(c) }

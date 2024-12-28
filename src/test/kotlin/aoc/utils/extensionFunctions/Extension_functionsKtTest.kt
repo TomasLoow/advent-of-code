@@ -2,8 +2,6 @@ package aoc.utils.extensionFunctions
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
-import kotlin.math.roundToInt
-import kotlin.math.roundToLong
 import kotlin.test.Test
 import kotlin.test.assertFalse
 
@@ -52,19 +50,19 @@ class MiscKtTest {
 
     @Test
     fun `test permutationsSequence`() {
-        val perms =  listOf(1,2,3).permutationsSequence().toSet()
+        val perms = listOf(1, 2, 3).permutationsSequence().toSet()
         assertEquals(6, perms.size)
-        assertTrue(listOf(1,2,3) in perms)
-        assertTrue(listOf(1,3,2) in perms)
-        assertTrue(listOf(2,1,3) in perms)
-        assertTrue(listOf(2,3,1) in perms)
-        assertTrue(listOf(3,1,2) in perms)
-        assertTrue(listOf(3,2,1) in perms)
+        assertTrue(listOf(1, 2, 3) in perms)
+        assertTrue(listOf(1, 3, 2) in perms)
+        assertTrue(listOf(2, 1, 3) in perms)
+        assertTrue(listOf(2, 3, 1) in perms)
+        assertTrue(listOf(3, 1, 2) in perms)
+        assertTrue(listOf(3, 2, 1) in perms)
     }
 
     @Test
     fun `test empty permutationsSequence`() {
-        val perms =  listOf<Int>().permutationsSequence().toSet()
+        val perms = listOf<Int>().permutationsSequence().toSet()
         assertEquals(1, perms.size)
         assertTrue(listOf() in perms)
     }
@@ -72,7 +70,7 @@ class MiscKtTest {
     @Test
     fun `test larger permutationsSequence`() {
         // Works fine up to 10 or 11 somewhere.
-        val perms =  (1..10).toList().permutationsSequence()
+        val perms = (1..10).toList().permutationsSequence()
         val expectedCount = (1..10).toList().product()
         assertEquals(expectedCount, perms.count())
     }
@@ -82,10 +80,10 @@ class MiscKtTest {
         assertTrue(listOf(1, 2, 3, 4, 5).isAscending())
         assertTrue(listOf(1, 2, 3, 4, 5).isStrictlyAscending())
 
-        assertTrue(listOf(5,4,3,2,1).isStrictlyDescending())
-        assertTrue(listOf(5,4,3,2,1).isDescending())
-        assertTrue(listOf(5,4,3,2,2).isDescending())
-        assertFalse(listOf(5,4,3,2,2).isStrictlyDescending())
+        assertTrue(listOf(5, 4, 3, 2, 1).isStrictlyDescending())
+        assertTrue(listOf(5, 4, 3, 2, 1).isDescending())
+        assertTrue(listOf(5, 4, 3, 2, 2).isDescending())
+        assertFalse(listOf(5, 4, 3, 2, 2).isStrictlyDescending())
 
         assertTrue(listOf(2, 2, 3, 3, 5).isAscending())
         assertFalse(listOf(2, 2, 3, 3, 5).isStrictlyAscending())

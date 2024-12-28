@@ -1,13 +1,98 @@
 package aoc.year2024
 
 import DailyProblem
-import aoc.utils.*
+import aoc.utils.emptyMutableMap
 import aoc.utils.extensionFunctions.nonEmptyLines
 import aoc.utils.geometry.Coord
 import aoc.utils.geometry.Direction
-import aoc.utils.geometry.Rect
 import aoc.utils.geometry.decomposeDirs
+import aoc.utils.parseDirectionFromArrow
 import kotlin.time.ExperimentalTime
+
+class Day21Problem : DailyProblem<Long>() {
+
+    override val number = 21
+    override val year = 2024
+    override val name = "Keypad Conundrum"
+
+    private lateinit var goalNumbers: List<String>
+
+    override fun commonParts() {
+        goalNumbers = getInputText().nonEmptyLines()
+    }
+
+    override fun part1(): Long {
+
+        return goalNumbers.sumOf { line ->
+            val target = solveNumPad(line)
+            val x = line.filter { it != 'A' }.toInt()
+            val sol = solveN(target, 2)
+            x * sol
+        }
+    }
+
+    override fun part2(): Long {
+        return goalNumbers.sumOf { line ->
+            val target = solveNumPad(line)
+            val x = line.filter { it != 'A' }.toInt()
+            val sol = solveN(target, 25)
+            x * sol
+        }
+    }
+
+    private fun solveNumPad(first: String): String {
+        val np = NumPad()
+        val p: List<Action> = np.solve(first)
+        return p.renderActions()
+    }
+
+    private fun solveN(code: String, times: Int = 25): Long {
+
+        val goal = parseDirButtons(code)
+        val divided = splitDirPresses(goal)
+        assert(divided.joinToString("") == goal.renderDBs())
+        val dp = DirPad()
+        var chunkCounts = buildMap {
+            divided.distinct().forEach { chunk ->
+                put(chunk, divided.count { it == chunk }.toLong())
+            }
+        }
+
+        repeat(times) {
+            // if (idx > 1 ) dp.special = true
+            val r = chunkCounts.map { (chunk, amount) ->
+                dp.solve(chunk).renderActions() to amount
+            }
+
+            chunkCounts = buildMap {
+                r.forEach { (chunk, amount) ->
+                    splitDirPresses(parseDirButtons(chunk)).forEach { newChunk ->
+                        if (newChunk in this) {
+                            this[newChunk] = this[newChunk]!! + amount
+                        } else {
+                            this[newChunk] = amount
+                        }
+                    }
+                }
+            }
+        }
+        return (chunkCounts.toList().sumOf { (st, c) -> c * st.length.toLong() })
+    }
+
+
+    private fun splitDirPresses(points: List<DirButton>): List<String> {
+        val sb = StringBuilder(points.renderDBs())
+
+        return buildList {
+            while (sb.isNotEmpty()) {
+                val pre = sb.takeWhile { it != 'A' }
+                sb.delete(0, pre.length + 1)
+                add(pre.toString() + "A")
+            }
+        }
+    }
+}
+
 
 data class NumButton(val i: Int?) {
     fun isA(): Boolean = i == null
@@ -44,9 +129,8 @@ abstract class Pad<A> {
     abstract val padMap: MutableMap<Coord, A>
     abstract val start: A
     abstract val void: Coord
-    abstract val rect: Rect
-    protected val cache1 = emptyMutableMap<Pair<A, A>, List<Action>>()
-    protected val cache2 = emptyMutableMap<String, List<Action>>()
+    private val cache1 = emptyMutableMap<Pair<A, A>, List<Action>>()
+    private val cache2 = emptyMutableMap<String, List<Action>>()
 
 
     abstract fun parseA(c: Char): A
@@ -122,8 +206,7 @@ abstract class Pad<A> {
 
 }
 
-data class NumPad(val pos: Coord) : Pad<NumButton>() {
-    override val rect = numPadRect
+class NumPad : Pad<NumButton>() {
     override val start = NumButton.a
 
     override fun parseA(c: Char): NumButton {
@@ -138,8 +221,7 @@ data class NumPad(val pos: Coord) : Pad<NumButton>() {
     override val padMap = numPad
 }
 
-data class DirPad(val pos: Coord) : Pad<DirButton>() {
-    override val rect = dirPadRect
+class DirPad : Pad<DirButton>() {
     override val void = dirPadVoid
     override val padMap = dirPad
     override val start = DirButton.enter
@@ -183,6 +265,7 @@ data class DirPad(val pos: Coord) : Pad<DirButton>() {
         put('<' to 'v', ">")
         put('<' to '>', ">>")
     }
+
     override fun solve(from: DirButton, to: DirButton): List<Action> {
         return parseActions(moveMap[from.toChar() to to.toChar()]!!)
     }
@@ -204,9 +287,7 @@ val dirPad = mutableMapOf(
     Coord(1, 1) to DirButton(Direction.DOWN),
     Coord(2, 1) to DirButton(Direction.RIGHT),
 )
-val dirPadStart = dirPad.toList().first { it.second.isEnter() }.first
 val dirPadVoid = Coord(0, 0)
-val dirPadRect = Rect.bounding(dirPad.keys)
 
 val numPad = mutableMapOf(
     Coord(0, 0) to NumButton(7),
@@ -221,93 +302,8 @@ val numPad = mutableMapOf(
     Coord(1, 3) to NumButton(0),
     Coord(2, 3) to NumButton.a,
 )
-val numPadStart = Coord(2, 3)
 val numPadVoid = Coord(0, 3)
-val numPadRect = Rect.bounding(numPad.keys)
 
-class Day21Problem : DailyProblem<Long>() {
-
-    override val number = 21
-    override val year = 2024
-    override val name = "Keypad Conundrum"
-
-    private lateinit var goalNumbers: List<String>
-
-    override fun commonParts() {
-        goalNumbers = getInputText().nonEmptyLines()
-    }
-
-    override fun part1(): Long {
-
-        return goalNumbers.sumOf { line ->
-            val target = solveNumPad(line)
-            val x = line.filter { it != 'A' }.toInt()
-            val sol = solveN(target, 2)
-            x * sol
-        }
-    }
-
-    override fun part2(): Long {
-        return goalNumbers.sumOf { line ->
-            val target = solveNumPad(line)
-            val x = line.filter { it != 'A' }.toInt()
-            val sol = solveN(target, 25)
-            x * sol
-        }
-    }
-
-    private fun solveNumPad(first: String): String {
-        val np = NumPad(numPadStart)
-        val p: List<Action> = np.solve(first)
-        return p.renderActions()
-    }
-
-    private fun solveN(code: String, times: Int = 25): Long {
-
-        val goal = parseDirButtons(code)
-        val divided = splitDirPresses(goal)
-        assert(divided.joinToString("") == goal.renderDBs())
-        val dp = DirPad(dirPadStart)
-        var chunkCounts = buildMap {
-            divided.distinct().forEach { chunk ->
-                put(chunk, divided.count { it == chunk }.toLong())
-            }
-        }
-
-        repeat(times) {
-            // if (idx > 1 ) dp.special = true
-            val r = chunkCounts.map { (chunk, amount) ->
-                dp.solve(chunk).renderActions() to amount
-            }
-
-            chunkCounts = buildMap {
-                r.forEach { (chunk, amount) ->
-                    splitDirPresses(parseDirButtons(chunk)).forEach { newChunk ->
-                        if (newChunk in this) {
-                            this[newChunk] = this[newChunk]!! + amount
-                        } else {
-                            this[newChunk] = amount
-                        }
-                    }
-                }
-            }
-        }
-        return (chunkCounts.toList().sumOf { (st, c) -> c * st.length.toLong() })
-    }
-
-
-    private fun splitDirPresses(points: List<DirButton>): List<String> {
-        val sb = StringBuilder(points.renderDBs())
-
-        return buildList {
-            while (sb.isNotEmpty()) {
-                val pre = sb.takeWhile { it != 'A' }
-                sb.delete(0, pre.length + 1)
-                add(pre.toString() + "A")
-            }
-        }
-    }
-}
 
 private fun List<DirButton>.renderDBs(): String {
     return this.map { if (it.isEnter()) 'A' else it.dir!!.toArrowChar() }.joinToString("")

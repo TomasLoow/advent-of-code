@@ -48,7 +48,7 @@ class Day12Problem : DailyProblem<Int>() {
         }
     }
 
-    fun countPerimeter(set: Set<Coord>): Int {
+    private fun countPerimeter(set: Set<Coord>): Int {
         return set.sumOf { coord ->
             4 - coord.neighbours().count { it in set }
         }
@@ -91,7 +91,7 @@ class Day12Problem : DailyProblem<Int>() {
 
 
     override fun part2(): Int {
-        return regions.asSequence().sumOf { (_, set) ->
+        return regions.sumOf { (_, set) ->
             countSides(set) * set.size
         }
     }

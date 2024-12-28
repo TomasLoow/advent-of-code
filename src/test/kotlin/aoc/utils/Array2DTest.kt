@@ -26,7 +26,7 @@ class Array2DTest {
             9012345678
 
         """.trimIndent()
-        assertEquals(expected, arr.show { Array2D.a2renderInt(it) })
+        assertEquals(expected, arr.show { Array2D.renderInt(it) })
         val arrB = Array2D(2, 2) { (x, y) ->
             2 * x + 3 * y + 1
         }
@@ -35,7 +35,7 @@ class Array2DTest {
             46
 
         """.trimIndent()
-        assertEquals(expectedB, arrB.show { Array2D.a2renderInt(it) })
+        assertEquals(expectedB, arrB.show { Array2D.renderInt(it) })
     }
 
     @Test
@@ -202,7 +202,7 @@ class Array2DTest {
         ) { c -> c.digitToInt() }
 
         intArray.shiftDown(1, 0)
-        val res = intArray.show { Array2D.a2renderInt(it) }
+        val res = intArray.show { Array2D.renderInt(it) }
         assertEquals(
             """
             000
@@ -213,7 +213,7 @@ class Array2DTest {
         )
 
         intArray.shiftDown(1, 0)
-        val res2 = intArray.show { Array2D.a2renderInt(it) }
+        val res2 = intArray.show { Array2D.renderInt(it) }
         assertEquals(
             """
             000
@@ -237,7 +237,7 @@ class Array2DTest {
         ) { c -> c.digitToInt() }
 
         intArray.shiftUp(1, 0)
-        val res = intArray.show { Array2D.a2renderInt(it) }
+        val res = intArray.show { Array2D.renderInt(it) }
         assertEquals(
             """
             149
@@ -248,7 +248,7 @@ class Array2DTest {
         )
 
         intArray.shiftUp(1, 0)
-        val res2 = intArray.show { Array2D.a2renderInt(it) }
+        val res2 = intArray.show { Array2D.renderInt(it) }
         assertEquals(
             """
             187
@@ -283,7 +283,7 @@ class Array2DTest {
             00000
             00000
             
-        """.trimIndent(), arr.show { Array2D.a2renderInt(it) })
+        """.trimIndent(), arr.show { Array2D.renderInt(it) })
         assertEquals(c.prev, Coord(0, 1))
 
         val a2 = Array2D(3, 3, 0)
@@ -297,7 +297,7 @@ class Array2DTest {
             103
             040
             
-        """.trimIndent(), a2.show { Array2D.a2renderInt(it) })
+        """.trimIndent(), a2.show { Array2D.renderInt(it) })
         assertEquals(c2.coord, Coord(0, 1))
         assertEquals(c2.prev, Coord(1, 2))
 

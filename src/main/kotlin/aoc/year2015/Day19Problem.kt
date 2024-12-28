@@ -24,7 +24,7 @@ class Day19Problem : DailyProblem<Int>() {
         rules = r
     }
 
-    fun applyRule(s: String, atom: String, production: String): List<String> {
+    private fun applyRule(s: String, atom: String, production: String): List<String> {
         val matches = atom.toRegex().findAll(s)
         return matches.map { match ->
             s.subSequence(0, match.range.first).toString() + production + s.subSequence(

@@ -21,11 +21,11 @@ class Day17Problem : DailyProblem<BigInteger>() {
     private lateinit var airFlowList: List<Direction>
     private lateinit var tetrisPit: Pit
 
-    class Rock(var shape: Set<Coord>, var x: Int, var y:Int, val world: Pit) {
+    class Rock(private var shape: Set<Coord>, var x: Int, var y:Int, private val world: Pit) {
 
-        val offsetCoords: Collection<Coord>
+        private val offsetCoords: Collection<Coord>
             get() {
-                return shape.map { it.copy(it.x+x, it.y+y) }
+                return shape.map { it.copy(x = it.x+x, y = it.y+y) }
             }
 
         fun tryToMoveHorizontally(direction: Direction) {
@@ -35,7 +35,7 @@ class Day17Problem : DailyProblem<BigInteger>() {
                 else -> throw Exception("wat?")
             }
             val shifted = offsetCoords.map { coord: Coord -> coord.copy(x=coord.x+dx) }
-            if (shifted.all { c -> c.x >= 0 && c.x <= 6 && !spaceBlocked(c.x, c.y) })
+            if (shifted.all { c -> c.x in (0..6) && !spaceBlocked(c.x, c.y) })
                 x += dx
         }
 
@@ -114,6 +114,7 @@ class Day17Problem : DailyProblem<BigInteger>() {
         makePit()
     }
 
+    @Suppress("unused")
     private fun printPit() {
         tetrisPit.reversed().forEach { line ->
             (0..6).forEach { print(if (line[it]) "#" else ".") }

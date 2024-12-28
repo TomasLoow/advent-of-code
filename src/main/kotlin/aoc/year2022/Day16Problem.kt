@@ -19,7 +19,6 @@ class Day16Problem : DailyProblem<Int>() {
 
     private lateinit var allRooms: Set<Room>
     private lateinit var roomsWithValves: Set<Room>
-    private lateinit var aa: Room
 
     private lateinit var distances: Map<String, MutableMap<String, Int>>
 
@@ -56,7 +55,6 @@ class Day16Problem : DailyProblem<Int>() {
         }
         allRooms = roomMap.values.toSet()
         roomsWithValves = allRooms.filter { it.flow > 0 }.toSet()
-        aa = roomMap["AA"]!!
     }
 
     private fun distance(r1: String, r2: String): Int = distances[r1]!![r2]!!

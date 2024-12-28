@@ -1,3 +1,4 @@
+@file:Suppress("unused")
 package aoc.utils.extensionFunctions
 
 val IntRange.length: Int

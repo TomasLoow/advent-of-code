@@ -2,6 +2,7 @@ package aoc.year2023
 
 import DailyProblem
 import aoc.utils.extensionFunctions.nonEmptyLines
+import kotlin.math.max
 import kotlin.time.ExperimentalTime
 
 typealias Game = Pair<Int,List<Map<String, Int>>>
@@ -55,7 +56,7 @@ class Day2Problem : DailyProblem<Int>() {
         val res = mutableMapOf("red" to 0, "green" to 0, "blue" to 0)
         reveals.forEach { reveal ->
             reveal.forEach { (color, count) ->
-                res[color] = Math.max(res[color]!!, count)
+                res[color] = max(res[color]!!, count)
             }
         }
         return res

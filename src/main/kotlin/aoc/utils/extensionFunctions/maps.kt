@@ -1,3 +1,4 @@
+@file:Suppress("unused")
 package aoc.utils.extensionFunctions
 
 import aoc.utils.emptyMutableMap
@@ -31,7 +32,6 @@ fun <K> MutableMap<K, Int>.increase(key: K, value: Int) = this.mutate(key, 0) { 
  *         are the keys in the new map, and corresponding values are sets of
  *         keys from the original map.
  */
-@SuppressWarnings("unused")
 fun <K, V> Map<K, V>.invert(): Map<V, Set<K>> {
     val res = emptyMutableMap<V, Set<K>>()
     this.forEach { (k, v) ->

@@ -7,7 +7,7 @@ import aoc.utils.BFS
 import aoc.utils.geometry.Coord
 import kotlin.time.ExperimentalTime
 
-class HillClimbBFS(protected val map: Array2D<Int>, goal: Coord) : BFS<Coord>(goal) {
+class HillClimbBFS(private val map: Array2D<Int>, goal: Coord) : BFS<Coord>(goal) {
     override fun reachable(state: Coord): Collection<Coord> {
         val currentHeight = map[state]
         return map.neighbourCoordsAndValues(state, diagonal = false)
@@ -17,7 +17,7 @@ class HillClimbBFS(protected val map: Array2D<Int>, goal: Coord) : BFS<Coord>(go
     }
 }
 
-class HillClimbAStar(protected val map: Array2D<Int>, goal: Coord) : AStar<Coord>(goal) {
+class HillClimbAStar(private val map: Array2D<Int>, goal: Coord) : AStar<Coord>(goal) {
     override fun heuristic(state: Coord): Int {
         return state.manhattanDistanceTo(goal)
     }

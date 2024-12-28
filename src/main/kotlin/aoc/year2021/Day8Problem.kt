@@ -13,9 +13,9 @@ class Day8Problem : DailyProblem<Long>() {
     override val year = 2021
     override val name = "Seven Segment Search"
 
-    lateinit var solved: List<List<Int>>
+    private lateinit var solved: List<List<Int>>
 
-    fun parseDisplaysFile(): List<Pair<List<ActiveWires>, List<ActiveWires>>> {
+    private fun parseDisplaysFile(): List<Pair<List<ActiveWires>, List<ActiveWires>>> {
         fun strToWires(data: String): ActiveWires = data.toCharArray().toSet()
         fun parseWiresList(s: String): List<ActiveWires> = parseOneLineOfSeparated(s, ::strToWires, " ")
         return parseListOfPairs(getInputText(), ::parseWiresList, ::parseWiresList, separator = " | ")
@@ -26,7 +26,7 @@ class Day8Problem : DailyProblem<Long>() {
         solved = lines.map { solveLine(it) }
     }
 
-    fun solveLine(line: Pair<List<ActiveWires>, List<ActiveWires>>): List<Int> {
+    private fun solveLine(line: Pair<List<ActiveWires>, List<ActiveWires>>): List<Int> {
         val (clues, displays) = line
 
         val numToWiresMap: MutableMap<Int, ActiveWires> = emptyMutableMap()

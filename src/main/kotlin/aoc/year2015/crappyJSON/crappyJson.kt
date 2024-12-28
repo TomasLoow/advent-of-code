@@ -1,3 +1,4 @@
+@file:Suppress("unused")
 package aoc.year2015.crappyJSON
 
 import java.lang.Integer.parseInt
@@ -106,7 +107,7 @@ fun printJSON(j: JSON) {
         is JSON.I -> print(j.int)
         is JSON.O -> {
             print("{")
-            j.content.forEach { k, v ->
+            j.content.forEach { (k, v) ->
                 print("\"$k\":")
                 printJSON(v)
                 if (v != j.content.values.last()) print(",")

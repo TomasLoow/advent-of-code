@@ -38,7 +38,7 @@ class Day25Problem : DailyProblem<Long>() {
 
         val idx = findIndexAtCoordinate(targetCol, targetRow)
         var res = 20151125L
-        (2..idx).forEach { res = next(res) }
+        repeat((idx - 1)) { res = next(res) }
         return res
     }
 

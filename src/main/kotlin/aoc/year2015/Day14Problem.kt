@@ -14,7 +14,7 @@ class Day14Problem : DailyProblem<Int>() {
     override val name = "Reindeer Olympics"
 
     companion object {
-        val stopTime = 2503
+        const val STOP_TIME = 2503
     }
 
     private lateinit var reindeers: List<Reindeer>
@@ -39,14 +39,14 @@ class Day14Problem : DailyProblem<Int>() {
 
     override fun part1(): Int {
         return reindeers.maxOf { r ->
-            r.distanceAfter(stopTime)
+            r.distanceAfter(STOP_TIME)
         }
     }
 
     override fun part2(): Int {
         val scores = emptyMutableMap<String, Int>()
         reindeers.forEach { scores[it.name] = 0 }
-        (1 .. stopTime).forEach { t ->
+        (1 .. STOP_TIME).forEach { t ->
             val ranking = reindeers.map { r -> Pair(r, r.distanceAfter(t)) }.sortedByDescending { it.second }
             val leaderPos = ranking.first().second
             ranking.filter { (_, p) -> p == leaderPos }.forEach { (r, _) ->

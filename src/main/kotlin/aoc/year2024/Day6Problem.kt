@@ -22,13 +22,13 @@ class Day6Problem : DailyProblem<Int>() {
 
     override fun commonParts() {
         val d = Array2D.parseFromLines(getInputText(), ::id)
-        val (coord, dir) = d.findIndexedByCoordinate() { _, c -> c in "v^<>" }!!
+        val (coord, dir) = d.findIndexedByCoordinate { _, c -> c in "v^<>" }!!
         guardStartPos = coord
         guardStartDir = parseDirectionFromArrow(dir)
         map = d.map { it == '#' }
     }
 
-    fun runPart1(): Set<Coord> {
+    private fun runPart1(): Set<Coord> {
         val guard = Guard(map.cursor(guardStartPos), guardStartDir)
         val visited = mutableSetOf(guard.cursor.coord)
         while (true) {
@@ -49,7 +49,7 @@ class Day6Problem : DailyProblem<Int>() {
     }
 
 
-    fun runPart2(extraWall: Coord): Boolean {
+    private fun runPart2(extraWall: Coord): Boolean {
         val s: Sequence<Pair<Coord, Direction>> = sequence {
             val guard = Guard(map.cursor(guardStartPos), guardStartDir)
             while (true) {
@@ -68,7 +68,7 @@ class Day6Problem : DailyProblem<Int>() {
 
     override fun part2(): Int {
         val visitedNormally = runPart1()
-        return visitedNormally.filter { coord -> runPart2(coord) }.count()
+        return visitedNormally.count { coord -> runPart2(coord) }
     }
 }
 

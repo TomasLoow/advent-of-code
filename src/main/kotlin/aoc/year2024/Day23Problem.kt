@@ -17,15 +17,15 @@ class Day23Problem : DailyProblem<String>() {
 
     override fun commonParts() {
         data = buildMap {
-            getInputText().nonEmptyLines().forEach {
-                val (a, b) = it.split("-")
+            getInputText().nonEmptyLines().forEach { line ->
+                val (a, b) = line.split("-")
                 mutate(a, emptySet()) { it + b }
                 mutate(b, emptySet()) { it + a }
             }
         }
     }
 
-    fun findTriplets(): MutableSet<Triple<String, String, String>> {
+    private fun findTriplets(): MutableSet<Triple<String, String, String>> {
         val res = mutableSetOf<Triple<String, String, String>>()
         data.keys.toList().allUnorderedPairs().filter { (a, b) -> a in data[b]!! }.forEach { (a, b) ->
             data[a]!!.intersect(data[b]!!).forEach { c ->
@@ -37,7 +37,7 @@ class Day23Problem : DailyProblem<String>() {
     }
 
     override fun part1(): String {
-        val tps = findTriplets().filter { it.toList().any { it.startsWith("t") } }
+        val tps = findTriplets().filter { triplet -> triplet.toList().any { computer -> computer.startsWith("t") } }
         return tps.count().toString()
     }
 
@@ -46,10 +46,9 @@ class Day23Problem : DailyProblem<String>() {
     https://en.wikipedia.org/wiki/Bron%E2%80%93Kerbosch_algorithm
 
      */
-    fun findCliques(graph: Map<String, Set<String>>): List<Set<String>> {
+    private fun findCliques(graph: Map<String, Set<String>>): List<Set<String>> {
         val cliques = mutableListOf<Set<String>>()
         val nodes = graph.keys.toMutableSet()
-        val neighbors = graph
 
         /* Inner recursive helper */
         fun run(rSet: Set<String>, pSet: MutableSet<String>, xSet: MutableSet<String>) {
@@ -58,12 +57,12 @@ class Day23Problem : DailyProblem<String>() {
             } else {
                 for (v in pSet.toList()) {
                     val newR = rSet + v
-                    if (v !in neighbors) {
+                    if (v !in graph) {
                         run(newR, emptyMutableSet(), emptyMutableSet())
                         continue
                     }
-                    val newP = pSet.intersect(neighbors[v]!!).toMutableSet()
-                    val newX = xSet.intersect(neighbors[v]!!).toMutableSet()
+                    val newP = pSet.intersect(graph[v]!!).toMutableSet()
+                    val newX = xSet.intersect(graph[v]!!).toMutableSet()
                     run(newR, newP, newX)
                     pSet.remove(v)
                     xSet.add(v)

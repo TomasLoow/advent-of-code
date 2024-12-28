@@ -77,13 +77,13 @@ class Day14Problem : DailyProblem<Int>() {
         val idxVarMinX = (0..mapWidth).map { idx ->
             val movedRobots = initialRobots.map { robot -> moveRobot(robot, idx) }
             idx to movedRobots.map { it.c.x }.variance()
-        }.sortedBy { it.second }.first().first
+        }.minByOrNull { it.second }!!.first
 
         // The y positions loop with a cycle of mapHeight. Find index where the y positions have the lowest variance
         val idxVarMinY = (0..mapHeight).map { idx ->
             val movedRobots = initialRobots.map { robot -> moveRobot(robot, idx) }
             idx to movedRobots.map { it.c.y }.variance()
-        }.sortedBy { it.second }.first().first
+        }.minByOrNull { it.second }!!.first
 
         // Find the index that is idxVarMinX (mod) mapWidth and  idxVarMinY (mod) mapHeight
         val resIdx = (0..mapWidth * mapHeight).first { idx ->
@@ -94,7 +94,7 @@ class Day14Problem : DailyProblem<Int>() {
         return resIdx
     }
 
-
+    @Suppress("unused")
     private fun show(robots: List<Robot>): String {
         val a = Array2D<Int>(mapWidth, mapHeight) { _ -> 0 }
         robots.forEach { a[it.c] = a[it.c] + 1 }

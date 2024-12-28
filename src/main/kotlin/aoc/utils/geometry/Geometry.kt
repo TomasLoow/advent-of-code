@@ -1,3 +1,4 @@
+@file:Suppress("unused")
 package aoc.utils.geometry
 
 import kotlin.math.absoluteValue

@@ -1,3 +1,4 @@
+@file:Suppress("unused")
 package aoc.utils
 
 fun gcd(a: Int, b: Int): Int {

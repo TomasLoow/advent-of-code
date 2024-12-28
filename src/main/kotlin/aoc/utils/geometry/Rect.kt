@@ -1,4 +1,8 @@
+@file:Suppress("unused")
 package aoc.utils.geometry
+
+import kotlin.math.max
+import kotlin.math.min
 
 data class Rect(val topLeft: Coord, val bottomRight: Coord) {
     val width: Int
@@ -9,6 +13,11 @@ data class Rect(val topLeft: Coord, val bottomRight: Coord) {
     val height: Int
         get() {
             return bottomRight.y - topLeft.y + 1
+        }
+
+    val area: Int
+        get() {
+            return width * height
         }
 
     val topRight: Coord
@@ -43,10 +52,10 @@ data class Rect(val topLeft: Coord, val bottomRight: Coord) {
                 Acc(minX = Int.MAX_VALUE, minY = Int.MAX_VALUE, maxX = Int.MIN_VALUE, maxY = Int.MIN_VALUE)
             ) { acc: Acc, coord: Coord ->
                 Acc(
-                    minX = Math.min(coord.x, acc.minX),
-                    minY = Math.min(coord.y, acc.minY),
-                    maxX = Math.max(coord.x, acc.maxX),
-                    maxY = Math.max(coord.y, acc.maxY)
+                    minX = min(coord.x, acc.minX),
+                    minY = min(coord.y, acc.minY),
+                    maxX = max(coord.x, acc.maxX),
+                    maxY = max(coord.y, acc.maxY)
                 )
             }
             return Rect(Coord(minX, minY), Coord(maxX, maxY))

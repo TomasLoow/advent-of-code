@@ -20,7 +20,7 @@ class Day1Problem : DailyProblem<Int>() {
         return masses.sumOf { it / 3 - 2 }
     }
 
-    fun fuelNeeded(mass: Int): Int {
+    private fun fuelNeeded(mass: Int): Int {
         val fuelForMass = mass / 3 - 2
         if (fuelForMass < 0) return 0
 

@@ -31,10 +31,10 @@ class Day24Problem : DailyProblem<Int>() {
 
                 else -> TODO("invalid direction")
             }
-            if (s.first() in "ns") {
-                return listOf(d) + parseLine(s.drop(2))
+            return if (s.first() in "ns") {
+                listOf(d) + parseLine(s.drop(2))
             } else {
-                return listOf(d) + parseLine(s.drop(1))
+                listOf(d) + parseLine(s.drop(1))
             }
         }
         data = getInputText().nonEmptyLines().map(::parseLine)
@@ -48,7 +48,7 @@ class Day24Problem : DailyProblem<Int>() {
         data.forEach { line ->
             coord = Coord.origin
             line.forEach { d ->
-                coord = coord + d
+                coord += d
             }
             if (coord in initialFlippedAfterPart1) {
                 initialFlippedAfterPart1.remove(coord)
@@ -62,7 +62,7 @@ class Day24Problem : DailyProblem<Int>() {
         return initialFlippedAfterPart1.size
     }
 
-    fun Coord.hexNeighbors(): List<Coord> = listOf(
+    private fun Coord.hexNeighbors(): List<Coord> = listOf(
         this.copy(x = this.x - 1),
         this.copy(x = this.x + 1),
         this.copy(y = this.y - 1),
@@ -71,12 +71,12 @@ class Day24Problem : DailyProblem<Int>() {
         this.copy(x = this.x - 1, y = this.y + 1),
     )
 
-    fun evolve(map: Set<Coord>): Set<Coord> {
+    private fun evolve(map: Set<Coord>): Set<Coord> {
         val whiteNeighbors = map.flatMap { it.hexNeighbors() }.filter { it !in map }
         val whiteToFlip = whiteNeighbors.filter { white ->
             white.hexNeighbors().count { it in map } == 2
         }
-        val blackToFlip = map.filter { it.hexNeighbors().count { n -> n in map } !in (1..2) }
+        val blackToFlip = map.filter { it.hexNeighbors().count { n -> n in map } !in (1..2) }.toSet()
         return map - blackToFlip + whiteToFlip
     }
 

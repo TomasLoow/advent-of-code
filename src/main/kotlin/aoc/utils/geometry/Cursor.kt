@@ -1,3 +1,4 @@
+@file:Suppress("unused")
 package aoc.utils.geometry
 
 open class Cursor<T : Any>(private val map: Array2D<T>, coord: Coord) {

@@ -35,7 +35,7 @@ suspend fun main() {
                     continue
                 }
                 val response: HttpResponse = client.get("https://adventofcode.com/$year/day/$day/input")
-                val body = response.readBytes()
+                val body = response.readRawBytes()
                 file.writeBytes(body)
                 println("$fileName downloaded.")
                 Thread.sleep(1000)

@@ -3,6 +3,7 @@ package aoc.year2015
 import DailyProblem
 import aoc.utils.extensionFunctions.allUnorderedPairs
 import aoc.utils.parseAllDigits
+import kotlin.math.max
 import kotlin.time.ExperimentalTime
 
 data class RPGEntity(val hitpoints: Int, val damage: Int, val armor: Int)
@@ -47,7 +48,7 @@ class Day21Problem : DailyProblem<Int>() {
         buyingOptionsSortedByCost = shopItems().sortedBy { it.second }.toList()
     }
 
-    fun shopItems(): Sequence<Pair<RPGEntity, Int>> {
+    private fun shopItems(): Sequence<Pair<RPGEntity, Int>> {
         return sequence {
             weapons.forEach { w ->
                 (armors + null).forEach { a ->
@@ -65,8 +66,8 @@ class Day21Problem : DailyProblem<Int>() {
     fun simulate(hero: RPGEntity, enemy: RPGEntity): Boolean {
         var heroHp = hero.hitpoints
         var enemyHp = enemy.hitpoints
-        val heroDmg = Math.max(hero.damage - enemy.armor, 1)
-        val enemyDamage = Math.max(enemy.damage - hero.armor, 1)
+        val heroDmg = max(hero.damage - enemy.armor, 1)
+        val enemyDamage = max(enemy.damage - hero.armor, 1)
         while (true) {
             enemyHp -= heroDmg
             if (enemyHp <= 0) return true

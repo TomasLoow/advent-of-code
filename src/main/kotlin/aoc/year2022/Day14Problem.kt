@@ -47,12 +47,12 @@ class Day14Problem : DailyProblem<Int>() {
         }
     }
 
-    fun buildMapPart1() {
+    private fun buildMapPart1() {
         val maxX = inputLines.maxOf { line -> line.maxOf { it.x } }
         buildMap(maxX + 1, inputLines)
     }
 
-    fun buildMapPart2() {
+    private fun buildMapPart2() {
         val lineY = inputLines.maxOf { line -> line.maxOf { it.y } } + 2
 
 
@@ -62,7 +62,7 @@ class Day14Problem : DailyProblem<Int>() {
 
     }
 
-
+    @Suppress("unused")
     private fun printMap() {
         map.print { s ->
             when (s) {
@@ -73,7 +73,7 @@ class Day14Problem : DailyProblem<Int>() {
         }
     }
 
-    fun fallSand1(): Boolean {
+    private fun fallSand1(): Boolean {
         try {
             var coord = SAND_SOURCE
             while (true) {

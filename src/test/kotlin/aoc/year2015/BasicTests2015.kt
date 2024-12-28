@@ -1,4 +1,5 @@
-import aoc.year2015.*
+package aoc.year2015
+
 import org.junit.jupiter.api.Assertions.assertEquals
 import kotlin.test.Test
 

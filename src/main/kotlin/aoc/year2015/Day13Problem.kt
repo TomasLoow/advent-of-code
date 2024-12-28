@@ -32,11 +32,11 @@ class Day13Problem : DailyProblem<Int>() {
             { it.dropLast(1) },
             " would ",
             " happiness units by sitting next to "
-        ).map { (a, change, b) ->
+        ).associate { (a, change, b) ->
             personsSet.add(a)
             personsSet.add(b)
-            Pair(Pair(a,b), change)
-        }.toMap()
+            Pair(Pair(a, b), change)
+        }
         this.persons = personsSet.toList()
     }
 
@@ -49,7 +49,7 @@ class Day13Problem : DailyProblem<Int>() {
         }
     }
 
-    fun rotationInvariantPermutations(persons: List<String>): Sequence<List<String>> {
+    private fun rotationInvariantPermutations(persons: List<String>): Sequence<List<String>> {
         val someGuy = persons.first()
         return persons.drop(1).permutationsSequence().map { perm ->  listOf(someGuy) + perm }
     }

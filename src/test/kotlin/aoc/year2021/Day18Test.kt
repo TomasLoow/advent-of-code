@@ -1,3 +1,5 @@
+package aoc.year2021
+
 import aoc.year2021.Tree
 import aoc.year2021.parseSnailNumber
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -38,8 +40,7 @@ internal class Day18Test {
 
     @Test
     fun test_split() {
-        var num : Tree
-        num = parseSnailNumber("11")
+        var num : Tree = parseSnailNumber("11")
         num.split()
         assertEquals("[5,6]", num.print())
 

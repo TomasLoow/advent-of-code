@@ -15,21 +15,21 @@ class Day11Problem : DailyProblem<String>() {
         startingString = getInputText().trim()
     }
 
-    fun policy1(string: String): Boolean {
+    private fun policy1(string: String): Boolean {
         return STRAIGHTS.any { it in string }
     }
 
-    fun policy2(string: String): Boolean {
+    private fun policy2(string: String): Boolean {
         return !string.any { c -> c in FORBIDDEN }
     }
 
-    fun policy3(string: String): Boolean {
+    private fun policy3(string: String): Boolean {
         return REGEX_TWO_PAIRS.containsMatchIn(string) && !REGEX_TRIPLE.containsMatchIn(string)
     }
 
     fun policy(string: String) : Boolean =  policy1(string) && policy3(string) && policy2(string)
 
-    fun streamCandidates(startingFrom: String): Sequence<String> {
+    private fun streamCandidates(startingFrom: String): Sequence<String> {
         var str = startingFrom
         return sequence {
             while (true) {

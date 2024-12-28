@@ -26,13 +26,13 @@ class AStarTest {
 
     }
 
-    class AStarExampleWithoutHeur(map: Array2D<Boolean>, goal: Coord) : AStarExample(map, goal) {
+    class AStarExampleWithoutHeuristic(map: Array2D<Boolean>, goal: Coord) : AStarExample(map, goal) {
         override fun heuristic(state: Coord): Int {
             return 0
         }
     }
 
-    val labyrinth = """
+    private val labyrinth = """
             ....█...........
             ....█...........
             ....█.....██....
@@ -56,7 +56,7 @@ class AStarTest {
     @Test
     fun testAStar() {
 
-        val map = Array2D.parseFromLines(labyrinth.trimIndent(), { it == '█' })
+        val map = Array2D.parseFromLines(labyrinth.trimIndent()) { it == '█' }
         val goal = map.rect.bottomRight
         val asExample = AStarExample(map, goal)
         val (cost, path) = asExample.solve(Coord.origin)
@@ -70,10 +70,10 @@ class AStarTest {
 
     @Test
     fun `test heuristics improves AStar search`() {
-        val map = Array2D.parseFromLines(labyrinth, { it == '█' })
+        val map = Array2D.parseFromLines(labyrinth) { it == '█' }
         val goal = map.rect.bottomRight
         val asExample = AStarExample(map, goal)
-        val asExample2 = AStarExampleWithoutHeur(map, goal)
+        val asExample2 = AStarExampleWithoutHeuristic(map, goal)
         asExample.solve(Coord.origin)
         asExample2.solve(Coord.origin)
         assertTrue { asExample.steps < asExample2.steps }

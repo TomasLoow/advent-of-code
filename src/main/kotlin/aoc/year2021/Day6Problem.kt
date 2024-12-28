@@ -14,7 +14,7 @@ class Day6Problem : DailyProblem<Long>() {
     private val stepsPart2 = 256
 
 
-    fun parseFishesInput(): Array<Long> {
+    private fun parseFishesInput(): Array<Long> {
         val fishesCounts = Array<Long>(9) { 0 }
 
         getInputFile().readLines()

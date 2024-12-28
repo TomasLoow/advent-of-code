@@ -1,10 +1,12 @@
+package aoc.year2023
+
 import org.junit.jupiter.api.Assertions.assertEquals
 import kotlin.test.Test
 
 class BasicTests2023 {
     @Test
     fun testDay1() {
-        val problem = aoc.year2023.Day1Problem()
+        val problem = Day1Problem()
         problem.testData = true
         problem.commonParts()
         // Different test data for part1 and part2. We skip testing part1.
@@ -14,7 +16,7 @@ class BasicTests2023 {
 
     @Test
     fun testDay2() {
-        val problem = aoc.year2023.Day2Problem()
+        val problem = Day2Problem()
         problem.testData = true
         problem.commonParts()
         assertEquals(8, problem.part1())
@@ -23,7 +25,7 @@ class BasicTests2023 {
     }
     @Test
     fun testDay15() {
-        val problem = aoc.year2023.Day15Problem()
+        val problem = Day15Problem()
         problem.testData = true
         problem.commonParts()
         assertEquals(1320, problem.part1())

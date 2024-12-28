@@ -22,7 +22,7 @@ class Day8Problem : DailyProblem<Int>() {
         antennas = emptyMutableMap()
         map.mapAndFilterToListByNotNull { coord, c -> c to coord }.forEach { (c, coord) ->
             if (c != '.') {
-                antennas.mutateImp(c, mutableListOf<Coord>()) { it -> it.add(coord) }
+                antennas.mutateImp(c, mutableListOf<Coord>()) { it.add(coord) }
             }
         }
     }

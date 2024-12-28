@@ -15,11 +15,11 @@ class Day11Problem : DailyProblem<Long>() {
 
     private lateinit var state: Map<Int, Monkey>
 
-    fun parseMonkeys(): Map<Int, Monkey> {
+    private fun parseMonkeys(): Map<Int, Monkey> {
         val monkeys =
             parseBlockList(getInputText(), ::parseMonkey).mapIndexed { idx, monkeyRule -> Pair(idx, monkeyRule) }
                 .toMap()
-        monkeys.forEach { idx, monkey ->
+        monkeys.forEach { (idx, monkey) ->
             monkey.throwToTrue = monkeys[monkey.throwToTrueIdx]!!
             monkey.throwToFalse = monkeys[monkey.throwToFalseIdx]!!
         }
@@ -34,7 +34,7 @@ class Day11Problem : DailyProblem<Long>() {
         val op = if ("+" in lineOp) {
             MonkeyOp.Add(lineOp.substringAfter(" + ").toInt())
         } else {
-            if ("old * old" in lineOp) MonkeyOp.Squared() else MonkeyOp.Mul(lineOp.substringAfter(" * ").toInt())
+            if ("old * old" in lineOp) MonkeyOp.Squared else MonkeyOp.Mul(lineOp.substringAfter(" * ").toInt())
         }
         val startingItems =
             lineStart.substringAfter("  Starting items: ").split(", ").map { it.toLong() }.toMutableList()
@@ -58,7 +58,7 @@ class Day11Problem : DailyProblem<Long>() {
         var throwToFalse: Monkey? = null
     }
 
-    fun applyOp(op: MonkeyOp, v: Long): Long = when (op) {
+    private fun applyOp(op: MonkeyOp, v: Long): Long = when (op) {
         is MonkeyOp.Add -> v + op.value
         is MonkeyOp.Mul -> v * op.value
         is MonkeyOp.Squared -> v * v
@@ -67,16 +67,16 @@ class Day11Problem : DailyProblem<Long>() {
     sealed interface MonkeyOp {
         class Add(val value: Int) : MonkeyOp
         class Mul(val value: Int) : MonkeyOp
-        class Squared : MonkeyOp
+        data object Squared : MonkeyOp
     }
 
-    fun monkeyStep(state: Map<Int, Monkey>, divisor: Int = 3) {
+    private fun monkeyStep(state: Map<Int, Monkey>, divisor: Int = 3) {
         // To keep item values  for step 2, we calculate them modulo the lcm of all test values.
         // This doesn't affect any operations or tests.
         // Mine were all prime so a simple product would have worked in hindsight, but oh well. 20/20
         val modulus = state.values.map { it.test }.fold(1) { l, x -> lcm(l, x) }
 
-        state.forEach { i, m ->
+        state.forEach { (i, m) ->
             while(m.heldItems.isNotEmpty()) {
                 var item = m.heldItems.removeFirst()
                 item = applyOp(m.operation, item)
