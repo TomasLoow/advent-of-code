@@ -31,6 +31,13 @@ fun Collection<Int>.product(): Int {
     return reduce { acc, i -> acc * i }
 }
 
+/** Like product() but the result is biiiiig and is put in a Long */
+fun Collection<Int>.productL(): Long {
+    return fold(1L) { acc, i -> acc * i.toLong() }
+}
+
+
+
 fun Collection<Long>.product(): Long {
     return reduce { acc, i -> acc * i }
 }
