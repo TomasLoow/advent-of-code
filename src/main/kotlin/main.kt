@@ -1,3 +1,5 @@
+package aoc
+
 import aoc.utils.emptyMutableMap
 import kotlin.time.Duration
 import kotlin.time.ExperimentalTime
