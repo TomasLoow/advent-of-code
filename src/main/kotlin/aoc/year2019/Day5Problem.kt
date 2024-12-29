@@ -21,7 +21,7 @@ class Day5Problem : DailyProblem<Int>() {
         val memory = initMemory.copyOf()
         val computer = IntCode(memory)
 
-        val output = computer.runFully(sequenceOf(1))
+        val output = computer.runFully(listOf(1))
         return output.last()
     }
 
@@ -29,7 +29,7 @@ class Day5Problem : DailyProblem<Int>() {
         val memory = initMemory.copyOf()
         val computer = IntCode(memory)
 
-        val output = computer.runFully(sequenceOf(5))
+        val output = computer.runFully(listOf(5))
         return output.first()
     }
 }

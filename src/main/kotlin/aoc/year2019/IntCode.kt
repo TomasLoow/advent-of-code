@@ -1,5 +1,7 @@
 package aoc.year2019
 
+import aoc.utils.emptyMutableList
+
 class ExecutionFailed(val reason: String = "") : Throwable()
 
 const val OPCODE_ADD = 1
@@ -16,18 +18,29 @@ const val PARAM_MODE_POSITION = 0
 const val PARAM_MODE_IMMEDIATE = 1
 
 
-data class StepResult(val done: Boolean, val output: Int? = null)
+data class StepResult(val halted: Boolean, val output: Int? = null, val readInput : Boolean = false, val needsInput: Boolean = false)
+data class RunResult(val output: List<Int>, val halted: Boolean)
 
-class IntCode(var startingMemory: Array<Int>) {
+class IntCode(var startingMemory: Array<Int>, val name: String = "IntCode") {
     var memory: Array<Int>
 
     init {
         memory = Array(startingMemory.size) { if (it in startingMemory.indices) startingMemory.elementAt(it) else 0 }
     }
     var ptr = 0
+    var input : MutableList<Int> = emptyMutableList()
+
+    fun input(i: Int) {
+        input.add(i)
+    }
+
+    fun input(i: Collection<Int>) {
+        i.forEach { input(it) }
+    }
 
     fun reset() {
         ptr = 0
+        input.clear()
         memory = Array(startingMemory.size*2) { if (it in startingMemory.indices) startingMemory.elementAt(it) else 0 }
     }
 
@@ -49,10 +62,10 @@ class IntCode(var startingMemory: Array<Int>) {
     private fun opEquals(paramModes: Int) = op(paramModes) { a, b -> if (a == b) 1 else 0 }
     private fun opLessThan(paramModes: Int) = op(paramModes) { a, b -> if (a < b) 1 else 0 }
 
-    private fun opInput(input: Sequence<Int>) {
+    private fun opInput() {
         val target = memory[ptr + 1]
         if (target >= memory.size) throw ExecutionFailed("Out of bounds")
-        val i = input.first()
+        val i = input.removeFirst()
         memory[target] = i
         ptr += 2
     }
@@ -84,17 +97,21 @@ class IntCode(var startingMemory: Array<Int>) {
         }
     }
 
-    fun step(input: Sequence<Int>): StepResult {
+    fun step(): StepResult {
         val opcode = memory[ptr]
         val op = opcode % 100
         val paramModes = opcode / 100
 
         var output: Int? = null
+        var input = false
         when (op) {
-            OPCODE_HALT -> return StepResult(done = true)
+            OPCODE_HALT -> return StepResult(halted = true)
             OPCODE_ADD -> opAdd(paramModes)
             OPCODE_MUL -> opMul(paramModes)
-            OPCODE_INPUT -> opInput(input)
+            OPCODE_INPUT -> {
+                if (this.input.isEmpty()) { return StepResult(needsInput = true, halted = false)}
+                opInput();
+                input = true }
             OPCODE_OUTPUT -> { output = opOutput(paramModes) }
             OPCODE_EQUALS -> opEquals(paramModes)
             OPCODE_LESS_THAN -> opLessThan(paramModes)
@@ -102,22 +119,44 @@ class IntCode(var startingMemory: Array<Int>) {
             OPCODE_JUMP_IF_FALSE -> opJump(paramModes, false)
             else -> throw Exception("Unknown instruction: $op")
         }
-        return StepResult(done = false, output = output)
+        return StepResult(halted = false, output = output, readInput = input)
     }
 
-    fun runStreaming(input: Sequence<Int> = emptySequence()): Sequence<Int> {
+    fun runStreaming(input: Collection<Int> = emptyList()): Sequence<Int> {
+        input(input)
         return sequence {
             while (true) {
-                val res = step(input)
+                val res = step()
                 if (res.output != null) {
                     yield(res.output)
                 }
-                if (res.done) break
+                if (res.halted) break
             }
         }
     }
 
-    fun runFully(input: Sequence<Int> = emptySequence()): List<Int> {
+    fun runFully(input: Collection<Int> = emptyList()): List<Int> {
         return runStreaming(input).toList()
+    }
+
+    fun runUntilOutput(): RunResult {
+        while (true) {
+            val res = step()
+            if (res.output != null) {
+                return RunResult(output = listOf(res.output), halted = res.halted)
+            }
+            if (res.halted) return RunResult(output = emptyList(), halted = res.halted)
+        }
+    }
+
+    fun runUntilNeedsInputOrHalt(): RunResult {
+        var output = emptyList<Int>()
+        while (true) {
+            val res = step()
+            if (res.output != null) {
+                output += res.output
+            }
+            if (res.needsInput || res.halted) return RunResult(output = output, halted = res.halted)
+        }
     }
 }

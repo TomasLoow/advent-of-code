@@ -2,6 +2,8 @@ package aoc.year2019
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import kotlin.test.Test
+import kotlin.test.assertFalse
+import kotlin.test.assertTrue
 
 internal class IntCodeTest {
 
@@ -35,7 +37,7 @@ internal class IntCodeTest {
 
         computer.memory = arrayOf(3, 0, 4, 0, 99)
         computer.ptr = 0
-        assertEquals(listOf(7), computer.runStreaming(sequenceOf(7)).toList())
+        assertEquals(listOf(7), computer.runFully(listOf(7)))
 
     }
 
@@ -43,41 +45,41 @@ internal class IntCodeTest {
     fun test_examples_day5_part2_comparisons() {
         // input == 8
         var computer = IntCode(arrayOf(3, 9, 8, 9, 10, 9, 4, 9, 99, -1, 8))
-        assertEquals(listOf(1), computer.runStreaming(sequenceOf(8)).toList())
+        assertEquals(listOf(1), computer.runFully(listOf(8)))
         computer.reset()
-        assertEquals(listOf(0), computer.runStreaming(sequenceOf(18)).toList())
+        assertEquals(listOf(0), computer.runFully(listOf(18)))
 
         // input < 8
         computer = IntCode(arrayOf(3, 9, 7, 9, 10, 9, 4, 9, 99, -1, 8))
-        assertEquals(listOf(1), computer.runStreaming(sequenceOf(7)).toList())
+        assertEquals(listOf(1), computer.runFully(listOf(7)))
         computer.reset()
-        assertEquals(listOf(0), computer.runStreaming(sequenceOf(8)).toList())
+        assertEquals(listOf(0), computer.runFully(listOf(8)))
 
         // input == 8
         computer = IntCode(arrayOf(3, 3, 1108, -1, 8, 3, 4, 3, 99))
-        assertEquals(listOf(1), computer.runStreaming(sequenceOf(8)).toList())
+        assertEquals(listOf(1), computer.runFully(listOf(8)))
         computer.reset()
-        assertEquals(listOf(0), computer.runStreaming(sequenceOf(18)).toList())
+        assertEquals(listOf(0), computer.runFully(listOf(18)))
 
         // input < 8
         computer = IntCode(arrayOf(3, 3, 1107, -1, 8, 3, 4, 3, 99))
-        assertEquals(listOf(1), computer.runStreaming(sequenceOf(7)).toList())
+        assertEquals(listOf(1), computer.runFully(listOf(7)))
         computer.reset()
-        assertEquals(listOf(0), computer.runStreaming(sequenceOf(8)).toList())
+        assertEquals(listOf(0), computer.runFully(listOf(8)))
     }
 
     @Test
     fun test_examples_day5_part2_jumps() {
         // output 0 if the input was zero or 1 if the input was non-zero
         var computer = IntCode(arrayOf(3, 12, 6, 12, 15, 1, 13, 14, 13, 4, 13, 99, -1, 0, 1, 9))
-        assertEquals(listOf(0), computer.runStreaming(sequenceOf(0)).toList())
+        assertEquals(listOf(0), computer.runFully(listOf(0)))
         computer.reset()
-        assertEquals(listOf(1), computer.runStreaming(sequenceOf(110)).toList())
+        assertEquals(listOf(1), computer.runFully(listOf(110)))
 
         computer = IntCode(arrayOf(3, 3, 1105, -1, 9, 1101, 0, 0, 12, 4, 12, 99, 1))
-        assertEquals(listOf(0), computer.runStreaming(sequenceOf(0)).toList())
+        assertEquals(listOf(0), computer.runFully(listOf(0)))
         computer.reset()
-        assertEquals(listOf(1), computer.runStreaming(sequenceOf(110)).toList())
+        assertEquals(listOf(1), computer.runFully(listOf(110)))
     }
 
     @Test
@@ -92,13 +94,35 @@ internal class IntCodeTest {
             1106,0,36,98,0,0,1002,21,125,20,4,20,1105,1,46,104,
             999,1105,1,46,1101,1000,1,20,4,20,1105,1,46,98,99
         ))
-        assertEquals(listOf(999), computer.runStreaming(sequenceOf(-15)).toList())
+        assertEquals(listOf(999), computer.runFully(listOf(-15)))
         computer.reset()
-        assertEquals(listOf(1000), computer.runStreaming(sequenceOf(8)).toList())
+        assertEquals(listOf(1000), computer.runFully(listOf(8)))
         computer.reset()
-        assertEquals(listOf(1001), computer.runStreaming(sequenceOf(12345)).toList())
+        assertEquals(listOf(1001), computer.runFully(listOf(12345)))
         computer.reset()
 
 
+    }
+
+
+    @Test
+    fun test_multiple_inputs() {
+        val computer = IntCode(arrayOf(3,5,3,6,99,0,0))
+        computer.runFully(listOf(42,97))
+        assertEquals(42, computer.memory[5])
+        assertEquals(97, computer.memory[6])
+
+        /* Try same program one step at the time using runUntilNeedsInputOrHalt */
+        computer.reset()
+        computer.input(42)
+        val res1 = computer.runUntilNeedsInputOrHalt()
+        assertFalse(res1.halted, "Computer is not halted, it's wating for one more input")
+        assertEquals(42, computer.memory[5])
+        assertEquals(0, computer.memory[6])
+        computer.input(97)
+        val res2 = computer.runUntilNeedsInputOrHalt()
+        assertTrue(res2.halted, "Had enough input to reach the end of the program")
+        assertEquals(42, computer.memory[5])
+        assertEquals(97, computer.memory[6])
     }
 }
