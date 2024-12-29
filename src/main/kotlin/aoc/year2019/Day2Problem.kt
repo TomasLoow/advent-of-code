@@ -23,7 +23,7 @@ class Day2Problem : DailyProblem<Int>() {
         memory[2] = 2
         val computer = IntCode(memory)
 
-        computer.run()
+        computer.runFully()
 
         println(computer.memory)
         return computer.memory[0]
@@ -32,16 +32,12 @@ class Day2Problem : DailyProblem<Int>() {
     override fun part2(): Int {
         for (verb in 0..99) {
             for (noun in 0..99) {
-                try {
-                    val memory = initMemory.copyOf()
-                    memory[1] = noun
-                    memory[2] = verb
-                    val computer = IntCode(memory)
-                    computer.run()
-                    if (computer.memory[0] == 19690720) return 100 * noun + verb
-                } catch (e: ExecutionFailed) {
-                    continue
-                }
+                val memory = initMemory.copyOf()
+                memory[1] = noun
+                memory[2] = verb
+                val computer = IntCode(memory)
+                computer.runFully()
+                if (computer.memory[0] == 19690720) return 100 * noun + verb
             }
         }
         return 1
