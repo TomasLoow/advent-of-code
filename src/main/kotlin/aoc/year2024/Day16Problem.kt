@@ -5,6 +5,7 @@ import aoc.utils.*
 import aoc.utils.geometry.Array2D
 import aoc.utils.geometry.Coord
 import aoc.utils.geometry.Direction
+import kotlin.math.min
 import kotlin.time.ExperimentalTime
 
 /* Bad, slow and I'm not sure it's guaranteed to give the right answer.
@@ -14,22 +15,8 @@ TODO rewrite this days problem */
 private data class MazeState(val pos: Coord, val dir: Direction)
 private class WalkStar(
     private val map: Array2D<Boolean>,
-    goal: MazeState,
     val blocked: Coord? = null
-) : AStar<MazeState>(goal) {
-
-    override fun heuristic(state: MazeState): Int {
-        val cost = state.pos.manhattanDistanceTo(goal.pos)
-        if (state.dir in listOf(Direction.DOWN, Direction.LEFT)) {
-            return cost + 2000
-        }
-        if (state.pos.x != goal.pos.x && state.pos.y != goal.pos.y) {
-            return cost + 1000
-        }
-        return cost
-    }
-
-    override fun isGoal(state: MazeState): Boolean { return state.pos == goal.pos}
+) : Djikstra<MazeState>() {
 
     override fun reachable(state: MazeState): Collection<MazeState> {
         val reachable = buildList {
@@ -59,55 +46,42 @@ class Day16Problem : DailyProblem<Int>() {
     private lateinit var initialMap: Array2D<Boolean>
     private lateinit var start: Coord
     private lateinit var goal: Coord
+    private lateinit var djikstraScoresForward: DjikstraResult<MazeState>
+    private lateinit var djikstraScoresBackward: DjikstraResult<MazeState>
 
     override fun commonParts() {
         val charMap = parseCharArray(getInputText())
         start = charMap.findIndexedByCoordinate { _, c -> c == 'S' }!!.first
         goal = charMap.findIndexedByCoordinate { _, c -> c == 'E' }!!.first
         initialMap = charMap.map { c -> c == '#' }
-    }
+        val solver = WalkStar(initialMap)
+        djikstraScoresForward = solver.solveScoreForAllStates(MazeState(start, Direction.RIGHT))
+        djikstraScoresBackward =
+            solver.solveScoreForAllStates(listOf(MazeState(goal, Direction.LEFT), MazeState(goal, Direction.DOWN)))
 
-    private fun solve(): Pair<Int, List<MazeState>> {
-        val solver = WalkStar(initialMap, MazeState(goal, Direction.UPRIGHT))
-        return solver.solve(MazeState(start, Direction.RIGHT))
     }
 
     override fun part1(): Int {
-        return solve().first
+        // We don't care how we are rotated at the end.
+        return min(
+            djikstraScoresForward.costs.getValue(MazeState(goal, Direction.UP)),
+            djikstraScoresForward.costs.getValue(MazeState(goal, Direction.RIGHT))
+        )
     }
 
     override fun part2(): Int {
-        val shouldTryToBlock = mutableSetOf<Coord>()
-        val triedToBlock = mutableSetOf<Coord>()
-        val seen = mutableSetOf<Coord>()
-        val basicSolution = solve()
-        var bestScore = basicSolution.first
-        shouldTryToBlock.addAll(basicSolution.second.map { it.pos })
-        seen.addAll(basicSolution.second.map { it.pos })
-
-        while (shouldTryToBlock.isNotEmpty()) {
-
-            val b = shouldTryToBlock.first()
-            shouldTryToBlock.remove(b)
-            triedToBlock.add(b)
-            val solver = WalkStar(initialMap, blocked = b, goal = MazeState(goal, Direction.UP))
-
-            try {
-                val s = solver.solve(MazeState(start, Direction.RIGHT))
-                if (s.first > bestScore) continue
-                else bestScore = s.first
-                //shouldTryToBlock.addAll(s.second.map { it.pos })
-                seen.addAll(s.second.map { it.pos })
-            } catch (e: Exception) {
-                // pass
+        val bestScore = min(
+            djikstraScoresForward.costs.getValue(MazeState(goal, Direction.UP)),
+            djikstraScoresForward.costs.getValue(MazeState(goal, Direction.RIGHT))
+        )
+        val allStates = djikstraScoresForward.costs.keys
+        // Find all states where the cost from the start here plus the cost from here to the end == bestScore
+        return allStates
+            .filter {
+                djikstraScoresForward.costs[it]!! + djikstraScoresBackward.costs[it.copy(dir = it.dir.rotate180())]!! == bestScore
             }
-            shouldTryToBlock.removeAll(triedToBlock)
-            // println("shouldTryToBlock: ${shouldTryToBlock.size}")
-            // println("triedToBlock: ${triedToBlock.size}")
-            // println("seen: ${seen.size}")
-        }
-
-        return seen.size
+            .map { it.pos }.distinct()  // We want to count coords, not states (coord + dir)
+            .count()
     }
 }
 
@@ -115,6 +89,6 @@ val day16Problem = Day16Problem()
 
 @OptIn(ExperimentalTime::class)
 fun main() {
-    day16Problem.testData = true
-    day16Problem.runBoth(1)
+    day16Problem.testData = false
+    day16Problem.runBoth(100)
 }

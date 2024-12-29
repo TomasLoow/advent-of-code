@@ -21,7 +21,7 @@ val events = mapOf(
         aoc.year2024.day13Problem,
         aoc.year2024.day14Problem,
         aoc.year2024.day15Problem,
-        aoc.year2024.day16Problem,  //Slooooowwww.... :(
+        aoc.year2024.day16Problem,
         aoc.year2024.day17Problem,
         aoc.year2024.day18Problem,
         aoc.year2024.day19Problem,
@@ -124,7 +124,7 @@ val events = mapOf(
 
         )
 )
-val RUN_FOR_YEAR: Int? = null
+val RUN_FOR_YEAR: Int? = 2024
 const val TIMES_TO_RUN = 10
 
 @OptIn(ExperimentalTime::class)

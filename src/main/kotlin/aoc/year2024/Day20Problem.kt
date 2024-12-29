@@ -10,8 +10,7 @@ import kotlin.time.ExperimentalTime
 
 private class RaceDjik(
     private val map: Array2D<Boolean>,
-    goal: Coord,
-) : Djikstra<Coord>(goal) {
+) : Djikstra<Coord>() {
 
     override fun reachable(state: Coord): Collection<Coord> {
         return state.neighbours().filter { it in map && !map[it] }.map { it }
@@ -41,7 +40,7 @@ class Day20Problem : DailyProblem<Int>() {
         initialMap = charMap.map { c -> c == '#' }
 
         // Calculate best path to each point from both directions
-        val fwdSolver = RaceDjik(initialMap, goal)
+        val fwdSolver = RaceDjik(initialMap)
         costToReachCoord = fwdSolver.solveScoreForAllStates(start).costs
 
         bestCost = costToReachCoord[goal]!!

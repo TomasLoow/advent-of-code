@@ -5,7 +5,7 @@ import java.util.*
 
 data class DjikstraResult<S>(val costs: MutableMap<S, Int>, val cameFrom: Map<S, S>)
 
-abstract class Djikstra<State>(val goal:State) {
+abstract class Djikstra<State>() {
     var steps = 0
 
     abstract fun reachable(state: State): Collection<State>
