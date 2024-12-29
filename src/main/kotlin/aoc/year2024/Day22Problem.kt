@@ -53,9 +53,8 @@ class Day22Problem : DailyProblem<Long>() {
         val nums = precalculated[n]!!
         val digits = Array(nums.size) { nums[it] % 10 }
         val diffs = Array(digits.size - 1) { digits[it + 1] - digits[it] } // diffs[3] == digits[4]-digits[3]
-        (3..1999).forEach { i ->
-            val seq = checkSum(diffs[i - 3], diffs[i - 2], diffs[i - 1], diffs[i])
-            if (seq !in map) map[seq] = digits[i + 1]
+        (3..1999).reversed().forEach { i ->
+            map[checkSum(diffs[i - 3], diffs[i - 2], diffs[i - 1], diffs[i])] = digits[i + 1]
         }
     }
 
