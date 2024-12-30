@@ -15,7 +15,6 @@ TODO rewrite this days problem */
 private data class MazeState(val pos: Coord, val dir: Direction)
 private class WalkStar(
     private val map: Array2D<Boolean>,
-    val blocked: Coord? = null
 ) : Djikstra<MazeState>() {
 
     override fun reachable(state: MazeState): Collection<MazeState> {
@@ -24,8 +23,6 @@ private class WalkStar(
             add(state.copy(dir = state.dir.rotateCW()))
             add(state.copy(dir = state.dir.rotateCCW()))
         }
-
-        if (blocked != null) return reachable.filter { it.pos != blocked }
         return reachable
     }
 
