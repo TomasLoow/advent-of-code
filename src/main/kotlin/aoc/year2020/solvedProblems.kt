@@ -9,7 +9,7 @@ val solvedProblems = listOf(
     // 6 solved in python
     // 7 solved in python
     // 8 solved in python
-    // 9 solved in python
+    day9Problem,
     day10Problem,
 
 

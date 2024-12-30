@@ -1,7 +1,7 @@
 package aoc.year2022
 
 import DailyProblem
-import aoc.utils.parseIntLines
+import aoc.utils.parseLongLines
 import kotlin.time.ExperimentalTime
 
 class Day20Problem : DailyProblem<Long>() {
@@ -12,12 +12,12 @@ class Day20Problem : DailyProblem<Long>() {
 
     private lateinit var data: Array<Long>
 
-    private fun getData() = parseIntLines(getInputText()).map { it.toLong() }.toTypedArray()
+    private fun getData() = parseLongLines(getInputText()).toTypedArray()
     private fun getIdPermutation() = (data.indices).toMutableList()
 
     private fun nextPermutation(p: MutableList<Int>) {
         data.forEachIndexed { idx, offset ->
-            val fixedOffset = offset.mod (data.size - 1)
+            val fixedOffset = offset.mod(data.size - 1)
             val startIdx = p.indexOf(idx)
 
             val newIdx = startIdx + fixedOffset
@@ -52,7 +52,7 @@ class Day20Problem : DailyProblem<Long>() {
 
     override fun part2(): Long {
         data = getData()
-        data.forEachIndexed{ idx, a -> data[idx] = a*811589153}
+        data.forEachIndexed { idx, a -> data[idx] = a * 811589153 }
 
         val p = getIdPermutation()
         repeat(10) {
@@ -60,7 +60,7 @@ class Day20Problem : DailyProblem<Long>() {
         }
         val permuted = applyP(p)
         val idxOfZero = permuted.indexOf(0)
-        return permuted[(idxOfZero+1000) % permuted.size] + permuted[(idxOfZero+2000) % permuted.size] + permuted[(idxOfZero+3000) % permuted.size]
+        return permuted[(idxOfZero + 1000) % permuted.size] + permuted[(idxOfZero + 2000) % permuted.size] + permuted[(idxOfZero + 3000) % permuted.size]
     }
 
 

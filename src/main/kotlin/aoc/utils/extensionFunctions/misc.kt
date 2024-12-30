@@ -38,6 +38,16 @@ fun Iterable<Int>.minAndMax(): Pair<Int, Int> {
     }
 }
 
+fun Iterable<Long>.minAndMaxL(): Pair<Long, Long> {
+    return this.fold(Pair(Long.MAX_VALUE, Long.MIN_VALUE)) { (currentMin, currentMax), v ->
+        Pair(
+            min(currentMin, v),
+            max(currentMax, v)
+        )
+    }
+}
+
+
 fun List<Int>.variance(): Double {
     val xavg = this.sum().toDouble() / this.size
     return this.sumOf { (it - xavg).pow(2) } / this.size

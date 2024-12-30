@@ -7,6 +7,7 @@ import aoc.utils.geometry.Array2D
 import aoc.utils.geometry.Coord
 import aoc.utils.geometry.Direction
 import java.lang.Integer.parseInt
+import java.lang.Long.parseLong
 
 
 fun <A,B> parseTwoBlocks(data: String, parserA : (String) -> A, parserB: (String) -> B) : Pair<A,B> {
@@ -36,6 +37,10 @@ fun <A> parseBlockList(data: String, parser : (String) -> A) : List<A> {
  */
 fun parseIntLines(data: String) :List<Int> {
     return data.nonEmptyLines().map(::parseInt)
+}
+
+fun parseLongLines(data: String) :List<Long> {
+    return data.nonEmptyLines().map(::parseLong)
 }
 
 fun parseIntArray(data: String) : Array2D<Int> {
