@@ -5,19 +5,19 @@ import aoc.utils.*
 import aoc.utils.extensionFunctions.nonEmptyLines
 import kotlin.time.ExperimentalTime
 
-class Day5Problem : DailyProblem<Int>() {
+class Day5Problem : DailyProblem<Long>() {
 
     override val number = 5
     override val year = 2019
     override val name = "Sunny with a Chance of Asteroids"
 
-    private lateinit var initMemory: Array<Int>
+    private lateinit var initMemory: Array<Long>
 
     override fun commonParts() {
-        initMemory = parseOneLineOfSeparated(getInputText().replace("\n", "").nonEmptyLines().first(), String::toInt, ",").toTypedArray()
+        initMemory = parseOneLineOfSeparated(getInputText().replace("\n", "").nonEmptyLines().first(), String::toLong, ",").toTypedArray()
     }
 
-    override fun part1(): Int {
+    override fun part1(): Long {
         val memory = initMemory.copyOf()
         val computer = IntCode(memory)
 
@@ -25,7 +25,7 @@ class Day5Problem : DailyProblem<Int>() {
         return output.last()
     }
 
-    override fun part2(): Int {
+    override fun part2(): Long {
         val memory = initMemory.copyOf()
         val computer = IntCode(memory)
 
