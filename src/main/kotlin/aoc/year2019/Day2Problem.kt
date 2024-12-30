@@ -23,7 +23,7 @@ class Day2Problem : DailyProblem<Int>() {
         memory[2] = 2
         val computer = IntCode(memory)
 
-        computer.runFully()
+        computer.runUntilHalt()
 
         println(computer.memory)
         return computer.memory[0]
@@ -36,7 +36,7 @@ class Day2Problem : DailyProblem<Int>() {
                 memory[1] = noun
                 memory[2] = verb
                 val computer = IntCode(memory)
-                computer.runFully()
+                computer.runUntilHalt()
                 if (computer.memory[0] == 19690720) return 100 * noun + verb
             }
         }

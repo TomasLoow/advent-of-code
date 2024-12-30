@@ -4,8 +4,6 @@ import DailyProblem
 import aoc.utils.*
 import aoc.utils.extensionFunctions.nonEmptyLines
 import aoc.utils.extensionFunctions.permutationsSequence
-import kotlinx.coroutines.sync.Mutex
-import java.util.concurrent.Semaphore
 import kotlin.time.ExperimentalTime
 
 class Day7Problem : DailyProblem<Int>() {
@@ -26,22 +24,11 @@ class Day7Problem : DailyProblem<Int>() {
         ).toTypedArray()
     }
 
-    override fun part1(): Int {
-        val computers = (0..4).map { i -> IntCode(initMemory, "comp$i") }
-        return listOf(0, 1, 2, 3, 4).permutationsSequence().maxOf { perm ->
-            val (a, b, c, d, e) = perm
-
-            computers.forEach { it.reset() }
-            computers.zip(perm).forEach { (comp, value) -> comp.input(listOf(value)) }
-            chain(computers, 0).output!!.first()
-        }
-    }
-
     fun chain(computers: List<IntCode>, input: Int): RunResult {
         var i:Int? = input
         var lastResult: RunResult? = null
         computers.forEach { computer ->
-            computer.input(i!!)
+            computer.writeInput(i!!)
             val r = computer.runUntilNeedsInputOrHalt()
             if (r.output.size != 1) throw IllegalStateException("Too much output")
             i = r.output.first()
@@ -50,12 +37,17 @@ class Day7Problem : DailyProblem<Int>() {
         return lastResult!!
     }
 
-    override fun part2(): Int {
-        val computers = (0..4).map { i -> IntCode(initMemory, "comp$i") }
-        return listOf(5, 6, 7, 8, 9).permutationsSequence().maxOf { perm ->
-            val (a, b, c, d, e) = perm
+    fun runWithoutFeedback(computers: List<IntCode>) =
+        listOf(0, 1, 2, 3, 4).permutationsSequence().maxOf { perm ->
             computers.forEach { it.reset() }
-            computers.zip(perm).forEach { (comp, value) -> comp.input(listOf(value)) }
+            computers.zip(perm).forEach { (comp, value) -> comp.writeInput(listOf(value)) }
+            chain(computers, 0).output!!.first()
+        }
+
+    fun runWithFeedback(computers: List<IntCode>) =
+        listOf(5, 6, 7, 8, 9).permutationsSequence().maxOf { perm ->
+            computers.forEach { it.reset() }
+            computers.zip(perm).forEach { (comp, value) -> comp.writeInput(listOf(value)) }
 
             var i = 0
             var finalResult = 0
@@ -69,8 +61,17 @@ class Day7Problem : DailyProblem<Int>() {
                     break
                 }
             }
-           finalResult
+            finalResult
         }
+
+    override fun part1(): Int {
+        val computers = (0..4).map { i -> IntCode(initMemory, "comp$i") }
+        return runWithoutFeedback(computers)
+    }
+
+    override fun part2(): Int {
+        val computers = (0..4).map { i -> IntCode(initMemory, "comp$i") }
+        return runWithFeedback(computers)
     }
 }
 

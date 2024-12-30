@@ -17,8 +17,7 @@ const val OPCODE_EQUALS = 8
 const val PARAM_MODE_POSITION = 0
 const val PARAM_MODE_IMMEDIATE = 1
 
-
-data class StepResult(val halted: Boolean, val output: Int? = null, val readInput : Boolean = false, val needsInput: Boolean = false)
+private data class StepResult(val halted: Boolean, val output: Int? = null, val readInput : Boolean = false, val needsInput: Boolean = false)
 data class RunResult(val output: List<Int>, val halted: Boolean)
 
 class IntCode(var startingMemory: Array<Int>, val name: String = "IntCode") {
@@ -27,80 +26,87 @@ class IntCode(var startingMemory: Array<Int>, val name: String = "IntCode") {
     init {
         memory = Array(startingMemory.size) { if (it in startingMemory.indices) startingMemory.elementAt(it) else 0 }
     }
-    var ptr = 0
-    var input : MutableList<Int> = emptyMutableList()
+    var instructionPointer = 0
+    var inputBuffer : MutableList<Int> = emptyMutableList()
 
-    fun input(i: Int) {
-        input.add(i)
+    fun writeInput(i: Int) {
+        inputBuffer.add(i)
     }
 
-    fun input(i: Collection<Int>) {
-        i.forEach { input(it) }
+    fun writeInput(i: Collection<Int>) {
+        i.forEach { writeInput(it) }
     }
 
     fun reset() {
-        ptr = 0
-        input.clear()
-        memory = Array(startingMemory.size*2) { if (it in startingMemory.indices) startingMemory.elementAt(it) else 0 }
+        instructionPointer = 0
+        inputBuffer.clear()
+        memory = Array(startingMemory.size) { if (it in startingMemory.indices) startingMemory.elementAt(it) else 0 }
     }
 
-    private fun op(paramModes: Int, action: (Int, Int) -> Int) {
+    private fun getValue(i: Int, paramMode: Int): Int {
+        return when (paramMode) {
+            PARAM_MODE_POSITION -> memory[i]
+            PARAM_MODE_IMMEDIATE -> i
+            else -> throw ExecutionFailed("Unknown param mode: $paramMode")
+        }
+    }
+
+    private fun hasInput() = this.inputBuffer.isNotEmpty()
+
+    private fun binaryOp(paramModes: Int, action: (Int, Int) -> Int) {
         val (pm3, pm2, pm1) = paramModes.toString().padStart(3, '0').map { it.toString().toInt() }
-        if (ptr + 3 >= memory.size) throw ExecutionFailed("Out of bounds")
         if (pm3 == 1) throw ExecutionFailed("Bad param mode for operand 3")
-        val operand1 = memory[ptr + 1]
-        val operand2 = memory[ptr + 2]
-        val target = memory[ptr + 3]
-        val a = if (pm1 == PARAM_MODE_POSITION) memory[operand1] else operand1
-        val b = if (pm2 == PARAM_MODE_POSITION) memory[operand2] else operand2
+        val a = getValue (memory[instructionPointer + 1], pm1)
+        val b = getValue (memory[instructionPointer + 2], pm2)
+        val target = memory[instructionPointer + 3]
         memory[target] = action(a,b)
-        ptr += 4
+        instructionPointer += 4
     }
 
-    private fun opAdd(paramModes: Int) = op(paramModes) { a, b -> a + b }
-    private fun opMul(paramModes: Int) = op(paramModes) { a, b -> a * b }
-    private fun opEquals(paramModes: Int) = op(paramModes) { a, b -> if (a == b) 1 else 0 }
-    private fun opLessThan(paramModes: Int) = op(paramModes) { a, b -> if (a < b) 1 else 0 }
+    private fun opAdd(paramModes: Int) = binaryOp(paramModes) { a, b -> a + b }
+    private fun opMul(paramModes: Int) = binaryOp(paramModes) { a, b -> a * b }
+    private fun opEquals(paramModes: Int) = binaryOp(paramModes) { a, b -> if (a == b) 1 else 0 }
+    private fun opLessThan(paramModes: Int) = binaryOp(paramModes) { a, b -> if (a < b) 1 else 0 }
 
     private fun opInput() {
-        val target = memory[ptr + 1]
+        val target = memory[instructionPointer + 1]
         if (target >= memory.size) throw ExecutionFailed("Out of bounds")
-        val i = input.removeFirst()
+        val i = inputBuffer.removeFirst()
         memory[target] = i
-        ptr += 2
+        instructionPointer += 2
     }
 
     private fun opOutput(paramModes: Int): Int {
         if (paramModes == PARAM_MODE_IMMEDIATE) {
-            val out = memory[ptr + 1]
-            ptr += 2
+            val out = memory[instructionPointer + 1]
+            instructionPointer += 2
             return out
         }
-        val target = memory[ptr + 1]
+        val target = memory[instructionPointer + 1]
         if (target >= memory.size) throw ExecutionFailed("Out of bounds")
         val output = memory[target]
-        ptr += 2
+        instructionPointer += 2
         return output
     }
 
     private fun opJump(paramModes: Int, target: Boolean) {
         val (pm2, pm1) = paramModes.toString().padStart(2, '0').map { it.toString().toInt() }
-        val operand1 = memory[ptr + 1]
+        val operand1 = memory[instructionPointer + 1]
         val o1value = if (pm1 == PARAM_MODE_POSITION) memory[operand1] else operand1
 
         if ((o1value != 0) == target) {
-            val operand2 = memory[ptr + 2]
+            val operand2 = memory[instructionPointer + 2]
             val o2value = if (pm2 == PARAM_MODE_POSITION) memory[operand2] else operand2
-            ptr = o2value
+            instructionPointer = o2value
         } else {
-            ptr += 3
+            instructionPointer += 3
         }
     }
 
-    fun step(): StepResult {
-        val opcode = memory[ptr]
-        val op = opcode % 100
-        val paramModes = opcode / 100
+    private fun step(): StepResult {
+        val instuction = memory[instructionPointer]
+        val op = instuction % 100
+        val paramModes = instuction / 100
 
         var output: Int? = null
         var input = false
@@ -109,10 +115,11 @@ class IntCode(var startingMemory: Array<Int>, val name: String = "IntCode") {
             OPCODE_ADD -> opAdd(paramModes)
             OPCODE_MUL -> opMul(paramModes)
             OPCODE_INPUT -> {
-                if (this.input.isEmpty()) { return StepResult(needsInput = true, halted = false)}
+                if (!hasInput()) return StepResult(needsInput = true, halted = false)
                 opInput();
-                input = true }
-            OPCODE_OUTPUT -> { output = opOutput(paramModes) }
+                input = true
+            }
+            OPCODE_OUTPUT -> output = opOutput(paramModes)
             OPCODE_EQUALS -> opEquals(paramModes)
             OPCODE_LESS_THAN -> opLessThan(paramModes)
             OPCODE_JUMP_IF_TRUE -> opJump(paramModes, true)
@@ -122,24 +129,22 @@ class IntCode(var startingMemory: Array<Int>, val name: String = "IntCode") {
         return StepResult(halted = false, output = output, readInput = input)
     }
 
-    fun runStreaming(input: Collection<Int> = emptyList()): Sequence<Int> {
-        input(input)
-        return sequence {
-            while (true) {
-                val res = step()
-                if (res.output != null) {
-                    yield(res.output)
-                }
-                if (res.halted) break
+
+    fun runUntilHalt(input: Collection<Int> = emptyList()): List<Int> {
+        writeInput(input)
+        var output = emptyMutableList<Int>()
+        while (true) {
+            val res = step()
+            if (res.output != null) {
+                output += res.output
             }
+            if (res.needsInput) throw ExecutionFailed("Insufficient input to run fully")
+            if (res.halted) break
         }
+        return output.toList()
     }
 
-    fun runFully(input: Collection<Int> = emptyList()): List<Int> {
-        return runStreaming(input).toList()
-    }
-
-    fun runUntilOutput(): RunResult {
+    fun runUntilFirstOutput(): RunResult {
         while (true) {
             val res = step()
             if (res.output != null) {
@@ -150,7 +155,7 @@ class IntCode(var startingMemory: Array<Int>, val name: String = "IntCode") {
     }
 
     fun runUntilNeedsInputOrHalt(): RunResult {
-        var output = emptyList<Int>()
+        var output = emptyMutableList<Int>()
         while (true) {
             val res = step()
             if (res.output != null) {
