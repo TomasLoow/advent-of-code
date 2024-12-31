@@ -1,8 +1,7 @@
 package aoc.year2019
 
 import DailyProblem
-import aoc.utils.extensionFunctions.nonEmptyLines
-import aoc.utils.parseOneLineOfSeparated
+import aoc.utils.parseIntCodeComputer
 import kotlin.time.ExperimentalTime
 
 val badObjects = listOf(
@@ -20,13 +19,12 @@ class Day25Problem : DailyProblem<Int>() {
     override val year = 2019
     override val name = "Cryostasis"
 
-    private lateinit var initMemory: Array<Long>
     private lateinit var c: IntCode
 
     override fun commonParts() {
-        initMemory = parseOneLineOfSeparated(getInputText().replace("\n", "").nonEmptyLines().first(), String::toLong, ",").toTypedArray()
-        c = IntCode(initMemory)
+        c = parseIntCodeComputer(getInputText())
     }
+
 
     private fun runTillInput() {
         val o = c.runUntilNeedsInputOrHalt()
@@ -48,7 +46,8 @@ class Day25Problem : DailyProblem<Int>() {
         shortCuts.forEach { (k, v) ->
             if (stringInput.startsWith(k)) {
                 stringInput = stringInput.replaceFirst(k, v)
-            }}
+            }
+        }
 
         stringInput.map { c.writeInput(it.code.toLong()) }
         c.writeInput(10) // newline

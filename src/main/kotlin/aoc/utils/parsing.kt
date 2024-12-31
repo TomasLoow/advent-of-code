@@ -1,4 +1,5 @@
 @file:Suppress("unused")
+
 package aoc.utils
 
 import aoc.utils.extensionFunctions.ensureNl
@@ -6,48 +7,56 @@ import aoc.utils.extensionFunctions.nonEmptyLines
 import aoc.utils.geometry.Array2D
 import aoc.utils.geometry.Coord
 import aoc.utils.geometry.Direction
+import aoc.year2019.IntCode
 import java.lang.Integer.parseInt
 import java.lang.Long.parseLong
 
 
-fun <A,B> parseTwoBlocks(data: String, parserA : (String) -> A, parserB: (String) -> B) : Pair<A,B> {
+fun <A, B> parseTwoBlocks(data: String, parserA: (String) -> A, parserB: (String) -> B): Pair<A, B> {
     val (chunkA, chunkB) = data.ensureNl().split("\n\n").also { if (it.size != 2) throw Exception("Too many blocks") }
     return Pair(parserA(chunkA), parserB(chunkB))
 }
 
-fun <A,B,C> parseThreeBlocks(data: String, parserA : (String) -> A, parserB: (String) -> B, parserC: (String) -> C) : Triple<A,B,C> {
-    val (chunkA, chunkB, chunkC) = data.ensureNl().split("\n\n").also { if (it.size != 3) throw Exception("Too many blocks") }
+fun <A, B, C> parseThreeBlocks(
+    data: String,
+    parserA: (String) -> A,
+    parserB: (String) -> B,
+    parserC: (String) -> C
+): Triple<A, B, C> {
+    val (chunkA, chunkB, chunkC) = data.ensureNl().split("\n\n")
+        .also { if (it.size != 3) throw Exception("Too many blocks") }
     return Triple(parserA(chunkA), parserB(chunkB), parserC(chunkC))
 }
 
-fun parseAllDigits(data:String) : List<Int> {
+fun parseAllDigits(data: String): List<Int> {
     val findAllNumbers = Regex("""\d+""")
     return findAllNumbers.findAll(data).map { it.value.toInt() }.toList()
 }
+
 /**
  * Parses a file where the input is divided into multiple blocks separated by two newlines.
  * Each such block is parsed by the provided parser and a list of its results is returned
  */
-fun <A> parseBlockList(data: String, parser : (String) -> A) : List<A> {
+fun <A> parseBlockList(data: String, parser: (String) -> A): List<A> {
     return data.ensureNl().split("\n\n").map(parser)
 }
 
 /**
  * Parses a file where each non-empty line is one single integers.
  */
-fun parseIntLines(data: String) :List<Int> {
+fun parseIntLines(data: String): List<Int> {
     return data.nonEmptyLines().map(::parseInt)
 }
 
-fun parseLongLines(data: String) :List<Long> {
+fun parseLongLines(data: String): List<Long> {
     return data.nonEmptyLines().map(::parseLong)
 }
 
-fun parseIntArray(data: String) : Array2D<Int> {
+fun parseIntArray(data: String): Array2D<Int> {
     return Array2D.parseFromLines(data) { c -> c.digitToInt() }
 }
 
-fun parseCharArray(data: String) : Array2D<Char> {
+fun parseCharArray(data: String): Array2D<Char> {
     return Array2D.parseFromLines(data, ::id)
 }
 
@@ -109,8 +118,8 @@ fun <A, B, C> parseListOfTriples(
     separator2: String = " "
 ): List<Triple<A, B, C>> {
     return inputText.nonEmptyLines().map { line ->
-        val (a, rest) = line.split(separator1, limit=2)
-        val (b,c) = rest.split(separator2, limit=2)
+        val (a, rest) = line.split(separator1, limit = 2)
+        val (b, c) = rest.split(separator2, limit = 2)
         Triple(component1parser(a), component2parser(b), component3parser(c))
     }
 
@@ -126,7 +135,7 @@ fun <A, B, C> parseListOfTriples(
 ): List<Triple<A, B, C>> {
     return inputText.nonEmptyLines().map { line ->
         val (a, rest) = line.split(separator1)
-        val (b,c) = rest.split(separator2)
+        val (b, c) = rest.split(separator2)
         Triple(component1parser(a), component2parser(b), component3parser(c))
     }
 
@@ -154,4 +163,10 @@ fun parseDirectionFromArrow(it: Char): Direction {
     }
 }
 
-fun <T> id(t:T) = t
+fun <T> id(t: T) = t
+
+
+fun parseIntCodeProgram(s: String) =
+    parseOneLineOfSeparated(s.nonEmptyLines().first(), String::toLong, ",").toTypedArray()
+
+fun parseIntCodeComputer(s: String) = IntCode(parseIntCodeProgram(s))

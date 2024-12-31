@@ -1,8 +1,7 @@
 package aoc.year2019
 
 import DailyProblem
-import aoc.utils.*
-import aoc.utils.extensionFunctions.nonEmptyLines
+import aoc.utils.parseIntCodeComputer
 import kotlin.time.ExperimentalTime
 
 class Day5Problem : DailyProblem<Long>() {
@@ -11,23 +10,21 @@ class Day5Problem : DailyProblem<Long>() {
     override val year = 2019
     override val name = "Sunny with a Chance of Asteroids"
 
-    private lateinit var initMemory: Array<Long>
+    private lateinit var computer: IntCode
 
     override fun commonParts() {
-        initMemory = parseOneLineOfSeparated(getInputText().replace("\n", "").nonEmptyLines().first(), String::toLong, ",").toTypedArray()
+        computer = parseIntCodeComputer(getInputText())
     }
 
     override fun part1(): Long {
-        val memory = initMemory.copyOf()
-        val computer = IntCode(memory)
+        computer.reset()
 
         val output = computer.runUntilHalt(listOf(1))
         return output.last()
     }
 
     override fun part2(): Long {
-        val memory = initMemory.copyOf()
-        val computer = IntCode(memory)
+        computer.reset()
 
         val output = computer.runUntilHalt(listOf(5))
         return output.first()

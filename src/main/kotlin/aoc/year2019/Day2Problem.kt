@@ -1,8 +1,7 @@
 package aoc.year2019
 
 import DailyProblem
-import aoc.utils.*
-import aoc.utils.extensionFunctions.nonEmptyLines
+import aoc.utils.parseIntCodeProgram
 import kotlin.time.ExperimentalTime
 
 class Day2Problem : DailyProblem<Long>() {
@@ -14,7 +13,7 @@ class Day2Problem : DailyProblem<Long>() {
     private lateinit var initMemory: Array<Long>
 
     override fun commonParts() {
-        initMemory = parseOneLineOfSeparated(getInputText().nonEmptyLines().first(), String::toLong, ",").toTypedArray()
+        initMemory = parseIntCodeProgram(getInputText())
     }
 
     override fun part1(): Long {

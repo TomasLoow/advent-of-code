@@ -1,8 +1,7 @@
 package aoc.year2019
 
 import DailyProblem
-import aoc.utils.extensionFunctions.nonEmptyLines
-import aoc.utils.parseOneLineOfSeparated
+import aoc.utils.parseIntCodeComputer
 import kotlin.time.ExperimentalTime
 
 class Day9Problem : DailyProblem<Long>() {
@@ -11,15 +10,15 @@ class Day9Problem : DailyProblem<Long>() {
     override val year = 2019
     override val name = "Sensor Boost"
 
-    private lateinit var initMemory: Array<Long>
+    private lateinit var c: IntCode
 
     override fun commonParts() {
-        initMemory = parseOneLineOfSeparated(getInputText().replace("\n", "").nonEmptyLines().first(), String::toLong, ",").toTypedArray()
+        c= parseIntCodeComputer(getInputText())
     }
 
 
     override fun part1(): Long {
-        val c = IntCode(initMemory)
+        c.reset()
         c.writeInput(1)
         val res = c.runUntilHalt()
         println(res)
@@ -28,7 +27,7 @@ class Day9Problem : DailyProblem<Long>() {
 
 
     override fun part2(): Long {
-        val c = IntCode(initMemory)
+        c.reset()
         c.writeInput(2)
         val res = c.runUntilHalt()
         println(res)

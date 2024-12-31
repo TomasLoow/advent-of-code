@@ -1,9 +1,8 @@
 package aoc.year2019
 
 import DailyProblem
-import aoc.utils.*
-import aoc.utils.extensionFunctions.nonEmptyLines
 import aoc.utils.extensionFunctions.permutationsSequence
+import aoc.utils.parseIntCodeProgram
 import kotlin.time.ExperimentalTime
 
 class Day7Problem : DailyProblem<Long>() {
@@ -15,11 +14,7 @@ class Day7Problem : DailyProblem<Long>() {
     private lateinit var initMemory: Array<Long>
 
     override fun commonParts() {
-        initMemory = parseOneLineOfSeparated(
-            getInputText().replace("\n", "").nonEmptyLines().first(),
-            String::toLong,
-            ","
-        ).toTypedArray()
+        initMemory = parseIntCodeProgram(getInputText())
     }
 
     fun chain(computers: List<IntCode>, input: Long): RunResult {
