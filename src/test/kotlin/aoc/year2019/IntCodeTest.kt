@@ -9,34 +9,30 @@ internal class IntCodeTest {
 
     @Test
     fun test_examples_day2() {
-        val computer = IntCode(arrayOf(1, 0, 0, 0, 99))
+        var computer = IntCode(arrayOf(1, 0, 0, 0, 99))
         computer.runUntilHalt()
         assertEquals(listOf(2, 0, 0, 0, 99).map { it.toLong() }, computer.memory.toList())
 
-        computer.memory = earrayOf(2, 3, 0, 3, 99)
-        computer.instructionPointer = 0
+        computer = IntCode(arrayOf(2, 3, 0, 3, 99))
         computer.runUntilHalt()
         assertEquals(listOf(2, 3, 0, 6, 99).map { it.toLong() }, computer.memory.toList())
 
-        computer.memory = earrayOf(2, 4, 4, 5, 99, 0)
-        computer.instructionPointer = 0
+        computer = IntCode(arrayOf(2, 4, 4, 5, 99, 0))
         computer.runUntilHalt()
         assertEquals(listOf(2, 4, 4, 5, 99, 9801).map { it.toLong() }, computer.memory.toList())
 
-        computer.memory = earrayOf(1, 1, 1, 4, 99, 5, 6, 0, 99)
-        computer.instructionPointer = 0
+        computer = IntCode(arrayOf(1, 1, 1, 4, 99, 5, 6, 0, 99))
         computer.runUntilHalt()
         assertEquals(listOf(30, 1, 1, 4, 2, 5, 6, 0, 99).map { it.toLong() }, computer.memory.toList())
     }
 
     @Test
     fun test_examples_day5_part1() {
-        val computer = IntCode(arrayOf(1002, 4, 3, 4, 33))
+        var computer = IntCode(arrayOf(1002, 4, 3, 4, 33))
         computer.runUntilHalt()
         assertEquals(listOf(1002, 4, 3, 4, 99).map { it.toLong() }, computer.memory.toList())
 
-        computer.memory = earrayOf(3, 0, 4, 0, 99)
-        computer.instructionPointer = 0
+        computer = IntCode(arrayOf(3, 0, 4, 0, 99))
         assertEquals(listOf(7L), computer.runUntilHalt(listOf(7)))
 
     }
@@ -143,7 +139,7 @@ internal class IntCodeTest {
         assertEquals(1, res2.size)
         assertEquals(16, res2.first().toString().length)
 
-        val binNumberProgram = listOf(104L,1125899906842624L,99L)
+        val binNumberProgram = listOf(104L, 1125899906842624L, 99L)
         val binNumberComputer = IntCode(binNumberProgram.toTypedArray())
         val res3 = binNumberComputer.runUntilHalt()
         assertEquals(1, res3.size)

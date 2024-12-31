@@ -1,7 +1,7 @@
 package aoc.year2019
 
+import aoc.utils.ExpandingArray
 import aoc.utils.emptyMutableList
-import aoc.utils.extensionFunctions.toBinaryArray
 
 class ExecutionFailed(val reason: String = "") : Throwable()
 
@@ -28,43 +28,17 @@ private data class StepResult(
     val needsInput: Boolean = false
 )
 
-data class RunResult(val output: List<Long>, val halted: Boolean)
-
-
-fun earrayOf(vararg elements: Long): EnlargingArray {
-    return EnlargingArray(elements.toTypedArray())
-}
-
-class EnlargingArray(var a: Array<Long>) : Collection<Long> by a.asList() {
-
-    operator fun get(i: Int): Long {
-        if (i < a.size) return a[i] else {
-            enlarge(i)
-            return this[i]
-        }
-    }
-
-    operator fun set(i: Int, v: Long) {
-        if (i < a.size) a[i] = v else {
-            enlarge(i)
-            this[i] = v
-        }
-    }
-
-    private fun enlarge(i: Int) {
-        val newSize = 1.shl(i.toBinaryArray().size + 1)
-        val newArray = Array(newSize) { 0L }
-        a.forEachIndexed { index, l -> newArray[index] = l }
-        a = newArray
-    }
+data class RunResult(val output: List<Long>, val halted: Boolean) {
+    val outputString: String
+        get() = this.output.map { it.toInt().toChar() }.joinToString("")
 }
 
 
-    class IntCode(var startingMemory: Array<Long>, val name: String = "IntCode") {
-        var memory: EnlargingArray
+class IntCode(var startingMemory: Array<Long>, val name: String = "IntCode") {
+        var memory: ExpandingArray<Long>
 
         init {
-            memory = EnlargingArray(startingMemory.clone())
+            memory = ExpandingArray(startingMemory.clone(), emptyValue = 0L)
         }
 
         var instructionPointer = 0
@@ -91,7 +65,7 @@ class EnlargingArray(var a: Array<Long>) : Collection<Long> by a.asList() {
             instructionPointer = 0
             relativeBase = 0
             inputBuffer.clear()
-            memory = EnlargingArray(startingMemory.clone())
+            memory = ExpandingArray(startingMemory.clone(), 0L)
         }
 
         private fun getValue(i: Long, paramMode: Int): Long {

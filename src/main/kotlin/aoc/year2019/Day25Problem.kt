@@ -69,8 +69,7 @@ class Day25Problem : DailyProblem<Int>() {
     }
 
     private fun runTillInput() {
-        val o = computer.runUntilNeedsInputOrHalt()
-        val outputString = o.output.map { it.toInt().toChar() }.joinToString("")
+        val outputString = computer.runUntilNeedsInputOrHalt().outputString
         print(outputString)
     }
 
@@ -97,8 +96,7 @@ class Day25Problem : DailyProblem<Int>() {
     }
 
     fun exploreShip(): Explorer {
-        val o = computer.runUntilNeedsInputOrHalt()
-        val outputString = o.output.map { it.toInt().toChar() }.joinToString("")
+        val outputString = computer.runUntilNeedsInputOrHalt().outputString
         val startRoom = parseRoom(outputString)
         p("Entered ${startRoom.name}")
         val map = mutableMapOf(startRoom.name to startRoom)
@@ -148,8 +146,7 @@ class Day25Problem : DailyProblem<Int>() {
     private fun move(dir:Direction, explorer: Explorer) : String{
         "${dirToStr(dir)}".map { computer.writeInput(it.code.toLong()) }
         computer.writeInput(10)
-        val o = computer.runUntilNeedsInputOrHalt()
-        return o.output.map { it.toInt().toChar() }.joinToString("")
+        return computer.runUntilNeedsInputOrHalt().outputString
     }
 
     private fun dropItem(item: String, room: Room, explorer: Explorer) {
