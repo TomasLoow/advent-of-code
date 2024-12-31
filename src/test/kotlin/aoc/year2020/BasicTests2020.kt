@@ -22,6 +22,16 @@ class BasicTests2020 {
         assertEquals(2, problem.part1())
         assertEquals(1, problem.part2())
     }
+
+    @Test
+    fun testDay3() {
+        val problem = Day3Problem()
+        problem.testData = true
+        problem.commonParts()
+        assertEquals(7, problem.part1())
+        assertEquals(336, problem.part2())
+    }
+
     @Test
     fun testDay5() {
         val problem = Day5Problem()
