@@ -64,12 +64,20 @@ class EnlargingArray(var a: Array<Long>) : Collection<Long> by a.asList() {
         var memory: EnlargingArray
 
         init {
-            memory =EnlargingArray(startingMemory.clone())
+            memory = EnlargingArray(startingMemory.clone())
         }
 
         var instructionPointer = 0
         var relativeBase = 0
         var inputBuffer: MutableList<Long> = emptyMutableList()
+
+        fun clone() : IntCode {
+            val c = IntCode(memory.a.clone(), name)
+            c.instructionPointer = this.instructionPointer
+            c.inputBuffer = this.inputBuffer.toMutableList()
+            c.relativeBase = this.relativeBase
+            return c
+        }
 
         fun writeInput(i: Long) {
             inputBuffer.add(i)

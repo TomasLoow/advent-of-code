@@ -2,4 +2,5 @@
 .gradle
 build
 input/aoc????/day*.txt
+input/aoc????/day*.dot
 input/downloadinfo.txt
