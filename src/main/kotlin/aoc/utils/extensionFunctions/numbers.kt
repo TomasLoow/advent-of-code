@@ -1,6 +1,7 @@
 @file:Suppress("unused")
 package aoc.utils.extensionFunctions
 
+import java.math.BigInteger
 import kotlin.math.max
 
 /**
@@ -31,14 +32,21 @@ fun Collection<Int>.product(): Int {
     return reduce { acc, i -> acc * i }
 }
 
-/** Like product() but the result is biiiiig and is put in a Long */
+/** Like product() but the result is too big for an Int so we calculate it as a Long */
 fun Collection<Int>.productL(): Long {
     return fold(1L) { acc, i -> acc * i.toLong() }
 }
 
-
-
 fun Collection<Long>.product(): Long {
+    return reduce { acc, i -> acc * i }
+}
+
+/** Like product() but the result is too big for an Long so we calculate it as a BigInteger */
+fun Collection<Long>.productB(): BigInteger {
+    return fold(BigInteger.ONE) { acc, i -> acc * i.toBigInteger() }
+}
+
+fun Collection<BigInteger>.product(): BigInteger {
     return reduce { acc, i -> acc * i }
 }
 

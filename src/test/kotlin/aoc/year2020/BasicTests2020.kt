@@ -59,6 +59,15 @@ class BasicTests2020 {
     }
 
     @Test
+    fun testDay13() {
+        val problem = Day13Problem()
+        problem.testData = true
+        problem.commonParts()
+        assertEquals(295.toBigInteger(), problem.part1())
+        assertEquals(1068781.toBigInteger(), problem.part2())
+    }
+
+    @Test
     fun testDay19() {
         val problem = Day19Problem()
         problem.testData = true
