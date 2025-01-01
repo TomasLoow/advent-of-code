@@ -1,6 +1,7 @@
 @file:Suppress("unused")
-package aoc.utils
+package aoc.utils.algorithms
 
+import aoc.utils.emptyMutableSet
 import java.util.*
 
 data class DjikstraResult<S>(val costs: MutableMap<S, Int>, val cameFrom: Map<S, S>)

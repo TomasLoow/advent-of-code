@@ -1,4 +1,4 @@
-package aoc.utils
+package aoc.utils.algorithms
 
 
 /**

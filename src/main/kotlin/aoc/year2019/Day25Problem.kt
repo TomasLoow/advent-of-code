@@ -1,7 +1,7 @@
 package aoc.year2019
 
 import DailyProblem
-import aoc.utils.BFS
+import aoc.utils.algorithms.BFS
 import aoc.utils.emptyMutableMap
 import aoc.utils.extensionFunctions.subSets
 import aoc.utils.geometry.Direction

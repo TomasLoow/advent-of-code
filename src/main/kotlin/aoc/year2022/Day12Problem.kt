@@ -1,9 +1,9 @@
 package aoc.year2022
 
 import DailyProblem
-import aoc.utils.AStar
+import aoc.utils.algorithms.AStar
 import aoc.utils.geometry.Array2D
-import aoc.utils.BFS
+import aoc.utils.algorithms.BFS
 import aoc.utils.geometry.Coord
 import kotlin.time.ExperimentalTime
 

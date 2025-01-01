@@ -1,12 +1,13 @@
 package aoc.utils
 
+import aoc.utils.math.multInv
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.Test
 import java.math.BigInteger
 
 
-class MathKtTest {
+class MultInvTest {
     @Test
     fun `test multInv with valid input`() {
         var a = BigInteger.valueOf(3)

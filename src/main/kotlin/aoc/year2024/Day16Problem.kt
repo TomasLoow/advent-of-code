@@ -2,6 +2,8 @@ package aoc.year2024
 
 import DailyProblem
 import aoc.utils.*
+import aoc.utils.algorithms.Djikstra
+import aoc.utils.algorithms.DjikstraResult
 import aoc.utils.geometry.Array2D
 import aoc.utils.geometry.Coord
 import aoc.utils.geometry.Direction

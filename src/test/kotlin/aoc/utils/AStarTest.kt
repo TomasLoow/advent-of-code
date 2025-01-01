@@ -1,5 +1,6 @@
 package aoc.utils
 
+import aoc.utils.algorithms.AStar
 import aoc.utils.geometry.Array2D
 import aoc.utils.geometry.Coord
 import org.junit.jupiter.api.Assertions.assertEquals

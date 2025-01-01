@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Assertions.assertTrue
 import kotlin.test.Test
 import kotlin.test.assertFalse
 
-class MiscKtTest {
+class MiscExtensionFunctionsTest {
 
     @Test
     fun `test iterate`() {

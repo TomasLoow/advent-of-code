@@ -1,7 +1,7 @@
 package aoc.year2022
 
 import DailyProblem
-import aoc.utils.BFS
+import aoc.utils.algorithms.BFS
 import aoc.utils.emptyMutableMap
 import aoc.utils.parseListOfTriples
 import aoc.utils.extensionFunctions.subSets

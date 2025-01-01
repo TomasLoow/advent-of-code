@@ -1,7 +1,7 @@
 package aoc.year2020
 
 import DailyProblem
-import aoc.utils.chineseRemainder
+import aoc.utils.math.chineseRemainder
 import aoc.utils.extensionFunctions.nonEmptyLines
 import java.math.BigInteger
 import kotlin.properties.Delegates

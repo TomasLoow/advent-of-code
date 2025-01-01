@@ -1,7 +1,7 @@
 package aoc.year2022
 
 import DailyProblem
-import aoc.utils.lcm
+import aoc.utils.math.lcm
 import aoc.utils.parseBlockList
 import aoc.utils.extensionFunctions.product
 import kotlin.time.ExperimentalTime
