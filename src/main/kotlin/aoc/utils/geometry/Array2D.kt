@@ -6,13 +6,14 @@ import aoc.utils.extensionFunctions.nonEmptyLines
 import java.io.BufferedWriter
 import java.io.FileWriter
 import kotlin.math.absoluteValue
+import kotlin.properties.Delegates
 
 @Suppress("UNCHECKED_CAST")
 class Array2D<T : Any> {
 
-    val height: Int
-    val width: Int
-    val rect: Rect
+    var height by Delegates.notNull<Int>()
+    var width by Delegates.notNull<Int>()
+    lateinit var rect: Rect
 
     internal val data: Array<Any>
 
@@ -53,6 +54,12 @@ class Array2D<T : Any> {
         this.data = Array(capacity) { i -> f(idx2c(i)) }
     }
 
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+        other as Array2D<*>
+        return (height == other.height && width == other.width && data.contentEquals(other.data))
+    }
 
     val xRange: IntRange
         get() {
@@ -194,6 +201,24 @@ class Array2D<T : Any> {
         return Array2D(allCoords.zip(data).map { (c, v) -> function(c, v as T) }, width, height)
     }
 
+    /** like mapIndexed but saves the data into an already existing array. Nice for performance. */
+    fun <R : Any> mapIndexedInto(intoArray: Array2D<R>, function: (Coord, T) -> R) {
+        if (rect != intoArray.rect) throw IllegalArgumentException("Arrays must have same dimensions")
+        this.forEach { c, v ->
+            intoArray.set(c, function(c, v))
+        }
+    }
+
+    /** like map but saves the data into an already existing array. Nice for performance. */
+    fun <R : Any> mapInto(intoArray: Array2D<R>, function: (T) -> R) {
+        if (rect != intoArray.rect) throw IllegalArgumentException("Arrays must have same dimensions")
+        this.forEach { c, v ->
+            intoArray.set(c, function(v))
+        }
+    }
+
+
+
     fun countIndexedByCoordinate(function: (Coord, T) -> Boolean): Int {
         var counter = 0
         data.forEachIndexed { idx, v ->
@@ -201,6 +226,11 @@ class Array2D<T : Any> {
         }
         return counter
     }
+
+    fun count(function: (T) -> Boolean): Int {
+        return data.count { function(it as T) }
+    }
+
 
     fun findIndexedByCoordinate(function: (Coord, T) -> Boolean): Pair<Coord, T>? {
         repeat(height) { y ->
@@ -326,8 +356,8 @@ class Array2D<T : Any> {
         }
     }
 
-    private val stepsWithDiagonals: Array<Int>
-        get() = arrayOf(
+    private val stepsWithDiagonals: Array<Int> by lazy {
+        arrayOf(
             width,
             width - 1,
             width + 1,
@@ -337,14 +367,16 @@ class Array2D<T : Any> {
             -(width - 1),
             -(width + 1),
         )
+    }
 
-    private val stepsWithoutDiagonals: Array<Int>
-        get() = arrayOf(
+    private val stepsWithoutDiagonals: Array<Int> by lazy {
+        arrayOf(
             width,
             1,
             -1,
             -width,
         )
+    }
 
     companion object {
 
