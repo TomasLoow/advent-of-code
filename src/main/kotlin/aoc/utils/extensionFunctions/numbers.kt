@@ -66,6 +66,12 @@ val Long.even: Boolean
 val Long.odd: Boolean
     get() = this % 2L == 1L
 
+val BigInteger.even: Boolean
+    get() = this % 2L.toBigInteger() == 0L.toBigInteger()
+
+val BigInteger.odd: Boolean
+    get() = this % 2L.toBigInteger() == 1L.toBigInteger()
+
 /**
  * Concatenates the given Long value to the current Long as if appending digits.
  *

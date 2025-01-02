@@ -60,7 +60,7 @@ private sealed interface NetworkDevice {
         override val isIdle = true
 
         override fun run(network: MutableMap<Long, NetworkDevice>) {
-            if (network.all { (_, nc) -> nc.isIdle }) {
+            if (network.values.all { nc -> nc.isIdle }) {
                 //println("Idle!")
                 if (lastPacket?.y in sentToZero) throw NetworkDoneException(lastPacket!!.y)
                 network[0]!!.receive(lastPacket ?: Packet(0, 0))
@@ -98,7 +98,7 @@ class Day23Problem : DailyProblem<Long>() {
         network = initializeNetwork(haltOn255 = true)
         try {
             while (true) {
-                network.forEach { (_, nc) ->
+                network.values.forEach { nc ->
                     nc.run(network)
                 }
             }
@@ -112,7 +112,7 @@ class Day23Problem : DailyProblem<Long>() {
         network[255L] = NetworkDevice.NAT()
         try {
             while (true) {
-                network.forEach { (idx, nc) ->
+                network.values.forEach {  nc ->
                     nc.run(network)
                 }
             }

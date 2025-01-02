@@ -12,6 +12,7 @@ val solvedProblems = listOf(
     day9Problem,
 
 
+    day22Problem,
     day23Problem,
 
     day25Problem
