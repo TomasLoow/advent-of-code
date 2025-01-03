@@ -23,6 +23,7 @@ val solvedProblems = listOf(
     day20Problem,
     day21Problem,
 
+    day23Problem,  // Sloooow. Rewrite later.
 
     day25Problem,
 )

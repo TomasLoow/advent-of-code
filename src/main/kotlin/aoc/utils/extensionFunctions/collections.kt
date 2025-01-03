@@ -14,6 +14,18 @@ fun <T> Array<T>.shiftLeft(emptyValue: T): T {
     return head
 }
 
+fun <T> List<T>.rotateLeft(i: Int): List<T> {
+    if (isEmpty()) return this
+    val r = i % size
+    return drop(r) + take(r)
+}
+
+fun <T> List<T>.rotateRight(i: Int): List<T> {
+    if (isEmpty()) return this
+    val otherWay = size - i % size
+    return rotateLeft(otherWay)
+}
+
 /**
  * Yields all permutations of a collection in some unspecified order
  *
