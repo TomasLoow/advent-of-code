@@ -90,9 +90,7 @@ class Day25Problem : DailyProblem<Int>() {
                 stringInput = stringInput.replaceFirst(k, v)
             }
         }
-
-        stringInput.map { computer.writeInput(it.code.toLong()) }
-        computer.writeInput(10) // newline
+        computer.writeInput(stringInput)
     }
 
     fun exploreShip(): Explorer {
