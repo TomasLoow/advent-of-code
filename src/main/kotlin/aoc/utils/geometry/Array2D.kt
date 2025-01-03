@@ -232,6 +232,11 @@ class Array2D<T : Any> {
     }
 
 
+    fun closest (c: Coord, function: (Coord, T) -> Boolean): Coord? {
+        // TODO Optimize!
+        return filterToList(function).sortedBy { c.manhattanDistanceTo(it.first) }.firstOrNull()?.first
+    }
+
     fun findIndexedByCoordinate(function: (Coord, T) -> Boolean): Pair<Coord, T>? {
         repeat(height) { y ->
             repeat(width) { x ->
