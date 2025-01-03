@@ -5,6 +5,7 @@ import aoc.utils.geometry.Coord
 import aoc.utils.geometry.Rect
 import org.junit.jupiter.api.Assertions.assertEquals
 import kotlin.test.Test
+import kotlin.test.assertTrue
 
 class Array2DTest {
 
@@ -313,4 +314,14 @@ class Array2DTest {
         assertEquals(100, arr.coordsWithin(Coord(7,4), 20).size)
     }
 
+    @Test
+    fun `test closest`() {
+        val arr = Array2D(10, 10) { (x, y) ->
+            (x + y) % 10
+        }
+
+        val c = arr.closest(Coord(3,0)) { c,v -> v == 5 }
+        assertTrue(c in listOf<Coord>(Coord(5,0), Coord(4,1), Coord(3,2)))
+        assertEquals(5, arr[c!!])
+    }
 }
