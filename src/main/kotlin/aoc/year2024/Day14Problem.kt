@@ -7,6 +7,7 @@ import aoc.utils.geometry.Array2D
 import aoc.utils.geometry.Coord
 import aoc.utils.geometry.Vector
 import aoc.utils.geometry.times
+import aoc.utils.math.chineseRemainder
 import kotlin.properties.Delegates
 import kotlin.time.ExperimentalTime
 
@@ -57,15 +58,15 @@ class Day14Problem : DailyProblem<Int>() {
         val xMid = mapWidth / 2
         val yMid = mapHeight / 2
 
-         var c1 = 0
-         var c2 = 0
-         var c3 = 0
-         var c4 = 0
-         robots.forEach {
-             if (it.c.x < xMid && it.c.y < yMid) c1++
-             if (it.c.x > xMid && it.c.y < yMid) c2++
-             if (it.c.x < xMid && it.c.y > yMid) c3++
-             if (it.c.x > xMid && it.c.y > yMid) c4++
+        var c1 = 0
+        var c2 = 0
+        var c3 = 0
+        var c4 = 0
+        robots.forEach {
+            if (it.c.x < xMid && it.c.y < yMid) c1++
+            if (it.c.x > xMid && it.c.y < yMid) c2++
+            if (it.c.x < xMid && it.c.y > yMid) c3++
+            if (it.c.x > xMid && it.c.y > yMid) c4++
         }
         val factor = c1 * c2 * c3 * c4
         return factor
@@ -85,13 +86,14 @@ class Day14Problem : DailyProblem<Int>() {
             idx to movedRobots.map { it.c.y }.variance()
         }.minByOrNull { it.second }!!.first
 
-        // Find the index that is idxVarMinX (mod) mapWidth and  idxVarMinY (mod) mapHeight
-        val resIdx = (0..mapWidth * mapHeight).first { idx ->
-            // initialRobots.map { moveRobot(it, idx) }.let { println(show(it)) }
-            idx % mapWidth == idxVarMinX && idx % mapHeight == idxVarMinY
-        }
-        // initialRobots.map { moveRobot(it, resIdx) }.let { println(show(it)) }
-        return resIdx
+        // Find x such that x = idxVarMinX (mod) mapWidth and  x = idxVarMinY (mod) mapHeight using the Chinese Remainder Theorem
+        val x = chineseRemainder(
+            listOf(
+                mapWidth to idxVarMinX,
+                mapHeight to idxVarMinY
+            )
+        )
+        return x
     }
 
     @Suppress("unused")

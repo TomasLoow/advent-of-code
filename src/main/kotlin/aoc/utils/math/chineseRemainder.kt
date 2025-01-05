@@ -45,3 +45,24 @@ fun chineseRemainder(modulusAndRems: List<Pair<Long, Long>>): Long {
         }
     return (sum % prod + prod) % prod
 }
+
+/*
+* Solves the Chinese remainder theorem for a given list of modulo and remainder pairs
+* with Int values.
+*
+* @param modulusAndRems A list of pairs, where each pair consists of a modulus (first)
+* and a corresponding remainder (second). Both values are of type Long.
+*
+* @return The smallest non-negative solution as a Long that satisfies all the
+* provided congruences. Ie `return-value % modulosAndRems[i].first == modulosAndRems[i].second` for all i.
+*/
+fun chineseRemainder(modulusAndRems: List<Pair<Int, Int>>): Int {
+    if (modulusAndRems.isEmpty()) throw IllegalArgumentException("list must not be empty")
+    val prod = modulusAndRems.map { it.first }.reduce { acc, mod -> acc * mod }
+    val sum = modulusAndRems
+        .fold(0) { acc, (mod, rem) ->
+            val p = prod / mod
+            acc + rem * p.multInv(mod) * p
+        }
+    return (sum % prod + prod) % prod
+}
