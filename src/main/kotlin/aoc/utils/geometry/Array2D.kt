@@ -156,7 +156,7 @@ class Array2D<T : Any> {
     }
 
     operator fun contains(c: Coord): Boolean {
-        return c.x >= 0 && c.y >= 0 && c.x < width && c.y < height
+        return c in rect
     }
 
     fun onEdge(c: Coord): Boolean {

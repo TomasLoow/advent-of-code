@@ -19,11 +19,11 @@ val solvedProblems = listOf(
     //day16Problem, // Yikes, lets exclude this one, it takes more than 1 minute! :(
     day17Problem,
     day18Problem,
-
+    // Solved, lost the code somewhere. TODO rewrite.
     day20Problem,
     day21Problem,
-
-    day23Problem,  // Sloooow. Rewrite later.
-
+    day22Problem,
+    day23Problem,  // A bit slow. Maybe rewrite later.
+    day24Problem,
     day25Problem,
 )

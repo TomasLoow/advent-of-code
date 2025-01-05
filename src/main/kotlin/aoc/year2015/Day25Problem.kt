@@ -1,7 +1,7 @@
 package aoc.year2015
 
 import DailyProblem
-import aoc.utils.parseAllDigits
+import aoc.utils.parseAllPositiveInts
 import kotlin.time.ExperimentalTime
 
 class Day25Problem : DailyProblem<Long>() {

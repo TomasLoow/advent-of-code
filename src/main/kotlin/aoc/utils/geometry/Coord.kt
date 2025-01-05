@@ -107,6 +107,7 @@ data class Coord(val x: Int, val y: Int) {
     }
 
     fun toPair(): Pair<Int, Int> = Pair(x, y)
+    fun toVector(): Vector = Vector(x, y)
 
     companion object {
         val origin = Coord(0, 0)
