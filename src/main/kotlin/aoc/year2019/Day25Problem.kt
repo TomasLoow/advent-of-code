@@ -5,7 +5,7 @@ import aoc.utils.algorithms.BFS
 import aoc.utils.emptyMutableMap
 import aoc.utils.extensionFunctions.subSets
 import aoc.utils.geometry.Direction
-import aoc.utils.parseAllDigits
+import aoc.utils.parseAllPositiveInts
 import aoc.utils.parseIntCodeComputer
 import kotlin.time.ExperimentalTime
 
@@ -178,7 +178,7 @@ class Day25Problem : DailyProblem<Int>() {
             val outStr = move(sensorsDir, e)
             if ("keypad" in outStr) {
                 p(outStr)
-                return parseAllDigits(outStr).first()
+                return parseAllPositiveInts(outStr).first()
             }
         }
         return -1

@@ -19,7 +19,7 @@ class Day25Problem : DailyProblem<Long>() {
             targetRow = 4
             return
         }
-        val digits = parseAllDigits(getInputText())
+        val digits = parseAllPositiveInts(getInputText())
         targetCol = digits[1]
         targetRow = digits[0]
     }

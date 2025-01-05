@@ -28,7 +28,7 @@ fun <A, B, C> parseThreeBlocks(
     return Triple(parserA(chunkA), parserB(chunkB), parserC(chunkC))
 }
 
-fun parseAllDigits(data: String): List<Int> {
+fun parseAllPositiveInts(data: String): List<Int> {
     val findAllNumbers = Regex("""\d+""")
     return findAllNumbers.findAll(data).map { it.value.toInt() }.toList()
 }

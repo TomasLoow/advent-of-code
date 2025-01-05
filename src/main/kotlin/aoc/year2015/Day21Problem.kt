@@ -2,7 +2,7 @@ package aoc.year2015
 
 import DailyProblem
 import aoc.utils.extensionFunctions.allUnorderedPairs
-import aoc.utils.parseAllDigits
+import aoc.utils.parseAllPositiveInts
 import kotlin.math.max
 import kotlin.time.ExperimentalTime
 
@@ -43,7 +43,7 @@ class Day21Problem : DailyProblem<Int>() {
     private lateinit var buyingOptionsSortedByCost: List<Pair<RPGEntity, Int>>
 
     override fun commonParts() {
-        val (hp, damage, armor) = parseAllDigits(getInputText())
+        val (hp, damage, armor) = parseAllPositiveInts(getInputText())
         enemy = RPGEntity(hp, damage, armor)
         buyingOptionsSortedByCost = shopItems().sortedBy { it.second }.toList()
     }
