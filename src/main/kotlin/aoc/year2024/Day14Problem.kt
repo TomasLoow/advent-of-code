@@ -8,6 +8,7 @@ import aoc.utils.geometry.Coord
 import aoc.utils.geometry.Vector
 import aoc.utils.geometry.times
 import aoc.utils.math.chineseRemainder
+import kotlin.math.max
 import kotlin.properties.Delegates
 import kotlin.time.ExperimentalTime
 
@@ -74,17 +75,19 @@ class Day14Problem : DailyProblem<Int>() {
 
     override fun part2(): Int {
         // The target image has a very low variance in both the x and y coordinates
-        // The x positions loop with a cycle of mapWidth. Find index where the x positions have the lowest variance
-        val idxVarMinX = (0..mapWidth).map { idx ->
+        // The x positions loop with a cycle of mapWidth and they of mapHeight.
+        // Find indices where the x and y positions have the lowest variance
+        var lowestXVar = Int.MAX_VALUE.toDouble()
+        var idxVarMinX = -1
+        var lowestYVar = Int.MAX_VALUE.toDouble()
+        var idxVarMinY = -1
+        (0..max(mapWidth, mapHeight)).forEach { idx ->
             val movedRobots = initialRobots.map { robot -> moveRobot(robot, idx) }
-            idx to movedRobots.map { it.c.x }.variance()
-        }.minByOrNull { it.second }!!.first
-
-        // The y positions loop with a cycle of mapHeight. Find index where the y positions have the lowest variance
-        val idxVarMinY = (0..mapHeight).map { idx ->
-            val movedRobots = initialRobots.map { robot -> moveRobot(robot, idx) }
-            idx to movedRobots.map { it.c.y }.variance()
-        }.minByOrNull { it.second }!!.first
+            val xVar = movedRobots.map { it.c.x }.variance()
+            val yVar = movedRobots.map { it.c.y }.variance()
+            if (xVar < lowestXVar) {lowestXVar=xVar; idxVarMinX = idx }
+            if (yVar < lowestYVar) {lowestYVar=xVar; idxVarMinY = idx }
+        }
 
         // Find x such that x = idxVarMinX (mod) mapWidth and  x = idxVarMinY (mod) mapHeight using the Chinese Remainder Theorem
         val x = chineseRemainder(
@@ -95,6 +98,7 @@ class Day14Problem : DailyProblem<Int>() {
         )
         return x
     }
+
 
     @Suppress("unused")
     private fun show(robots: List<Robot>): String {
