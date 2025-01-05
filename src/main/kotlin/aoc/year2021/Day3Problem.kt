@@ -4,28 +4,26 @@ import DailyProblem
 import aoc.utils.extensionFunctions.nonEmptyLines
 import aoc.utils.extensionFunctions.toInt
 
-typealias BinaryArray = Array<Boolean>
-
 class Day3Problem : DailyProblem<Long>() {
     override val number = 3
     override val year = 2021
     override val name = "Binary Diagnostic"
 
-    private lateinit var input: List<BinaryArray>
+    private lateinit var input: List<BooleanArray>
 
     private enum class CountMode {
         MostCommon,
         LeastCommon,
     }
 
-    private fun parseBinaryFile(): List<BinaryArray> {
+    private fun parseBinaryFile(): List<BooleanArray> {
         val lines: List<String> = getInputText().nonEmptyLines()
         return lines.map { line ->
-            line.map { c -> c == '1' }.toTypedArray()
+            line.map { c -> c == '1' }.toBooleanArray()
         }
     }
 
-    private fun findMostCommonByIndex(rows: List<BinaryArray>, idx: Int, mode: CountMode): Boolean {
+    private fun findMostCommonByIndex(rows: List<BooleanArray>, idx: Int, mode: CountMode): Boolean {
         var countTrue = 0
         var countFalse = 0
         for (row in rows) {
@@ -61,8 +59,8 @@ class Day3Problem : DailyProblem<Long>() {
 
         val rowLength: Int = input[0].size
 
-        val delta: BinaryArray = BinaryArray(rowLength) { false }
-        val epsilon: BinaryArray = BinaryArray(rowLength) { false }
+        val delta: BooleanArray = BooleanArray(rowLength) { false }
+        val epsilon: BooleanArray = BooleanArray(rowLength) { false }
 
         for (idx in 0 until rowLength) {
             val mostCommon = findMostCommonByIndex(input, idx, CountMode.MostCommon)

@@ -27,10 +27,10 @@ class NumbersKtTest {
 
     @Test
     fun `test toInt`() {
-        assertEquals(0, arrayOf<Boolean>().toInt(), "Empty array should convert to 0")
-        assertEquals(0, arrayOf<Boolean>(false).toInt(), "'0' should convert to 0")
-        assertEquals(5, arrayOf<Boolean>(true, false, true).toInt(), "'101' should convert to 5")
-        assertEquals(5, arrayOf<Boolean>(true, false, true).toInt(), "'0101' should convert to 5")
+        assertEquals(0, booleanArrayOf().toInt(), "Empty array should convert to 0")
+        assertEquals(0, booleanArrayOf(false).toInt(), "'0' should convert to 0")
+        assertEquals(5, booleanArrayOf(true, false, true).toInt(), "'101' should convert to 5")
+        assertEquals(5, booleanArrayOf(true, false, true).toInt(), "'0101' should convert to 5")
 
     }
 

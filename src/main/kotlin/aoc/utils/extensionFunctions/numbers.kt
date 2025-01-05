@@ -116,14 +116,14 @@ fun Int.concat(x: Int): Int {
     throw NotImplementedError("Add even more branches to Int.concat or do something more clever")
 }
 
-fun Int.toBinaryArray(): Array<Boolean> {
+fun Int.toBinaryArray(): BooleanArray {
     if (this < 0) throw Exception("undefined for negative numbers")
     val binaryString = this.toString(2)
-    return Array(binaryString.length) { binaryString[it] == '1' }
+    return BooleanArray(binaryString.length) { binaryString[it] == '1' }
 }
 
 
-fun Array<Boolean>.toInt(): Int {
+fun BooleanArray.toInt(): Int {
     return this.fold(0) { acc, bit -> (acc * 2) + if (bit) 1 else 0 }
 }
 
