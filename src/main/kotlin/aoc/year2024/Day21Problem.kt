@@ -50,7 +50,7 @@ class Day21Problem : DailyProblem<Long>() {
 
         val goal = parseDirButtons(code)
         val divided = splitDirPresses(goal)
-        assert(divided.joinToString("") == goal.renderDBs())
+        check(divided.joinToString("") == goal.renderDBs())
         val dp = DirPad()
         var chunkCounts = buildMap {
             divided.distinct().forEach { chunk ->

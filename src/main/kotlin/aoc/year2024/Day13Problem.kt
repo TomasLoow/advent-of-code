@@ -1,6 +1,7 @@
 package aoc.year2024
 
 import DailyProblem
+import aoc.utils.extensionFunctions.nonEmptyLines
 import aoc.utils.parseBlockList
 import kotlin.time.ExperimentalTime
 
@@ -19,8 +20,8 @@ class Day13Problem : DailyProblem<Long>() {
 
     override fun commonParts() {
         fun parseMachine(s: String): Machine {
-            val lines = s.lines()
-            assert(lines.size == 3)
+            val lines = s.nonEmptyLines()
+            check(lines.size == 3)
             val a = lines[0].removePrefix("Button A: X+").split(", Y+").map { it.trim().toInt() }.let { Button(it[0].toLong(),it[1].toLong()) }
             val b = lines[1].removePrefix("Button B: X+").split(", Y+").map { it.trim().toInt() }.let { Button(it[0].toLong(),it[1].toLong()) }
             val prize = lines[2].removePrefix("Prize: X=").split(", Y=").map { it.trim().toInt() }.let { Prize(it[0].toLong(),it[1].toLong()) }

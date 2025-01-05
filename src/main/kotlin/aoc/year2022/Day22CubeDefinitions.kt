@@ -2,8 +2,6 @@ package aoc.year2022
 
 import aoc.utils.geometry.Direction
 
-private fun check(boolean:Boolean) = if (!boolean) throw AssertionError() else Unit
-
 /**
  *    2211
  *    2211

@@ -116,7 +116,7 @@ class Day22Problem : DailyProblem<Int>() {
                 else -> error("Unknown move $c")
             }
         }
-        assert(nums.size == turns.size + 1)
+        check(nums.size == turns.size + 1)
         return nums.take(1) + turns.zip(nums.drop(1)) { t, n -> listOf(t, n) }.flatten()
     }
 

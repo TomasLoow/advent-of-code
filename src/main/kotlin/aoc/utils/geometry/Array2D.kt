@@ -27,7 +27,7 @@ class Array2D<T : Any> {
     }
 
     constructor(raw: Collection<T>, width: Int, height: Int) {
-        assert(raw.size == height * width)
+        check(raw.size == height * width)
         this.width = width
         this.height = height
         this.rect = Rect(Coord(0, 0), Coord(width - 1, height - 1))

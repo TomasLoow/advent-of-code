@@ -14,7 +14,7 @@ val events = mapOf(
     2015 to aoc.year2015.solvedProblems
 )
 val RUN_FOR_YEAR: Int? = null
-const val TIMES_TO_RUN = 5
+const val TIMES_TO_RUN = 1
 
 @OptIn(ExperimentalTime::class)
 fun main() {

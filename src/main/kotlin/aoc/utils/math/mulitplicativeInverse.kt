@@ -10,7 +10,7 @@ import java.math.BigInteger
  * @return the modular multiplicative inverse of `this` modulo `b`
  */
 fun Int.multInv(b: Int): Int {
-    assert(this > 0 && b > 0)
+    check(this > 0 && b > 0)
     var previousValue = 0
     var currentValue = 1
 
@@ -38,7 +38,7 @@ fun Int.multInv(b: Int): Int {
  * @return the modular multiplicative inverse of `this` modulo `b`
  */
 fun Long.multInv(b: Long): Long {
-    assert(this > 0L && b > 0L)
+    check(this > 0L && b > 0L)
     var previousValue = 0L
     var currentValue = 1L
 
@@ -66,7 +66,7 @@ fun Long.multInv(b: Long): Long {
  * @return the modular multiplicative inverse of `this` modulo `b`
  */
 fun BigInteger.multInv(b: BigInteger): BigInteger {
-    assert(this > BigInteger.ZERO && b > BigInteger.ZERO)
+    check(this > BigInteger.ZERO && b > BigInteger.ZERO)
     var previousValue = BigInteger.ZERO
     var currentValue = BigInteger.ONE
 

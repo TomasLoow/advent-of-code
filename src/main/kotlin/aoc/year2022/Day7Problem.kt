@@ -31,7 +31,7 @@ class Day7Problem : DailyProblem<Int>() {
             if (command.startsWith("$ cd ")) {
                 commands.add(Cmd.Cd(command.substringAfter("$ cd ")))
             } else {
-                assert(command == "$ ls")
+                check(command == "$ ls")
                 val content = buildList {
                     while (inputLines.isNotEmpty() && !inputLines.first().startsWith("$")) {
                         val lsLine = inputLines.removeFirst()
