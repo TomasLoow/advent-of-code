@@ -6,7 +6,7 @@ Partial solutions for
 * [2019](https://adventofcode.com/2019/)
 * [2020](https://adventofcode.com/2020/)
 * [2021](https://adventofcode.com/2021/)
-* [2022](https://adventofcode.com/2022/)
+* [2022](https://adventofcode.com/2022/) (Fully solved)
 * [2023](https://adventofcode.com/2023/)
 * [2024](https://adventofcode.com/2024/) (Fully solved)
 
