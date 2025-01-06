@@ -80,6 +80,25 @@ fun <E> Iterable<E>.allUnorderedPairs(): Sequence<Pair<E, E>> {
     }
 }
 
+/**
+ * Generates a sequence of all possible pairs of elements from the iterable, For two elements a and b at
+ * different positions in the list both (a,b) and (b,a) are returned, but NOT (a,a) and (b,b).
+ *
+ * If the list contains an element a more than once, then (a,a) will be included in the output though.
+ *
+ * Example: listOf(1,2,3) = sequenceOf(1 to 2, 1 to 3, 2 to 1, 2 to 3, 3 to 1, 3 to 2)
+ */
+fun <E> Iterable<E>.allPairs(): Sequence<Pair<E, E>> {
+    return sequence {
+        this@allPairs.forEachIndexed { index1, e1 ->
+            this@allPairs.forEachIndexed() { index2, e2 ->
+                if (index1 != index2) yield(e1 to e2)
+            }
+        }
+    }
+}
+
+
 fun <T : Comparable<T>> Iterable<T>.isAscending(): Boolean {
     return this.zipWithNext().all { (a, b) -> a <= b }
 }

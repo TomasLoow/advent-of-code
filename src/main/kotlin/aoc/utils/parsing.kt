@@ -146,6 +146,10 @@ fun <A> parseOneLineOfSeparated(data: String, parser: (String) -> A, s: String):
     return data.nonEmptyLines().single().split(s).map { parser(it) }
 }
 
+fun <A> parseOneLineOfSeparated(data: String, parser: (String) -> A, r: Regex): List<A> {
+    return data.nonEmptyLines().single().split(r).map { parser(it) }
+}
+
 fun parseCoord(data: String): Coord {
     val (x, y) = data.split(",")
     return Coord(x.toInt(), y.toInt())
