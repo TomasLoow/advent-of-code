@@ -5,7 +5,7 @@ import aoc.utils.extensionFunctions.shiftLeft
 import java.lang.Integer.parseInt
 import kotlin.time.ExperimentalTime
 
-class Day6Problem : DailyProblem<Long>() {
+class Day06Problem : DailyProblem<Long>() {
     override val number = 6
     override val year = 2021
     override val name = "Lanternfish"
@@ -49,9 +49,9 @@ class Day6Problem : DailyProblem<Long>() {
     }
 }
 
-val day6Problem = Day6Problem()
+val day06Problem = Day06Problem()
 
 @OptIn(ExperimentalTime::class)
 fun main() {
-    day6Problem.runBoth(1000)
+    day06Problem.runBoth(1000)
 }

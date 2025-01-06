@@ -45,7 +45,7 @@ private fun CrabPositions.findPositionScore(pos: Int): Int {
     }
 }
 
-class Day7Problem : DailyProblem<Int>() {
+class Day07Problem : DailyProblem<Int>() {
     override val number = 7
     override val year = 2021
     override val name = "The Treachery of Whales"
@@ -72,11 +72,11 @@ class Day7Problem : DailyProblem<Int>() {
     }
 }
 
-val day7Problem = Day7Problem()
+val day07Problem = Day07Problem()
 
 @OptIn(ExperimentalTime::class)
 fun main() {
-    day7Problem.commonParts()
-    day7Problem.runBoth(10)
+    day07Problem.commonParts()
+    day07Problem.runBoth(10)
 }
 

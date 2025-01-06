@@ -4,7 +4,7 @@ import DailyProblem
 import aoc.utils.parseIntCodeComputer
 import kotlin.time.ExperimentalTime
 
-class Day9Problem : DailyProblem<Long>() {
+class Day09Problem : DailyProblem<Long>() {
 
     override val number = 9
     override val year = 2019
@@ -35,10 +35,10 @@ class Day9Problem : DailyProblem<Long>() {
     }
 }
 
-val day9Problem = Day9Problem()
+val day09Problem = Day09Problem()
 
 @OptIn(ExperimentalTime::class)
 fun main() {
-    day9Problem.testData = false
-    day9Problem.runBoth(1)
+    day09Problem.testData = false
+    day09Problem.runBoth(1)
 }

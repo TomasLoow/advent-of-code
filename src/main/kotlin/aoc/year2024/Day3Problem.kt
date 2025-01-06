@@ -3,7 +3,7 @@ package aoc.year2024
 import DailyProblem
 import kotlin.time.ExperimentalTime
 
-class Day3Problem : DailyProblem<Int>() {
+class Day03Problem : DailyProblem<Int>() {
 
     override val number = 3
     override val year = 2024
@@ -45,9 +45,9 @@ class Day3Problem : DailyProblem<Int>() {
     }
 }
 
-val day3Problem = Day3Problem()
+val day03Problem = Day03Problem()
 
 @OptIn(ExperimentalTime::class)
 fun main() {
-    day3Problem.runBoth(100)
+    day03Problem.runBoth(100)
 }

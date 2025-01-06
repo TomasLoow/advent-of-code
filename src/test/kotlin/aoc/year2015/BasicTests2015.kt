@@ -6,63 +6,63 @@ import kotlin.test.Test
 class BasicTests2015 {
     @Test
     fun testDay1() {
-        val problem = Day1Problem().apply { testData = true }
+        val problem = Day01Problem().apply { testData = true }
         problem.commonParts()
         assertEquals(2, problem.part1(), "Correct Answer day ${problem.number } part 1")
         assertEquals(4, problem.part2(), "Correct Answer day ${problem.number } part 2")
     }
     @Test
     fun testDay2() {
-        val problem = Day2Problem().apply { testData = true }
+        val problem = Day02Problem().apply { testData = true }
         problem.commonParts()
         assertEquals(101, problem.part1(), "Correct Answer day ${problem.number } part 1")
         assertEquals(48, problem.part2(), "Correct Answer day ${problem.number } part 2")
     }
     @Test
     fun testDay3() {
-        val problem = Day3Problem().apply { testData = true }
+        val problem = Day03Problem().apply { testData = true }
         problem.commonParts()
         assertEquals(4, problem.part1(), "Correct Answer day ${problem.number } part 1")
         assertEquals(3, problem.part2(), "Correct Answer day ${problem.number } part 2")
     }
     @Test
     fun testDay4() {
-        val problem = Day4Problem().apply { testData = true }
+        val problem = Day04Problem().apply { testData = true }
         problem.commonParts()
         assertEquals(609043, problem.part1(), "Correct Answer day ${problem.number } part 1")
         assertEquals(6742839, problem.part2(), "Correct Answer day ${problem.number } part 2")
     }
     @Test
     fun testDay5() {
-        val problem = Day5Problem().apply { testData = true }
+        val problem = Day05Problem().apply { testData = true }
         problem.commonParts()
         assertEquals(1, problem.part1(), "Correct Answer day ${problem.number } part 1")
         assertEquals(2, problem.part2(), "Correct Answer day ${problem.number } part 2")
     }
     @Test
     fun testDay6() {
-        val problem = Day6Problem().apply { testData = true }
+        val problem = Day06Problem().apply { testData = true }
         problem.commonParts()
         assertEquals(3*500*500, problem.part1(), "Correct Answer day ${problem.number } part 1")
         assertEquals(1*500*500 + 1*500*500 + 2*500*500 + 3*500*500, problem.part2(), "Correct Answer day ${problem.number } part 2")
     }
     @Test
     fun testDay7() {
-        val problem = Day7Problem().apply { testData = true }
+        val problem = Day07Problem().apply { testData = true }
         problem.commonParts()
         assertEquals(72, problem.part1(), "Correct Answer day ${problem.number } part 1")
         assertEquals(72, problem.part2(), "Correct Answer day ${problem.number } part 2")
     }
     @Test
     fun testDay8() {
-        val problem = Day8Problem().apply { testData = true }
+        val problem = Day08Problem().apply { testData = true }
         problem.commonParts()
         assertEquals(12, problem.part1(), "Correct Answer day ${problem.number } part 1")
         assertEquals(19, problem.part2(), "Correct Answer day ${problem.number } part 2")
     }
     @Test
     fun testDay9() {
-        val problem = Day9Problem().apply { testData = true }
+        val problem = Day09Problem().apply { testData = true }
         problem.commonParts()
         assertEquals(605, problem.part1(), "Correct Answer day ${problem.number } part 1")
         assertEquals(982, problem.part2(), "Correct Answer day ${problem.number } part 2")

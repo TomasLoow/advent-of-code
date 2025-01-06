@@ -5,7 +5,7 @@ import aoc.utils.extensionFunctions.permutationsSequence
 import aoc.utils.parseIntCodeProgram
 import kotlin.time.ExperimentalTime
 
-class Day7Problem : DailyProblem<Long>() {
+class Day07Problem : DailyProblem<Long>() {
 
     override val number = 7
     override val year = 2019
@@ -72,10 +72,10 @@ fun Sequence<Int>.wirePeek(name: String): Sequence<Int> {
     return this // this.map { println("$name>$it"); it }
 }
 
-val day7Problem = Day7Problem()
+val day07Problem = Day07Problem()
 
 @OptIn(ExperimentalTime::class)
 fun main() {
-    day7Problem.testData = false
-    day7Problem.runBoth(1)
+    day07Problem.testData = false
+    day07Problem.runBoth(1)
 }

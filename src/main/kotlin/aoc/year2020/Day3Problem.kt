@@ -6,7 +6,7 @@ import aoc.utils.geometry.Array2D
 import aoc.utils.geometry.Coord
 import kotlin.time.ExperimentalTime
 
-class Day3Problem : DailyProblem<Long>() {
+class Day03Problem : DailyProblem<Long>() {
 
     override val number = 3
     override val year = 2020
@@ -52,10 +52,10 @@ class Day3Problem : DailyProblem<Long>() {
     }
 }
 
-val day3Problem = Day3Problem()
+val day03Problem = Day03Problem()
 
 @OptIn(ExperimentalTime::class)
 fun main() {
-    day3Problem.testData = false
-    day3Problem.runBoth(100)
+    day03Problem.testData = false
+    day03Problem.runBoth(100)
 }

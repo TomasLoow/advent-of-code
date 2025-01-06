@@ -6,7 +6,7 @@ import aoc.utils.emptyMutableSet
 import aoc.utils.extensionFunctions.readNonEmptyLines
 import kotlin.time.ExperimentalTime
 
-class Day7Problem : DailyProblem<Int>() {
+class Day07Problem : DailyProblem<Int>() {
     private lateinit var fileSystem: Directory
     override val number = 7
     override val year = 2022
@@ -15,7 +15,7 @@ class Day7Problem : DailyProblem<Int>() {
     /* Commands and ls output */
     sealed interface Cmd {
         class Cd(var path: String) : Cmd
-        class Ls(var content: List<Day7Problem.Ls>) : Cmd
+        class Ls(var content: List<Day07Problem.Ls>) : Cmd
     }
 
     sealed interface Ls {
@@ -137,9 +137,9 @@ class Day7Problem : DailyProblem<Int>() {
     }
 }
 
-val day7Problem = Day7Problem()
+val day07Problem = Day07Problem()
 
 @OptIn(ExperimentalTime::class)
 fun main() {
-    day7Problem.runBoth(1000)
+    day07Problem.runBoth(1000)
 }

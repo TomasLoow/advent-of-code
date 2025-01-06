@@ -8,7 +8,7 @@ import kotlin.time.ExperimentalTime
 
 private typealias WireSpec = List<Pair<Direction, Int>>
 
-class Day3Problem : DailyProblem<Int>() {
+class Day03Problem : DailyProblem<Int>() {
 
     override val number = 3
     override val year = 2019
@@ -59,10 +59,10 @@ class Day3Problem : DailyProblem<Int>() {
     }
 }
 
-val day3Problem = Day3Problem()
+val day03Problem = Day03Problem()
 
 @OptIn(ExperimentalTime::class)
 fun main() {
-    day3Problem.testData = false
-    day3Problem.runBoth(100)
+    day03Problem.testData = false
+    day03Problem.runBoth(100)
 }

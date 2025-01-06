@@ -10,7 +10,7 @@ import kotlin.math.max
 import kotlin.math.min
 import kotlin.time.ExperimentalTime
 
-class Day9Problem : DailyProblem<Int>() {
+class Day09Problem : DailyProblem<Int>() {
 
     override val number = 9
     override val year = 2015
@@ -51,9 +51,9 @@ class Day9Problem : DailyProblem<Int>() {
     }
 }
 
-val day9Problem = Day9Problem()
+val day09Problem = Day09Problem()
 
 @OptIn(ExperimentalTime::class)
 fun main() {
-    day9Problem.runBoth(100)
+    day09Problem.runBoth(100)
 }

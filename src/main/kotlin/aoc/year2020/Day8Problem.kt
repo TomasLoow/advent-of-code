@@ -10,7 +10,7 @@ private sealed interface Instruction {
     data class Nop(val value: Int) : Instruction
 }
 
-class Day8Problem : DailyProblem<Long>() {
+class Day08Problem : DailyProblem<Long>() {
 
     override val number = 8
     override val year = 2020
@@ -80,10 +80,10 @@ class Day8Problem : DailyProblem<Long>() {
     }
 }
 
-val day8Problem = Day8Problem()
+val day08Problem = Day08Problem()
 
 @OptIn(ExperimentalTime::class)
 fun main() {
-    day8Problem.testData = false
-    day8Problem.runBoth(100)
+    day08Problem.testData = false
+    day08Problem.runBoth(100)
 }

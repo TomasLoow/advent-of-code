@@ -1,8 +1,8 @@
 package aoc.year2023
 
 val solvedProblems = listOf(
-    day1Problem,
-    day2Problem,
+    day01Problem,
+    day02Problem,
 
 
     // pt 1 solved but lost

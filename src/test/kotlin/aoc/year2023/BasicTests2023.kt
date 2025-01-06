@@ -6,7 +6,7 @@ import kotlin.test.Test
 class BasicTests2023 {
     @Test
     fun testDay1() {
-        val problem = Day1Problem()
+        val problem = Day01Problem()
         problem.testData = true
         problem.commonParts()
         // Different test data for part1 and part2. We skip testing part1.
@@ -16,7 +16,7 @@ class BasicTests2023 {
 
     @Test
     fun testDay2() {
-        val problem = Day2Problem()
+        val problem = Day02Problem()
         problem.testData = true
         problem.commonParts()
         assertEquals(8, problem.part1())

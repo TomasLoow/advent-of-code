@@ -80,7 +80,7 @@ private class BingoBoard() {
     }
 }
 
-class Day4Problem : DailyProblem<Long>() {
+class Day04Problem : DailyProblem<Long>() {
     override val number = 4
     override val year = 2021
 
@@ -128,10 +128,10 @@ class Day4Problem : DailyProblem<Long>() {
     }
 }
 
-val day4Problem = Day4Problem()
+val day04Problem = Day04Problem()
 
 @OptIn(ExperimentalTime::class)
 fun main() {
-    day4Problem.commonParts()
-    day4Problem.runBoth(10)
+    day04Problem.commonParts()
+    day04Problem.runBoth(10)
 }

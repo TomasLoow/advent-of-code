@@ -39,7 +39,7 @@ class SeaFloor(private val map: Array2D<Int>) {
 }
 
 
-class Day9Problem : DailyProblem<Long>() {
+class Day09Problem : DailyProblem<Long>() {
 
     override val number = 9
     override val year = 2021
@@ -74,12 +74,12 @@ class Day9Problem : DailyProblem<Long>() {
 }
 
 
-val day9Problem = Day9Problem()
+val day09Problem = Day09Problem()
 
 
 @OptIn(ExperimentalTime::class)
 fun main() {
-    day9Problem.commonParts()
-    day9Problem.runBoth(10)
+    day09Problem.commonParts()
+    day09Problem.runBoth(10)
 }
 

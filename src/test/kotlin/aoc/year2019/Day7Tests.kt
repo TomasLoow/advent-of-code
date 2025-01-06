@@ -7,7 +7,7 @@ internal class Day7Tests {
 
     @Test
     fun test_examples_part_1() {
-        val p = Day7Problem()
+        val p = Day07Problem()
         val computers1 = (0..4).map {
             IntCode(
                 startingMemory = arrayOf(
@@ -41,7 +41,7 @@ internal class Day7Tests {
 
     @Test
     fun test_examples_part_2() {
-        val p = Day7Problem()
+        val p = Day07Problem()
         val computers1 = (0..4).map {
             IntCode(
                 startingMemory = arrayOf(

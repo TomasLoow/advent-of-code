@@ -4,7 +4,7 @@ import DailyProblem
 import aoc.utils.extensionFunctions.nonEmptyLines
 import kotlin.time.ExperimentalTime
 
-class Day8Problem : DailyProblem<Int>() {
+class Day08Problem : DailyProblem<Int>() {
 
     override val number = 8
     override val year = 2015
@@ -69,9 +69,9 @@ class Day8Problem : DailyProblem<Int>() {
     }
 }
 
-val day8Problem = Day8Problem()
+val day08Problem = Day08Problem()
 
 @OptIn(ExperimentalTime::class)
 fun main() {
-    day8Problem.runBoth(1)
+    day08Problem.runBoth(1)
 }

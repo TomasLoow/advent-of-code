@@ -15,7 +15,7 @@ data class Block(var fileIdx: Int, var length: Int) {
 
 const val EMPTY = -1
 
-class Day9Problem : DailyProblem<Long>() {
+class Day09Problem : DailyProblem<Long>() {
 
     override val number = 9
     override val year = 2024
@@ -121,9 +121,9 @@ class Day9Problem : DailyProblem<Long>() {
     }
 }
 
-val day9Problem = Day9Problem()
+val day09Problem = Day09Problem()
 
 @OptIn(ExperimentalTime::class)
 fun main() {
-    day9Problem.runBoth(10)
+    day09Problem.runBoth(10)
 }

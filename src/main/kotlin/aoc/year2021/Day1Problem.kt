@@ -6,7 +6,7 @@ import aoc.utils.parseIntLines
 import kotlin.time.ExperimentalTime
 
 
-class Day1Problem : DailyProblem<Long>() {
+class Day01Problem : DailyProblem<Long>() {
 
     override val number = 1
     override val year = 2021
@@ -35,11 +35,11 @@ class Day1Problem : DailyProblem<Long>() {
     }
 }
 
-val day1Problem = Day1Problem()
+val day01Problem = Day01Problem()
 
 @OptIn(ExperimentalTime::class)
 fun main() {
-    day1Problem.runBoth(10)
+    day01Problem.runBoth(10)
 }
 
 

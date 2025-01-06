@@ -18,7 +18,7 @@ const val LOSE = 1
 /* computer - my ≅ result (mod 3) */
 /* computer - result ≅ my (mod 3) */
 
-class Day2Problem : DailyProblem<Int>() {
+class Day02Problem : DailyProblem<Int>() {
 
     override val number = 2
     override val year = 2022
@@ -96,6 +96,6 @@ class Day2Problem : DailyProblem<Int>() {
     }
 }
 
-val day2Problem = Day2Problem()
+val day02Problem = Day02Problem()
 
 

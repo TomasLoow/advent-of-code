@@ -6,7 +6,7 @@ import aoc.utils.geometry.Direction
 import aoc.utils.parseDirectionFromArrow
 import kotlin.time.ExperimentalTime
 
-class Day3Problem : DailyProblem<Int>() {
+class Day03Problem : DailyProblem<Int>() {
 
     override val number = 3
     override val year = 2015
@@ -45,9 +45,9 @@ class Day3Problem : DailyProblem<Int>() {
 }
 
 
-val day3Problem = Day3Problem()
+val day03Problem = Day03Problem()
 
 @OptIn(ExperimentalTime::class)
 fun main() {
-    day3Problem.runBoth(10000)
+    day03Problem.runBoth(10000)
 }

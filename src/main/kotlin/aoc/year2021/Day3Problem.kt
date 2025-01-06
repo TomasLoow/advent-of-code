@@ -4,7 +4,7 @@ import DailyProblem
 import aoc.utils.extensionFunctions.nonEmptyLines
 import aoc.utils.extensionFunctions.toInt
 
-class Day3Problem : DailyProblem<Long>() {
+class Day03Problem : DailyProblem<Long>() {
     override val number = 3
     override val year = 2021
     override val name = "Binary Diagnostic"
@@ -82,4 +82,4 @@ class Day3Problem : DailyProblem<Long>() {
 }
 
 
-val day3Problem = Day3Problem()
+val day03Problem = Day03Problem()

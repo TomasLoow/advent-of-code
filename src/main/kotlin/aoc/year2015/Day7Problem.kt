@@ -8,7 +8,7 @@ import aoc.utils.parseListOfPairs
 import kotlin.time.ExperimentalTime
 
 private typealias Wire = String
-class Day7Problem : DailyProblem<Int>() {
+class Day07Problem : DailyProblem<Int>() {
 
     override val number = 7
     override val year = 2015
@@ -90,9 +90,9 @@ class Day7Problem : DailyProblem<Int>() {
 }
 
 
-val day7Problem = Day7Problem()
+val day07Problem = Day07Problem()
 
 @OptIn(ExperimentalTime::class)
 fun main() {
-    day7Problem.runBoth(100)
+    day07Problem.runBoth(100)
 }

@@ -17,7 +17,7 @@ data class Planet(val name: String, var orbitsAround: Planet?) {
 
 }
 
-class Day6Problem : DailyProblem<Int>() {
+class Day06Problem : DailyProblem<Int>() {
 
     override val number = 6
     override val year = 2019
@@ -54,10 +54,10 @@ class Day6Problem : DailyProblem<Int>() {
     }
 }
 
-val day6Problem = Day6Problem()
+val day06Problem = Day06Problem()
 
 @OptIn(ExperimentalTime::class)
 fun main() {
-    day6Problem.testData = false
-    day6Problem.runBoth(1)
+    day06Problem.testData = false
+    day06Problem.runBoth(1)
 }

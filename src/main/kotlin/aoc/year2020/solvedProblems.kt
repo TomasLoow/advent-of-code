@@ -1,15 +1,15 @@
 package aoc.year2020
 
 val solvedProblems = listOf(
-    day1Problem,
-    day2Problem,
-    day3Problem,
+    day01Problem,
+    day02Problem,
+    day03Problem,
     // 4 solved in python
-    day5Problem,
+    day05Problem,
     // 6 solved in python
     // 7 solved in python
-    day8Problem,
-    day9Problem,
+    day08Problem,
+    day09Problem,
     day10Problem,
     day11Problem,  // solved by slow
 

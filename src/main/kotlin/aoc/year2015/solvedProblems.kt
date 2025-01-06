@@ -3,15 +3,15 @@ package aoc.year2015
 import DailyProblem
 
 val solvedProblems: List<DailyProblem<out Any>> = listOf(
-    day1Problem,
-    day2Problem,
-    day3Problem,
-    day4Problem, //Slow as heck (> 1s)
-    day5Problem,
-    day6Problem,
-    day7Problem,
-    day8Problem,
-    day9Problem, //Improvement potential, brute force
+    day01Problem,
+    day02Problem,
+    day03Problem,
+    day04Problem, //Slow as heck (> 1s)
+    day05Problem,
+    day06Problem,
+    day07Problem,
+    day08Problem,
+    day09Problem, //Improvement potential, brute force
     day10Problem,
     day11Problem, //Improvement potential, brute force
     day12Problem,

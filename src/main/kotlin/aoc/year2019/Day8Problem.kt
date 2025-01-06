@@ -6,7 +6,7 @@ import aoc.utils.geometry.showBooleanArray
 import aoc.utils.parseDisplay
 import kotlin.time.ExperimentalTime
 
-class Day8Problem : DailyProblem<String>() {
+class Day08Problem : DailyProblem<String>() {
 
     override val number = 8
     override val year = 2019
@@ -39,10 +39,10 @@ class Day8Problem : DailyProblem<String>() {
     }
 }
 
-val day8Problem = Day8Problem()
+val day08Problem = Day08Problem()
 
 @OptIn(ExperimentalTime::class)
 fun main() {
-    day8Problem.testData = false
-    day8Problem.runBoth(100)
+    day08Problem.testData = false
+    day08Problem.runBoth(100)
 }

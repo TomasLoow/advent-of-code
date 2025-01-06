@@ -7,7 +7,7 @@ import java.lang.Integer.parseInt
 import kotlin.time.ExperimentalTime
 
 
-class Day2Problem : DailyProblem<Int>() {
+class Day02Problem : DailyProblem<Int>() {
 
     override val number = 2
     override val year = 2024
@@ -50,10 +50,10 @@ class Day2Problem : DailyProblem<Int>() {
     }
 }
 
-val day2Problem = Day2Problem()
+val day02Problem = Day02Problem()
 
 @OptIn(ExperimentalTime::class)
 fun main() {
-    day2Problem.runBoth(timesToRun = 100)
+    day02Problem.runBoth(timesToRun = 100)
 }
 

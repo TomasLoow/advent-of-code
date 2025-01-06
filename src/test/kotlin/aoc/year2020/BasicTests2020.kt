@@ -7,7 +7,7 @@ class BasicTests2020 {
 
     @Test
     fun testDay1() {
-        val problem = Day1Problem()
+        val problem = Day01Problem()
         problem.testData = true
         problem.commonParts()
         assertEquals(514579, problem.part1())
@@ -16,7 +16,7 @@ class BasicTests2020 {
 
     @Test
     fun testDay2() {
-        val problem = Day2Problem()
+        val problem = Day02Problem()
         problem.testData = true
         problem.commonParts()
         assertEquals(2, problem.part1())
@@ -25,7 +25,7 @@ class BasicTests2020 {
 
     @Test
     fun testDay3() {
-        val problem = Day3Problem()
+        val problem = Day03Problem()
         problem.testData = true
         problem.commonParts()
         assertEquals(7, problem.part1())
@@ -34,7 +34,7 @@ class BasicTests2020 {
 
     @Test
     fun testDay5() {
-        val problem = Day5Problem()
+        val problem = Day05Problem()
         problem.testData = true
         problem.commonParts()
         assertEquals(820, problem.part1())
@@ -42,7 +42,7 @@ class BasicTests2020 {
 
     @Test
     fun testDay9() {
-        val problem = Day9Problem()
+        val problem = Day09Problem()
         problem.testData = true
         problem.commonParts()
         assertEquals(127, problem.part1())

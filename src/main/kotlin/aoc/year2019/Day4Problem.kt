@@ -5,7 +5,7 @@ import aoc.utils.extensionFunctions.isAscending
 import kotlin.properties.Delegates
 import kotlin.time.ExperimentalTime
 
-class Day4Problem : DailyProblem<Int>() {
+class Day04Problem : DailyProblem<Int>() {
 
     override val number = 4
     override val year = 2019
@@ -42,10 +42,10 @@ class Day4Problem : DailyProblem<Int>() {
 }
 
 
-val day4Problem = Day4Problem()
+val day04Problem = Day04Problem()
 
 @OptIn(ExperimentalTime::class)
 fun main() {
-    day4Problem.testData = false
-    day4Problem.runBoth(100)
+    day04Problem.testData = false
+    day04Problem.runBoth(100)
 }

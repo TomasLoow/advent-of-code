@@ -8,7 +8,7 @@ import aoc.utils.parseOneLineOfSeparated
 
 typealias ActiveWires = Set<Char>
 
-class Day8Problem : DailyProblem<Long>() {
+class Day08Problem : DailyProblem<Long>() {
     override val number = 8
     override val year = 2021
     override val name = "Seven Segment Search"
@@ -77,4 +77,4 @@ class Day8Problem : DailyProblem<Long>() {
     }
 }
 
-val day8Problem = Day8Problem()
+val day08Problem = Day08Problem()

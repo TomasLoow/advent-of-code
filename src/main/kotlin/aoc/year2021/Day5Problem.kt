@@ -43,7 +43,7 @@ private fun List<VentLine>.countIntersections(): Long {
     return array.countIndexedByCoordinate { coord, i -> i > 1 }.toLong()
 }
 
-class Day5Problem : DailyProblem<Long>() {
+class Day05Problem : DailyProblem<Long>() {
     override val number = 5
     override val year = 2021
     override val name = "Hydrothermal Venture"
@@ -72,4 +72,4 @@ class Day5Problem : DailyProblem<Long>() {
     }
 }
 
-val day5Problem = Day5Problem()
+val day05Problem = Day05Problem()

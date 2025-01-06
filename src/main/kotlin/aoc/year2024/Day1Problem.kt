@@ -8,7 +8,7 @@ import java.lang.Integer.parseInt
 import kotlin.math.absoluteValue
 import kotlin.time.ExperimentalTime
 
-class Day1Problem : DailyProblem<Int>() {
+class Day01Problem : DailyProblem<Int>() {
     override val number = 1
     override val year = 2024
     override val name = "Historian Hysteria"
@@ -37,11 +37,11 @@ class Day1Problem : DailyProblem<Int>() {
     }
 }
 
-val day1Problem = Day1Problem()
+val day01Problem = Day01Problem()
 
 @OptIn(ExperimentalTime::class)
 fun main() {
-    day1Problem.runBoth(100)
+    day01Problem.runBoth(100)
 }
 
 

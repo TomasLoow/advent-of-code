@@ -7,7 +7,7 @@ import kotlin.time.ExperimentalTime
 
 typealias Game = Pair<Int,List<Map<String, Int>>>
 
-class Day2Problem : DailyProblem<Int>() {
+class Day02Problem : DailyProblem<Int>() {
     override val number = 2
     override val year = 2023
     override val name = "Cube Conundrum"
@@ -72,11 +72,11 @@ class Day2Problem : DailyProblem<Int>() {
 }
 
 
-val day2Problem = Day2Problem()
+val day02Problem = Day02Problem()
 
 @OptIn(ExperimentalTime::class)
 fun main() {
-    println(day2Problem.runBoth(timesToRun = 100))
+    println(day02Problem.runBoth(timesToRun = 100))
 }
 
 

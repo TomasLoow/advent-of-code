@@ -26,7 +26,7 @@ private fun digitize(s:String) : String {
     return tmp
 }
 
-class Day1Problem : DailyProblem<Int>() {
+class Day01Problem : DailyProblem<Int>() {
     override val number = 1
     override val year = 2023
     override val name = "Trebuchet?!"
@@ -53,11 +53,11 @@ class Day1Problem : DailyProblem<Int>() {
 }
 
 
-val day1Problem = Day1Problem()
+val day01Problem = Day01Problem()
 
 @OptIn(ExperimentalTime::class)
 fun main() {
-    println(day1Problem.runBoth(timesToRun = 100))
+    println(day01Problem.runBoth(timesToRun = 100))
 }
 
 
