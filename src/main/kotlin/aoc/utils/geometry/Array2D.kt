@@ -361,6 +361,10 @@ class Array2D<T : Any> {
         }
     }
 
+    fun sumInRect(r: Rect, function: (T) -> Int): Int {
+        return r.allCoords.sumOf { c -> function(this[c]) }
+    }
+
     private val stepsWithDiagonals: Array<Int> by lazy {
         arrayOf(
             width,

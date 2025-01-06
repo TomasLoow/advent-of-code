@@ -40,6 +40,9 @@ data class Rect(val topLeft: Coord, val bottomRight: Coord) {
             return (topLeft.y..bottomRight.y)
         }
 
+    val allCoords: Sequence<Coord>
+        get() = yRange.asSequence().flatMap { y -> xRange.asSequence().map { x -> Coord(x, y) } }
+
     operator fun contains(point: Coord): Boolean {
         return point.x in xRange && point.y in yRange
     }
