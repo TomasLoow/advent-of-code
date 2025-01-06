@@ -15,9 +15,9 @@ abstract class DailyProblem<Res> {
     abstract fun part1(): Res
     abstract fun part2(): Res
     fun getInputFile(): File {
-
-        if (testData) return File("input/aoc$year/testinput/day$number.txt")
-        return File("input/aoc$year/day$number.txt")
+        val num = number.toString().padStart(2, '0')
+        if (testData) return File("input/aoc$year/testinput/day$num.txt")
+        return File("input/aoc$year/day$num.txt")
     }
 
     fun getInputText(): String {

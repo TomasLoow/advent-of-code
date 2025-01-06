@@ -28,7 +28,8 @@ suspend fun main() {
             }
 
             for (day in (1..date).reversed()) {
-                val fileName = "input/aoc$year/day$day.txt"
+                val paddedDay = day.toString().padStart(2, '0')
+                val fileName = "input/aoc$year/day$paddedDay.txt"
                 val file = File(fileName)
                 if (file.exists()) {
                     println("$fileName already exists, skipping.")
