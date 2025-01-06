@@ -9,8 +9,9 @@ val events = mapOf(
     2023 to aoc.year2023.solvedProblems,
     2022 to aoc.year2022.solvedProblems,
     2021 to aoc.year2021.solvedProblems,
-    2019 to aoc.year2019.solvedProblems,
     2020 to aoc.year2020.solvedProblems,
+    2019 to aoc.year2019.solvedProblems,
+    2017 to aoc.year2017.solvedProblems,
     2015 to aoc.year2015.solvedProblems
 )
 val RUN_FOR_YEAR: Int? = null
