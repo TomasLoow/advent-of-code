@@ -5,12 +5,12 @@ val solvedProblems = listOf(
     day02Problem,
 
 
-    // pt 1 solved but lost
 
 
 
 
 
+    day10Problem,
 
 
 

@@ -16,7 +16,7 @@ abstract class Djikstra<State>() {
         return solveScoreForAllStates(listOf(start))
     }
 
-    fun reconstructPathTo(cameFrom: MutableMap<State, State>, goal: State): List<State> {
+    fun reconstructPathTo(cameFrom: Map<State, State>, goal: State): List<State> {
         return buildList {
             add(goal)
             var s = goal

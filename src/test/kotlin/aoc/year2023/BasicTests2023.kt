@@ -24,6 +24,15 @@ class BasicTests2023 {
         problem.getInputFile()
     }
     @Test
+    fun testDay10() {
+        val problem = Day10Problem()
+        problem.testData = true
+        problem.commonParts()
+        assertEquals(80, problem.part1())
+        assertEquals(10, problem.part2())
+        problem.getInputFile()
+    }
+    @Test
     fun testDay15() {
         val problem = Day15Problem()
         problem.testData = true
