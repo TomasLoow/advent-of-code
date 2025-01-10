@@ -4,15 +4,15 @@ package aoc.utils.algorithms
 import aoc.utils.emptyMutableSet
 import java.util.*
 
-data class DjikstraResult<S>(val costs: MutableMap<S, Int>, val cameFrom: Map<S, S>)
+data class DijkstraResult<S>(val costs: MutableMap<S, Int>, val cameFrom: Map<S, S>)
 
-abstract class Djikstra<State>() {
+abstract class Dijkstra<State>() {
     var steps = 0
 
     abstract fun reachable(state: State): Collection<State>
     abstract fun getMoveCost(from: State, to: State): Int
 
-    fun solveScoreForAllStates(start: State): DjikstraResult<State> {
+    fun solveScoreForAllStates(start: State): DijkstraResult<State> {
         return solveScoreForAllStates(listOf(start))
     }
 
@@ -28,7 +28,7 @@ abstract class Djikstra<State>() {
     }
 
 
-    fun solveScoreForAllStates(startStates: List<State>): DjikstraResult<State> {
+    fun solveScoreForAllStates(startStates: List<State>): DijkstraResult<State> {
         steps = 0
         val openSet = emptyMutableSet<State>()
         val cameFrom: MutableMap<State, State> = HashMap(4096)
@@ -57,6 +57,6 @@ abstract class Djikstra<State>() {
                 }
             }
         }
-        return DjikstraResult(costs = cheapestPathScoreMap, cameFrom = cameFrom)
+        return DijkstraResult(costs = cheapestPathScoreMap, cameFrom = cameFrom)
     }
 }

@@ -3,8 +3,8 @@ package aoc.year2019
 import DailyProblem
 import aoc.utils.algorithms.BFS
 import aoc.utils.algorithms.BFSNoPathFound
-import aoc.utils.algorithms.Djikstra
-import aoc.utils.algorithms.DjikstraResult
+import aoc.utils.algorithms.Dijkstra
+import aoc.utils.algorithms.DijkstraResult
 import aoc.utils.geometry.Array2D
 import aoc.utils.geometry.Coord
 import aoc.utils.geometry.Direction
@@ -25,7 +25,7 @@ class FindUnknown(val map: Array2D<Tile>) : BFS<Coord>({ map[it] == Tile.UNKNOWN
     }
 }
 
-class OxygenFlow(val map: Array2D<Tile>) : Djikstra<Coord>() {
+class OxygenFlow(val map: Array2D<Tile>) : Dijkstra<Coord>() {
     override fun reachable(state: Coord): Collection<Coord> =
         map.neighbourCoords(state, diagonal = false).filter { map[it] in listOf(Tile.FLOOR, Tile.OXYGEN) }
 
@@ -44,7 +44,7 @@ class Day15Problem : DailyProblem<Int>() {
     private lateinit var startPos: Coord
     private lateinit var map: Array2D<Tile>
     private lateinit var goal: Coord
-    private lateinit var distancesToGoal: DjikstraResult<Coord>
+    private lateinit var distancesToGoal: DijkstraResult<Coord>
 
     override fun commonParts() {
         computer = parseIntCodeComputer(getInputText())

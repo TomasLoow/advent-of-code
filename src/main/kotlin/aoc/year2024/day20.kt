@@ -2,16 +2,16 @@ package aoc.year2024
 
 import DailyProblem
 import aoc.utils.*
-import aoc.utils.algorithms.Djikstra
+import aoc.utils.algorithms.Dijkstra
 import aoc.utils.extensionFunctions.allUnorderedPairs
 import aoc.utils.geometry.Array2D
 import aoc.utils.geometry.Coord
 import kotlin.time.ExperimentalTime
 
 
-private class RaceDjik(
+private class RaceDijk(
     private val map: Array2D<Boolean>,
-) : Djikstra<Coord>() {
+) : Dijkstra<Coord>() {
 
     override fun reachable(state: Coord): Collection<Coord> {
         return state.neighbours().filter { it in map && !map[it] }.map { it }
@@ -41,7 +41,7 @@ class Day20Problem : DailyProblem<Int>() {
         initialMap = charMap.map { c -> c == '#' }
 
         // Calculate best path to each point from both directions
-        val fwdSolver = RaceDjik(initialMap)
+        val fwdSolver = RaceDijk(initialMap)
         costToReachCoord = fwdSolver.solveScoreForAllStates(start).costs
 
         bestCost = costToReachCoord[goal]!!

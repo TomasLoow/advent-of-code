@@ -28,7 +28,7 @@ private fun embiggen(originalMap: Array2D<Int>): Array2D<Int> {
 
 private class ChitinAStar(val map: Array2D<Int>, goal: Coord) : AStar<Coord>(goal) {
     override fun heuristic(state: Coord): Int {
-        return 0  // 0 means it's actually djikstra's algorithm. The manhattan heuristics did not really help
+        return 0  // 0 means it's actually dijkstra's algorithm. The manhattan heuristics did not really help
         // return (map.size - pos.second) + (map[0].size - pos.first)
     }
 

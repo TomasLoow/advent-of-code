@@ -1,8 +1,8 @@
 package aoc.year2023
 
 import DailyProblem
-import aoc.utils.algorithms.Djikstra
-import aoc.utils.algorithms.DjikstraResult
+import aoc.utils.algorithms.Dijkstra
+import aoc.utils.algorithms.DijkstraResult
 import aoc.utils.extensionFunctions.odd
 import aoc.utils.geometry.Array2D
 import aoc.utils.geometry.Coord
@@ -11,7 +11,7 @@ import aoc.utils.parseCharArray
 import kotlin.time.ExperimentalTime
 
 
-class PipeFinder(val map: Array2D<Char>) : Djikstra<Coord>() {
+class PipeFinder(val map: Array2D<Char>) : Dijkstra<Coord>() {
     override fun reachable(state: Coord): Collection<Coord> {
         return buildList {
             listOf(
@@ -40,7 +40,7 @@ class Day10Problem : DailyProblem<Long>() {
 
     private lateinit var map: Array2D<Char>
     private lateinit var start: Coord
-    private lateinit var djikstraResult: DjikstraResult<Coord>
+    private lateinit var dijkstraResult: DijkstraResult<Coord>
 
     override fun commonParts() {
         map = parseCharArray(getInputText())
@@ -48,7 +48,7 @@ class Day10Problem : DailyProblem<Long>() {
         val startChar = determineStartChar()
         map[start] = startChar
         val pf = PipeFinder(map)
-        djikstraResult = pf.solveScoreForAllStates(start)
+        dijkstraResult = pf.solveScoreForAllStates(start)
     }
 
     private fun determineStartChar(): Char {
@@ -67,14 +67,14 @@ class Day10Problem : DailyProblem<Long>() {
     }
 
     override fun part1(): Long {
-        return djikstraResult.costs.maxOf { cost -> cost.value }.toLong()
+        return dijkstraResult.costs.maxOf { cost -> cost.value }.toLong()
     }
 
 
     override fun part2(): Long {
         val candidateCoords = mutableSetOf<Coord>()
         map.allCoords.forEach { coord ->
-            if (coord !in djikstraResult.costs) {
+            if (coord !in dijkstraResult.costs) {
                 map[coord] = ' '
                 candidateCoords += coord
             }
