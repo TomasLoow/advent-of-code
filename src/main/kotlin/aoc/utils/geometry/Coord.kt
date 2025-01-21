@@ -68,6 +68,9 @@ data class Coord(val x: Int, val y: Int) {
         }
     }
 
+    /**
+     * infinite sequence *starting with this coord* and walking in the given direction
+     */
     fun walkInDir(d: Direction): Sequence<Coord> {
         var (x, y) = this
         var dx = 0

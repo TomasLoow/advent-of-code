@@ -6,6 +6,7 @@ import kotlin.properties.Delegates
 import kotlin.time.ExperimentalTime
 import aoc.utils.extensionFunctions.nonEmptyLines
 import aoc.utils.geometry.Coord
+import aoc.utils.geometry.Direction
 
 class Day03Problem : DailyProblem<Long>() {
 
@@ -39,8 +40,43 @@ class Day03Problem : DailyProblem<Long>() {
         return ((sqGt - 1) - distToCorner).toLong()
     }
 
+    fun walkInSpiral(): Sequence<Coord> {
+        return sequence {
+            var c = Coord.origin
+            var i = 0
+            while(true) {
+                i++
+                repeat(i) {
+                    yield(c)
+                    c += Direction.RIGHT
+                }
+                repeat(i) {
+                    yield(c)
+                    c += Direction.UP
+                }
+                i++
+                repeat(i) {
+                    yield(c)
+                    c += Direction.LEFT
+                }
+                repeat(i) {
+                    yield(c)
+                    c += Direction.DOWN
+                }
+            }
+
+        }
+    }
+
     override fun part2(): Long {
-        return 1L
+        val values = mutableMapOf<Coord, Long>(Coord.origin to 1)
+        walkInSpiral().drop(1).forEach {c ->
+            val ns = c.neighbours(diagonal = true)
+            val v = ns.sumOf { values.getOrDefault(it, 0).toLong() }
+            if (v > target) { return v }
+            values[c] = v
+        }
+        return -1
     }
 }
 
@@ -49,5 +85,5 @@ val day03Problem = Day03Problem()
 @OptIn(ExperimentalTime::class)
 fun main() {
     day03Problem.testData = false
-    day03Problem.runBoth(1)
+    day03Problem.runBoth(100)
 }
