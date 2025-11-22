@@ -1,6 +1,6 @@
 package aoc.year2024
 
-import DailyProblem
+import aoc.DailyProblem
 import aoc.utils.*
 import aoc.utils.geometry.*
 import kotlin.time.ExperimentalTime
@@ -24,7 +24,7 @@ class Day15Problem : DailyProblem<Int>() {
         initialMap = mp
 
         moves = mv
-        playerStartPos = initialMap.findIndexedByCoordinate { c, v -> v == '@' }!!.first
+        playerStartPos = initialMap.coordOfFirst('@')!!
         initialMap[playerStartPos] = '.'
     }
 
@@ -132,10 +132,9 @@ class Day15Problem : DailyProblem<Int>() {
 
 
     override fun part2(): Int {
-        val map = Array2D<Char>(
-            initialMap.width * 2,
-            initialMap.height
-        ) { (x, y) -> if (initialMap[x / 2, y] == '#') '#' else '.' }
+        val map = Array2D(initialMap.width * 2,initialMap.height) { (x, y) ->
+            if (initialMap[x / 2, y] == '#') '#' else '.'
+        }
         val startPos = playerStartPos.copy(x = playerStartPos.x * 2)
         val boxes = initialMap.mapAndFilterToListByNotNull { coord, c ->
             if (c == 'O') Box(coord.copy(x = coord.x * 2)) else null

@@ -1,6 +1,5 @@
 package aoc.year2024
 
-import aoc.year2024.*
 import kotlin.test.Test
 import kotlin.test.assertEquals
 

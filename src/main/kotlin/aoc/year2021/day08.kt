@@ -1,6 +1,6 @@
 package aoc.year2021
 
-import DailyProblem
+import aoc.DailyProblem
 import aoc.utils.emptyMutableMap
 import aoc.utils.extensionFunctions.parseDecimalList
 import aoc.utils.parseListOfPairs

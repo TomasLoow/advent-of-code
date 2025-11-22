@@ -1,6 +1,6 @@
 package aoc.year2023
 
-import DailyProblem
+import aoc.DailyProblem
 import aoc.utils.extensionFunctions.nonEmptyLines
 import aoc.utils.parseOneLineOfSeparated
 import kotlin.time.ExperimentalTime
@@ -22,7 +22,7 @@ class Day09Problem : DailyProblem<Long>() {
         while (! lines.last().all { it == 0L }) {
             lines.add(lines.last().zipWithNext { a, b -> b - a })
         }
-        return lines.map { it.last() }.sum()
+        return lines.sumOf { it.last() }
     }
 
     override fun part1(): Long {

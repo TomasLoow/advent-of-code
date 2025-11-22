@@ -1,12 +1,8 @@
 package aoc.year2017
 
-import DailyProblem
-import kotlin.math.absoluteValue
-import kotlin.properties.Delegates
-import kotlin.time.ExperimentalTime
+import aoc.DailyProblem
 import aoc.utils.extensionFunctions.nonEmptyLines
-import aoc.utils.geometry.Coord
-import aoc.utils.geometry.Direction
+import kotlin.time.ExperimentalTime
 
 class Day04Problem : DailyProblem<Long>() {
 

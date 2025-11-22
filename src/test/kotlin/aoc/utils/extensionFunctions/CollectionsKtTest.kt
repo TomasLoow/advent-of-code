@@ -1,5 +1,3 @@
-@file:Suppress("unused")
-
 package aoc.utils.extensionFunctions
 
 import org.junit.jupiter.api.Assertions

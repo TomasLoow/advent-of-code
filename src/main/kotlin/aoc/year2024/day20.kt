@@ -1,6 +1,6 @@
 package aoc.year2024
 
-import DailyProblem
+import aoc.DailyProblem
 import aoc.utils.*
 import aoc.utils.algorithms.Dijkstra
 import aoc.utils.extensionFunctions.allUnorderedPairs
@@ -36,8 +36,8 @@ class Day20Problem : DailyProblem<Int>() {
 
     override fun commonParts() {
         val charMap = parseCharArray(getInputText())
-        start = charMap.findIndexedByCoordinate { _, c -> c == 'S' }!!.first
-        goal = charMap.findIndexedByCoordinate { _, c -> c == 'E' }!!.first
+        start = charMap.coordOfFirst('S')!!
+        goal = charMap.coordOfFirst('E')!!
         initialMap = charMap.map { c -> c == '#' }
 
         // Calculate best path to each point from both directions

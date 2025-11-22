@@ -1,6 +1,6 @@
 package aoc.year2015
 
-import DailyProblem
+import aoc.DailyProblem
 import aoc.utils.extensionFunctions.allUnorderedPairs
 import aoc.utils.parseAllPositiveInts
 import kotlin.math.max

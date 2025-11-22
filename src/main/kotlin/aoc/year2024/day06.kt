@@ -1,6 +1,6 @@
 package aoc.year2024
 
-import DailyProblem
+import aoc.DailyProblem
 import aoc.utils.*
 import aoc.utils.algorithms.hasLoop
 import aoc.utils.geometry.Array2D
@@ -23,7 +23,7 @@ class Day06Problem : DailyProblem<Int>() {
 
     override fun commonParts() {
         val d = Array2D.parseFromLines(getInputText(), ::id)
-        val (coord, dir) = d.findIndexedByCoordinate { _, c -> c in "v^<>" }!!
+        val (coord, dir) = d.findFirst { c -> c in "v^<>" }!!
         guardStartPos = coord
         guardStartDir = parseDirectionFromArrow(dir)
         map = d.map { it == '#' }

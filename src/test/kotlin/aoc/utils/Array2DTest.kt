@@ -321,7 +321,7 @@ class Array2DTest {
         }
 
         val c = arr.closest(Coord(3,0)) { c,v -> v == 5 }
-        assertTrue(c in listOf<Coord>(Coord(5,0), Coord(4,1), Coord(3,2)))
+        assertTrue(c in listOf(Coord(5,0), Coord(4,1), Coord(3,2)))
         assertEquals(5, arr[c!!])
     }
 }

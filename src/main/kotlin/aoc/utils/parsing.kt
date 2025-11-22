@@ -13,7 +13,7 @@ import java.lang.Long.parseLong
 
 
 fun <A, B> parseTwoBlocks(data: String, parserA: (String) -> A, parserB: (String) -> B): Pair<A, B> {
-    val (chunkA, chunkB) = data.ensureNl().split("\n\n").also { if (it.size != 2) throw Exception("Too many blocks") }
+    val (chunkA, chunkB) = data.ensureNl().split("\n\n").also { check (it.size == 2) { "Too many blocks" } }
     return Pair(parserA(chunkA), parserB(chunkB))
 }
 
@@ -24,7 +24,7 @@ fun <A, B, C> parseThreeBlocks(
     parserC: (String) -> C
 ): Triple<A, B, C> {
     val (chunkA, chunkB, chunkC) = data.ensureNl().split("\n\n")
-        .also { if (it.size != 3) throw Exception("Too many blocks") }
+        .also { check(it.size == 3) { "Too many blocks" } }
     return Triple(parserA(chunkA), parserB(chunkB), parserC(chunkC))
 }
 
@@ -42,12 +42,15 @@ fun <A> parseBlockList(data: String, parser: (String) -> A): List<A> {
 }
 
 /**
- * Parses a file where each non-empty line is one single integers.
+ * Parses a file where each non-empty line is one single integer.
  */
 fun parseIntLines(data: String): List<Int> {
     return data.nonEmptyLines().map(::parseInt)
 }
 
+/**
+ * Parses a file where each non-empty line is one single (Long) integer.
+ */
 fun parseLongLines(data: String): List<Long> {
     return data.nonEmptyLines().map(::parseLong)
 }
@@ -62,7 +65,7 @@ fun parseCharArray(data: String): Array2D<Char> {
 
 
 /**
- * Parses a file where each line is a pair of values separated a separator that is given as a constant string. Any empty lines are ignored.
+ * Parses a string where each line is a pair of values separated a separator that is given as a constant string. Any empty lines are ignored.
  *
  * Example.
  *
@@ -86,7 +89,7 @@ fun <A, B> parseListOfPairs(
 }
 
 /**
- * Parses a file where each line is a pair of values separated a separator that is given as a **Regex**. Any empty lines are ignored.
+ * Parses a string where each line is a pair of values separated a separator that is given as a **Regex**. Any empty lines are ignored.
  *
  * Example
  *
@@ -108,7 +111,18 @@ fun <A, B> parseListOfPairs(
     }
 }
 
-
+/**
+ * Parses a string where each line is a triple of values separated by separators separator that is given as a constant string. Any empty lines are ignored.
+ *
+ * Example.
+ *
+ * parseListOfTriples(s, ::id, ::parseInt, ::parseInt, "=", ",") would parse the string
+ * """x=1,2
+ * z=11,3
+ * q=1,4
+ * """
+ * returns listOf(Triple("x", 1,2), Triple("z", 11,3), Triple("q", 1,4))
+ */
 fun <A, B, C> parseListOfTriples(
     inputText: String,
     component1parser: (String) -> A,
@@ -150,6 +164,9 @@ fun <A> parseOneLineOfSeparated(data: String, parser: (String) -> A, r: Regex): 
     return data.nonEmptyLines().single().split(r).map { parser(it) }
 }
 
+/**
+ * parseCoord("16,-7") == Coord(16,-7)
+ */
 fun parseCoord(data: String): Coord {
     val (x, y) = data.split(",")
     return Coord(x.toInt(), y.toInt())
@@ -167,9 +184,39 @@ fun parseDirectionFromArrow(it: Char): Direction {
     }
 }
 
+fun parseDirectionFromURDL(it: Char): Direction {
+    return when (it) {
+        'U' -> Direction.UP
+        'R' -> Direction.RIGHT
+        'D' -> Direction.DOWN
+        'L' -> Direction.LEFT
+        else -> {
+            throw Exception("Bad input")
+        }
+    }
+}
+
+fun parseDirectionFromNESW(it: Char): Direction {
+    return when (it) {
+        'N' -> Direction.UP
+        'E' -> Direction.RIGHT
+        'S' -> Direction.DOWN
+        'W' -> Direction.LEFT
+        else -> {
+            throw Exception("Bad input")
+        }
+    }
+}
+
+
+/**
+ * Does nothing. Strangely enough, that can be useful sometimes.
+ */
 fun <T> id(t: T) = t
 
-
+/**
+ * Parsers for IntCode programs from year 2019
+ */
 fun parseIntCodeProgram(s: String) =
     parseOneLineOfSeparated(s.nonEmptyLines().first(), String::toLong, ",").toTypedArray()
 

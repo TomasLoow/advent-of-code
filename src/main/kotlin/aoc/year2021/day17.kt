@@ -1,6 +1,6 @@
 package aoc.year2021
 
-import DailyProblem
+import aoc.DailyProblem
 import java.io.File
 import kotlin.math.absoluteValue
 import kotlin.math.roundToInt

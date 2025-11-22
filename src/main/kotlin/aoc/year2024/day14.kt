@@ -1,6 +1,6 @@
 package aoc.year2024
 
-import DailyProblem
+import aoc.DailyProblem
 import aoc.utils.extensionFunctions.nonEmptyLines
 import aoc.utils.extensionFunctions.variance
 import aoc.utils.geometry.Array2D
@@ -102,7 +102,7 @@ class Day14Problem : DailyProblem<Int>() {
 
     @Suppress("unused")
     private fun show(robots: List<Robot>): String {
-        val a = Array2D<Int>(mapWidth, mapHeight) { _ -> 0 }
+        val a = Array2D(mapWidth, mapHeight) { _ -> 0 }
         robots.forEach { a[it.c] = a[it.c] + 1 }
         return a.show { if (it == 0) "." else it.toString() }
     }

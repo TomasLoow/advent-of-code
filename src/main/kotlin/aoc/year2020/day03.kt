@@ -1,9 +1,8 @@
 package aoc.year2020
 
-import DailyProblem
+import aoc.DailyProblem
 import aoc.utils.extensionFunctions.productL
 import aoc.utils.geometry.Array2D
-import aoc.utils.geometry.Coord
 import kotlin.time.ExperimentalTime
 
 class Day03Problem : DailyProblem<Long>() {

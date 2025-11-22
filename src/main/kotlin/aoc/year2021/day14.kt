@@ -1,6 +1,6 @@
 package aoc.year2021
 
-import DailyProblem
+import aoc.DailyProblem
 import aoc.utils.*
 import aoc.utils.extensionFunctions.increase
 import aoc.utils.extensionFunctions.iterate

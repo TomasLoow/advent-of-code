@@ -1,6 +1,6 @@
 package aoc.year2021
 
-import DailyProblem
+import aoc.DailyProblem
 import java.io.File
 import kotlin.time.ExperimentalTime
 
@@ -17,7 +17,6 @@ data class CucumberFloor(
         map[coordToIdx(x,y)] = c
     }
 
-    @Suppress("unused")
     fun print() {
         map.toList().chunked(width).forEach {
             it.forEach { c: Char -> print(c) }
@@ -41,15 +40,15 @@ fun moveHorz(from: CucumberFloor, to: CucumberFloor): Boolean {
             val stuffAtPos = from.get(x,y)
             val stuffAtPosToRight = from.get((x+1).mod(from.width), y)
             val stuffAtPosToLeft = from.get((x-1).mod(from.width), y)
-            var newChar: Char
-            if (stuffAtPos == '>' && stuffAtPosToRight == '.') {
-                newChar = '.'
+
+            val newChar = if (stuffAtPos == '>' && stuffAtPosToRight == '.') {
                 moveHappened = true
+                '.'
             } else if (stuffAtPos == '.' && stuffAtPosToLeft == '>') {
-                newChar = '>'
                 moveHappened = true
+                '>'
             } else {
-                newChar = stuffAtPos
+                stuffAtPos
             }
             to.set(x,y,newChar)
         }
@@ -63,15 +62,17 @@ fun moveVert(from: CucumberFloor, to: CucumberFloor): Boolean {
             val stuffAtPos = from.get(x,y)
             val stuffAtPosBelow = from.get(x, (y+1).mod(from.height))
             val stuffAtPosAbove = from.get(x, (y-1).mod(from.height))
-            var newChar: Char
-            if (stuffAtPos == 'v' && stuffAtPosBelow == '.') {
-                newChar = '.'
+
+            val newChar = if (stuffAtPos == 'v' && stuffAtPosBelow == '.') {
                 moveHappened = true
-            } else if (stuffAtPos == '.' && stuffAtPosAbove == 'v') {
-                newChar = 'v'
+                '.'
+            }
+            else if (stuffAtPos == '.' && stuffAtPosAbove == 'v') {
                 moveHappened = true
-            } else {
-                newChar = stuffAtPos
+                'v'
+            }
+            else {
+                stuffAtPos
             }
             to.set(x,y,newChar)
         }

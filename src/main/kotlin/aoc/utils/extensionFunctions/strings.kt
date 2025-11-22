@@ -1,4 +1,3 @@
-@file:Suppress("unused")
 package aoc.utils.extensionFunctions
 
 import java.io.File

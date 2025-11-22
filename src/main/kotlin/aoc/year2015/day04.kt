@@ -1,6 +1,6 @@
 package aoc.year2015
 
-import DailyProblem
+import aoc.DailyProblem
 import aoc.utils.extensionFunctions.md5
 import aoc.utils.extensionFunctions.nonEmptyLines
 import kotlin.time.ExperimentalTime

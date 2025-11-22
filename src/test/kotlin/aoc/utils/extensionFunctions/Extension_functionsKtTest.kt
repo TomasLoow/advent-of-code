@@ -3,7 +3,6 @@ package aoc.utils.extensionFunctions
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import kotlin.test.Test
-import kotlin.test.assertFalse
 
 class MiscExtensionFunctionsTest {
 

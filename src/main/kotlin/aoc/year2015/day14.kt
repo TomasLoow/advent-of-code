@@ -1,6 +1,6 @@
 package aoc.year2015
 
-import DailyProblem
+import aoc.DailyProblem
 import aoc.utils.emptyMutableMap
 import aoc.utils.extensionFunctions.increase
 import aoc.utils.extensionFunctions.nonEmptyLines

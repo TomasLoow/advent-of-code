@@ -34,22 +34,17 @@ fun parseJString(input: String): Pair<JSON.S, String> {
 fun parseJArray(input: String): Pair<JSON.A, String> {
     if (input.startsWith("[]")) return Pair(JSON.A(emptyList()), input.drop(2))
     var inp = input.drop(1)
-    var consumed = 1
-    val content = buildList<JSON> {
+    val content: List<JSON> = buildList {
         while (true) {
             val (j, unparsed) = parseJSON(inp)
             add(j)
-            val consumedByElement = inp.length - unparsed.length
             if (unparsed.first() == ']') {
                 inp = unparsed
-                consumed += consumedByElement
                 break
             }
             inp = unparsed.drop(1) // +1 from comma
-            consumed += consumedByElement + 1
         }
         inp = inp.drop(1)
-        consumed++
     }
     return Pair(JSON.A(content), inp)
 }
@@ -57,24 +52,20 @@ fun parseJArray(input: String): Pair<JSON.A, String> {
 fun parseJObject(input: String): Pair<JSON.O, String> {
     if (input.startsWith("{}")) return Pair(JSON.O(emptyMap()), input.drop(2))
     var inp = input.drop(1)
-    var consumed = 1
-    val content = buildMap<String, JSON> {
+    val content: Map<String, JSON> = buildMap {
         while (true) {
             if (inp.first() == '}') break
             val (keyJ, unparsedAfterKey) = parseJString(inp)
-            val consumedByKey = inp.length - unparsedAfterKey.length
-            consumed += consumedByKey + 1
+            inp.length - unparsedAfterKey.length
             inp = unparsedAfterKey.drop(1) // drop :
 
             val (valueJ, unparsedAfterValue) = parseJSON(inp)
-            val consumedByValue = inp.length - unparsedAfterValue.length
+            inp.length - unparsedAfterValue.length
             if (unparsedAfterValue.first() == '}') {
                 inp = unparsedAfterValue.drop(1)
-                consumed += consumedByValue + 1
                 this[keyJ.string] = valueJ
                 break
             }
-            consumed += consumedByValue + 1
             inp = unparsedAfterValue.drop(1) // drop }
             this[keyJ.string] = valueJ
         }

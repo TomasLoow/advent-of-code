@@ -9,9 +9,9 @@ class PTest {
     @Test
     fun `Constant match - matching character`() {
         val constantRule = P.Constant('a')
-        val result = constantRule.match("abc", { throw UnsupportedOperationException() })
+        val result = constantRule.match("abc") { throw UnsupportedOperationException() }
         assertEquals(listOf(1), result, "Expected to match and consume the first character 'a'")
-        val result2 = constantRule.match("bbaabc", { throw UnsupportedOperationException() })
+        val result2 = constantRule.match("bbaabc") { throw UnsupportedOperationException() }
         assertEquals(emptyList(), result2, "Expected to not match anything")
     }
 
@@ -105,7 +105,7 @@ class PTest {
     }
 
     @Test
-    fun `Matching`() {
+    fun matching() {
         val ruleMap = { id: Int ->
             when (id) {
                 1 -> P.Constant('a')

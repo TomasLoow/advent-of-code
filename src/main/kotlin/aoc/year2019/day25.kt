@@ -1,6 +1,6 @@
 package aoc.year2019
 
-import DailyProblem
+import aoc.DailyProblem
 import aoc.utils.algorithms.BFS
 import aoc.utils.emptyMutableMap
 import aoc.utils.extensionFunctions.subSets
@@ -61,6 +61,7 @@ class Day25Problem : DailyProblem<Int>() {
         return Room(name, exits = doors.associateWith { null }.toMutableMap(), items = items.toMutableList())
     }
 
+    @Suppress("unused")
     private fun manualGame() {
         while (true) {
             runTillInput()
@@ -75,7 +76,7 @@ class Day25Problem : DailyProblem<Int>() {
 
 
     private fun userInput() {
-        var stringInput = readLine()!!
+        var stringInput = readln()
         val shortCuts = mapOf(
             "s" to "south",
             "w" to "west",
@@ -86,7 +87,7 @@ class Day25Problem : DailyProblem<Int>() {
             "i" to "inv"
         )
         shortCuts.forEach { (k, v) ->
-            if (stringInput == k || stringInput.startsWith(k + " ")) {
+            if (stringInput == k || stringInput.startsWith("$k ")) {
                 stringInput = stringInput.replaceFirst(k, v)
             }
         }
@@ -110,10 +111,10 @@ class Day25Problem : DailyProblem<Int>() {
                choosenDir = explorer.lastMoveDirection!!.rotate180() // leave for now
             }
             val newRoom:Room = if (explorer.currentRoom.exits[choosenDir] != null && explorer.currentRoom.exits[choosenDir]!! in map) {
-                move(choosenDir, explorer)
+                move(choosenDir)
                 map[explorer.currentRoom.exits[choosenDir]!!]!!
             } else {
-                val outputString = move(choosenDir, explorer)
+                val outputString = move(choosenDir)
                 parseRoom(outputString)
             }
             if (newRoom.name !in map) {
@@ -125,7 +126,7 @@ class Day25Problem : DailyProblem<Int>() {
             explorer.lastMoveDirection=choosenDir
             p("Entered ${newRoom.name}")
 
-            doneExploring = map.values.all { it.name == "Security Checkpoint" || it.exits.values.all { it != null }}
+            doneExploring = map.values.all { room -> room.name == "Security Checkpoint" || room.exits.values.all { it != null }}
         }
         p("done exploring")
         return explorer
@@ -133,7 +134,7 @@ class Day25Problem : DailyProblem<Int>() {
 
     private fun pickUp(item: String, room: Room, explorer: Explorer) {
         "take $item".map { computer.writeInput(it.code.toLong()) }
-        p("Picking up ${item}")
+        p("Picking up $item")
         computer.writeInput(10)
         explorer.items.add(item)
         room.items.remove(item)
@@ -141,8 +142,8 @@ class Day25Problem : DailyProblem<Int>() {
 
     }
 
-    private fun move(dir:Direction, explorer: Explorer) : String{
-        "${dirToStr(dir)}".map { computer.writeInput(it.code.toLong()) }
+    private fun move(dir:Direction) : String{
+        dirToStr(dir).map { computer.writeInput(it.code.toLong()) }
         computer.writeInput(10)
         return computer.runUntilNeedsInputOrHalt().outputString
     }
@@ -153,7 +154,7 @@ class Day25Problem : DailyProblem<Int>() {
         explorer.items.remove(item)
         room.items.add(item)
         computer.runUntilNeedsInputOrHalt()
-        p("Dropped ${item}")
+        p("Dropped $item")
 
     }
 
@@ -172,10 +173,10 @@ class Day25Problem : DailyProblem<Int>() {
         allItems.subSets().forEach { choice ->
             p("Trying combination: $choice")
             val itemsToDrop = e.items - choice
-            val itemsToPickUp = choice - e.items
+            val itemsToPickUp = choice - e.items.toSet()
             itemsToDrop.toList().forEach { dropItem(it, room, e) }
             itemsToPickUp.forEach { pickUp(it, room, e) }
-            val outStr = move(sensorsDir, e)
+            val outStr = move(sensorsDir)
             if ("keypad" in outStr) {
                 p(outStr)
                 return parseAllPositiveInts(outStr).first()
@@ -198,7 +199,7 @@ class Day25Problem : DailyProblem<Int>() {
         p("path to checkpoint: $path")
         path.forEach { roomName ->
             val d = explorer.currentRoom.exits.filter { it.value == roomName }.keys.first()
-            move(d, explorer)
+            move(d)
             explorer.lastMoveDirection = d
             explorer.currentRoom = shipMap[roomName]!!
             p("Entered ${explorer.currentRoom.name}")

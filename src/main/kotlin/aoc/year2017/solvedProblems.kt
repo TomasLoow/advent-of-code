@@ -1,6 +1,6 @@
 package aoc.year2017
 
-import DailyProblem
+import aoc.DailyProblem
 
 val solvedProblems: List<DailyProblem<out Any>> = listOf(
     day01Problem,

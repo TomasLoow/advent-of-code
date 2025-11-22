@@ -1,6 +1,6 @@
 package aoc.year2024
 
-import DailyProblem
+import aoc.DailyProblem
 import aoc.utils.extensionFunctions.concat
 import aoc.utils.extensionFunctions.nonEmptyLines
 import kotlin.time.ExperimentalTime
@@ -25,7 +25,7 @@ class Day07Problem : DailyProblem<Long>() {
     override fun part1(): Long {
         var res = 0L
         data.forEach { (target, numbers) ->
-            var accs = listOf<Long>(numbers.first())
+            var accs = listOf(numbers.first())
             numbers.drop(1).forEach{ x ->
                 accs = buildList {
                     accs.forEach { acc ->
@@ -47,7 +47,7 @@ class Day07Problem : DailyProblem<Long>() {
     override fun part2(): Long {
         var res = 0L
         data.forEach { (target, numbers) ->
-            var accs = listOf<Long>(numbers.first())
+            var accs = listOf(numbers.first())
             numbers.drop(1).forEach{ x ->
                 accs = buildList {
                     accs.forEach { acc ->

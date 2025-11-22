@@ -1,6 +1,6 @@
 package aoc.year2015
 
-import DailyProblem
+import aoc.DailyProblem
 import kotlin.time.ExperimentalTime
 
 class Day11Problem : DailyProblem<String>() {

@@ -1,4 +1,3 @@
-@file:Suppress("unused")
 package aoc.utils.extensionFunctions
 
 /** Shifts array so element at idx+1 moves to idx,
@@ -91,7 +90,7 @@ fun <E> Iterable<E>.allUnorderedPairs(): Sequence<Pair<E, E>> {
 fun <E> Iterable<E>.allPairs(): Sequence<Pair<E, E>> {
     return sequence {
         this@allPairs.forEachIndexed { index1, e1 ->
-            this@allPairs.forEachIndexed() { index2, e2 ->
+            this@allPairs.forEachIndexed { index2, e2 ->
                 if (index1 != index2) yield(e1 to e2)
             }
         }

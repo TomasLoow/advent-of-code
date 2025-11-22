@@ -1,6 +1,6 @@
 package aoc.year2020
 
-import DailyProblem
+import aoc.DailyProblem
 import aoc.utils.*
 import kotlin.time.ExperimentalTime
 
@@ -34,7 +34,7 @@ class Day01Problem : DailyProblem<Int>() {
         for (n in data) {
             try {
                 return n*findTwoNumbersThatSumTo(2020 - n)
-            } catch (e: Exception) {
+            } catch (_: Exception) {
                 continue
             }
         }

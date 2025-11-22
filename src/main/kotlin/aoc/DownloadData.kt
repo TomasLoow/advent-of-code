@@ -1,3 +1,5 @@
+package aoc
+
 import io.ktor.client.*
 import io.ktor.client.plugins.*
 import io.ktor.client.request.*

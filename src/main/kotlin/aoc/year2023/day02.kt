@@ -1,6 +1,6 @@
 package aoc.year2023
 
-import DailyProblem
+import aoc.DailyProblem
 import aoc.utils.extensionFunctions.nonEmptyLines
 import kotlin.math.max
 import kotlin.time.ExperimentalTime

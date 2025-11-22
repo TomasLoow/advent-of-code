@@ -7,7 +7,7 @@ import kotlin.math.max
 data class Coord(val x: Int, val y: Int) {
 
     override fun hashCode(): Int {
-        return (x * MAX_VALUE + y) // This will be collision free for all x & y < MAX_VALUE
+        return (x * MAX_VALUE + y) // This will be collision-free for all x & y < MAX_VALUE
     }
 
     override fun equals(other: Any?): Boolean {

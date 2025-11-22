@@ -19,7 +19,7 @@ fun makeCubePt1(faces: Map<Int, Face>): Cube {
     val f3 = faces[3]!!
     val f5 = faces[5]!!
     val f6 = faces[6]!!
-    val edges = mapOf<Edge, Edge>(
+    val edges = mapOf(
         f1.edges[Direction.DOWN]!! to f1.edges[Direction.UP]!!,
         f1.edges[Direction.LEFT]!! to f2.edges[Direction.RIGHT]!!,
         f1.edges[Direction.RIGHT]!! to f2.edges[Direction.LEFT]!!,
@@ -75,7 +75,7 @@ fun makeCubePt2(faces: Map<Int, Face>): Cube {
     val f3 = faces[3]!!
     val f5 = faces[5]!!
     val f6 = faces[6]!!
-    val edges = mapOf<Edge, Edge>(
+    val edges = mapOf(
         f1.edges[Direction.DOWN]!! to f3.edges[Direction.RIGHT]!!,
         f1.edges[Direction.LEFT]!! to f2.edges[Direction.RIGHT]!!,
         f1.edges[Direction.RIGHT]!! to f4.edges[Direction.RIGHT]!!,
@@ -123,7 +123,7 @@ fun makeCubePt2(faces: Map<Int, Face>): Cube {
  *      5566
  */
 fun makeTestCubePt1(faces: Map<Int, Face>): Cube {
-    val edges = mapOf<Edge, Edge>(
+    val edges = mapOf(
         faces[1]!!.edges[Direction.UP]!! to faces[5]!!.edges[Direction.DOWN]!!,
         faces[1]!!.edges[Direction.DOWN]!! to faces[4]!!.edges[Direction.UP]!!,
         faces[1]!!.edges[Direction.RIGHT]!! to faces[1]!!.edges[Direction.LEFT]!!,
@@ -164,7 +164,7 @@ fun makeTestCubePt1(faces: Map<Int, Face>): Cube {
 }
 
 fun makeTestCubePt2(faces: Map<Int, Face>): Cube {
-    val edges = mapOf<Edge, Edge>(
+    val edges = mapOf(
         faces[1]!!.edges[Direction.DOWN]!! to faces[4]!!.edges[Direction.UP]!!,
         faces[1]!!.edges[Direction.LEFT]!! to faces[3]!!.edges[Direction.UP]!!,
         faces[1]!!.edges[Direction.RIGHT]!! to faces[6]!!.edges[Direction.RIGHT]!!,

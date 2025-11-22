@@ -1,6 +1,6 @@
 package aoc.year2015
 
-import DailyProblem
+import aoc.DailyProblem
 import aoc.year2015.crappyJSON.JSON
 import aoc.year2015.crappyJSON.parseJSON
 import kotlin.time.ExperimentalTime

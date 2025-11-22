@@ -1,6 +1,6 @@
 package aoc.year2022
 
-import DailyProblem
+import aoc.DailyProblem
 import aoc.utils.extensionFunctions.containsRange
 import aoc.utils.extensionFunctions.intersectRange
 import aoc.utils.extensionFunctions.readNonEmptyLines

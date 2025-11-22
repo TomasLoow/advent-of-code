@@ -1,6 +1,6 @@
 package aoc.year2023
 
-import DailyProblem
+import aoc.DailyProblem
 import aoc.utils.emptyMutableList
 import aoc.utils.extensionFunctions.nonEmptyLines
 import kotlin.time.ExperimentalTime
@@ -40,7 +40,7 @@ class Day15Problem : DailyProblem<Int>() {
     }
 
     override fun part1(): Int {
-        return strings.map(::hash).sum()
+        return strings.sumOf(::hash)
     }
 
 
@@ -56,7 +56,7 @@ class Day15Problem : DailyProblem<Int>() {
                     if (idx == -1) {
                         boxes[box].add(op.label to op.value)
                     } else {
-                        val l = boxes[box].removeAt(idx)
+                        boxes[box].removeAt(idx)
                         boxes[box].add(idx, op.label to op.value)
                     }
                 }

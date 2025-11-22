@@ -1,6 +1,6 @@
 package aoc.year2021
 
-import DailyProblem
+import aoc.DailyProblem
 import aoc.utils.extensionFunctions.nonEmptyLines
 import aoc.utils.extensionFunctions.toInt
 
@@ -59,8 +59,8 @@ class Day03Problem : DailyProblem<Long>() {
 
         val rowLength: Int = input[0].size
 
-        val delta: BooleanArray = BooleanArray(rowLength) { false }
-        val epsilon: BooleanArray = BooleanArray(rowLength) { false }
+        val delta = BooleanArray(rowLength) { false }
+        val epsilon = BooleanArray(rowLength) { false }
 
         for (idx in 0 until rowLength) {
             val mostCommon = findMostCommonByIndex(input, idx, CountMode.MostCommon)

@@ -1,6 +1,6 @@
 package aoc.year2019
 
-import DailyProblem
+import aoc.DailyProblem
 import aoc.utils.extensionFunctions.nonEmptyLines
 import aoc.utils.extensionFunctions.odd
 import aoc.utils.math.multInv
@@ -38,8 +38,11 @@ private fun pow(f: Affine, n: BigInteger): Affine {
     if (n == BigInteger.ONE) return f
     val g = pow(f, n.shr(1))
 
-    if (n.odd) return combine(f, combine(g, g))
-    else return combine(g, g)
+    return if (n.odd) {
+        combine(f, combine(g, g))
+    } else {
+        combine(g, g)
+    }
 }
 
 class Day22Problem : DailyProblem<BigInteger>() {
@@ -53,17 +56,13 @@ class Day22Problem : DailyProblem<BigInteger>() {
 
     override fun commonParts() {
 
-        if (testData) {
-            deckSizePt1 = 10.toBigInteger()
-        } else {
-            deckSizePt1 = 10007.toBigInteger()
-        }
+        deckSizePt1 = (if (testData) 10.toBigInteger() else 10007.toBigInteger())
         inputLines = getInputText().nonEmptyLines()
     }
 
     private fun parseShuffles(size: BigInteger): List<Affine> {
         return inputLines.map { line ->
-            if (line == "deal into new stack") Affine(-1.toBigInteger(), size - 1.toBigInteger(), size)
+            if (line == "deal into new stack") Affine((-1).toBigInteger(), size - 1.toBigInteger(), size)
             else if ("increment" in line) {
                 val k = line.removePrefix("deal with increment ").toBigInteger()
                 Affine(k, 0.toBigInteger(), size)

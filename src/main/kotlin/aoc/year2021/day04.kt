@@ -1,7 +1,7 @@
 package aoc.year2021
 
 
-import DailyProblem
+import aoc.DailyProblem
 import aoc.utils.geometry.Array2D
 import aoc.utils.geometry.Coord
 import aoc.utils.parseBlockList
@@ -41,9 +41,7 @@ private class BingoBoard() {
     }
 
     private fun findPosOfNumber(ball: Int): Coord? {
-        val res = numbers.findIndexedByCoordinate { c, v -> v==ball}
-        if (res == null) return null
-        return res.first
+        return  numbers.coordOfFirst(ball)
     }
 
     fun checkBingo(): Boolean {

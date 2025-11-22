@@ -1,6 +1,6 @@
 package aoc
 
-import DailyProblem
+import aoc.DailyProblem
 import kotlin.time.ExperimentalTime
 
 class Day999999Problem : DailyProblem<Long>() {

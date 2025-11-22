@@ -1,6 +1,6 @@
 package aoc.year2020
 
-import DailyProblem
+import aoc.DailyProblem
 import aoc.utils.extensionFunctions.allUnorderedPairs
 import aoc.utils.extensionFunctions.minAndMaxL
 import aoc.utils.parseLongLines
@@ -26,7 +26,7 @@ class Day09Problem : DailyProblem<Long>() {
 
 
     override fun part1(): Long {
-        val res = input.windowed(preambleSize + 1).first { it ->
+        val res = input.windowed(preambleSize + 1).first {
             val target = it.last()
             val preceeding = it.take(preambleSize)
             !preceeding.allUnorderedPairs().any { (a, b) -> a + b == target }

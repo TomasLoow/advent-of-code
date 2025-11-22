@@ -1,6 +1,6 @@
 package aoc.year2018
 
-import DailyProblem
+import aoc.DailyProblem
 import aoc.utils.extensionFunctions.nonEmptyLines
 import aoc.utils.geometry.Array2D
 import aoc.utils.geometry.Coord
@@ -75,8 +75,8 @@ class Day11Problem : DailyProblem<String>() {
 
     override fun part2(): String {
         val bestForEachSize = (3..25).asSequence().map { size ->
-            val squareSum = (0..grid.width - size - 1).asSequence().flatMap { x ->
-                (0..grid.height - size - 1).asSequence().map { y ->
+            val squareSum = (0..<grid.width - size).asSequence().flatMap { x ->
+                (0..<grid.height - size).asSequence().map { y ->
                     Coord(
                         x,
                         y

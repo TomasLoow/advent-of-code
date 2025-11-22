@@ -1,6 +1,6 @@
 package aoc.year2019
 
-import DailyProblem
+import aoc.DailyProblem
 import aoc.utils.extensionFunctions.nonEmptyLines
 import aoc.utils.geometry.Coord
 import aoc.utils.geometry.Direction

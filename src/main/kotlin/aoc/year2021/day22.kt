@@ -1,6 +1,6 @@
 package aoc.year2021
 
-import DailyProblem
+import aoc.DailyProblem
 import aoc.utils.extensionFunctions.intersectionOrNull
 import aoc.utils.extensionFunctions.length
 import java.io.File

@@ -1,6 +1,6 @@
 package aoc.year2024
 
-import DailyProblem
+import aoc.DailyProblem
 import aoc.utils.extensionFunctions.mutate
 import aoc.utils.parseIntLines
 import kotlin.time.ExperimentalTime
@@ -59,7 +59,7 @@ class Day22Problem : DailyProblem<Long>() {
     }
 
     override fun part2(): Long {
-        val scoresForSequences: MutableMap<Long, Long> = HashMap<Long, Long>(160000)
+        val scoresForSequences: MutableMap<Long, Long> = HashMap(160000)
         val map = HashMap<Long, Long>(3000)
         data.forEach { i ->
             calc2(i, map)

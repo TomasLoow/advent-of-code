@@ -1,6 +1,6 @@
 package aoc.year2023
 
-import DailyProblem
+import aoc.DailyProblem
 import aoc.utils.algorithms.Dijkstra
 import aoc.utils.algorithms.DijkstraResult
 import aoc.utils.extensionFunctions.odd
@@ -21,7 +21,7 @@ class PipeFinder(val map: Array2D<Char>) : Dijkstra<Coord>() {
                 Triple(Direction.DOWN, "|7FS", "|LJ")
             ).forEach { (dir, exits, connections) ->
                 val n = state + dir
-                if (map[state]!! in exits && n in map && map[n] in connections) add(n)
+                if (map[state] in exits && n in map && map[n] in connections) add(n)
             }
         }
 
@@ -44,7 +44,7 @@ class Day10Problem : DailyProblem<Long>() {
 
     override fun commonParts() {
         map = parseCharArray(getInputText())
-        start = map.findIndexedByCoordinate { c, v -> v == 'S' }!!.first
+        start = map.coordOfFirst('S')!!
         val startChar = determineStartChar()
         map[start] = startChar
         val pf = PipeFinder(map)
@@ -52,10 +52,10 @@ class Day10Problem : DailyProblem<Long>() {
     }
 
     private fun determineStartChar(): Char {
-        val connFromR = (start + Direction.RIGHT in map) && map[start + Direction.RIGHT]!! in "7J-"
-        val connFromL = (start + Direction.LEFT in map) && map[start + Direction.LEFT]!! in "FL-"
-        val connFromU = (start + Direction.UP in map) && map[start + Direction.UP]!! in "7F|"
-        val connFromD = (start + Direction.DOWN in map) && map[start + Direction.DOWN]!! in "LJ|-"
+        val connFromR = (start + Direction.RIGHT in map) && map[start + Direction.RIGHT] in "7J-"
+        val connFromL = (start + Direction.LEFT in map) && map[start + Direction.LEFT] in "FL-"
+        val connFromU = (start + Direction.UP in map) && map[start + Direction.UP] in "7F|"
+        val connFromD = (start + Direction.DOWN in map) && map[start + Direction.DOWN] in "LJ|-"
 
         val startChar = if (connFromR && connFromL) '-'
         else if (connFromR && connFromD) 'F'
@@ -109,9 +109,7 @@ class Day10Problem : DailyProblem<Long>() {
      */
     private fun countCrossings(coord: Coord): Int {
         require(map[coord] == ' ')
-        var c = coord
-        var count = 0
-        val dir = if (2 * c.y > map.height) Direction.DOWN else Direction.UP
+        val dir = if (2 * coord.y > map.height) Direction.DOWN else Direction.UP
         return map[coord, dir].count { it in "-FL" }
     }
 }

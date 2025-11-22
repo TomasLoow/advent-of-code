@@ -1,6 +1,6 @@
 package aoc.year2021
 
-import DailyProblem
+import aoc.DailyProblem
 import aoc.utils.algorithms.AStar
 import aoc.utils.geometry.Array2D
 import aoc.utils.geometry.Coord

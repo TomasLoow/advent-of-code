@@ -1,11 +1,12 @@
 package aoc.year2024
 
-import DailyProblem
-import aoc.utils.*
+import aoc.DailyProblem
+import aoc.utils.emptyMutableMap
 import aoc.utils.extensionFunctions.allUnorderedPairs
 import aoc.utils.extensionFunctions.mutateImp
 import aoc.utils.geometry.Array2D
 import aoc.utils.geometry.Coord
+import aoc.utils.parseCharArray
 import kotlin.time.ExperimentalTime
 
 class Day08Problem : DailyProblem<Int>() {
@@ -22,7 +23,7 @@ class Day08Problem : DailyProblem<Int>() {
         antennas = emptyMutableMap()
         map.mapAndFilterToListByNotNull { coord, c -> c to coord }.forEach { (c, coord) ->
             if (c != '.') {
-                antennas.mutateImp(c, mutableListOf<Coord>()) { it.add(coord) }
+                antennas.mutateImp(c, mutableListOf()) { it.add(coord) }
             }
         }
     }
@@ -48,7 +49,7 @@ class Day08Problem : DailyProblem<Int>() {
 
     private fun getAntinodesPart2(a: Coord, b: Coord): Sequence<Coord> {
         val diff = a - b
-        val s1 = sequence<Coord> {
+        val s1: Sequence<Coord> = sequence {
             // Walking in one direction...
             var tmp = a
             while (true) {
@@ -56,7 +57,7 @@ class Day08Problem : DailyProblem<Int>() {
                 tmp += diff
             }
         }.takeWhile { it in map }
-        val s2 = sequence<Coord> {
+        val s2: Sequence<Coord> = sequence {
             // Walking in the other direction...
             var tmp = b
             while (true) {

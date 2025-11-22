@@ -1,4 +1,3 @@
-@file:Suppress("unused")
 package aoc.utils.geometry
 
 enum class Direction {

@@ -3,7 +3,7 @@ package aoc.year2019
 import aoc.utils.ExpandingArray
 import aoc.utils.emptyMutableList
 
-class ExecutionFailed(val reason: String = "") : Throwable()
+class ExecutionFailed(@Suppress("unused") val reason: String = "") : Throwable()
 
 const val OPCODE_ADD = 1L
 const val OPCODE_MUL = 2L
@@ -45,6 +45,7 @@ class IntCode(var startingMemory: Array<Long>, val name: String = "IntCode") {
     var relativeBase = 0
     var inputBuffer: MutableList<Long> = emptyMutableList()
 
+    @Suppress("unused")
     fun clone(): IntCode {
         val c = IntCode(memory.a.clone(), name)
         c.instructionPointer = this.instructionPointer
@@ -184,16 +185,6 @@ class IntCode(var startingMemory: Array<Long>, val name: String = "IntCode") {
             if (res.halted) break
         }
         return output.toList()
-    }
-
-    fun runUntilFirstOutput(): RunResult {
-        while (true) {
-            val res = step()
-            if (res.output != null) {
-                return RunResult(output = listOf(res.output), halted = res.halted)
-            }
-            if (res.halted) return RunResult(output = emptyList(), halted = res.halted)
-        }
     }
 
     fun runUntilNeedsInputOrHalt(): RunResult {

@@ -1,6 +1,6 @@
 package aoc.year2022
 
-import DailyProblem
+import aoc.DailyProblem
 import aoc.utils.parseBlockList
 import aoc.year2015.crappyJSON.JSON
 import aoc.year2015.crappyJSON.parseJArray

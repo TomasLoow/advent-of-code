@@ -1,6 +1,6 @@
 package aoc.year2021
 
-import DailyProblem
+import aoc.DailyProblem
 import aoc.utils.extensionFunctions.shiftLeft
 import java.lang.Integer.parseInt
 import kotlin.time.ExperimentalTime
@@ -29,7 +29,7 @@ class Day06Problem : DailyProblem<Long>() {
     }
 
     private fun simulate(fishesCounts: Array<Long>, steps: Int): Long {
-        for (step in 1..steps) {
+        (1..steps).forEach { _ ->
             val zeroes = fishesCounts.shiftLeft(0)
             fishesCounts[6] += zeroes // Old zeroes are back to countdown 6
             fishesCounts[8] = zeroes  // Their babies

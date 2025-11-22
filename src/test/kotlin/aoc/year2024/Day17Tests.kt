@@ -1,8 +1,5 @@
 package aoc.year2024
 
-import aoc.year2024.Day17Problem
-import aoc.year2024.Register
-import aoc.year2024.State
 import kotlinx.io.files.FileNotFoundException
 import kotlin.test.Test
 import kotlin.test.assertEquals

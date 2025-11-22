@@ -1,12 +1,12 @@
 package aoc.year2017
 
-import DailyProblem
-import kotlin.math.absoluteValue
-import kotlin.properties.Delegates
-import kotlin.time.ExperimentalTime
+import aoc.DailyProblem
 import aoc.utils.extensionFunctions.nonEmptyLines
 import aoc.utils.geometry.Coord
 import aoc.utils.geometry.Direction
+import kotlin.math.absoluteValue
+import kotlin.properties.Delegates
+import kotlin.time.ExperimentalTime
 
 class Day03Problem : DailyProblem<Long>() {
 
@@ -72,7 +72,7 @@ class Day03Problem : DailyProblem<Long>() {
         val values = mutableMapOf<Coord, Long>(Coord.origin to 1)
         walkInSpiral().drop(1).forEach {c ->
             val ns = c.neighbours(diagonal = true)
-            val v = ns.sumOf { values.getOrDefault(it, 0).toLong() }
+            val v = ns.sumOf { values.getOrDefault(it, 0) }
             if (v > target) { return v }
             values[c] = v
         }

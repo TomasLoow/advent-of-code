@@ -83,7 +83,8 @@ val BigInteger.odd: Boolean
  * @return The resulting Long value after concatenation.
  */
 fun Long.concat(x: Long): Long {
-    if (x < 0) throw Exception("Cannot concat a negative number")
+    require(x >= 0) { "Cannot concat a negative number" }
+
     if (x < 10L) return this * 10L + x
     if (x < 100L) return this * 100L + x
     if (x < 1000L) return this * 1000L + x
@@ -106,7 +107,8 @@ fun Long.concat(x: Long): Long {
  * @return The resulting Int value after concatenation.
  */
 fun Int.concat(x: Int): Int {
-    if (x < 0) throw Exception("Cannot concat a negative number")
+    require(x >= 0) { "Cannot concat a negative number" }
+
     if (x < 10) return this * 10 + x
     if (x < 100) return this * 100 + x
     if (x < 1000) return this * 1000 + x
@@ -117,7 +119,7 @@ fun Int.concat(x: Int): Int {
 }
 
 fun Int.toBinaryArray(): BooleanArray {
-    if (this < 0) throw Exception("undefined for negative numbers")
+    require(this >= 0) { "undefined for negative numbers" }
     val binaryString = this.toString(2)
     return BooleanArray(binaryString.length) { binaryString[it] == '1' }
 }

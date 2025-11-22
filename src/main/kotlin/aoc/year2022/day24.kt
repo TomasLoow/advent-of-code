@@ -1,6 +1,6 @@
 package aoc.year2022
 
-import DailyProblem
+import aoc.DailyProblem
 import aoc.utils.algorithms.BFS
 import aoc.utils.geometry.Array2D
 import aoc.utils.geometry.Coord
@@ -72,10 +72,9 @@ class Day24Problem : DailyProblem<Int>() {
             Array2D(initialMap.width, initialMap.height, false)
         }
         initialStorms.forEach { storm ->
-            var st = storm
             repeat(stormsLoopAfter) { idx ->
-                precalcStorms[idx][st.pos] = true
-                st.move()
+                precalcStorms[idx][storm.pos] = true
+                storm.move()
             }
         }
     }

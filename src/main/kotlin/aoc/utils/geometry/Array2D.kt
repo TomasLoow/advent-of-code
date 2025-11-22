@@ -13,7 +13,7 @@ class Array2D<T : Any> {
 
     var height by Delegates.notNull<Int>()
     var width by Delegates.notNull<Int>()
-    lateinit var rect: Rect
+    var rect: Rect
 
     internal val data: Array<Any>
 
@@ -27,7 +27,7 @@ class Array2D<T : Any> {
     }
 
     constructor(raw: Collection<T>, width: Int, height: Int) {
-        check(raw.size == height * width)
+        require(raw.size == height * width)
         this.width = width
         this.height = height
         this.rect = Rect(Coord(0, 0), Coord(width - 1, height - 1))
@@ -203,17 +203,17 @@ class Array2D<T : Any> {
 
     /** like mapIndexed but saves the data into an already existing array. Nice for performance. */
     fun <R : Any> mapIndexedInto(intoArray: Array2D<R>, function: (Coord, T) -> R) {
-        if (rect != intoArray.rect) throw IllegalArgumentException("Arrays must have same dimensions")
+        require(rect == intoArray.rect) { "Arrays must have same dimensions" }
         this.forEach { c, v ->
-            intoArray.set(c, function(c, v))
+            intoArray[c] = function(c, v)
         }
     }
 
     /** like map but saves the data into an already existing array. Nice for performance. */
     fun <R : Any> mapInto(intoArray: Array2D<R>, function: (T) -> R) {
-        if (rect != intoArray.rect) throw IllegalArgumentException("Arrays must have same dimensions")
+        require(rect == intoArray.rect) { "Arrays must have same dimensions" }
         this.forEach { c, v ->
-            intoArray.set(c, function(v))
+            intoArray[c] = function(v)
         }
     }
 
@@ -234,10 +234,19 @@ class Array2D<T : Any> {
 
     fun closest (c: Coord, function: (Coord, T) -> Boolean): Coord? {
         // TODO Optimize!
-        return filterToList(function).sortedBy { c.manhattanDistanceTo(it.first) }.firstOrNull()?.first
+        return filterToList(function).minByOrNull { c.manhattanDistanceTo(it.first) }?.first
     }
 
-    fun findIndexedByCoordinate(function: (Coord, T) -> Boolean): Pair<Coord, T>? {
+    /**
+     * Searches through a 2D grid and finds the first element, along with its coordinate,
+     * that satisfies the given condition.
+     *
+     * @param function A predicate function that takes a `Coord` (coordinate) and a value of type `T`.
+     *                 Returns `true` if the current element matches the condition, `false` otherwise.
+     * @return A `Pair` consisting of the coordinate (`Coord`) and the value (`T`) of the first matching element,
+     *         or `null` if no element satisfies the given condition.
+     */
+    fun findFirstIndexedByCoordinate(function: (Coord, T) -> Boolean): Pair<Coord, T>? {
         repeat(height) { y ->
             repeat(width) { x ->
                 val coord = Coord(x, y)
@@ -246,6 +255,14 @@ class Array2D<T : Any> {
             }
         }
         return null
+    }
+
+    fun findFirst(function: (T) -> Boolean): Pair<Coord, T>? {
+        return findFirstIndexedByCoordinate { _, v -> function(v) }
+    }
+
+    fun coordOfFirst(value: T): Coord? {
+        return findFirstIndexedByCoordinate { _, v -> (v == value) }?.first
     }
 
     fun <Q> mapAndFilterToListByNotNull(block: (Coord, T) -> Q?): List<Q> {
@@ -399,6 +416,13 @@ class Array2D<T : Any> {
         fun renderBool(a: Boolean): String = if (a) "█" else " "
         fun renderInt(a: Int): String = a.toString()
         fun renderChar(a: Char): String = a.toString()
+    }
+
+    override fun hashCode(): Int {
+        var result = rect.hashCode()
+        result = 31 * result + height
+        result = 31 * result + width
+        return result
     }
 }
 

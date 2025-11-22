@@ -1,6 +1,6 @@
 package aoc.year2019
 
-import DailyProblem
+import aoc.DailyProblem
 import aoc.utils.algorithms.BFS
 import aoc.utils.algorithms.BFSNoPathFound
 import aoc.utils.algorithms.Dijkstra
@@ -51,7 +51,7 @@ class Day15Problem : DailyProblem<Int>() {
         startPos = Coord(51, 51)
 
         map = exploreMap()
-        goal = map.findIndexedByCoordinate { c, v -> v == Tile.OXYGEN }!!.first
+        goal = map.coordOfFirst(Tile.OXYGEN )!!
         val oxygenFlow = OxygenFlow(map)
         distancesToGoal = oxygenFlow.solveScoreForAllStates(goal)
     }
@@ -59,10 +59,10 @@ class Day15Problem : DailyProblem<Int>() {
     /** Explore the whole map by performing BFS searches for one of the closest unknown tiles and moving the robot to it
      */
     fun exploreMap(): Array2D<Tile> {
-        var map: Array2D<Tile> = Array2D(101, 101) { c -> Tile.UNKNOWN }
+        val map: Array2D<Tile> = Array2D(101, 101) { Tile.UNKNOWN }
         var robotPos = startPos
         map[robotPos] = Tile.FLOOR
-        var bfs = FindUnknown(map)
+        val bfs = FindUnknown(map)
         while (true) {
             try {
                 var path = bfs.solve(robotPos)

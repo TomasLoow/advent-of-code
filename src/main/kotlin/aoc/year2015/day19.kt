@@ -1,6 +1,6 @@
 package aoc.year2015
 
-import DailyProblem
+import aoc.DailyProblem
 import aoc.utils.id
 import aoc.utils.parseListOfPairs
 import aoc.utils.parseTwoBlocks

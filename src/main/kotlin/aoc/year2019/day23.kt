@@ -1,6 +1,6 @@
 package aoc.year2019
 
-import DailyProblem
+import aoc.DailyProblem
 import aoc.utils.emptyMutableList
 import aoc.utils.parseIntCodeProgram
 import kotlin.time.ExperimentalTime

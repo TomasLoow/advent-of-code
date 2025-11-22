@@ -1,6 +1,6 @@
 package aoc.year2022
 
-import DailyProblem
+import aoc.DailyProblem
 import aoc.utils.*
 import aoc.utils.algorithms.BFS
 import aoc.utils.algorithms.BFSNoPathFound

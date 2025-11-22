@@ -1,6 +1,6 @@
 package aoc.year2021
 
-import DailyProblem
+import aoc.DailyProblem
 import aoc.utils.geometry.Axis2D
 import aoc.utils.extensionFunctions.nonEmptyLines
 import aoc.utils.parseDisplay

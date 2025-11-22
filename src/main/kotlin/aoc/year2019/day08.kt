@@ -1,6 +1,6 @@
 package aoc.year2019
 
-import DailyProblem
+import aoc.DailyProblem
 import aoc.utils.geometry.Array2D
 import aoc.utils.geometry.showBooleanArray
 import aoc.utils.parseDisplay
@@ -15,7 +15,7 @@ class Day08Problem : DailyProblem<String>() {
     private lateinit var layers: List<Array2D<Int>>
 
     override fun commonParts() {
-        layers = getInputText().lines().first().map { c -> c.toString().toInt()}.chunked(25*6).map { it ->
+        layers = getInputText().lines().first().map { c -> c.toString().toInt()}.chunked(25*6).map {
             Array2D(it, 25,6)
         }
     }
@@ -25,7 +25,7 @@ class Day08Problem : DailyProblem<String>() {
         val l = layers.minBy { a ->
             a.countIndexedByCoordinate { _, v -> v == 0 }
         }
-        return (l!!.countIndexedByCoordinate { _, v -> v == 1 } * l.countIndexedByCoordinate { _, v -> v == 2 }).toString()
+        return (l.countIndexedByCoordinate { _, v -> v == 1 } * l.countIndexedByCoordinate { _, v -> v == 2 }).toString()
     }
 
 

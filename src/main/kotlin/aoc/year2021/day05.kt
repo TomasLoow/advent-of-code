@@ -1,6 +1,6 @@
 package aoc.year2021
 
-import DailyProblem
+import aoc.DailyProblem
 import aoc.utils.geometry.Array2D
 import aoc.utils.geometry.Coord
 import aoc.utils.parseCoord
@@ -40,7 +40,7 @@ private fun List<VentLine>.countIntersections(): Long {
     val size = VentLine.gridSize + 1
     val array: Array2D<Int> = Array2D(size, size, 0)
     forEach { it.markCoveredPoints(array) }
-    return array.countIndexedByCoordinate { coord, i -> i > 1 }.toLong()
+    return array.count { it > 1 }.toLong()
 }
 
 class Day05Problem : DailyProblem<Long>() {

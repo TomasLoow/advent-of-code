@@ -1,6 +1,6 @@
 package aoc.year2020
 
-import DailyProblem
+import aoc.DailyProblem
 import aoc.utils.extensionFunctions.nonEmptyLines
 import kotlin.time.ExperimentalTime
 import aoc.utils.extensionFunctions.toInt

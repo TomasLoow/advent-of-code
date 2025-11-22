@@ -1,6 +1,6 @@
 package aoc.year2022
 
-import DailyProblem
+import aoc.DailyProblem
 import aoc.utils.extensionFunctions.nonEmptyLines
 import aoc.utils.geometry.*
 import aoc.utils.parseAllPositiveInts
@@ -26,7 +26,7 @@ data class Edge(
         else if (corner1.x > corner2.x) Direction.LEFT
         else if (corner1.y < corner2.y) Direction.DOWN
         else Direction.UP
-        buildList<Coord> {
+        buildList {
             var c = corner1
             while (c != corner2) {
                 add(c)
@@ -125,7 +125,9 @@ class Day22Problem : DailyProblem<Int>() {
         val (fullMap, moveStr) = parseTwoBlocks(
             getInputText(),
             {
-                val paddedLines = getInputText().nonEmptyLines().map { it.padEnd(150, ' ').toList().map { it == '#' } }
+                val paddedLines = getInputText()
+                    .nonEmptyLines()
+                    .map { line -> line.padEnd(150, ' ').toList().map { it == '#' } }
                 Array2D(paddedLines)
             },
             ::parseSteps

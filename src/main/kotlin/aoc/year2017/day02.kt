@@ -1,8 +1,7 @@
 package aoc.year2017
 
-import DailyProblem
+import aoc.DailyProblem
 import aoc.utils.extensionFunctions.allPairs
-import aoc.utils.extensionFunctions.allUnorderedPairs
 import aoc.utils.extensionFunctions.minAndMax
 import aoc.utils.extensionFunctions.nonEmptyLines
 import aoc.utils.parseOneLineOfSeparated

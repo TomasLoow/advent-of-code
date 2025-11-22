@@ -1,6 +1,6 @@
 package aoc.year2020
 
-import DailyProblem
+import aoc.DailyProblem
 import aoc.utils.extensionFunctions.nonEmptyLines
 import aoc.utils.geometry.Coord
 import aoc.utils.geometry.Direction
@@ -44,7 +44,7 @@ class Day24Problem : DailyProblem<Int>() {
 
     private fun followPart1Moves() {
         initialFlippedAfterPart1 = mutableSetOf<Coord>()
-        var coord = Coord.origin
+        var coord: Coord
         data.forEach { line ->
             coord = Coord.origin
             line.forEach { d ->

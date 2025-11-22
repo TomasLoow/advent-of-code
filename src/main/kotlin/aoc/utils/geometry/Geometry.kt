@@ -34,7 +34,7 @@ fun Vector.decomposeDirs(): Map<Direction, Int> {
  * Only works if each coord has manhattandistance == 1 to its adjacent coords
  */
 fun List<Coord>.steps(): List<Direction> {
-    return this.zipWithNext() { c, nextC ->
+    return this.zipWithNext { c, nextC ->
         if (nextC.x > c.x) Direction.RIGHT
         else if (nextC.x < c.x) Direction.LEFT
         else if (nextC.y > c.y) Direction.DOWN

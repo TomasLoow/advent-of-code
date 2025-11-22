@@ -1,6 +1,6 @@
 package aoc.year2021
 
-import DailyProblem
+import aoc.DailyProblem
 import aoc.utils.emptyMutableMap
 import java.io.File
 import java.lang.Integer.max

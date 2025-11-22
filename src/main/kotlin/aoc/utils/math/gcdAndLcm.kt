@@ -1,4 +1,5 @@
 @file:Suppress("unused")
+
 package aoc.utils.math
 
 import java.math.BigInteger
@@ -16,15 +17,15 @@ fun gcd(a: BigInteger, b: BigInteger): BigInteger {
 }
 
 fun lcm(a: Int, b: Int): Int {
-    return (a*b)/ gcd(a,b)
+    return (a * b) / gcd(a, b)
 }
 
 fun lcm(a: Long, b: Long): Long {
-    return (a*b)/ gcd(a,b)
+    return (a * b) / gcd(a, b)
 }
 
 fun lcm(a: BigInteger, b: BigInteger): BigInteger {
-    return (a*b)/ gcd(a,b)
+    return (a * b) / gcd(a, b)
 }
 
 

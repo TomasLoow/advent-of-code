@@ -1,6 +1,6 @@
 package aoc.year2024
 
-import DailyProblem
+import aoc.DailyProblem
 import aoc.utils.extensionFunctions.allUnorderedPairs
 import aoc.utils.emptyMutableSet
 import aoc.utils.extensionFunctions.mutate

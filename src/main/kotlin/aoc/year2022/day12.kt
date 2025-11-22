@@ -1,6 +1,6 @@
 package aoc.year2022
 
-import DailyProblem
+import aoc.DailyProblem
 import aoc.utils.algorithms.AStar
 import aoc.utils.geometry.Array2D
 import aoc.utils.algorithms.BFS
@@ -54,8 +54,8 @@ class Day12Problem : DailyProblem<Int>() {
                 else -> c.code - 'a'.code + 1
             }
         }
-        startPos = map.findIndexedByCoordinate { _, i -> i == -1 }!!.first
-        endPos = map.findIndexedByCoordinate { _, i -> i == 999 }!!.first
+        startPos = map.coordOfFirst(-1 )!!
+        endPos = map.coordOfFirst(999 )!!
         map[startPos] = 1
         map[endPos] = 26
 

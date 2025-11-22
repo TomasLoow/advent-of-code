@@ -1,6 +1,6 @@
 package aoc.year2022
 
-import DailyProblem
+import aoc.DailyProblem
 import aoc.utils.math.lcm
 import aoc.utils.parseBlockList
 import aoc.utils.extensionFunctions.product
@@ -19,7 +19,7 @@ class Day11Problem : DailyProblem<Long>() {
         val monkeys =
             parseBlockList(getInputText(), ::parseMonkey).mapIndexed { idx, monkeyRule -> Pair(idx, monkeyRule) }
                 .toMap()
-        monkeys.forEach { (idx, monkey) ->
+        monkeys.forEach { (_, monkey) ->
             monkey.throwToTrue = monkeys[monkey.throwToTrueIdx]!!
             monkey.throwToFalse = monkeys[monkey.throwToFalseIdx]!!
         }
@@ -76,7 +76,7 @@ class Day11Problem : DailyProblem<Long>() {
         // Mine were all prime so a simple product would have worked in hindsight, but oh well. 20/20
         val modulus = state.values.map { it.test }.fold(1) { l, x -> lcm(l, x) }
 
-        state.forEach { (i, m) ->
+        state.forEach { (_, m) ->
             while(m.heldItems.isNotEmpty()) {
                 var item = m.heldItems.removeFirst()
                 item = applyOp(m.operation, item)

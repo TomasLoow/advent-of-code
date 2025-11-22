@@ -1,6 +1,6 @@
 package aoc.year2024
 
-import DailyProblem
+import aoc.DailyProblem
 import aoc.utils.geometry.Array2D
 import aoc.utils.geometry.Direction
 import aoc.utils.parseCharArray

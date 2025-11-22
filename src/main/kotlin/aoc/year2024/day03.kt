@@ -1,6 +1,6 @@
 package aoc.year2024
 
-import DailyProblem
+import aoc.DailyProblem
 import kotlin.time.ExperimentalTime
 
 class Day03Problem : DailyProblem<Int>() {
@@ -30,7 +30,7 @@ class Day03Problem : DailyProblem<Int>() {
 
 
     override fun part2(): Int {
-        var matching = true
+        var matching: Boolean
         var res = 0
         val fixedData = "do()" + data + "don't()"  // modify input string to sidestep edge cases at beginning and end
         (reFindDoesAndDonts.findAll(fixedData).zipWithNext()).forEach { (match, next) ->

@@ -9,13 +9,14 @@ import java.math.BigInteger
  * The function calculates the smallest non-negative solution that satisfies all given congruences.
  *
  * @param modulusAndRems A list of pairs, where each pair consists of a modulus (first)
- * and a corresponding remainder (second). Both values are of type BigInteger.
+ * and a corresponding remainder (second). Both values are of the type BigInteger.
  *
  * @return The smallest non-negative solution as a BigInteger that satisfies all the
  * provided congruences. Ie `return-value % modulosAndRems[i].first == modulosAndRems[i].second` for all i.
  */
 fun chineseRemainder(modulusAndRems: List<Pair<BigInteger, BigInteger>>): BigInteger {
-    if (modulusAndRems.isEmpty()) throw IllegalArgumentException("list must not be empty")
+    require(!modulusAndRems.isEmpty()) { "list must not be empty" }
+
     val prod = modulusAndRems.map { it.first }.product()
     val sum = modulusAndRems
         .fold(BigInteger.ZERO) { acc, (mod, rem) ->
@@ -36,7 +37,8 @@ fun chineseRemainder(modulusAndRems: List<Pair<BigInteger, BigInteger>>): BigInt
  * provided congruences. Ie `return-value % modulosAndRems[i].first == modulosAndRems[i].second` for all i.
  */
 fun chineseRemainder(modulusAndRems: List<Pair<Long, Long>>): Long {
-    if (modulusAndRems.isEmpty()) throw IllegalArgumentException("list must not be empty")
+    require(!modulusAndRems.isEmpty()) { "list must not be empty" }
+
     val prod = modulusAndRems.map { it.first }.reduce { acc, mod -> acc * mod }
     val sum = modulusAndRems
         .fold(0L) { acc, (mod, rem) ->
@@ -53,11 +55,12 @@ fun chineseRemainder(modulusAndRems: List<Pair<Long, Long>>): Long {
 * @param modulusAndRems A list of pairs, where each pair consists of a modulus (first)
 * and a corresponding remainder (second). Both values are of type Long.
 *
-* @return The smallest non-negative solution as a Long that satisfies all the
-* provided congruences. Ie `return-value % modulosAndRems[i].first == modulosAndRems[i].second` for all i.
+* @return The smallest non-negative solution as an Int that satisfies all the
+* provided congruences. I.e. `return-value % modulosAndRems[i].first == modulosAndRems[i].second` for all i.
 */
 fun chineseRemainder(modulusAndRems: List<Pair<Int, Int>>): Int {
-    if (modulusAndRems.isEmpty()) throw IllegalArgumentException("list must not be empty")
+    require(!modulusAndRems.isEmpty()) { "list must not be empty" }
+
     val prod = modulusAndRems.map { it.first }.reduce { acc, mod -> acc * mod }
     val sum = modulusAndRems
         .fold(0) { acc, (mod, rem) ->

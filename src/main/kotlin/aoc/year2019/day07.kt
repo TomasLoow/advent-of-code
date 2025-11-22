@@ -1,6 +1,6 @@
 package aoc.year2019
 
-import DailyProblem
+import aoc.DailyProblem
 import aoc.utils.extensionFunctions.permutationsSequence
 import aoc.utils.parseIntCodeProgram
 import kotlin.time.ExperimentalTime
@@ -34,7 +34,7 @@ class Day07Problem : DailyProblem<Long>() {
         listOf(0L, 1L, 2L, 3L, 4L).permutationsSequence().maxOf { perm ->
             computers.forEach { it.reset() }
             computers.zip(perm).forEach { (comp, value) -> comp.writeInput(listOf(value)) }
-            chain(computers, 0).output!!.first()
+            chain(computers, 0).output.first()
         }
 
     fun runWithFeedback(computers: List<IntCode>) =
@@ -43,13 +43,11 @@ class Day07Problem : DailyProblem<Long>() {
             computers.zip(perm).forEach { (comp, value) -> comp.writeInput(listOf(value)) }
 
             var i = 0L
-            var finalResult = 0L
+            var finalResult: Long
             while (true) {
                 val res = chain(computers, i)
-                if (res.output != null) {
-                    finalResult = res.output.first()
-                    i = res.output.first()
-                }
+                finalResult = res.output.first()
+                i = res.output.first()
                 if (res.halted) {
                     break
                 }
@@ -68,6 +66,7 @@ class Day07Problem : DailyProblem<Long>() {
     }
 }
 
+@Suppress("unused")
 fun Sequence<Int>.wirePeek(name: String): Sequence<Int> {
     return this // this.map { println("$name>$it"); it }
 }

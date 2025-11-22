@@ -1,6 +1,6 @@
 package aoc.year2020
 
-import DailyProblem
+import aoc.DailyProblem
 import aoc.utils.geometry.Array2D
 import aoc.utils.geometry.Coord
 import aoc.utils.geometry.Direction
@@ -79,9 +79,9 @@ class Day11Problem : DailyProblem<Int>() {
 
     private fun seenSeats(c: Coord, a: Array2D<Seat>): List<Coord> {
         if (c in cachedSeen) return cachedSeen[c]!!
-        val seen = Direction.entries.map { dir ->
+        val seen = Direction.entries.mapNotNull { dir ->
             c.walkInDir(dir).drop(1).takeWhile { it in a }.dropWhile { a[it] == Seat.FLOOR }.firstOrNull()
-        }.filterNotNull()
+        }
         cachedSeen[c] = seen
         return seen
     }

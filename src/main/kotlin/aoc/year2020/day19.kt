@@ -1,6 +1,6 @@
 package aoc.year2020
 
-import DailyProblem
+import aoc.DailyProblem
 import aoc.utils.*
 import aoc.utils.extensionFunctions.nonEmptyLines
 import kotlin.time.ExperimentalTime
@@ -18,10 +18,8 @@ sealed interface P {
 
     data class Concat(val rules: List<Int>) : P {
         override fun match(s: String, rulesMap: (Int) -> P): List<Int> {
-            var i = 0
             if (rules.size == 1) return rulesMap(rules.first()).match(s, rulesMap)
-            val r = rulesMap(rules.first())
-            return r.match(s, rulesMap).filter { it != null }.flatMap { consumed ->
+            return rulesMap(rules.first()).match(s, rulesMap).flatMap { consumed ->
                 Concat(rules.drop(1)).match(s.drop(consumed), rulesMap).map { it + consumed }
             }
         }
@@ -91,7 +89,7 @@ class Day19Problem : DailyProblem<Int>() {
             }
             return a
         }
-        val (r, s) = parseTwoBlocks(getInputText(), ::parseRules, { it.nonEmptyLines() })
+        val (r, s) = parseTwoBlocks(getInputText(), ::parseRules) { it.nonEmptyLines() }
         rules = r
         strings = s
         parsers = Array(r.size) { null }
@@ -101,7 +99,7 @@ class Day19Problem : DailyProblem<Int>() {
         if (parsers[i] != null) {
             return parsers[i]!!
         }
-        val ruleString = rules[i]!!
+        val ruleString = rules[i]
 
 
         val r = if (ruleString.contains("\"")) P.Constant(ruleString[1])
@@ -109,9 +107,11 @@ class Day19Problem : DailyProblem<Int>() {
             val (a, b) = ruleString.split(" | ")
             val aRegs = a.split(" ").map { it.toInt() }
             val bRegs = b.split(" ").map { it.toInt() }
-            if (i == bRegs.last()) P.Plus(aRegs.first()) // case X -> Y | Y X
-            else if (i in bRegs) P.Matching(bRegs.first(), bRegs.last()) // case X -> L R | L X R
-            else P.Or(aRegs, bRegs)
+            when (i) {
+                bRegs.last() -> P.Plus(aRegs.first()) // case X -> Y | Y X
+                in bRegs -> P.Matching(bRegs.first(), bRegs.last()) // case X -> L R | L X R
+                else -> P.Or(aRegs, bRegs)
+            }
         } else {
             val regs = ruleString.split(" ").map { it.toInt() }
             P.Concat(regs)

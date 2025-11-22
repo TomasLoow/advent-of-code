@@ -1,6 +1,6 @@
 package aoc.year2020
 
-import DailyProblem
+import aoc.DailyProblem
 import aoc.utils.math.chineseRemainder
 import aoc.utils.extensionFunctions.nonEmptyLines
 import java.math.BigInteger
@@ -15,7 +15,7 @@ class Day13Problem : DailyProblem<BigInteger>() {
     override val name = "Shuttle Search"
 
     private var time by Delegates.notNull<BigInteger>()
-    public lateinit var lines: List<BigInteger?>
+    lateinit var lines: List<BigInteger?>
 
     override fun commonParts() {
         getInputText().nonEmptyLines().let { lines ->
@@ -26,7 +26,7 @@ class Day13Problem : DailyProblem<BigInteger>() {
 
 
     override fun part1(): BigInteger {
-        val line = lines.filterNotNull().sortedBy { (BigInteger.ONE + time / it) * it - time }.first()
+        val line = lines.filterNotNull().minByOrNull { (BigInteger.ONE + time / it) * it - time }!!
 
         return line * ((BigInteger.ONE + time / line) * line - time)
     }

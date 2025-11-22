@@ -1,7 +1,5 @@
 package aoc.year2021
 
-import aoc.year2021.hexToBits
-import aoc.year2021.pPacket
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test

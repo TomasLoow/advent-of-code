@@ -1,15 +1,13 @@
 package aoc.year2022
 
-import DailyProblem
+import aoc.DailyProblem
 import aoc.utils.emptyMutableSet
-import aoc.utils.extensionFunctions.mutate
 import aoc.utils.extensionFunctions.mutateImp
 import aoc.utils.extensionFunctions.rotateLeft
 import aoc.utils.geometry.Array2D
 import aoc.utils.geometry.Coord
 import aoc.utils.geometry.Direction
 import aoc.utils.geometry.Rect
-import kotlin.collections.plus
 import kotlin.time.ExperimentalTime
 
 //TODO very slow solution. A rewrite would make sense.
@@ -47,14 +45,14 @@ class Day23Problem : DailyProblem<Int>() {
 
     override fun commonParts() {
         val a = Array2D.parseFromLines(getInputText()) { it == '#' }
-        data = a.filterToList { c, v -> v }.map { it -> it.first }.toSet()
+        data = a.filterToList { c, v -> v }.map { it.first }.toSet()
     }
 
-    private fun applyRules(rules: List<(Collection<Coord>, Coord) -> Coord?>, elves: Set<Coord>, elf: Coord, rotate: Int): Coord {
-        try {
-            return rules.firstNotNullOf { it(elves, elf) }
+    private fun applyRules(rules: List<(Collection<Coord>, Coord) -> Coord?>, elves: Set<Coord>, elf: Coord): Coord {
+        return try {
+            rules.firstNotNullOf { it(elves, elf) }
         } catch (e: NoSuchElementException) {
-            return elf
+            elf
         }
     }
 
@@ -66,12 +64,12 @@ class Day23Problem : DailyProblem<Int>() {
             if (! elf.neighbours(diagonal = true).any { it in elves }) {
                 newPositions[elf]=mutableSetOf(elf)
             } else {
-                val c = applyRules(activeRules, elves, elf, step)
+                val c = applyRules(activeRules, elves, elf)
                 newPositions.mutateImp(c, emptyMutableSet()) { it.add(elf) }
                 anyoneMoved = true
             }
         }
-        val newElves = buildSet<Coord> {
+        val newElves = buildSet {
             newPositions.forEach { (coord, list) ->
                 if (list.size == 1) {
                     add(coord)
