@@ -1,11 +1,11 @@
 plugins {
-    kotlin("jvm") version "2.0.21"
+    kotlin("jvm") version "2.2.21"
     application
 }
 
 
 group = "info.loow.tomas"
-version = "1.0-2024-SNAPSHOT"
+version = "1.0-2025-SNAPSHOT"
 
 repositories {
     mavenCentral()
@@ -13,11 +13,11 @@ repositories {
 
 dependencies {
     testImplementation(kotlin("test"))
-    testImplementation("org.junit.jupiter:junit-jupiter-params:5.10.0")
+    testImplementation("org.junit.jupiter:junit-jupiter-params:6.0.1")
 
     // Ktor is used in DownloadData.kt to fetch personal input files
-    implementation("io.ktor:ktor-client-core:3.0.1")
-    implementation("io.ktor:ktor-client-cio:3.0.1")
+    implementation("io.ktor:ktor-client-core:3.3.2")
+    implementation("io.ktor:ktor-client-cio:3.3.2")
 }
 
 tasks.test {
