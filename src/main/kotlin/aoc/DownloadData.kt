@@ -20,7 +20,8 @@ suspend fun main() {
     HttpClient {
         defaultRequest {
             header(HttpHeaders.Cookie, "session=$sessionId")
-            header(HttpHeaders.UserAgent, "Personal downloader script, Tomas Lööw")
+            header(HttpHeaders.UserAgent, "Personal downloader script, Tomas Lööw (github.com/TomasLoow)")
+            header("Script-Info", "Used to download personal input data, will only ever be run manually. Has a 10s delay between requests.")
         }
     }.use { client ->
         dls.forEach {(year, date) ->
@@ -41,7 +42,7 @@ suspend fun main() {
                 val body = response.readRawBytes()
                 file.writeBytes(body)
                 println("$fileName downloaded.")
-                Thread.sleep(1000)
+                Thread.sleep(10000)
             }
         }
     }
