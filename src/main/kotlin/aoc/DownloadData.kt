@@ -1,5 +1,6 @@
 package aoc
 
+import aoc.utils.parseAllPositiveInts
 import io.ktor.client.*
 import io.ktor.client.plugins.*
 import io.ktor.client.request.*
@@ -12,9 +13,10 @@ suspend fun main() {
     val lines = File("input/downloadinfo.txt").readLines()
 
     val sessionId = lines.first()
-    val dls = lines.drop(1).map { line ->
-        val (year, date) = line.split(" ").map { it.toInt() }
-        Pair(year, date)
+
+    val dls: List<Triple<Int, Int, Int>> = lines.drop(1).map { line ->
+        val (year, startDate, endDate) = parseAllPositiveInts(line)
+        Triple(year, startDate, endDate)
     }
 
     HttpClient {
@@ -24,13 +26,13 @@ suspend fun main() {
             header("Script-Info", "Used to download personal input data, will only ever be run manually. Has a 10s delay between requests.")
         }
     }.use { client ->
-        dls.forEach {(year, date) ->
+        dls.forEach {(year, startDate, endDate) ->
             val dir = File("input/aoc$year")
             if (!dir.exists()) {
                 dir.mkdir()
             }
 
-            for (day in (1..date).reversed()) {
+            for (day in (startDate..endDate).reversed()) {
                 val paddedDay = day.toString().padStart(2, '0')
                 val fileName = "input/aoc$year/day$paddedDay.txt"
                 val file = File(fileName)
