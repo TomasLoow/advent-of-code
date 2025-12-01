@@ -5,6 +5,7 @@ import kotlin.time.Duration
 import kotlin.time.ExperimentalTime
 
 val events = mapOf(
+    2025 to aoc.year2025.solvedProblems,
     2024 to aoc.year2024.solvedProblems,
     2023 to aoc.year2023.solvedProblems,
     2022 to aoc.year2022.solvedProblems,
