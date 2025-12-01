@@ -60,7 +60,7 @@ class Day02Problem : DailyProblem<Int>() {
 
     override fun part1(): Int {
         return parseFilePart1().sumOf { (comp, me) ->
-            val res = (comp - me + 3) % 3
+            val res = (comp - me).mod(3)
             scoreRes(res) + scoreMove(me)
         }
     }
@@ -90,7 +90,7 @@ class Day02Problem : DailyProblem<Int>() {
 
     override fun part2(): Int {
         return parseFilePart2().sumOf { (comp, res) ->
-            val me = (comp - res + 3) % 3
+            val me = (comp - res).mod(3)
             scoreRes(res) + scoreMove(me)
         }
     }

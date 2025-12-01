@@ -45,7 +45,7 @@ fun chineseRemainder(modulusAndRems: List<Pair<Long, Long>>): Long {
             val p = prod / mod
             acc + rem * p.multInv(mod) * p
         }
-    return (sum % prod + prod) % prod
+    return sum.mod(prod)
 }
 
 /*
@@ -67,5 +67,5 @@ fun chineseRemainder(modulusAndRems: List<Pair<Int, Int>>): Int {
             val p = prod / mod
             acc + rem * p.multInv(mod) * p
         }
-    return (sum % prod + prod) % prod
+    return sum.mod(prod)
 }

@@ -22,7 +22,7 @@ class Day01Problem : DailyProblem<Long>() {
     override fun part1(): Long {
         val initState = Pair(50, 0)
         val endState = turns.fold(initial = initState) { (pos, zeroes), turn ->
-            val new = (pos + turn + 100) % 100
+            val new = (pos + turn).mod(100)
             Pair(new, if (new == 0) zeroes + 1 else zeroes)
         }
         return endState.second.toLong()
@@ -35,14 +35,14 @@ class Day01Problem : DailyProblem<Long>() {
             val newDialPos = (dialPos + turn)
             val passes =countZeroCrossings(dialPos, newDialPos)
 
-            Pair((newDialPos + 100) % 100, zeroes + passes)
+            Pair(newDialPos.mod(100), zeroes + passes)
         }
         return endState.second.toLong()
     }
 
     fun countZeroCrossings(prevValue: Int, newValue: Int): Int {
         // count full rotations
-        var passes = (newValue).absoluteValue / 100
+        var passes = newValue.absoluteValue / 100
 
         // count partial rotations that cross zero
         if ((prevValue < 0 && newValue > 0) || (prevValue > 0 && newValue < 0)) {

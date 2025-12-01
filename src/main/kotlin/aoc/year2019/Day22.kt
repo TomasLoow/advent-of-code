@@ -18,7 +18,7 @@ import kotlin.time.ExperimentalTime
 
 /** an affine transform y = kx+m (mod modulus) */
 private class Affine(val k: BigInteger, val m: BigInteger, val modulus: BigInteger) {
-    fun apply(x: BigInteger) = (k * x + m + modulus) % modulus
+    fun apply(x: BigInteger) = (k * x + m).mod(modulus)
 }
 
 
@@ -27,7 +27,7 @@ private fun combine(g: Affine, f: Affine): Affine {
     val modulus = f.modulus
     val newK = f.k * g.k
     val newM = f.apply(g.m)
-    return Affine((newK + modulus) % modulus, (newM + modulus) % modulus, modulus)
+    return Affine(newK.mod(modulus), newM.mod(modulus), modulus)
 }
 
 private fun combine(fs: List<Affine>): Affine =
@@ -100,7 +100,7 @@ class Day22Problem : DailyProblem<BigInteger>() {
         val k = final.k
         val m = final.m
         val kInv = k.multInv(deckSizePt2)
-        return kInv * (2020.toBigInteger() - m + deckSizePt2) % deckSizePt2
+        return kInv * 2020.toBigInteger().mod(deckSizePt2)
     }
 }
 
