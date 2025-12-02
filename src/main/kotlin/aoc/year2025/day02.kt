@@ -29,42 +29,30 @@ class Day02Problem : DailyProblem<BigInteger>() {
 
     private fun isSilly1(number: Long): Boolean {
         val s = number.toString()
-        if (s.length.odd) return false
-        val h = s.length / 2
-        return s.take(h) == s.drop(h)
+        val length = s.length
+        if (length.odd) return false
+        val half = length / 2
+        return (0..<half).all { idx -> s[idx] == s[idx + half] }
     }
 
-
+    // ways do decompose numbers as p identical sequences where p is prime.
+    // The largest input value is 10 digits long, so we only have to handle up to that.
     private val sillyThings = listOf(
-        11L to 1L..9L,
-        101L to 10L..99L,
-        1001L to 100L..999L,
-        10001L to 1000L..9999L,
-        100001L to 10000L..99999L,
-        1000001L to 10000L..999999L,
-        10000001L to 100000L..9999999L,
-        100000001L to 1000000L..99999999L,
-        1000000001L to 10000000L..999999999L,
-
-        111L to 1L..9L,
-        10101L to 10L..99L,
-        1001001L to 100L..999L,
-        100010001L to 1000L..9999L,
-        10000100001L to 10000L..99999L,
-
-        11111L to 1L..9L,
-        101010101L to 10L..99L,
-
-        1111111L to 1L..9L,
+        111L       to 1L  ..9L,     //AAA
+        10101L     to 10L ..99L,    //ABABAB
+        1001001L   to 100L..999L,   //ABCABCABC
+        11111L     to 1L  ..9L,     //AAAAA
+        101010101L to 10L ..99L,    //ABABABABAB
+        1111111L   to 1L  ..9L,     //AAAAAAA
     )
 
     private fun isSilly2(number: Long): Boolean {
+        if (isSilly1(number)) return true
         sillyThings.forEach { (divisior, range) ->
             if (number % divisior == 0L && (number / divisior) in range) return true
         }
         return false
     }
-
 
     override fun part2(): BigInteger {
         return data.sumOf { (first, last) ->
@@ -83,5 +71,5 @@ val day02Problem = Day02Problem()
 @OptIn(ExperimentalTime::class)
 fun main() {
     day02Problem.testData = false
-    day02Problem.runBoth(10)
+    day02Problem.runBoth(100)
 }
