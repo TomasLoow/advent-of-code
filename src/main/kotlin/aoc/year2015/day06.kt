@@ -70,7 +70,7 @@ class Day06Problem : DailyProblem<Int>() {
                 Action.Toggle -> arrayPart2.modifyArea(rect) { it + 2 }
             }
         }
-        return arrayPart2.mapAndFilterToListByNotNull { c, value -> value }.sumOf { it }
+        return arrayPart2.mapAndFilterToListByNotNull { c, value -> value }.sum()
     }
 }
 

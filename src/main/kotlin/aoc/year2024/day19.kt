@@ -45,7 +45,7 @@ class Day19Problem : DailyProblem<Long>() {
     }
 
     override fun part2(): Long {
-        return counts.sumOf { it }
+        return counts.sum()
     }
 }
 

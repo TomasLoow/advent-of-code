@@ -22,7 +22,7 @@ class Day01Problem : DailyProblem<Int>() {
 
     override fun part2(): Int {
         val topThree = caloriesList.sortedByDescending { it.sum() }.take(3)
-        return topThree.map { it.sum() }.sumOf { it }
+        return topThree.sumOf { it.sum() }
     }
 }
 
