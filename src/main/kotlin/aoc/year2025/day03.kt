@@ -13,58 +13,50 @@ class Day03Problem : DailyProblem<Long>() {
     private lateinit var data: List<IntArray>
 
     override fun commonParts() {
-        data = getInputText().nonEmptyLines().map { line -> line.map { c -> c.toString().toInt() }.toIntArray() }
+        val lines = getInputText()
+            .nonEmptyLines()
+        val lineLength = lines.first().length
+        data = lines
+            .map { line ->
+                IntArray(lineLength) { i -> line[i].digitToInt() }
+            }
     }
-
 
     override fun part1(): Long {
         return data.sumOf {
-            memo = Array(it.size*16 +1, { -1L })
-            voltage2(it, 2, 0)
+            voltage(it, 2, 0)
         }
     }
 
     override fun part2(): Long {
         return data.sumOf {
-            memo = Array(it.size*16 + 1, { -1L })
-            voltage2(it, 12, 0)
+            voltage(it, 12, 0)
         }
     }
 
-    private var memo = arrayOf<Long>()  // Simple memoization
-    private fun voltage2(line: IntArray, digits: Int, start: Int): Long {
-        val key = digits or (start shl 4)
-        if (memo[key] != -1L) { return memo[key] }
+    private fun voltage(line: IntArray, digits: Int, start: Int): Long {
+        if (digits == 0) return 0
 
-        if (digits == 1) {
-            val res = (start..<line.size).maxOf { line[it].toLong() }
-            memo[key] = res
-            return res
-        }
+        val idxMax = (start..(line.size - digits)).maxBy { line[it] }
+        val maxDigit = line[idxMax]
 
-        var res = 0L
-        for (i in (start..(line.size - digits))) {
-            val v = pow10(digits - 1) * line[i] + voltage2(line, digits - 1, i + 1)
-            res = maxOf(res, v)
-        }
-        memo[key] = res
-        return res
+        val tail = voltage(line, digits - 1, idxMax + 1)
+        return pow10(digits - 1) * maxDigit + tail
     }
-
 }
 
-val sillyPrecalc = arrayOf(
-    1,
-    10L,
-    100L,
-    1000L,
-    10000L,
-    100000L,
-    1000000L,
-    10000000L,
-    100000000L,
-    1000000000L,
-    10000000000L,
+private val sillyPrecalc = arrayOf(
+          1L,
+         10L,
+         100L,
+        1000L,          // Look! A Christmas tree!
+        10000L,
+       100000L,
+       1000000L,
+      10000000L,
+      100000000L,
+     1000000000L,
+     10000000000L,
     100000000000L
 )
 
@@ -77,5 +69,5 @@ val day03Problem = Day03Problem()
 @OptIn(ExperimentalTime::class)
 fun main() {
     day03Problem.testData = false
-    day03Problem.runBoth(100)
+    day03Problem.runBoth(500)
 }
