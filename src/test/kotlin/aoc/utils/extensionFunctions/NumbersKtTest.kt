@@ -63,4 +63,17 @@ class NumbersKtTest {
         }
     }
 
+    @Test
+    fun `test long toDecimalList`() {
+        Assertions.assertEquals(listOf(9, 9, 9, 9,9, 9, 9, 9,9, 9, 9, 9), 999999999999L.toDecimalList())
+    }
+
+    @Test
+    fun `test long toDecimalList is inverse of parseDecimalListToLong`() {
+        repeat(1000) {
+            val l = (Int.MAX_VALUE.toLong() + Math.random() * 1_000_000L).roundToLong()
+            Assertions.assertEquals(l, l.toDecimalList().parseDecimalListToLong())
+        }
+    }
+
 }

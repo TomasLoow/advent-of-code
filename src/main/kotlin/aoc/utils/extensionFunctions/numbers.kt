@@ -13,6 +13,15 @@ fun Iterable<Int>.parseDecimalList(): Int {
 }
 
 /**
+ * Parses a sequence of digits as a long integer
+ * listOf(1,3,7).parseDecimalListToLong() == 137L
+ */
+fun Iterable<Int>.parseDecimalListToLong(): Long {
+    return fold(0L) { parsed, digit -> parsed * 10L + digit }
+}
+
+
+/**
  * Expands a positive int to a list of its decimal digits.
  * 137.toDecimal() == listOf(1,3,7)
  */
@@ -25,6 +34,22 @@ fun Int.toDecimalList(): List<Int> {
             add(number % 10) // Lägg till den sista siffran.
             number /= 10                // Ta bort den sista siffran.
         } while (number > 0)
+    }.reversed()
+}
+
+/**
+ * Expands a positive long int to a list of its decimal digits.
+ * 137L.toDecimal() == listOf(1,3,7)
+ */
+fun Long.toDecimalList(): List<Int> {
+    if (this < 0) throw Exception("undefined for negative numbers")
+    var number = this
+
+    return buildList {
+        do {
+            add((number % 10).toInt()) // Lägg till den sista siffran.
+            number /= 10L                // Ta bort den sista siffran.
+        } while (number > 0L)
     }.reversed()
 }
 
