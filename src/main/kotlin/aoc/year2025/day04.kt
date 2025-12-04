@@ -19,23 +19,27 @@ class Day04Problem : DailyProblem<Int>() {
 
 
     override fun part1(): Int {
-        val removable = findRemovable()
+        val rolls = rollsMap.allCoords.filter { rollsMap[it] == 1 }.toMutableSet()
+
+        val removable = findRemovable(rolls)
         return removable.count()
     }
 
     override fun part2(): Int {
         var countRemoved = 0
+        val rolls = rollsMap.allCoords.filter { rollsMap[it] == 1 }.toMutableSet()
         while (true) {
-            val removalble = findRemovable()
+            val removalble = findRemovable(rolls)
             if (removalble.isEmpty()) return countRemoved
             countRemoved += removalble.size
+            rolls -= removalble
             rollsMap[removalble] = 0
         }
     }
 
     /* Returns the coordinates of all paper rolls that can be removed by the forklift */
-    private fun findRemovable(): List<Coord> {
-        return rollsMap.allCoords.filter { rollsMap[it] > 0 && rollsMap.neighbourValues(it, true).sum() < 4 }
+    private fun findRemovable(candidates: Collection<Coord>): List<Coord> {
+        return candidates.filter { rollsMap.neighbourValues(it, true).sum() < 4 }
     }
 }
 
@@ -44,5 +48,5 @@ val day04Problem = Day04Problem()
 @OptIn(ExperimentalTime::class)
 fun main() {
     day04Problem.testData = false
-    day04Problem.runBoth(100)
+    day04Problem.runBoth(50)
 }
