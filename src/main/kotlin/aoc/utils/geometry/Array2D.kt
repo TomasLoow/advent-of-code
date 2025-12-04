@@ -144,6 +144,11 @@ class Array2D<T : Any> {
         }
     }
 
+    /** Sets all elements at a given collection of coordinates to the same value */
+    operator fun set(coords: Iterable<Coord>, value: T) {
+        coords.map { c2Idx(it) }.forEach { idx -> data[idx] = value as Any }
+    }
+
     fun modifyArea(r: Rect, mod: (T) -> T) {
         r.yRange.forEach { y ->
             val startIdx = c2Idx(r.xRange.first, y)
@@ -174,19 +179,27 @@ class Array2D<T : Any> {
         val pattern = if (diagonal) stepsWithDiagonals else stepsWithoutDiagonals
         val idx = c2Idx(c)
 
-        return pattern.map { it + idx }.filter {
-            it >= 0 && it < data.size && ((it % width) - (c.x)).absoluteValue <= 1
-        }.map(::idx2c)
+        if (onEdge(c)) {
+            return pattern.map { it + idx }.filter {
+                it >= 0 && it < data.size && ((it % width) - (c.x)).absoluteValue <= 1
+            }.map(::idx2c)
+        } else {
+            return pattern.map { (idx2c(it + idx)) }
+        }
     }
 
     fun neighbourValues(c: Coord, diagonal: Boolean = true): List<T> {
         val pattern = if (diagonal) stepsWithDiagonals else stepsWithoutDiagonals
         val idx = c2Idx(c)
 
+        if (onEdge(c)) {
+            return pattern.map { it + idx }.filter { nIdx ->
+                nIdx >= 0 && nIdx < data.size && ((nIdx % width) - (c.x)).absoluteValue <= 1
+            }.map { nIdx -> data[nIdx] as T }
+        } else {
+            return pattern.map { data[it + idx] as T }
+        }
 
-        return pattern.map { it + idx }.filter { nIdx ->
-            nIdx >= 0 && nIdx < data.size && ((nIdx % width) - (c.x)).absoluteValue <= 1
-        }.map { nIdx -> data[nIdx] as T }
     }
 
     fun neighbourCoordsAndValues(c: Coord, diagonal: Boolean = true): Map<Coord, T> {
@@ -218,7 +231,6 @@ class Array2D<T : Any> {
     }
 
 
-
     fun countIndexedByCoordinate(function: (Coord, T) -> Boolean): Int {
         var counter = 0
         data.forEachIndexed { idx, v ->
@@ -232,7 +244,7 @@ class Array2D<T : Any> {
     }
 
 
-    fun closest (c: Coord, function: (Coord, T) -> Boolean): Coord? {
+    fun closest(c: Coord, function: (Coord, T) -> Boolean): Coord? {
         // TODO Optimize!
         return filterToList(function).minByOrNull { c.manhattanDistanceTo(it.first) }?.first
     }
