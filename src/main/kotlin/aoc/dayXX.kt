@@ -6,7 +6,7 @@ import kotlin.time.ExperimentalTime
 class Day999999Problem : DailyProblem<Long>() {
 
     override val number = 999999
-    override val year = 2024
+    override val year = 2025
     override val name = "Problem name"
 
     private lateinit var data: Any
@@ -17,12 +17,12 @@ class Day999999Problem : DailyProblem<Long>() {
 
 
     override fun part1(): Long {
-        return 1
+        return 999999
     }
 
 
     override fun part2(): Long {
-        return 1
+        return 999999
     }
 }
 
