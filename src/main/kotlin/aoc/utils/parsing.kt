@@ -33,6 +33,11 @@ fun parseAllPositiveInts(data: String): List<Int> {
     return findAllNumbers.findAll(data).map { it.value.toInt() }.toList()
 }
 
+fun parseAllPositiveLongs(data: String): List<Long> {
+    val findAllNumbers = Regex("""\d+""")
+    return findAllNumbers.findAll(data).map { it.value.toLong() }.toList()
+}
+
 /**
  * Parses a file where the input is divided into multiple blocks separated by two newlines.
  * Each such block is parsed by the provided parser and a list of its results is returned

@@ -53,17 +53,17 @@ data class Coord(val x: Int, val y: Int) {
         else this.chebyshevDistanceTo(other) == 1
     }
 
-    fun stepInDir(d: Direction): Coord {
+    fun stepInDir(d: Direction, length:Int = 1): Coord {
         val (x, y) = this
         return when (d) {
-            Direction.UP -> copy(y = y - 1)
-            Direction.RIGHT -> copy(x = x + 1)
-            Direction.DOWN -> copy(y = y + 1)
-            Direction.LEFT -> copy(x = x - 1)
-            Direction.UPRIGHT -> copy(x = x + 1, y = y - 1)
-            Direction.UPLEFT -> copy(x = x - 1, y = y - 1)
-            Direction.DOWNRIGHT -> copy(x = x + 1, y = y + 1)
-            Direction.DOWNLEFT -> copy(x = x - 1, y = y + 1)
+            Direction.UP -> copy(y = y - length)
+            Direction.RIGHT -> copy(x = x + length)
+            Direction.DOWN -> copy(y = y + length)
+            Direction.LEFT -> copy(x = x - length)
+            Direction.UPRIGHT -> copy(x = x + length, y = y - length)
+            Direction.UPLEFT -> copy(x = x - length, y = y - length)
+            Direction.DOWNRIGHT -> copy(x = x + length, y = y + length)
+            Direction.DOWNLEFT -> copy(x = x - length, y = y + length)
 
         }
     }
