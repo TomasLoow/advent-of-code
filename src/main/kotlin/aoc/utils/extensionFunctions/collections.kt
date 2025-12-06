@@ -1,8 +1,8 @@
 package aoc.utils.extensionFunctions
 
-/** Shifts array so element at idx+1 moves to idx,
- * sets last element to provided emptyValue.
- * Returns the head element that is pushed out of the array */
+/** Shifts an array in place so that elements at idx+1 move to idx,
+ * sets the last element to emptyValue.
+ * Returns the head element which is 'pushed out' of the array */
 fun <T> Array<T>.shiftLeft(emptyValue: T): T {
 
     val head = this[0]
@@ -13,12 +13,32 @@ fun <T> Array<T>.shiftLeft(emptyValue: T): T {
     return head
 }
 
+/**
+ * Rotates the elements of the list to the left by the specified number of positions.
+ * Items that rotate out at the left end are placed at the right end.
+ *
+ * Crashes and burns without dignity if i is negative.
+ *
+ * @example listOf(1,2,3,4,5).rotateLeft(2) == listOf(3,4,5,6,1,2)
+ * @param i The number of positions to rotate the list to the left. Must be non-negative.
+ * @return A new list with elements rotated to the left by the specified number of positions.
+ */
 fun <T> List<T>.rotateLeft(i: Int): List<T> {
     if (isEmpty()) return this
     val r = i % size
     return drop(r) + take(r)
 }
 
+/**
+ * Rotates the elements of the list to the right by the specified number of positions.
+ * Items that rotate out at the right end are placed at the left end.
+ *
+ * Crashes and burns without dignity if i is negative.
+ *
+ * @example listOf(1,2,3,4,5).rotateRight(2) == listOf(4,5,6,1,2,3)
+ * @param i The number of positions to rotate the list to the left. Must be non-negative.
+ * @return A new list with elements rotated to the left by the specified number of positions.
+ */
 fun <T> List<T>.rotateRight(i: Int): List<T> {
     if (isEmpty()) return this
     val otherWay = size - i % size
@@ -45,6 +65,10 @@ fun <T> Collection<T>.permutationsSequence(): Sequence<List<T>> {
 
 /**
  * Generates all possible subsets of the collection as a sequence of sets.
+ * Note that this is 2^<size> elements, so don't use it on large collections.
+ *
+ * The empty set is always returned first, and the full set is always returned last,
+ * but the elements between are *not* necessarily sorted by size.
  *
  * @return A sequence containing all subsets of the collection, including the empty set and the collection itself.
  */
@@ -66,6 +90,7 @@ fun <T> Collection<T>.subSets(): Sequence<Set<T>> {
  * where each pair consists of two elements such that the second element
  * in the pair comes after the first element in the iterable.
  * if input contains a and b, then *one of* Pair(a,b) and Pair(b,a) will be produced but not both.
+ * If want both, use allPairs() instead.
  *
  * Example: listOf(1,2,3,4) = sequenceOf(1 to 2, 1 to 3, 1 to 4, 2 to 3, 2 to 4, 3 to 4)
  */
@@ -82,6 +107,7 @@ fun <E> Iterable<E>.allUnorderedPairs(): Sequence<Pair<E, E>> {
 /**
  * Generates a sequence of all possible pairs of elements from the iterable, For two elements a and b at
  * different positions in the list both (a,b) and (b,a) are returned, but NOT (a,a) and (b,b).
+ * If you want just one of these, use allUnorderedPairs() instead.
  *
  * If the list contains an element a more than once, then (a,a) will be included in the output though.
  *
@@ -119,10 +145,10 @@ fun Collection<Int>.countIncreases(): Long {
 }
 
 /**
-mirror the data across the diagonal
-The output satisfies ∀ (x, y): input.mirrorDiagonally()[y][x] = input[x][y]
-
-The input must be rectangular but need not be square.
+ * mirror the data across the diagonal
+ * The output satisfies `∀ (x, y): input.mirrorDiagonally()[y][x] = input[x][y]`
+ *
+ * The input must be rectangular but need not be square.
  */
 fun <T> List<List<T>>.mirrorDiagonally(): List<List<T>> {
     val width = this.first().size

@@ -2,6 +2,7 @@ package aoc.utils.extensionFunctions
 
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Assertions.assertTrue
+import org.junit.jupiter.api.assertAll
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
@@ -132,5 +133,19 @@ class CollectionsKtTest {
                 assertEquals(a5[i][j], mirroredA5[j][i])
             }
         }
+    }
+
+    @Test
+    fun `test subSets`(){
+        val example = listOf(1,2,3,4,5)
+        val subSets = example.subSets().toList()
+        assertEquals(32, subSets.size)
+        assertTrue(setOf(1,2,3,4,5) in subSets)
+        assertTrue(emptySet() in subSets)
+
+        // Check all unique
+        assertTrue(example.map { it.toString() }.sorted().windowed(2).all { (a, b )-> a != b })
+        val example2 = listOf(1,2,3,4,5,6,7,8,9,10)
+        assertEquals(1024, example2.subSets().toList().size)
     }
 }
