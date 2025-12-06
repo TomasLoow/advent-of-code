@@ -117,3 +117,15 @@ fun <T : Comparable<T>> Iterable<T>.isStrictlyDescending(): Boolean {
 fun Collection<Int>.countIncreases(): Long {
     return zipWithNext().count { it.first < it.second }.toLong()
 }
+
+/**
+mirror the data across the diagonal
+The output satisfies ∀ (x, y): input.mirrorDiagonally()[y][x] = input[x][y]
+
+The input must be rectangular but need not be square.
+ */
+fun <T> List<List<T>>.mirrorDiagonally(): List<List<T>> {
+    val width = this.first().size
+    val height = this.size
+    return (0 until width).map { y -> (0 until height).map { x -> this[x][y] } }
+}

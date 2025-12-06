@@ -84,8 +84,53 @@ class CollectionsKtTest {
         assertTrue("cba".isDescending())
         assertFalse("abdc".isAscending())
         assertFalse("abdc".isDescending())
-        
+
         assertTrue("dcccba".isDescending())
         assertFalse("dcccba".isStrictlyDescending())
+    }
+
+    @Test
+    fun `test mirrorDiagonally`() {
+        val a1 = listOf(
+            listOf(1, 2, 3),
+            listOf(4, 5, 6),
+        )
+        val a2 = listOf(
+            listOf(1, 4),
+            listOf(2, 5),
+            listOf(3, 6),
+        )
+        assertEquals(a2, a1.mirrorDiagonally())
+
+        val a3 = listOf(
+            listOf(1, 2, 3),
+        )
+        val a4 = listOf(
+            listOf(1),
+            listOf(2),
+            listOf(3),
+        )
+        assertEquals(a3, a4.mirrorDiagonally())
+
+        // Is self inverse
+        assertEquals(a1, a1.mirrorDiagonally().mirrorDiagonally())
+        assertEquals(a2, a2.mirrorDiagonally().mirrorDiagonally())
+        assertEquals(a3, a3.mirrorDiagonally().mirrorDiagonally())
+        assertEquals(a4, a4.mirrorDiagonally().mirrorDiagonally())
+
+        // Square matrix 5x5
+        val a5 = listOf(
+            listOf(1, 2, 3, 4, 5),
+            listOf(6, 7, 8, 9, 10),
+            listOf(11, 12, 13, 14, 15),
+            listOf(16, 17, 18, 19, 20),
+            listOf(21, 22, 23, 24, 25),
+        )
+        val mirroredA5 = a5.mirrorDiagonally()
+        for (i in 0..4) {
+            for (j in 0..4) {
+                assertEquals(a5[i][j], mirroredA5[j][i])
+            }
+        }
     }
 }

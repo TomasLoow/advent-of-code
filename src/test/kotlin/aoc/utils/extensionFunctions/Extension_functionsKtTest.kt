@@ -47,8 +47,8 @@ class MiscExtensionFunctionsTest {
 
         assertEquals(6, listOf((1..5), (7..7)).totalLengthOfCovered())
     }
-    @Test
 
+    @Test
     fun `test long totalLengthOfCovered`() {
         assertEquals(5L, listOf((1L..5L), (2L..5L), (4L..5L), (5L..5L)).totalLengthOfCovered())
         assertEquals(10L, listOf((1L..5L), (6L..10L)).totalLengthOfCovered())
