@@ -52,4 +52,12 @@ class BasicTests2025 {
         assertEquals(3263827.toBigInteger(), problem.part2(), "Correct Answer day ${problem.number} part 2")
     }
 
+    @Test
+    fun testDay7() {
+        val problem = Day07Problem().apply { testData = true }
+        problem.commonParts()
+        assertEquals(21L, problem.part1(), "Correct Answer day ${problem.number} part 1")
+        assertEquals(40L, problem.part2(), "Correct Answer day ${problem.number} part 2")
+    }
+
 }
