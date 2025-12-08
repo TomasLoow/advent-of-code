@@ -8,7 +8,7 @@ val solvedProblems = listOf(
     day05Problem,
     day06Problem,
     day07Problem,
-    //day08Problem,
+    day08Problem,
     //day09Problem,
     //day10Problem,
     //day11Problem,

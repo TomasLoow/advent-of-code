@@ -15,7 +15,7 @@ val events = mapOf(
     2017 to aoc.year2017.solvedProblems,
     2015 to aoc.year2015.solvedProblems
 )
-val RUN_FOR_YEAR: Int? = null
+val RUN_FOR_YEAR: Int? = 2025
 const val TIMES_TO_RUN = 10
 
 @OptIn(ExperimentalTime::class)
