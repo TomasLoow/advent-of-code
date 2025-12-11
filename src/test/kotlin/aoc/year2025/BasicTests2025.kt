@@ -67,4 +67,12 @@ class BasicTests2025 {
         assertEquals(25272L, problem.part2(), "Correct Answer day ${problem.number} part 2")
     }
 
+    @Test
+    fun testDay11() {
+        val problem = Day11Problem().apply { testData = true }
+        problem.commonParts()
+        // Different test data for part 1 and 2, the save one only works for part 2
+        assertEquals(2L, problem.part2(), "Correct Answer day ${problem.number} part 2")
+    }
+
 }
